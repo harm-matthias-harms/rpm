@@ -1,17 +1,39 @@
 package main
 
 import (
+	"context"
+	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+var mongoSession *mongo.Database
 
 func main() {
 	e := server()
+	mongoSession = setMongoDatabase()
 	//Starts the server
 	e.Logger.Fatal(e.Start(":3000"))
+}
+
+func setMongoDatabase() *mongo.Database {
+	client, err := mongo.NewClient(options.Client().ApplyURI(getEnv("MONGO_URL", "mongodb://localhost:27017")))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return client.Database(getEnv("MONGO_DATABASE", "rpm"))
 }
 
 func server() *echo.Echo {
@@ -34,8 +56,8 @@ func server() *echo.Echo {
 	// JWT Group
 	r := e.Group("/api")
 	r.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey: []byte(getEnv("JWT_SECRET", "secret")),
-		TokenLookup:   "cookie:" + echo.HeaderAuthorization,
+		SigningKey:  []byte(getEnv("JWT_SECRET", "secret")),
+		TokenLookup: "cookie:" + echo.HeaderAuthorization,
 	}))
 
 	// ADD THE ENDPOINTS HERE
