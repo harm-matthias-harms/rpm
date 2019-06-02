@@ -1,10 +1,7 @@
 sudo: false
 stages:
   - test
-    if: 
-      - branch = master
-      - branch = develop
-      - type = pull_request
+    if: branch = master OR branch = develop or type = pull_request
   - name: build
     if: branch = master
 jobs:
