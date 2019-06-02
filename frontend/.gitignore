@@ -82,3 +82,7 @@ dist
 
 # Service worker
 sw.*
+
+# Cypress
+test/e2e/screenshots
+test/e2e/videos

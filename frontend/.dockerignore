@@ -82,3 +82,6 @@ dist
 
 # Service worker
 sw.*
+
+# E2E tests
+test/e2e/

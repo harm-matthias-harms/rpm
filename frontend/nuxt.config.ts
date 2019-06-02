@@ -69,7 +69,7 @@ const config: NuxtConfiguration = {
       stylus: {
         import: ['~assets/style/variables.styl']
       }
-    },
+    }
   }
 }
 
