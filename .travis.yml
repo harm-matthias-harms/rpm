@@ -46,8 +46,9 @@ jobs:
         - yarn run build # for cypress
         - yarn run start & # for cypress
       script:
-        - yarn test
-        - yarn test:e2e
+        - yarn run lint
+        - yarn run test
+        - yarn run test:e2e
         - kill $(jobs -p) || true # for cypress
       after_success:
         - ./node_modules/.bin/codecov
