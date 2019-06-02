@@ -6,7 +6,7 @@ branches:
 stages:
   - test
   - name: build
-    if: branch = master OR tag IS present
+    #if: branch = master OR tag IS present
 jobs:
   include:
     - stage: test
@@ -52,3 +52,33 @@ jobs:
         - kill $(jobs -p) || true # for cypress
       after_success:
         - ./node_modules/.bin/codecov
+    - stage: build
+      language: generic
+      services:
+        - docker
+      before_install:
+        - cd backend/
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      install:
+        - docker pull harmmatthias/rpm-backend:latest || true
+      before_script:
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
+      script:
+        - docker build --pull --cache-from harmmatthias/rpm-backend:latest -t harmmatthias/rpm-backend:$TAG .
+      after_success:
+        - docker push harmmatthias/rpm-backend:$TAG
+    - stage: build
+      language: generic
+      services:
+        - docker
+      before_install:
+        - cd frontend/
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      install:
+        - docker pull harmmatthias/rpm-frontend:latest || true
+      before_script:
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
+      script:
+        - docker build --pull --cache-from harmmatthias/rpm-frontend:latest -t harmmatthias/rpm-frontend:$TAG .
+      after_success:
+        - docker push harmmatthias/rpm-frontend:$TAG
