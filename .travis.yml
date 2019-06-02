@@ -11,7 +11,7 @@ jobs:
     - stage: test
       go: 1.12.x
       env:
-        - GO111MODULE=true
+        - GO111MODULE=on
       services:
         - mongodb
       before_install:
