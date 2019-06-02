@@ -1,16 +1,24 @@
 language: go
 sudo: false
 
-go: 1.12.x
-env:
-  - GO111MODULE=true
-services:
-  - mongodb
-before_install:
-  - cd backend/
-install:
-  - go mod install
-script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+stages:
+  - test
+  - name: build
+    if: branch = master
+
+jobs:
+  include:
+    - stage: test
+  go: 1.12.x
+  env:
+    - GO111MODULE=true
+  services:
+    - mongodb
+  before_install:
+    - cd backend/
+  install:
+    - go mod download
+  script:
+    - go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+  after_success:
+    - bash <(curl -s https://codecov.io/bash)
