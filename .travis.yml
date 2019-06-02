@@ -14,10 +14,10 @@ jobs:
         - GO111MODULE=true
       services:
         - mongodb
-      before_script:
+      before_install:
         - cd backend/
+      install:
         - go mod install
-        - sleep 15 #wait on mongodb
       script:
         - go test -race -coverprofile=coverage.txt -covermode=atomic ./...
       after_success:
