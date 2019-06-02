@@ -1,14 +1,13 @@
 sudo: false
-
 stages:
   - test
   - name: build
     if: branch = master
-
 jobs:
   include:
     - stage: test
       language: go
+      go: 1.12.x
       env:
         - GO111MODULE=on
       services:
@@ -23,6 +22,7 @@ jobs:
         - bash <(curl -s https://codecov.io/bash)
     - stage: test
       language: node_js
+      node_js: 12.x
       before_install:
         - cd frontend/
       install:
