@@ -9,9 +9,7 @@ stages:
 jobs:
   include:
     - stage: test
-      go: 
-        - 1.12.x
-        - tip
+      go: 1.12.x
       env:
         - GO111MODULE=true
       services:
@@ -21,6 +19,6 @@ jobs:
         - go mod install
         - sleep 15 #wait on mongodb
       script:
-        - go test ./... -race -coverprofile=coverage.txt -covermode=atomic
+        - go test -race -coverprofile=coverage.txt -covermode=atomic ./...
       after_success:
         - bash <(curl -s https://codecov.io/bash)
