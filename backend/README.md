@@ -33,3 +33,12 @@ Run the container:
 ```
 docker run --rm -p 3000:3000 rpm-backend:latest
 ```
+
+## Options
+
+| ENV_VAR 	    | description        	            |
+|---------	    |--------------------	            |
+| DOMAIN 	    | domain to allow origins from 	    |
+| JWT_SECRET    | JWT secret to use (keep it secret)|
+| MONGO_URL     | url to reach mongo db 	        |
+| MONGO_DATABASE| name of the database 	    |
