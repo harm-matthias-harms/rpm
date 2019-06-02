@@ -1,6 +1,10 @@
 sudo: false
 stages:
   - test
+    if: 
+      - branch = master
+      - branch = develop
+      - type = pull_request
   - name: build
     if: branch = master
 jobs:
@@ -23,13 +27,25 @@ jobs:
     - stage: test
       language: node_js
       node_js: 12
+      addons:
+        apt:
+          packages:
+            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+            - libgconf-2-4
+      cache:
+        # Caches $HOME/.npm when npm ci is default script command
+        # Caches node_modules in all other cases
+        npm: true
+        directories:
+          # we also need to cache folder with Cypress binary
+          - ~/.cache
       before_install:
         - cd frontend/
       install:
         - yarn install
-      script:
         - yarn run build # for cypress
         - yarn run start & # for cypress
+      script:
         - yarn test
         - yarn test:e2e
         - kill $(jobs -p) || true # for cypress
