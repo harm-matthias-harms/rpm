@@ -8,6 +8,7 @@ go mod download
 ```
 
 ## Test
+**Needs MongoDB running locally**
 ```
 go test ./...
 ```
