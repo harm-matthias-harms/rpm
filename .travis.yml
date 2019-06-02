@@ -61,13 +61,13 @@ jobs:
         - cd backend/
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       install:
-        - docker pull harmmatthias/rpm-backend:latest || true
+        - docker pull $IMAGE_BACKEND:latest || true
       before_script:
         - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
       script:
-        - docker build --pull --cache-from harmmatthias/rpm-backend:latest -t harmmatthias/rpm-backend:$TAG .
+        - docker build --pull --cache-from $IMAGE_BACKEND:latest -t $IMAGE_BACKEND:$TAG .
       after_success:
-        - docker push harmmatthias/rpm-backend:$TAG
+        - docker push $IMAGE_BACKEND:$TAG
     - stage: build
       language: generic
       services:
@@ -76,10 +76,10 @@ jobs:
         - cd frontend/
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       install:
-        - docker pull harmmatthias/rpm-frontend:latest || true
+        - docker pull $IMAGE_FRONTEND:latest || true
       before_script:
         - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
       script:
-        - docker build --pull --cache-from harmmatthias/rpm-frontend:latest -t harmmatthias/rpm-frontend:$TAG .
+        - docker build --pull --cache-from $IMAGE_FRONTEND:latest -t $IMAGE_FRONTEND:$TAG .
       after_success:
-        - docker push harmmatthias/rpm-frontend:$TAG
+        - docker push $IMAGE_FRONTEND:$TAG
