@@ -28,7 +28,10 @@ jobs:
       install:
         - yarn install
       script:
+        - yarn run build # for cypress
+        - yarn run start & # for cypress
         - yarn test
         - yarn test:e2e
+        - kill $(jobs -p) || true # for cypress
       after_success:
         - ./node_modules/.bin/codecov
