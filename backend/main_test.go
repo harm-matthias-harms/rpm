@@ -22,6 +22,11 @@ func TestServer(t *testing.T) {
 
 }
 
+func TestMongoRunning(t *testing.T) {
+	mongo := setMongoDatabase()
+	assert.NotEqual(t, nil, mongo)
+}
+
 func TestGetEnv(t *testing.T) {
 	assert.Equal(t, "test", getEnv("SOME_RANDOM_ENV", "test"))
 	os.Setenv("SOME_RANDOM_ENV", "1")

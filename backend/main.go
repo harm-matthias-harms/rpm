@@ -33,7 +33,7 @@ func setMongoDatabase() *mongo.Database {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return client.Database(getEnv("MONGO_DATABASE", "rpm"))
+	return client.Database(getEnv("MONGO_DATABASE", "test"))
 }
 
 func server() *echo.Echo {

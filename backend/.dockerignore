@@ -1,3 +1,5 @@
 Dockerfile
 .DS_Store
 README.md
+.gitignore
+coverage.txt
