@@ -64,7 +64,7 @@ jobs:
       install:
         - docker pull $IMAGE_BACKEND:latest || true
       before_script:
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "master"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
         - docker build --pull --cache-from $IMAGE_BACKEND:latest -t $IMAGE_BACKEND:$TAG .
       after_success:
@@ -79,7 +79,7 @@ jobs:
       install:
         - docker pull $IMAGE_FRONTEND:latest || true
       before_script:
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "master"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
         - docker build --pull --cache-from $IMAGE_FRONTEND:latest -t $IMAGE_FRONTEND:$TAG .
       after_success:
