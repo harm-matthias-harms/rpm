@@ -6,7 +6,7 @@ branches:
 stages:
   - test
   - name: build
-    if: branch = master OR branch = develop OR tag IS present
+    if: ( branch = master OR branch = develop OR tag IS present ) AND type != pull_request
 jobs:
   include:
     - stage: test
@@ -33,13 +33,12 @@ jobs:
             # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
             - libgconf-2-4
       cache:
-        # Caches $HOME/.npm when npm ci is default script command
         # Caches node_modules in all other cases
         yarn: true
         directories:
           # we also need to cache folder with Cypress binary
           - ~/.cache
-          - node_modules
+          - frontend/node_modules
       before_install:
         - cd frontend/
       install:
@@ -63,7 +62,7 @@ jobs:
       install:
         - docker pull $IMAGE_BACKEND:latest || true
       before_script:
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "master"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
         - docker build --pull --cache-from $IMAGE_BACKEND:latest -t $IMAGE_BACKEND:$TAG .
       after_success:
@@ -78,7 +77,7 @@ jobs:
       install:
         - docker pull $IMAGE_FRONTEND:latest || true
       before_script:
-        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "master"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
+        - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
         - docker build --pull --cache-from $IMAGE_FRONTEND:latest -t $IMAGE_FRONTEND:$TAG .
       after_success:
