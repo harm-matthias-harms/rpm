@@ -4,12 +4,11 @@ FROM node:alpine AS builder
 WORKDIR /app
 
 COPY package.json .
-COPY yarn.lock .
-RUN yarn install
+RUN npm ci
 
 COPY . .
 
-RUN yarn run generate
+RUN npm run generate
 
 ## PRODUCTION
 FROM nginx:alpine
