@@ -59,12 +59,10 @@ jobs:
       before_install:
         - cd backend/
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      install:
-        - docker pull $IMAGE_BACKEND:latest || true
       before_script:
         - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
-        - docker build --pull --cache-from $IMAGE_BACKEND:latest -t $IMAGE_BACKEND:$TAG .
+        - docker build -t $IMAGE_BACKEND:$TAG .
       after_success:
         - docker push $IMAGE_BACKEND:$TAG
     - stage: build
@@ -74,11 +72,9 @@ jobs:
       before_install:
         - cd frontend/
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      install:
-        - docker pull $IMAGE_FRONTEND:latest || true
       before_script:
         - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "stable"; else if [ "$TRAVIS_BRANCH" == "develop" ]; then echo "latest"; else echo $TRAVIS_TAG; fi ; fi`
       script:
-        - docker build --pull --cache-from $IMAGE_FRONTEND:latest -t $IMAGE_FRONTEND:$TAG .
+        - docker build -t $IMAGE_FRONTEND:$TAG .
       after_success:
         - docker push $IMAGE_FRONTEND:$TAG
