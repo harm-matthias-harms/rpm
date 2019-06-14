@@ -15,7 +15,7 @@ services:
         max-file: "10"
   backend:
     container_name: "rpm_backend"
-    image: harmmatthias/rpm-backend:latest
+    image: harmmatthias/rpm-backend:stable
     environment:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DATABASE: rpm
@@ -32,7 +32,7 @@ services:
         max-file: "10"
   frontend:
     container_name: "rpm_frontend"
-    image: harmmatthias/rpm-frontend:latest
+    image: harmmatthias/rpm-frontend:stable
     ports:
      - 5000:80
     restart: always
