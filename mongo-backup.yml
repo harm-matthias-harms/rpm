@@ -1,0 +1,8 @@
+version: "3"
+services:
+  mongo_backup:
+    image: mongo:4.1.1
+    volumes:
+      - ./mongo_backup:/backup
+    command: |
+      mongodump --host mongo --out /backup/
