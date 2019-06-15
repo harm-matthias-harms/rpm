@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 import Vue from 'vue'
 import { mount, RouterLinkStub } from '@vue/test-utils'
 import Index from '@/pages/index.vue'

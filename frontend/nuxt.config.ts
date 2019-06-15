@@ -2,7 +2,7 @@ import NuxtConfiguration from '@nuxt/config'
 import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 const config: NuxtConfiguration = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
    ** Headers of the page
