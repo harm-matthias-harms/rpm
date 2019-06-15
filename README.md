@@ -4,7 +4,7 @@
 The role play management system is designed to support large scale medical exercises. The application connects high-quality medical cases with roleplayers and teams to play injects. The application exceeds the management part in terms of simple performance analysis for the injects played in an exercise.
 
 ## Install
-### Requirements:
+### Requirements
 * docker-compose >= 3.0
 * nginx or apache
 
