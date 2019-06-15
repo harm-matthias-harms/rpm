@@ -4,31 +4,43 @@
 The role play management system is designed to support large scale medical exercises. The application connects high-quality medical cases with roleplayers and teams to play injects. The application exceeds the management part in terms of simple performance analysis for the injects played in an exercise.
 
 ## Install
-Requirements:
+### Requirements:
 * docker-compose >= 3.0
 * nginx or apache
 
-1. Download docker-compose file
+### Installation
+1. Create a folder to place the application
 ```bash
-wget ...
+mkdir rpm
+cd rpm/
 ```
 
-2. Add your env variables to the docker-compose file
+2. Download docker-compose file
+```bash
+wget https://raw.githubusercontent.com/harm-matthias-harms/rpm/master/deploy/docker-compose.yml
+```
 
-3. Start the server
+3. Add your env variables to the docker-compose file
+
+4. Start the server
 ```bash
 docker-compose up -d
 ```
 
-4. Add nginx or apache configs to redirect to docker container
+5. Add nginx or apache config to redirect to docker container. Examples are provided under `deploy/`.
 
-5. Enjoy
+6. Create a backup script. It can make use of the `mongo-backup.yml` as well as the `mongo-restore.yml` from `deploy/`. It could be favourable to compress the backup folder and to transfer it to an other server.
 
-More detailed instruction will follow in the future. Also an example folder will be provided later on.
+7. Enjoy
 
+All examples can be found under `deploy/`
+
+### Troubleshooting
+* If nginx or apache can't connect to the docker container add 127.0.0.1: before the ports. It should fix the problem.
+* Any other problems or something not working? Pleas open an issue. Be aware, that we can't provide support for your deployments.
 
 ## Options
-We recommend using our docker-compose.yml. To set your own parameter just replace the values in the environment variables. `<ENV>`
+We recommend using our docker-compose.yml. To set your own parameter just replace the values in the environment variables.
 
 ## Contribute
 A contribution could be:
