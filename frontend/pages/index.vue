@@ -8,7 +8,7 @@
     <v-layout justify-center wrap>
       <v-btn color="primary">register</v-btn>
       <v-btn color="secondary">sign in</v-btn>
-      <v-btn color="accent">enter code</v-btn>
+      <v-btn color="primary">enter code</v-btn>
     </v-layout>
   </v-layout>
 </template>

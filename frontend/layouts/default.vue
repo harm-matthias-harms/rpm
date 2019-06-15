@@ -35,6 +35,8 @@
       </v-list>
     </v-navigation-drawer>
 
+    <CookieHint />
+
     <v-content>
       <v-container fluid>
         <Nuxt />
@@ -52,13 +54,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import CookieHint from '@/components/utils/CookieHint.vue'
 
 interface SidebarItem {
   readonly title: string
   readonly icon: string
 }
 
-@Component
+@Component({
+  components: {
+    CookieHint
+  }
+})
 export default class Default extends Vue {
   items: SidebarItem[] = [
     {
