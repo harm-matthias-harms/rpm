@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
-import colors from 'vuetify/es5/util/colors'
+// import colors from 'vuetify/es5/util/colors'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.use(Vuetify, {
-  theme: {
+  /* theme: {
     primary: colors.blue.darken2,
     accent: colors.grey.darken3,
     secondary: colors.amber.darken3,
@@ -11,5 +12,6 @@ Vue.use(Vuetify, {
     warning: colors.amber.base,
     error: colors.deepOrange.accent4,
     success: colors.green.accent3
-  }
+  }, */
+  iconfont: 'fa'
 })
