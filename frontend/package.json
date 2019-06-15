@@ -26,6 +26,7 @@
     "vuetify-loader": "^1.2.1"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
     "@nuxt/typescript": "^2.8.0",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
