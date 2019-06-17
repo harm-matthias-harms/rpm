@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/harm-matthias-harms/rpm/backend/utils"
-	"github.com/harm-matthias-harms/rpm/backend/user"
+	"github.com/harm-matthias-harms/rpm/backend/handler"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func server() *echo.Echo {
 
 	// Auth - NO JWT
 	a := e.Group("/auth")
-	a.POST("/register", user.HandleRegister)
+	a.POST("/register", handler.HandleRegister)
 
 	// ADD THE ENDPOINTS HERE
 	// r.GET("/endpoint", handler)
