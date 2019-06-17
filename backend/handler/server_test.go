@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	e := server()
+	e := Server()
 
 	//Check routes are existing
 	req := httptest.NewRequest(http.MethodGet, "/api/healthcheck", nil)
