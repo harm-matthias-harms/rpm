@@ -9,15 +9,19 @@ import (
 func TestUserRegister(t *testing.T) {
 	tests := []struct {
 		User User
-		Err bool
+		Err  bool
 	}{
 		{
 			User: User{Username: "testPerson", Email: "test@mail.com", Password: "123"},
-			Err: false,
+			Err:  false,
 		},
 		{
 			User: User{Email: "test@mail.com", Password: "123"},
-			Err: true,
+			Err:  true,
+		},
+		{ // Not  register same user twice.
+			User: User{Username: "testPerson", Email: "test@mail.com", Password: "123"},
+			Err:  true,
 		},
 	}
 	for _, tt := range tests {
@@ -26,6 +30,14 @@ func TestUserRegister(t *testing.T) {
 			assert.Error(t, err)
 		}
 	}
+}
+
+func TestUserHashPassword(t *testing.T) {
+	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
+	password := user.Password
+	err := user.hashPassword()
+	assert.NoError(t, err)
+	assert.NotEqual(t, password, user.Password)
 }
 
 func TestUserValidation(t *testing.T) {

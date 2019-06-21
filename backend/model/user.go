@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -24,13 +25,25 @@ func (user *User) Register() (err error) {
 	if valid, err := user.validate(); !valid {
 		return err
 	}
+	if err = user.hashPassword(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (user *User) hashPassword() error {
+	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	if err != nil {
+		return errors.New("can't hash password")
+	}
+	user.Password = string(password)
 	return nil
 }
 
 func (user *User) validate() (bool, error) {
 	if valid, err := user.validateUsername(); !valid {
 		return valid, err
-	} else if valid, err := user.validateEmail(); !valid{
+	} else if valid, err := user.validateEmail(); !valid {
 		return valid, err
 	} else if valid, err := user.validatePassword(); !valid {
 		return valid, err
