@@ -7,6 +7,7 @@ import (
 )
 
 func TestMongoRunning(t *testing.T) {
-	setMongoDatabase()
-	assert.NotEqual(t, nil, mongoSession)
+	err := SetMongoDatabase()
+	assert.NoError(t, err)
+	assert.NotEqual(t, nil, MongoSession)
 }

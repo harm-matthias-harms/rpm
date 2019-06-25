@@ -2,26 +2,30 @@ package storage
 
 import (
 	"context"
-	"log"
 	"time"
 
+	"github.com/harm-matthias-harms/rpm/backend/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/harm-matthias-harms/rpm/backend/utils"
 )
+// MongoSession Handels the mongo Database needs to be public for integration testing.
+var MongoSession *mongo.Database
 
-var mongoSession *mongo.Database
-
-func setMongoDatabase() {
+// SetMongoDatabase sets the database when ever a server is created
+func SetMongoDatabase() error {
 	client, err := mongo.NewClient(options.Client().ApplyURI(utils.GetEnv("MONGO_URL", "mongodb://localhost:27017")))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	mongoSession = client.Database(utils.GetEnv("MONGO_DATABASE", "test"))
+	MongoSession = client.Database(utils.GetEnv("MONGO_DATABASE", "test"))
+
+	//create indexes
+	CreateUserIndexes()
+	return nil
 }

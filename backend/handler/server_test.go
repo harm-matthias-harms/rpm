@@ -9,7 +9,7 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	e := Server()
+	e, _ := Server()
 
 	//Check routes are existing
 	req := httptest.NewRequest(http.MethodGet, "/api/healthcheck", nil)

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/harm-matthias-harms/rpm/backend/utils"
+	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -14,7 +15,7 @@ type jsonStatus struct {
 }
 
 // Server provides the server for the api
-func Server() *echo.Echo {
+func Server() (*echo.Echo, error) {
 	e := echo.New()
 
 	// Middlewares
@@ -48,7 +49,12 @@ func Server() *echo.Echo {
 	// Gives a healthcheck entrypoint
 	e.GET("/api/healthcheck", handlerHealthCheck)
 
-	return e
+	err := storage.SetMongoDatabase()
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }
 
 func handlerHealthCheck(c echo.Context) error {

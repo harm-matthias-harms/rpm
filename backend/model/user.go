@@ -20,18 +20,8 @@ type User struct {
 	Password string             `json:"password,omitempty" bson:"password"`
 }
 
-// Register handles the full registration process for the handler
-func (user *User) Register() (err error) {
-	if valid, err := user.validate(); !valid {
-		return err
-	}
-	if err = user.hashPassword(); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (user *User) hashPassword() error {
+// HashPassword hashes the users password for storing
+func (user *User) HashPassword() error {
 	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
 	if err != nil {
 		return errors.New("can't hash password")
@@ -40,7 +30,8 @@ func (user *User) hashPassword() error {
 	return nil
 }
 
-func (user *User) validate() (bool, error) {
+// Validate validates alle field of the user have a valid form
+func (user *User) Validate() (bool, error) {
 	if valid, err := user.validateUsername(); !valid {
 		return valid, err
 	} else if valid, err := user.validateEmail(); !valid {
