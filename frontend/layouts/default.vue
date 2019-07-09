@@ -38,8 +38,23 @@
     <CookieHint />
 
     <v-content>
-      <v-container fluid>
-        <Nuxt />
+      <v-container fill-height>
+        <Nuxt v-if="!$store.state.loader.isLoading" />
+        <v-layout
+          v-if="$store.state.loader.isLoading"
+          align-center
+          justify-center
+          fill-height
+        >
+          <div>
+            <v-progress-circular
+              :size="100"
+              :width="7"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+          </div>
+        </v-layout>
       </v-container>
     </v-content>
 
