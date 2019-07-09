@@ -21,6 +21,7 @@
     "cross-env": "^5.2.0",
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
+    "nuxt-validate": "^1.0.1",
     "ts-node": "^8.3.0",
     "vuetify": "^1.5.5",
     "vuetify-loader": "^1.2.1"

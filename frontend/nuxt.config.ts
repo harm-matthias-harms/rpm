@@ -48,7 +48,8 @@ const config: NuxtConfiguration = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-validate'
   ],
   /*
    ** Axios module configuration
