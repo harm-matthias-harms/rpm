@@ -6,7 +6,7 @@
     </div>
 
     <v-layout justify-center wrap>
-      <v-btn color="primary">register</v-btn>
+      <v-btn to="/signup" color="primary">sign up</v-btn>
       <v-btn color="secondary">sign in</v-btn>
       <v-btn color="primary">enter code</v-btn>
     </v-layout>

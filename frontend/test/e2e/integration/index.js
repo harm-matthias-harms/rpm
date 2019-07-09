@@ -6,7 +6,7 @@ describe('Index Page', () => {
     cy.get('.v-toolbar__side-icon')
     cy.contains('.v-toolbar__items > .v-btn', 'sign in')
     cy.contains('button', 'sign in')
-    cy.contains('button', 'register')
+    cy.contains('button', 'sign up')
     cy.contains('button', 'enter code')
   })
   it('toogles the side bar', () => {
