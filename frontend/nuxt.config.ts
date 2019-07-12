@@ -56,7 +56,8 @@ const config: NuxtConfiguration = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    https: true
+    https: true,
+    baseURL: 'http://localhost:3001'
     // API_URL must be used for api url
   },
 

@@ -36,6 +36,7 @@
     </v-navigation-drawer>
 
     <CookieHint />
+    <Snackbar />
 
     <v-content>
       <v-container fill-height>
@@ -70,6 +71,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import CookieHint from '@/components/utils/CookieHint.vue'
+import Snackbar from '@/components/utils/Snackbar.vue'
 
 interface SidebarItem {
   readonly title: string
@@ -78,7 +80,8 @@ interface SidebarItem {
 
 @Component({
   components: {
-    CookieHint
+    CookieHint,
+    Snackbar
   }
 })
 export default class Default extends Vue {

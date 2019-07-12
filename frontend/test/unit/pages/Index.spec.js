@@ -1,6 +1,5 @@
-/// <reference types="jest" />
 import Vue from 'vue'
-import { mount, RouterLinkStub } from '@vue/test-utils'
+import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Index from '@/pages/index.vue'
 import Vuetify from 'vuetify'
 
@@ -8,9 +7,10 @@ describe('Index', () => {
   let wrapper
   beforeEach(() => {
     Vue.use(Vuetify)
-    wrapper = mount(Index, {
+    wrapper = shallowMount(Index, {
       stubs: {
-        NuxtLink: RouterLinkStub
+        NuxtLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       }
     })
   })
