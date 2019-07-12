@@ -7,8 +7,8 @@
 
     <v-layout justify-center wrap>
       <v-btn to="/signup" color="primary">sign up</v-btn>
-      <v-btn color="secondary">sign in</v-btn>
-      <v-btn color="primary">enter code</v-btn>
+      <v-btn to="/signin" color="secondary">sign in</v-btn>
+      <v-btn to="/entercode" color="primary">enter code</v-btn>
     </v-layout>
   </v-layout>
 </template>

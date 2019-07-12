@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
-/// <reference types="cypress" />
+
 describe('Index Page', () => {
   it('it has the possibility to log in', () => {
     cy.visit('/')
     cy.get('.v-toolbar__side-icon')
     cy.contains('.v-toolbar__items > .v-btn', 'sign in')
-    cy.contains('button', 'sign in')
-    cy.contains('button', 'sign up')
-    cy.contains('button', 'enter code')
+    cy.contains('a', 'sign in')
+    cy.contains('a', 'sign up')
+    cy.contains('a', 'enter code')
   })
   it('toogles the side bar', () => {
     cy.get('.v-toolbar__side-icon').click()
