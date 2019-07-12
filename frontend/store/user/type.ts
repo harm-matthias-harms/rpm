@@ -4,7 +4,7 @@ export interface State {
     email: string
     password: string
   }
-  registerError: boolean,
+  registerError: boolean
   registerErrorReason: string
   registerSuccess: boolean
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
-import Index from '@/pages/index.vue'
 import Vuetify from 'vuetify'
+import Index from '@/pages/index.vue'
 
 describe('Index', () => {
   let wrapper

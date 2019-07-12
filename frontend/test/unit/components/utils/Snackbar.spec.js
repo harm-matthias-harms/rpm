@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
-import Snackbar from '@/components/utils/Snackbar.vue'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
+import Snackbar from '@/components/utils/Snackbar.vue'
 import { store } from '@/test/unit/utils/vuex-store'
 
 Vue.use(Vuetify)
@@ -16,7 +16,7 @@ describe('Index', () => {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
       },
-      store: store
+      store
     })
   })
   test('is a Vue instance', () => {

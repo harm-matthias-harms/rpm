@@ -5,7 +5,7 @@ import { State as RootState } from '@/store/root'
 interface UserActionContext extends ActionContext<State, RootState> {}
 
 export const actions: ActionTree<State, RootState> = {
-  async register({ state, commit }, user) {
+  register({ state, commit }, user) {
     commit('loader/SET', true, { root: true })
     commit('SET_USER_REGISTER', user)
     this.$axios

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
-import CookieHint from '@/components/utils/CookieHint.vue'
 import Vuetify from 'vuetify'
+import CookieHint from '@/components/utils/CookieHint.vue'
 import LocalStorageMock from '@/test/unit/utils/local-storage-mock'
 
 describe('Index', () => {
