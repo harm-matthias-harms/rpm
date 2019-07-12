@@ -11,23 +11,25 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$post('/auth/register', state.user)
       .then(response => {
-        if (
-          response.status === 400 &&
-          response.data.message === 'user already exists'
-        ) {
-          commit('SET_ERROR_REGISTER', 'already exists')
-          commit('snackbar/SET', 'Account already exists please login.', {
-            root: true
-          })
-        } else if (response.status === 201) {
+        if (response.status === 201) {
           commit('REGISTER_SUCCESS')
         }
         commit('loader/SET', false, { root: true })
         commit('UNSET_USER')
       })
-      .catch(() => {
-        commit('SET_ERROR_REGISTER', 'connection error')
-        commit('snackbar/SET', "Couldn't create new account.", { root: true })
+      .catch(error => {
+        if (
+          error.response.status === 400 &&
+          error.response.data.message === 'user already exists'
+        ) {
+          commit('SET_ERROR_REGISTER', 'already exists')
+          commit('snackbar/SET', 'Account already exists please login.', {
+            root: true
+          })
+        } else {
+          commit('SET_ERROR_REGISTER', 'connection error')
+          commit('snackbar/SET', "Couldn't create new account.", { root: true })
+        }
         commit('loader/SET', false, { root: true })
       })
   }
