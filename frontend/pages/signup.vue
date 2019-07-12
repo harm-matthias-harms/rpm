@@ -1,15 +1,12 @@
 <template>
   <v-layout wrap justify-center align-center>
-    <v-flex lg3 md6 xs12>
+    <v-flex lg4 md8 xs12>
       <v-card>
         <v-card-title primary-title>
           <h3 class="display-1">Sign Up</h3>
         </v-card-title>
         <v-card-text>
-          <v-form
-            lazy-validation
-            @submit.prevent="$store.dispatch('user/register', user)"
-          >
+          <v-form @submit.prevent="$store.dispatch('user/register', user)">
             <v-text-field
               v-model="user.username"
               v-validate="'required|min:6'"
@@ -82,6 +79,22 @@ export default class Index extends Vue {
     email: '',
     password: '',
     passwordConfirm: ''
+  }
+
+  mounted() {
+    if (this.$store.state.user.registerError) {
+      if (this.$store.state.user.registerErrorReason === 'already exists') {
+        this.$router.push('/signin')
+      }
+      this.user = {
+        username: this.$store.state.user.user.username,
+        email: this.$store.state.user.user.email,
+        password: this.$store.state.user.user.password
+      }
+    }
+    if (this.$store.state.user.registerSuccess) {
+      this.$router.push('/accountcreated')
+    }
   }
 }
 </script>
