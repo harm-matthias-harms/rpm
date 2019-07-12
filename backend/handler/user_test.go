@@ -58,7 +58,7 @@ func TestUserRegisterHandler(t *testing.T) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
 			assert.Equal(t, http.StatusBadRequest, err.Code)
-			assert.Equal(t, "invalid request", err.Message)
+			assert.Equal(t, "no username provided", err.Message)
 		}
 	}
 }

@@ -11,5 +11,5 @@ func main() {
 		log.Fatal(err)
 	}
 	//Starts the server
-	e.Logger.Fatal(e.Start(":3000"))
+	e.Logger.Fatal(e.Start(":3001"))
 }

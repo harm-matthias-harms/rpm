@@ -3,6 +3,8 @@ export interface State {
     username: string
     email: string
     password: string
-  },
-  registerError: string
+  }
+  registerError: boolean,
+  registerErrorReason: string
+  registerSuccess: boolean
 }

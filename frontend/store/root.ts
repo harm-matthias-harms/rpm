@@ -4,6 +4,8 @@ export const types = {}
 
 export interface State {}
 
+export interface RootState {}
+
 export const state = (): State => ({})
 
 export const getters: GetterTree<State, State> = {}

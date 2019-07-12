@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
@@ -15,7 +16,7 @@ func HandleRegister(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
 	}
 	if err = register(user); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "invalid request")
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true})
 }
@@ -28,7 +29,7 @@ func register(user *model.User) error {
 		return err
 	}
 	if err := storage.CreateUser(user); err != nil {
-		return err
+		return errors.New("user already exists")
 	}
 	return nil
 }

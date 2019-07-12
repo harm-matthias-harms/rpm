@@ -6,7 +6,9 @@ export const state = (): State => ({
     email: '',
     password: ''
   },
-  registerError: ''
+  registerError: false,
+  registerErrorReason: '',
+  registerSuccess: false
 })
 
 export default state

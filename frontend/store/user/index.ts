@@ -4,7 +4,7 @@ import { actions } from './actions'
 import { mutations } from './mutations'
 import { State } from './type'
 import { state } from './state'
-import { RootState } from 'store'
+import { RootState } from '@/store/root'
 
 const namespaced: boolean = true
 
