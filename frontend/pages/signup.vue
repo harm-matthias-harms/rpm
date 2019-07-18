@@ -73,7 +73,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class Index extends Vue {
+export default class SignUp extends Vue {
   user: object = {
     username: '',
     email: '',
