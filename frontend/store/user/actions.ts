@@ -10,16 +10,14 @@ export const actions: ActionTree<State, RootState> = {
     commit('SET_USER_REGISTER', user)
     this.$axios
       .$post('/auth/register', state.user)
-      .then(response => {
-        if (response.status === 201) {
-          commit('REGISTER_SUCCESS')
-        }
+      .then(() => {
+        commit('REGISTER_SUCCESS')
         commit('loader/SET', false, { root: true })
         commit('UNSET_USER')
       })
       .catch(error => {
         if (
-          error.response.status === 400 &&
+          error.response &&
           error.response.data.message === 'user already exists'
         ) {
           commit('SET_ERROR_REGISTER', 'already exists')

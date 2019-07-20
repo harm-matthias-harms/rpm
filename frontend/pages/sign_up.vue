@@ -63,7 +63,7 @@
       </v-card>
       <div text-xs-center>
         Already have an account?
-        <nuxt-link to="/signin">Sign In here</nuxt-link>
+        <nuxt-link to="/sign_in">Sign In here</nuxt-link>
       </div>
     </v-flex>
   </v-layout>
@@ -84,7 +84,7 @@ export default class SignUp extends Vue {
   mounted() {
     if (this.$store.state.user.registerError) {
       if (this.$store.state.user.registerErrorReason === 'already exists') {
-        this.$router.push('/signin')
+        this.$router.push('/sign_in')
       }
       this.user = {
         username: this.$store.state.user.user.username,
@@ -93,7 +93,7 @@ export default class SignUp extends Vue {
       }
     }
     if (this.$store.state.user.registerSuccess) {
-      this.$router.push('/accountcreated')
+      this.$router.push('/account_created')
     }
   }
 }
