@@ -4,9 +4,9 @@ import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
+import flushPromises from 'flush-promises'
 import { store } from '../utils/vuex-store'
 import SignUp from '@/pages/sign_up.vue'
-import flushPromises from 'flush-promises'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)

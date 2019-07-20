@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 describe('SignUp', () => {
   it('has link to sign in', () => {
     cy.visit('/sign_up')

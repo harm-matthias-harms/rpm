@@ -9,7 +9,7 @@
           <v-form @submit.prevent="$store.dispatch('user/register', user)">
             <v-text-field
               v-model="user.username"
-              v-validate="{required:true, min:6, username: true}"
+              v-validate="{ required: true, min: 6, username: true }"
               :error-messages="errors.collect('username')"
               name="username"
               label="Username"
@@ -26,7 +26,11 @@
             <v-text-field
               ref="password"
               v-model="user.password"
-              v-validate="{required:true, min:6, passwordNoWhitespace: true}"
+              v-validate="{
+                required: true,
+                min: 6,
+                passwordNoWhitespace: true
+              }"
               :error-messages="errors.collect('password')"
               label="Password"
               name="password"
@@ -52,7 +56,8 @@
               "
               color="success"
               type="submit"
-            >Sign Up</v-btn>
+              >Sign Up</v-btn
+            >
           </v-form>
           <div>
             By clicking Sign Up button, you agree that your information will be
@@ -84,7 +89,7 @@ export default class SignUp extends Vue {
     this.$validator.extend('username', {
       getMessage: () =>
         'The username can contain letters (a-z), numbers (0-9), and periods (.).',
-      validate: value => !!value.match(/^[a-zA-Z\_\-1-9\.]+$/)
+      validate: value => !!value.match(/^[a-zA-Z1-9.]+$/)
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace.",
