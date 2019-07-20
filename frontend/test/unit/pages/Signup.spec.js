@@ -1,11 +1,12 @@
 import Vue from 'vue'
-import { shallowMount, RouterLinkStub } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
 import { store } from '../utils/vuex-store'
 import SignUp from '@/pages/sign_up.vue'
+import flushPromises from 'flush-promises'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
@@ -18,11 +19,17 @@ describe('Index', () => {
   beforeEach(() => {
     router = new VueRouter()
     Vue.use(Vuetify)
-    wrapper = shallowMount(SignUp, {
+    wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
       },
+      provide: {
+        $validator() {
+          return new VeeValidate.Validator()
+        }
+      },
+      sync: false,
       store,
       router
     })
@@ -38,7 +45,7 @@ describe('Index', () => {
       password: '123'
     }
     storeCopy.state.user.registerError = true
-    wrapper = shallowMount(SignUp, {
+    wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
@@ -54,7 +61,7 @@ describe('Index', () => {
     const storeCopy = store
     storeCopy.state.user.registerError = true
     storeCopy.state.user.registerErrorReason = 'already exists'
-    wrapper = shallowMount(SignUp, {
+    wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
@@ -67,7 +74,7 @@ describe('Index', () => {
   test('redirects on succes', () => {
     const storeCopy = store
     storeCopy.state.user.registerSuccess = true
-    wrapper = shallowMount(SignUp, {
+    wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
@@ -76,5 +83,17 @@ describe('Index', () => {
       router
     })
     expect(wrapper.vm.$route.path).toEqual('/account_created')
+  })
+  test('custom rules', async () => {
+    wrapper.find('input[name="username"]').setValue('asdasd&')
+    await flushPromises()
+    expect(wrapper.vm.errors.collect('username')).toEqual([
+      'The username can contain letters (a-z), numbers (0-9), and periods (.).'
+    ])
+    wrapper.find('input[name="password"]').setValue('asd asd')
+    await flushPromises()
+    expect(wrapper.vm.errors.collect('password')).toEqual([
+      "The password can't contain a whitespace."
+    ])
   })
 })

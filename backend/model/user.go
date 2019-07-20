@@ -45,7 +45,7 @@ func (user *User) Validate() (bool, error) {
 func (user *User) validateUsername() (bool, error) {
 	if user.Username == "" {
 		return false, errors.New("no username provided")
-	} else if match, _ := regexp.MatchString("^[a-zA-Z-_1-9]+$", user.Username); !match {
+	} else if match, _ := regexp.MatchString("^[a-zA-Z1-9\\.]+$", user.Username); !match {
 		return false, errors.New("username has wrong pattern")
 	}
 	return true, nil
