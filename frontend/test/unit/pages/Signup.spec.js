@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
 import { store } from '../utils/vuex-store'
-import SignUp from '@/pages/signup.vue'
+import SignUp from '@/pages/sign_up.vue'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
@@ -62,7 +62,7 @@ describe('Index', () => {
       store: storeCopy,
       router
     })
-    expect(wrapper.vm.$route.path).toEqual('/signin')
+    expect(wrapper.vm.$route.path).toEqual('/sign_in')
   })
   test('redirects on succes', () => {
     const storeCopy = store
@@ -75,6 +75,6 @@ describe('Index', () => {
       store: storeCopy,
       router
     })
-    expect(wrapper.vm.$route.path).toEqual('/accountcreated')
+    expect(wrapper.vm.$route.path).toEqual('/account_created')
   })
 })
