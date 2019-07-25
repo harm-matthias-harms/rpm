@@ -4,10 +4,11 @@ import Vuetify from 'vuetify'
 import CookieHint from '@/components/utils/CookieHint.vue'
 import LocalStorageMock from '@/test/unit/utils/local-storage-mock'
 
+Vue.use(Vuetify)
+
 describe('Index', () => {
   let wrapper
   beforeEach(() => {
-    Vue.use(Vuetify)
     wrapper = shallowMount(CookieHint, {
       stubs: {
         NuxtLink: RouterLinkStub,

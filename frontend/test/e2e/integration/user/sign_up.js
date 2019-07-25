@@ -25,7 +25,8 @@ describe('SignUp', () => {
       response: { success: true }
     })
     cy.register()
-    cy.url().should('include', '/account_created')
+    cy.get('.flex > .v-icon')
+    cy.contains('a', 'Sign in here')
   })
   it('recognises if account already exists', () => {
     cy.server()

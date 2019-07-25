@@ -17,6 +17,12 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": ["@types/node", "cypress", "@types/jest", "@nuxt/vue-app", "@nuxtjs/axios"]
+    "types": [
+      "@types/node",
+      "cypress",
+      "@types/jest",
+      "@nuxt/vue-app",
+      "@nuxtjs/axios"
+    ]
   }
 }

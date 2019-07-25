@@ -21,7 +21,7 @@ func TestUserValidation(t *testing.T) {
 		Err   bool
 	}{
 		{
-			User:  User{Username: "test.Person1", Email: "test@mail.com", Password: "123"},
+			User:  User{Username: "test.person1", Email: "test@mail.com", Password: "123"},
 			Valid: true,
 			Err:   false,
 		},
@@ -36,22 +36,22 @@ func TestUserValidation(t *testing.T) {
 			Err:   true,
 		},
 		{
-			User:  User{Username: "testPerson", Password: "123"},
+			User:  User{Username: "testperson", Password: "123"},
 			Valid: false,
 			Err:   true,
 		},
 		{
-			User:  User{Username: "testPerson", Email: "testmail.com", Password: "123"},
+			User:  User{Username: "testperson", Email: "testmail.com", Password: "123"},
 			Valid: false,
 			Err:   true,
 		},
 		{
-			User:  User{Username: "testPerson", Email: "test@mail.com"},
+			User:  User{Username: "testperson", Email: "test@mail.com"},
 			Valid: false,
 			Err:   true,
 		},
 		{
-			User:  User{Username: "testPerson", Email: "test@mail.com", Password: "1 23"},
+			User:  User{Username: "testperson", Email: "test@mail.com", Password: "1 23"},
 			Valid: false,
 			Err:   true,
 		},

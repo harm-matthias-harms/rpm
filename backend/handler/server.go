@@ -3,14 +3,14 @@ package handler
 import (
 	"net/http"
 
-	"github.com/harm-matthias-harms/rpm/backend/utils"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
+	"github.com/harm-matthias-harms/rpm/backend/utils"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 type jsonStatus struct {
-	Success bool `json:"success,omitempty"`
+	Success bool   `json:"success,omitempty"`
 	Message string `json:"message,omitempty"`
 }
 
@@ -19,10 +19,6 @@ func Server() (*echo.Echo, error) {
 	e := echo.New()
 
 	// Middlewares
-	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		CookieSecure:   true,
-		CookieHTTPOnly: true,
-	}))
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{utils.GetEnv("DOMAIN", "http://localhost:3000")},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},

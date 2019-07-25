@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import Index from '@/pages/index.vue'
+import RegisterSuccess from '@/components/auth/RegisterSuccess.vue'
 
 Vue.use(Vuetify)
 
 describe('Index', () => {
   let wrapper
   beforeEach(() => {
-    wrapper = shallowMount(Index, {
+    wrapper = shallowMount(RegisterSuccess, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub

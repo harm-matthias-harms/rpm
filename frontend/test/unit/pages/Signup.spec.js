@@ -8,17 +8,16 @@ import flushPromises from 'flush-promises'
 import { store } from '../utils/vuex-store'
 import SignUp from '@/pages/sign_up.vue'
 
-Vue.use(Vuetify)
 Vue.use(Vuex)
 Vue.use(VeeValidate)
 Vue.use(VueRouter)
+Vue.use(Vuetify)
 
 describe('Index', () => {
   let wrapper
   let router
   beforeEach(() => {
     router = new VueRouter()
-    Vue.use(Vuetify)
     wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
@@ -70,19 +69,6 @@ describe('Index', () => {
       router
     })
     expect(wrapper.vm.$route.path).toEqual('/sign_in')
-  })
-  test('redirects on succes', () => {
-    const storeCopy = store
-    storeCopy.state.user.registerSuccess = true
-    wrapper = mount(SignUp, {
-      stubs: {
-        NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
-      },
-      store: storeCopy,
-      router
-    })
-    expect(wrapper.vm.$route.path).toEqual('/account_created')
   })
   test('custom rules', async () => {
     wrapper.find('input[name="username"]').setValue('asdasd&')

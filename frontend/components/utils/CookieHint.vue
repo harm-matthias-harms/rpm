@@ -1,7 +1,7 @@
 <template>
   <v-snackbar v-model="snackbar" bottom right :timeout="0">
     This site uses 🍪 for your security
-    <v-btn color="pink" flat @click="snackbar = false">
+    <v-btn color="pink" text @click="snackbar = false">
       <v-icon @click="acceptCookieHint">close</v-icon>
     </v-btn>
   </v-snackbar>

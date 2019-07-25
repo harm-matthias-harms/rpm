@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap justify-center align-center>
-    <v-flex lg4 md8 xs12>
+  <v-layout wrap mt-sm-12 justify-center>
+    <v-flex v-if="!this.$store.state.user.registerSuccess" lg4 md8 xs12>
       <v-card>
         <v-card-title primary-title>
           <h3 class="display-1">Sign Up</h3>
@@ -70,13 +70,17 @@
         <nuxt-link to="/sign_in">Sign In here</nuxt-link>
       </div>
     </v-flex>
+    <RegisterSuccess v-if="this.$store.state.user.registerSuccess" />
   </v-layout>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import RegisterSuccess from '@/components/auth/RegisterSuccess.vue'
 
-@Component
+@Component({
+  components: { RegisterSuccess }
+})
 export default class SignUp extends Vue {
   user: object = {
     username: '',
@@ -89,7 +93,7 @@ export default class SignUp extends Vue {
     this.$validator.extend('username', {
       getMessage: () =>
         'The username can contain letters (a-z), numbers (0-9), and periods (.).',
-      validate: value => !!value.match(/^[a-zA-Z1-9.]+$/)
+      validate: value => !!value.match(/^[a-z1-9.]+$/)
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace.",
@@ -107,9 +111,6 @@ export default class SignUp extends Vue {
         email: this.$store.state.user.user.email,
         password: this.$store.state.user.user.password
       }
-    }
-    if (this.$store.state.user.registerSuccess) {
-      this.$router.push('/account_created')
     }
   }
 }

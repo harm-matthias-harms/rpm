@@ -5,8 +5,8 @@ import Vuex from 'vuex'
 import Snackbar from '@/components/utils/Snackbar.vue'
 import { store } from '@/test/unit/utils/vuex-store'
 
-Vue.use(Vuetify)
 Vue.use(Vuex)
+Vue.use(Vuetify)
 
 describe('Index', () => {
   let wrapper

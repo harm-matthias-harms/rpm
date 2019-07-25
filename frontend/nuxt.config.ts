@@ -1,5 +1,4 @@
 import NuxtConfiguration from '@nuxt/config'
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 const config: NuxtConfiguration = {
   mode: 'spa',
@@ -41,7 +40,7 @@ const config: NuxtConfiguration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify'],
+  plugins: [],
 
   /*
    ** Nuxt.js modules
@@ -49,7 +48,8 @@ const config: NuxtConfiguration = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'nuxt-validate'
+    'nuxt-validate',
+    '@nuxtjs/vuetify'
   ],
   /*
    ** Axios module configuration
@@ -57,19 +57,28 @@ const config: NuxtConfiguration = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     https: true,
-    baseURL: 'http://localhost:3001'
+    baseURL: 'http://localhost:3001',
+    xsrfCookieName: 'csrf',
+    xsrfHeaderName: 'X-CSRF-Token'
     // API_URL must be used for api url
   },
-
+  /*
+   ** vuetify module configuration
+   */
+  vuetify: {
+    icons: {
+      iconfont: 'fa'
+    }
+  },
   /*
    ** Build configuration
    */
   build: {
-    transpile: ['vuetify/lib'],
-    plugins: [new VuetifyLoaderPlugin()],
+    transpile: [],
+    plugins: [],
     loaders: {
       stylus: {
-        import: ['~assets/style/variables.styl']
+        import: []
       }
     }
   }
