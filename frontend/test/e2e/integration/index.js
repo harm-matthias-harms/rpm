@@ -1,18 +1,18 @@
 /* eslint-disable no-undef */
-/// <reference types="cypress" />
+
 describe('Index Page', () => {
   it('it has the possibility to log in', () => {
     cy.visit('/')
-    cy.get('.v-toolbar__side-icon')
+    cy.get('.v-app-bar__nav-icon')
     cy.contains('.v-toolbar__items > .v-btn', 'sign in')
-    cy.contains('button', 'sign in')
-    cy.contains('button', 'register')
-    cy.contains('button', 'enter code')
+    cy.contains('a', 'sign in')
+    cy.contains('a', 'sign up')
+    cy.contains('a', 'enter code')
   })
   it('toogles the side bar', () => {
-    cy.get('.v-toolbar__side-icon').click()
+    cy.get('.v-app-bar__nav-icon').click()
     cy.get('.v-navigation-drawer')
-    cy.get('.v-toolbar__content > .v-list > [role="listitem"] > .v-list__tile')
+    cy.get('.v-list-item')
   })
   it('shows and closes cookie bar', () => {
     cy.clearLocalStorage()
