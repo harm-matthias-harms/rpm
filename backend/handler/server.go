@@ -38,6 +38,7 @@ func Server() (*echo.Echo, error) {
 	// Auth - NO JWT
 	a := e.Group("/auth")
 	a.POST("/register", HandleRegister)
+	a.POST("/authenticate", HandleAuthenticate)
 
 	// ADD THE ENDPOINTS HERE
 	// r.GET("/endpoint", handler)
