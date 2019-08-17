@@ -13,7 +13,7 @@ Vue.use(VeeValidate)
 Vue.use(VueRouter)
 Vue.use(Vuetify)
 
-describe('Index', () => {
+describe('SignUp', () => {
   let wrapper
   let router
   beforeEach(() => {
@@ -68,18 +68,18 @@ describe('Index', () => {
       store: storeCopy,
       router
     })
-    expect(wrapper.vm.$route.path).toEqual('/sign_in')
+    expect(wrapper.vm.$route.path).toEqual('/')
   })
   test('custom rules', async () => {
     wrapper.find('input[name="username"]').setValue('asdasd&')
     await flushPromises()
     expect(wrapper.vm.errors.collect('username')).toEqual([
-      'The username can contain letters (a-z), numbers (0-9), and periods (.).'
+      'The username can contain letters (a-z), numbers (0-9), and periods (.)'
     ])
     wrapper.find('input[name="password"]').setValue('asd asd')
     await flushPromises()
     expect(wrapper.vm.errors.collect('password')).toEqual([
-      "The password can't contain a whitespace."
+      "The password can't contain a whitespace"
     ])
   })
 })

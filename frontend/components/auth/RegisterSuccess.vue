@@ -1,11 +1,9 @@
 <template>
-  <v-flex lg4 md8 xs12 text-center>
+  <div>
     <v-icon color="success" size="120">fa-check-circle</v-icon>
     <h2 style="margin-top: 10px;">You have signed up successfully</h2>
-    <v-btn style="margin-top: 10px;" to="/sign_in" color="primary"
-      >Sign in here</v-btn
-    >
-  </v-flex>
+    <v-btn style="margin-top: 10px;" to="/" color="primary">Sign in here</v-btn>
+  </div>
 </template>
 
 <script lang="ts">

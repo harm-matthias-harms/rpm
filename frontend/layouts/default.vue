@@ -5,7 +5,7 @@
       <v-toolbar-title>RPM</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn text to="/signin">sign in</v-btn>
+        <v-btn text to="/">sign in</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -39,12 +39,10 @@
     <Snackbar />
 
     <v-content>
-      <v-container fill-height>
-        <Nuxt v-if="!$store.state.loader.isLoading" />
-        <v-overlay :value="$store.state.loader.isLoading">
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
-      </v-container>
+      <Nuxt v-if="!$store.state.loader.isLoading" />
+      <v-overlay :value="$store.state.loader.isLoading">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
     </v-content>
 
     <v-footer app>
