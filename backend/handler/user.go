@@ -9,7 +9,7 @@ import (
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/harm-matthias-harms/rpm/backend/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // HandleRegister provides the registration endpoint for the api
@@ -52,6 +52,7 @@ func HandleAuthenticate(c echo.Context) (err error) {
 	cookie.Name = echo.HeaderAuthorization
 	cookie.Value = t
 	cookie.Expires = time.Now().Add(time.Hour * 24 * 10)
+	cookie.Path = "/"
 	c.SetCookie(cookie)
 
 	return c.JSON(http.StatusOK, jsonStatus{Success: true})

@@ -4,6 +4,7 @@ import { State } from './type'
 export const mutations: MutationTree<State> = {
   SET_USER_REGISTER(state, user) {
     state.user = {
+      id: undefined,
       username: user.username,
       email: user.email,
       password: user.password
@@ -15,6 +16,7 @@ export const mutations: MutationTree<State> = {
   },
   UNSET_USER(state) {
     state.user = {
+      id: undefined,
       username: '',
       email: '',
       password: ''
@@ -22,6 +24,12 @@ export const mutations: MutationTree<State> = {
   },
   REGISTER_SUCCESS(state) {
     state.registerSuccess = true
+  },
+  SET_AUTHENTICATE(state, { id, username, expire }) {
+    state.user.id = id
+    state.user.username = username
+    state.isAuthenticated = true
+    state.expireSession = expire
   }
 }
 

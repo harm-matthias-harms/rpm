@@ -57,8 +57,7 @@
                 "
                 color="success"
                 type="submit"
-                >Sign Up</v-btn
-              >
+              >Sign Up</v-btn>
             </v-form>
             <div>
               By clicking Sign Up button, you agree that your information will

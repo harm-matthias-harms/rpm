@@ -1,4 +1,6 @@
 import { ActionContext, ActionTree } from 'vuex/types'
+import Cookie from 'js-cookie'
+import jwtDecode from 'jwt-decode'
 import { State } from './type'
 import { State as RootState } from '@/store/root'
 
@@ -27,6 +29,35 @@ export const actions: ActionTree<State, RootState> = {
         } else {
           commit('SET_ERROR_REGISTER', 'connection error')
           commit('snackbar/SET', "Couldn't create new account.", { root: true })
+        }
+        commit('loader/SET', false, { root: true })
+      })
+  },
+  signin({ commit }, user) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$post('/auth/authenticate', user)
+      .then(response => {
+        console.log(response)
+        const cookie = Cookie.get('Authorization')
+        console.log(cookie)
+        if (cookie) {
+          const decoded = jwtDecode(cookie)
+          commit('SET_AUTHENTICATE', {
+            id: decoded.id,
+            username: decoded.username,
+            expire: decoded.exp
+          })
+        } else {
+          commit('snackbar/SET', 'Wrong username or password', { root: true })
+        }
+        commit('loader/SET', false, { root: true })
+      })
+      .catch(error => {
+        if (error.response && error.response.code == 404) {
+          commit('snackbar/SET', "Couldn't connect to network.", { root: true })
+        } else if (error.response && error.response.code == 401) {
+          commit('snackbar/SET', 'Wrong username or password', { root: true })
         }
         commit('loader/SET', false, { root: true })
       })

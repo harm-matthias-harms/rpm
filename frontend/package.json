@@ -20,6 +20,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.5.4",
     "cross-env": "^5.2.0",
+    "js-cookie": "^2.2.1",
+    "jwt-decode": "^2.2.0",
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
     "nuxt-validate": "^1.0.1",

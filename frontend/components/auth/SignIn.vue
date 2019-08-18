@@ -32,8 +32,7 @@
             :disabled="user.username && user.password && errors.any()"
             color="success"
             type="submit"
-            >Sign In</v-btn
-          >
+          >Sign In</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -56,7 +55,7 @@ export default class SignIn extends Vue {
     this.$validator.extend('username', {
       getMessage: () =>
         'The username can contain letters (a-z), numbers (0-9), and periods (.).',
-      validate: value => !!value.match(/^[a-z1-9.]+$/)
+      validate: value => !!value.match(/^[a-z1-9.]+$|/)
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace.",
