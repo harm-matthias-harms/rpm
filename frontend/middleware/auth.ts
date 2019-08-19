@@ -1,10 +1,10 @@
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 export default function(context) {
-  let blockUnAuthorized = ['']
-  let cookie = Cookie.get('Authorization')
-  Cookie.set("test", "test")
-  console.log(cookie)
+  // const
+  const blockUnAuthorized = ['']
+  // checl for cookie
+  const cookie = Cookie.get('Authorization')
   if (cookie) {
     const decoded = jwtDecode(cookie)
     context.store.commit('user/SET_AUTHENTICATE', {
@@ -12,13 +12,21 @@ export default function(context) {
       username: decoded.username,
       expire: decoded.exp
     })
+    if (decoded.exp < new Date()) {
+      Cookie.remove('Authorization')
+      context.store.commit('user/LOGOUT')
+      context.store.commit('snackbar/SET', "You're session has expired")
+      return context.redirect('/')
+    }
   }
-  if (blockUnAuthorized.includes(context.route.name)) {
-    context.store.commit(
-      'snackbar/SET',
-      'You are unauthorized to enter this area, please log in first.'
-    )
-    return context.redirect('/')
+  // Check if has AccessRights
+  if (!context.store.user.isAuthenticated) {
+    if (blockUnAuthorized.includes(context.route.name)) {
+      context.store.commit(
+        'snackbar/SET',
+        'You are unauthorized to enter this area, please log in first'
+      )
+      return context.redirect('/')
+    }
   }
-  console.log(context)
 }
