@@ -43,6 +43,13 @@ const config: NuxtConfiguration = {
   plugins: [],
 
   /*
+   ** Router middlewares
+   */
+  router: {
+    middleware: ['auth']
+  },
+
+  /*
    ** Nuxt.js modules
    */
   modules: [
@@ -58,8 +65,9 @@ const config: NuxtConfiguration = {
     // See https://github.com/nuxt-community/axios-module#options
     https: true,
     baseURL: 'http://localhost:3001',
-    xsrfCookieName: 'csrf',
-    xsrfHeaderName: 'X-CSRF-Token'
+    // xsrfCookieName: 'csrf',
+    // xsrfHeaderName: 'X-CSRF-Token',
+    credentials: true
     // API_URL must be used for api url
   },
   /*
@@ -81,7 +89,8 @@ const config: NuxtConfiguration = {
         import: []
       }
     }
-  }
+  },
+  buildModules: ['@nuxt/typescript-build']
 }
 
 export default config

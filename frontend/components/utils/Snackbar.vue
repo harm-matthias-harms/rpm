@@ -15,7 +15,7 @@ export default class Snackbar extends Vue {
   show: boolean = false
   message: string = ''
 
-  created() {
+  created () {
     this.$store.watch(
       state => state.snackbar.message,
       () => {

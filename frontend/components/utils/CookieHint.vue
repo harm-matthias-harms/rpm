@@ -2,7 +2,9 @@
   <v-snackbar v-model="snackbar" bottom right :timeout="0">
     This site uses 🍪 for your security
     <v-btn color="pink" text @click="snackbar = false">
-      <v-icon @click="acceptCookieHint">close</v-icon>
+      <v-icon @click="acceptCookieHint">
+        close
+      </v-icon>
     </v-btn>
   </v-snackbar>
 </template>
@@ -13,11 +15,11 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class CookieHint extends Vue {
   snackbar: boolean = false
 
-  acceptCookieHint() {
+  acceptCookieHint () {
     localStorage.setItem('accepted_cookie_hint', 'true')
     this.snackbar = false
   }
-  mounted() {
+  mounted () {
     this.snackbar = !(localStorage.getItem('accepted_cookie_hint') === 'true')
   }
 }

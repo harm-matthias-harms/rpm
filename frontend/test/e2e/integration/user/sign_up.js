@@ -4,7 +4,7 @@ describe('SignUp', () => {
   it('has link to sign in', () => {
     cy.visit('/sign_up')
     cy.contains('Sign In here').click()
-    cy.url().should('include', '/sign_in')
+    cy.url().should('include', '/')
   })
   it('error on no connection', () => {
     cy.server()
@@ -25,7 +25,7 @@ describe('SignUp', () => {
       response: { success: true }
     })
     cy.register()
-    cy.get('.flex > .v-icon')
+    cy.get('div > .v-icon')
     cy.contains('a', 'Sign in here')
   })
   it('recognises if account already exists', () => {
@@ -39,6 +39,6 @@ describe('SignUp', () => {
       status: 400
     })
     cy.register()
-    cy.url().should('include', '/sign_in')
+    cy.url().should('include', '/')
   })
 })

@@ -20,6 +20,11 @@ type User struct {
 	Password string             `json:"password,omitempty" bson:"password"`
 }
 
+// Authenticate checks if the user is matching to the given password.
+func (user *User) Authenticate(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+}
+
 // HashPassword hashes the users password for storing
 func (user *User) HashPassword() error {
 	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
@@ -31,40 +36,40 @@ func (user *User) HashPassword() error {
 }
 
 // Validate validates alle field of the user have a valid form
-func (user *User) Validate() (bool, error) {
-	if valid, err := user.validateUsername(); !valid {
-		return valid, err
-	} else if valid, err := user.validateEmail(); !valid {
-		return valid, err
-	} else if valid, err := user.validatePassword(); !valid {
-		return valid, err
+func (user *User) Validate() (err error) {
+	if err = user.validateUsername(); err != nil {
+		return
+	} else if err = user.validateEmail(); err != nil {
+		return
+	} else if err = user.validatePassword(); err != nil {
+		return
 	}
-	return true, nil
+	return nil
 }
 
-func (user *User) validateUsername() (bool, error) {
+func (user *User) validateUsername() error {
 	if user.Username == "" {
-		return false, errors.New("no username provided")
+		return errors.New("no username provided")
 	} else if match, _ := regexp.MatchString("^[a-z1-9\\.]+$", user.Username); !match {
-		return false, errors.New("username has wrong pattern")
+		return errors.New("username has wrong pattern")
 	}
-	return true, nil
+	return nil
 }
 
-func (user *User) validateEmail() (bool, error) {
+func (user *User) validateEmail() error {
 	if user.Email == "" {
-		return false, errors.New("no email address provided")
+		return errors.New("no email address provided")
 	} else if match, _ := regexp.MatchString(emailRegex, user.Email); !match {
-		return false, errors.New("email has wrong pattern")
+		return errors.New("email has wrong pattern")
 	}
-	return true, nil
+	return nil
 }
 
-func (user *User) validatePassword() (bool, error) {
+func (user *User) validatePassword() error {
 	if user.Password == "" {
-		return false, errors.New("no password provided")
+		return errors.New("no password provided")
 	} else if match, _ := regexp.MatchString("^\\S+$", user.Password); !match {
-		return false, errors.New("password has whitespace")
+		return errors.New("password has whitespace")
 	}
-	return true, nil
+	return nil
 }

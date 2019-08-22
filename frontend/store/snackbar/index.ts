@@ -18,7 +18,7 @@ export interface Actions<S, R> extends ActionTree<S, R> {}
 export const actions: Actions<State, RootState> = {}
 
 export const mutations: MutationTree<State> = {
-  SET(state, message: string) {
+  SET (state, message: string) {
     state.message = message
   }
 }

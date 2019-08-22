@@ -5,8 +5,8 @@ import (
 
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/harm-matthias-harms/rpm/backend/utils"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type jsonStatus struct {
@@ -22,6 +22,7 @@ func Server() (*echo.Echo, error) {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{utils.GetEnv("DOMAIN", "http://localhost:3000")},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowCredentials: true,
 	}))
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Level: 5,
@@ -38,6 +39,7 @@ func Server() (*echo.Echo, error) {
 	// Auth - NO JWT
 	a := e.Group("/auth")
 	a.POST("/register", HandleRegister)
+	a.POST("/authenticate", HandleAuthenticate)
 
 	// ADD THE ENDPOINTS HERE
 	// r.GET("/endpoint", handler)
