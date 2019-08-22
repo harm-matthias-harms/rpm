@@ -3,7 +3,6 @@
 describe('Index Page', () => {
   it('it has the possibility to log in', () => {
     cy.visit('/')
-    cy.get('.v-app-bar__nav-icon')
     cy.contains('.v-toolbar__items > .v-btn', 'sign in')
     cy.get('input[name="username"]')
     cy.get('input[name="password"]')
@@ -15,6 +14,7 @@ describe('Index Page', () => {
     cy.login()
     cy.get('.v-app-bar__nav-icon').click()
     cy.get('.v-navigation-drawer')
+    cy.contains('John Doe')
     cy.get('.v-list-item')
     cy.logout()
   })
@@ -32,8 +32,8 @@ describe('Index Page', () => {
       response: {},
       status: 404
     })
-    cy.loginEnterForm()
-    cy.contains("Couldn't connect to network.")
+    cy.loginEnterForm(false)
+    cy.contains("Couldn't connect to network")
   })
   it('blocks unkown user', () => {
     cy.server()
@@ -43,7 +43,7 @@ describe('Index Page', () => {
       response: {},
       status: 401
     })
-    cy.loginEnterForm()
+    cy.loginEnterForm(false)
     cy.contains('Wrong username or password')
   })
   it('signs in successfully', () => {
@@ -53,6 +53,7 @@ describe('Index Page', () => {
       url: 'http://localhost:3001/auth/authenticate',
       response: { success: true }
     })
-    cy.loginEnterForm()
+    cy.loginEnterForm(true)
+    cy.get('Sign In').should('not.exist')
   })
 })

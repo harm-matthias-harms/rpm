@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import isEmail from 'validator/lib/isEmail';
 @Component
 export default class SignIn extends Vue {
   user: object = {
@@ -54,8 +55,8 @@ export default class SignIn extends Vue {
   created() {
     this.$validator.extend('username', {
       getMessage: () =>
-        'The username can contain letters (a-z), numbers (0-9), and periods (.).',
-      validate: value => !!value.match(/^[a-z1-9.]+$|/)
+        'Type in your valid username or email address',
+      validate: value => !!value.match(/^[a-z1-9.]+$/) || isEmail(value)
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace.",

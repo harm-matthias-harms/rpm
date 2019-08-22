@@ -1,23 +1,30 @@
 <template>
   <v-app>
     <v-app-bar app dense dark color="primary">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer" v-if="this.$store.state.user.isAuthenticated"></v-app-bar-nav-icon>
       <v-toolbar-title>RPM</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn text to="/">sign in</v-btn>
+        <v-btn v-if="!this.$store.state.user.isAuthenticated" text to="/">sign in</v-btn>
+        <v-btn v-if="this.$store.state.user.isAuthenticated" text @click="signout">sign out</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" temporary absolute app>
+    <v-navigation-drawer
+      v-model="drawer"
+      temporary
+      absolute
+      app
+      v-if="this.$store.state.user.isAuthenticated"
+    >
       <v-toolbar text class="transparent">
         <v-list class="pa-0">
           <v-list-item>
             <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+              <v-icon>fa fa-user</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title>John Leider</v-list-item-title>
+              <v-list-item-title>{{this.$store.state.user.user.username}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -78,5 +85,9 @@ export default class Default extends Vue {
     }
   ]
   drawer: boolean = false
-}
+  signout() {
+    this.$store.commit('user/LOGOUT')
+    this.$router.push('/')
+  }
+} 
 </script>

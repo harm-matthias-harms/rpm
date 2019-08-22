@@ -14,7 +14,7 @@
 
     <v-row justify="center">
       <v-col lg="4" md="8" sm="12">
-        <SignIn />
+        <SignIn v-if="!this.$store.state.user.isAuthenticated" />
       </v-col>
     </v-row>
   </v-container>

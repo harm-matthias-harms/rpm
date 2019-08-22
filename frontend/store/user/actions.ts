@@ -54,9 +54,9 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
       .catch(error => {
-        if (error.response && error.response.code == 404) {
-          commit('snackbar/SET', "Couldn't connect to network.", { root: true })
-        } else if (error.response && error.response.code == 401) {
+        if (error.response && error.response.status == 404) {
+          commit('snackbar/SET', "Couldn't connect to network", { root: true })
+        } else if (error.response && error.response.status == 401) {
           commit('snackbar/SET', 'Wrong username or password', { root: true })
         }
         commit('loader/SET', false, { root: true })

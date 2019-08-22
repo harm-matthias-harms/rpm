@@ -12,7 +12,7 @@ export default function(context) {
       username: decoded.username,
       expire: decoded.exp
     })
-    if (decoded.exp < new Date()) {
+    if (new Date(decoded.exp * 1000) < new Date()) {
       Cookie.remove('Authorization')
       context.store.commit('user/LOGOUT')
       context.store.commit('snackbar/SET', "You're session has expired")
@@ -20,7 +20,7 @@ export default function(context) {
     }
   }
   // Check if has AccessRights
-  if (!context.store.user.isAuthenticated) {
+  if (!context.store.state.user.isAuthenticated) {
     if (blockUnAuthorized.includes(context.route.name)) {
       context.store.commit(
         'snackbar/SET',

@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex'
 import { State } from './type'
+import Cookie from 'js-cookie'
 
 export const mutations: MutationTree<State> = {
   SET_USER_REGISTER(state, user) {
@@ -30,6 +31,13 @@ export const mutations: MutationTree<State> = {
     state.user.username = username
     state.isAuthenticated = true
     state.expireSession = expire
+  },
+  LOGOUT(state) {
+    state.user.id = undefined
+    state.user.username = ''
+    state.isAuthenticated = false
+    state.expireSession = undefined
+    Cookie.remove('Authorization')
   }
 }
 
