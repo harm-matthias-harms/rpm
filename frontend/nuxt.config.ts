@@ -90,7 +90,8 @@ const config: NuxtConfiguration = {
         import: []
       }
     }
-  }
+  },
+  buildModules: ['@nuxt/typescript-build']
 }
 
 export default config

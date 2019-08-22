@@ -21,7 +21,7 @@
       "@types/node",
       "cypress",
       "@types/jest",
-      "@nuxt/vue-app",
+      "@nuxt/types",
       "@nuxtjs/axios"
     ]
   }
