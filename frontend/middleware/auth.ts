@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
-export default function(context) {
+export default function (context) {
   // const
   const blockUnAuthorized = ['']
   // checl for cookie

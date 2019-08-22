@@ -72,7 +72,7 @@ Cypress.Commands.add('login', () => {
     method: 'POST',
     url: 'http://localhost:3001/auth/authenticate',
     status: 200,
-    response: { success: true },
+    response: { success: true }
   })
   cy.visit('/')
   // Sign in Button should be disabled

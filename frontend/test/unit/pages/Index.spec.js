@@ -2,8 +2,8 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import Vuex from 'vuex'
-import Index from '@/pages/index.vue'
 import { store } from '../utils/vuex-store'
+import Index from '@/pages/index.vue'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)

@@ -23,7 +23,7 @@ describe('SignIn', () => {
         RouterLink: RouterLinkStub
       },
       provide: {
-        $validator() {
+        $validator () {
           return new VeeValidate.Validator()
         }
       },

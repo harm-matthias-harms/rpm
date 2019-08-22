@@ -2,7 +2,9 @@
   <div>
     <v-card>
       <v-card-title primary-title>
-        <h3 class="display-1">Sign In</h3>
+        <h3 class="display-1">
+          Sign In
+        </h3>
       </v-card-title>
       <v-card-text>
         <v-form @submit.prevent="$store.dispatch('user/signin', user)">
@@ -13,7 +15,7 @@
             name="username"
             label="Username or Email"
             data-vv-as="username"
-          ></v-text-field>
+          />
           <v-text-field
             ref="password"
             v-model="user.password"
@@ -27,24 +29,28 @@
             name="password"
             type="password"
             data-vv-as="password"
-          ></v-text-field>
+          />
           <v-btn
             :disabled="user.username && user.password && errors.any()"
             color="success"
             type="submit"
-          >Sign In</v-btn>
+          >
+            Sign In
+          </v-btn>
         </v-form>
       </v-card-text>
     </v-card>
     <div text-xs-center>
-      <nuxt-link to="/sign_up">Create new account?</nuxt-link>
+      <nuxt-link to="/sign_up">
+        Create new account?
+      </nuxt-link>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import isEmail from 'validator/lib/isEmail';
+import isEmail from 'validator/lib/isEmail'
 @Component
 export default class SignIn extends Vue {
   user: object = {
@@ -52,7 +58,7 @@ export default class SignIn extends Vue {
     password: ''
   }
 
-  created() {
+  created () {
     this.$validator.extend('username', {
       getMessage: () =>
         'Type in your valid username or email address',

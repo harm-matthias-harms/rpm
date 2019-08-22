@@ -26,7 +26,7 @@ describe('Index', () => {
     expect(wrapper.vm.show).toBeFalsy()
     expect(wrapper.vm.message).toEqual('')
   })
-  test('on Commit set Snackbar', done => {
+  test('on Commit set Snackbar', (done) => {
     wrapper.vm.$store.commit('snackbar/SET', 'test')
     wrapper.vm
       .$nextTick()

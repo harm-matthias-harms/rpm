@@ -4,7 +4,9 @@
       <v-col lg="4" md="8" sm="12">
         <v-card>
           <v-card-title primary-title>
-            <h3 class="display-1">Sign Up</h3>
+            <h3 class="display-1">
+              Sign Up
+            </h3>
           </v-card-title>
           <v-card-text>
             <v-form @submit.prevent="$store.dispatch('user/register', user)">
@@ -15,7 +17,7 @@
                 name="username"
                 label="Username"
                 data-vv-as="username"
-              ></v-text-field>
+              />
               <v-text-field
                 v-model="user.email"
                 v-validate="'required|email'"
@@ -23,7 +25,7 @@
                 name="email"
                 label="Email Adress"
                 data-vv-as="email"
-              ></v-text-field>
+              />
               <v-text-field
                 ref="password"
                 v-model="user.password"
@@ -37,7 +39,7 @@
                 name="password"
                 type="password"
                 data-vv-as="password"
-              ></v-text-field>
+              />
               <v-text-field
                 v-model="user.passwordConfirm"
                 v-validate="'required|confirmed:password'"
@@ -46,7 +48,7 @@
                 name="password_confirm"
                 type="password"
                 data-vv-as="password"
-              ></v-text-field>
+              />
               <v-btn
                 :disabled="
                   user.username &&
@@ -57,7 +59,9 @@
                 "
                 color="success"
                 type="submit"
-              >Sign Up</v-btn>
+              >
+                Sign Up
+              </v-btn>
             </v-form>
             <div>
               By clicking Sign Up button, you agree that your information will
@@ -67,7 +71,9 @@
         </v-card>
         <div text-xs-center>
           Already have an account?
-          <nuxt-link to="/">Sign In here</nuxt-link>
+          <nuxt-link to="/">
+            Sign In here
+          </nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -94,7 +100,7 @@ export default class SignUp extends Vue {
     passwordConfirm: ''
   }
 
-  created() {
+  created () {
     this.$validator.extend('username', {
       getMessage: () =>
         'The username can contain letters (a-z), numbers (0-9), and periods (.)',
@@ -106,7 +112,7 @@ export default class SignUp extends Vue {
     })
   }
 
-  mounted() {
+  mounted () {
     if (this.$store.state.user.registerError) {
       if (this.$store.state.user.registerErrorReason === 'already exists') {
         this.$router.push('/')

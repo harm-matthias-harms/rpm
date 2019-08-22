@@ -1,9 +1,9 @@
 import { MutationTree } from 'vuex'
-import { State } from './type'
 import Cookie from 'js-cookie'
+import { State } from './type'
 
 export const mutations: MutationTree<State> = {
-  SET_USER_REGISTER(state, user) {
+  SET_USER_REGISTER (state, user) {
     state.user = {
       id: undefined,
       username: user.username,
@@ -11,11 +11,11 @@ export const mutations: MutationTree<State> = {
       password: user.password
     }
   },
-  SET_ERROR_REGISTER(state, reason: string) {
+  SET_ERROR_REGISTER (state, reason: string) {
     state.registerError = true
     state.registerErrorReason = reason
   },
-  UNSET_USER(state) {
+  UNSET_USER (state) {
     state.user = {
       id: undefined,
       username: '',
@@ -23,16 +23,16 @@ export const mutations: MutationTree<State> = {
       password: ''
     }
   },
-  REGISTER_SUCCESS(state) {
+  REGISTER_SUCCESS (state) {
     state.registerSuccess = true
   },
-  SET_AUTHENTICATE(state, { id, username, expire }) {
+  SET_AUTHENTICATE (state, { id, username, expire }) {
     state.user.id = id
     state.user.username = username
     state.isAuthenticated = true
     state.expireSession = expire
   },
-  LOGOUT(state) {
+  LOGOUT (state) {
     state.user.id = undefined
     state.user.username = ''
     state.isAuthenticated = false
