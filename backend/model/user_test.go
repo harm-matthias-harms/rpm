@@ -4,16 +4,24 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestUserHashPassword(t *testing.T) {
-	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
+	user := User{ID: primitive.NewObjectID(), Username: "testPerson", Email: "test@mail.com", Password: "123"}
 	password := user.Password
 	err := user.HashPassword()
 	assert.NoError(t, err)
 	err = user.Authenticate("123")
 	assert.NoError(t, err)
 	assert.NotEqual(t, password, user.Password)
+}
+
+func TestToLimitedUser(t *testing.T) {
+	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
+	limitedUser := user.ToLimitedUser()
+	assert.Equal(t, user.ID, limitedUser.ID)
+	assert.Equal(t, user.Username, limitedUser.Username)
 }
 
 func TestAuthenticate(t *testing.T) {

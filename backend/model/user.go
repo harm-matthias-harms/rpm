@@ -20,6 +20,17 @@ type User struct {
 	Password string             `json:"password,omitempty" bson:"password"`
 }
 
+// LimitedUser describes a User with none vulnerable information
+type LimitedUser struct {
+	ID       primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Username string             `json:"username" bson:"username"`
+}
+
+// ToLimitedUser offers the possibility to store the user to other documents without vulnerable data
+func (user *User) ToLimitedUser() *LimitedUser {
+	return &LimitedUser{ID: user.ID, Username: user.Username}
+}
+
 // Authenticate checks if the user is matching to the given password.
 func (user *User) Authenticate(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
