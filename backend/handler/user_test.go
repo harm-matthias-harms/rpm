@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -11,12 +10,13 @@ import (
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func TestUserRegisterHandler(t *testing.T) {
 	userString := `{"username":"username","email":"user@mail.com","password":"abc123" }`
 	wrongUserString := `{"user1name":"username","email1":"user@mail.com","password1":"abc123" }`
-	resetUserDatabase()
+	resetUserDatabase(&model.User{Username: "username"})
 	e, _ := Server()
 
 	//Throw error if no data is provided
@@ -61,10 +61,11 @@ func TestUserRegisterHandler(t *testing.T) {
 }
 
 func TestUserAuthenticateHandler(t *testing.T) {
-	userString := `{"username":"username", "password":"abc123" }`
-	wrongUserString := `{"username":"username","password1":"abc1234" }`
-	resetUserDatabase()
-	_ = register(&model.User{Username: "username", Email: "test@mail.com", Password: "abc123"})
+	userString := `{"username":"username1", "password":"abc123" }`
+	wrongUserString := `{"username":"username1","password1":"abc1234" }`
+	user := &model.User{Username: "username1", Email: "test2@mail.com", Password: "abc123"}
+	resetUserDatabase(user)
+	_ = register(nil, user)
 	e, _ := Server()
 
 	//Throw error if no data is provided
@@ -110,7 +111,6 @@ func TestUserAuthenticateHandler(t *testing.T) {
 }
 
 func TestUserRegister(t *testing.T) {
-	resetUserDatabase()
 	tests := []struct {
 		User *model.User
 		Err  bool
@@ -128,8 +128,10 @@ func TestUserRegister(t *testing.T) {
 			Err:  true,
 		},
 	}
+	resetUserDatabase(tests[0].User)
 	for _, tt := range tests {
-		err := register(tt.User)
+		
+		err := register(nil, tt.User)
 		if tt.Err {
 			assert.Error(t, err)
 		}
@@ -137,24 +139,23 @@ func TestUserRegister(t *testing.T) {
 }
 
 func TestUserAuthenticate(t *testing.T) {
-	resetUserDatabase()
 	user := &model.User{Username: "testperson", Email: "test@mail.com", Password: "123456"}
 	wrongUsername := &model.User{Username: "testperso", Password: "123456"}
 	wrongPassword := &model.User{Username: "testperson", Password: "1234567"}
-	_ = register(&model.User{Username: "testperson", Email: "test@mail.com", Password: "123456"})
+	resetUserDatabase(user)
+	_ = register(nil, &model.User{Username: "testperson", Email: "test@mail.com", Password: "123456"})
 	// auth good user
-	_, err := authenticate(user)
+	_, err := authenticate(nil, user)
 	assert.NoError(t, err)
 	// not auth none present user
-	_, err = authenticate(wrongUsername)
+	_, err = authenticate(nil, wrongUsername)
 	assert.Error(t, err)
 	// not auth wrong password
-	_, err = authenticate(wrongPassword)
+	_, err = authenticate(nil, wrongPassword)
 	assert.Error(t, err)
 }
 
-func resetUserDatabase() {
+func resetUserDatabase(user *model.User) {
 	_ = storage.SetMongoDatabase()
-	_ = storage.MongoSession.Collection("user").Drop(context.Background())
-	storage.CreateUserIndexes()
+	_, _ = storage.MongoSession.Collection("user").DeleteOne(nil, bson.M{"username": user.Username})
 }
