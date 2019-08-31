@@ -9,8 +9,7 @@ import (
 )
 
 func TestFindPreset(t *testing.T) {
-	// Find user by id
-	// First create him because no user is inserted
+	// First create him because no preset is inserted
 	preset := &model.Preset{Title: "title"}
 	resetPresetDatabase(preset)
 	err := CreatePreset(nil, preset)
@@ -18,6 +17,9 @@ func TestFindPreset(t *testing.T) {
 	presetFound, err := FindPreset(nil, preset)
 	assert.NoError(t, err)
 	assert.Equal(t, "title", presetFound.Title)
+	notExist := &model.Preset{Title: "title"}
+	_, err = FindPreset(nil, notExist)
+	assert.Error(t, err)
 }
 
 func TestCreatePreset(t *testing.T) {
