@@ -26,6 +26,6 @@ func SetMongoDatabase() error {
 	MongoSession = client.Database(utils.GetEnv("MONGO_DATABASE", "test"))
 
 	//create indexes
-	CreateUserIndexes()
+	createUserIndexes()
 	return nil
 }

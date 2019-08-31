@@ -27,7 +27,7 @@ func FindUser(ctx context.Context, user *model.User) (result *model.User, err er
 	return result, nil
 }
 
-// CreateUser will create a user with provided informations
+// CreateUser will create a user
 func CreateUser(ctx context.Context, user *model.User) (err error) {
 	c := userCollection()
 	_, err = c.InsertOne(ctx, user)
@@ -38,8 +38,7 @@ func userCollection() *mongo.Collection {
 	return MongoSession.Collection("user")
 }
 
-// CreateUserIndexes must be public for db reset for integration testing
-func CreateUserIndexes() {
+func createUserIndexes() {
 	c := userCollection()
 	_, _ = c.Indexes().CreateMany(context.Background(),
 		[]mongo.IndexModel{{
