@@ -23,7 +23,7 @@ func GetPresets(ctx context.Context, params map[string]interface{}, page int, pa
 	c := presetCollection()
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})
-	options.SetSkip(int64((page -1) * pageSize))
+	options.SetSkip(int64((page - 1) * pageSize))
 	options.SetLimit(int64(pageSize))
 	cursor, err := c.Find(ctx, params, options)
 	if err != nil {

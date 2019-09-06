@@ -20,7 +20,7 @@ func TestUserRegisterHandler(t *testing.T) {
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	//Throw error if no data is provided
-	rec, err := testRequest(http.MethodPost, "/auth/register", nil, HandleRegister, header)
+	rec, err := testRequest(http.MethodPost, "/auth/register", nil, HandleRegister, header, nil)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
@@ -30,7 +30,7 @@ func TestUserRegisterHandler(t *testing.T) {
 	}
 
 	// Register user
-	rec, err = testRequest(http.MethodPost, "/auth/register", strings.NewReader(userString), HandleRegister, header)
+	rec, err = testRequest(http.MethodPost, "/auth/register", strings.NewReader(userString), HandleRegister, header, nil)
 	if assert.NoError(t, err) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		assert.Equal(t, `{"success":true}`, strings.TrimSpace(rec.Body.String()))
@@ -38,7 +38,7 @@ func TestUserRegisterHandler(t *testing.T) {
 
 	// Not register wrong user
 	//Throw error if no data is provided
-	rec, err = testRequest(http.MethodPost, "/auth/register", strings.NewReader(wrongUserString), HandleRegister, header)
+	rec, err = testRequest(http.MethodPost, "/auth/register", strings.NewReader(wrongUserString), HandleRegister, header, nil)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
@@ -57,7 +57,7 @@ func TestUserAuthenticateHandler(t *testing.T) {
 	header := http.Header{}
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
-	rec, err := testRequest(http.MethodPost, "/auth/authenticate", nil, HandleAuthenticate, header)
+	rec, err := testRequest(http.MethodPost, "/auth/authenticate", nil, HandleAuthenticate, header, nil)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
@@ -67,7 +67,7 @@ func TestUserAuthenticateHandler(t *testing.T) {
 	}
 
 	// Authenticate user
-	rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(userString), HandleAuthenticate, header)
+	rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(userString), HandleAuthenticate, header, nil)
 	if assert.NoError(t, err) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, `{"success":true}`, strings.TrimSpace(rec.Body.String()))
@@ -75,7 +75,7 @@ func TestUserAuthenticateHandler(t *testing.T) {
 	}
 
 	// Don't authenticate wrong password
-	rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(wrongUserString), HandleAuthenticate, header)
+	rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(wrongUserString), HandleAuthenticate, header, nil)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
@@ -144,7 +144,7 @@ func loginUser(t *testing.T) *http.Cookie {
 
 	header := http.Header{}
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec, err := testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(userString), HandleAuthenticate, header)
+	rec, err := testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(userString), HandleAuthenticate, header, nil)
 	assert.NoError(t, err)
 	cookies := rec.Result().Cookies()
 	for _, cookie := range cookies {

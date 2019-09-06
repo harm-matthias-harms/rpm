@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 // MongoSession Handels the mongo Database needs to be public for integration testing.
 var MongoSession *mongo.Database
 

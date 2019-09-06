@@ -38,7 +38,7 @@ func Server() (*echo.Echo, error) {
 	}))
 	// presets
 	r.POST("/presets", HandlePresetCreate)
-	r.GET("/presets", HandlePresetGet)
+	r.GET("/presets", HandlePresetsGet)
 	r.GET("/presets/:id", HandlePresetFind)
 
 	// Auth - NO JWT

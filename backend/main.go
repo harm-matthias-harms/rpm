@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"github.com/harm-matthias-harms/rpm/backend/handler"
+	"log"
 )
 
 func main() {

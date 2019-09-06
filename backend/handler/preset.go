@@ -19,7 +19,15 @@ func HandlePresetsGet(c echo.Context) (err error) {
 
 // HandlePresetFind gives back a number of presets
 func HandlePresetFind(c echo.Context) (err error) {
-	return nil
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+	}
+	preset, err := storage.FindPreset(c.Request().Context(), id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "couldn't find preset")
+	}
+	return c.JSON(http.StatusOK, preset)
 }
 
 // HandlePresetCreate creates a preset from a json

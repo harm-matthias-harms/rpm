@@ -18,6 +18,19 @@ type Preset struct {
 	VitalSigns VitalSigns         `json:"vital_signs" bson:"vital_signs"`
 }
 
+// PresetShort describes a short preset for a list of presets
+type PresetShort struct {
+	ID     primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Author LimitedUser        `json:"author" bson:"author"`
+	Title  string             `json:"title" bson:"title"`
+}
+
+// PresetsList is a list response of presets
+type PresetsList struct {
+	Count   int64         `json:"count"`
+	Presets []PresetShort `json:"presets"`
+}
+
 // Validate validates a preset
 func (preset *Preset) Validate() error {
 	if preset.Author.ID.IsZero() || preset.Author.Username == "" {

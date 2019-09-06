@@ -13,7 +13,37 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+func TestPresetFind(t *testing.T) {
+	preset := model.Preset{Title: "test", VitalSigns: model.VitalSigns{OoS: "symptom"}}
+	resetPreset(&preset)
+	_ = storage.CreatePreset(nil, &preset)
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	jwtCookie := loginUser(t)
+	// no id provided
+	_, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": ""}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
+	}
+	// false id
+	_, err = testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't find preset", err.(*echo.HTTPError).Message)
+	}
+	// good id
+	rec, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.NoError(t, err) {
+		response := &model.Preset{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, response)
+		assert.Equal(t, preset.Title, response.Title)
+		assert.Equal(t, preset.VitalSigns.OoS, response.VitalSigns.OoS)
+	}
+}
 
 func TestPresetCreate(t *testing.T) {
 	preset := model.Preset{Title: "test", VitalSigns: model.VitalSigns{OoS: "symptom"}}
@@ -24,7 +54,7 @@ func TestPresetCreate(t *testing.T) {
 	jwtCookie := loginUser(t)
 
 	// create preset
-	rec, err := testRequest(http.MethodPost, "/api/presets", strings.NewReader(string(presetString)), HandlePresetCreate, header, jwtCookie)
+	rec, err := testRequest(http.MethodPost, "/api/presets", strings.NewReader(string(presetString)), HandlePresetCreate, header, nil, jwtCookie)
 	if assert.NoError(t, err) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		response := &jsonStatus{}
@@ -40,7 +70,7 @@ func TestPresetCreate(t *testing.T) {
 		assert.NotNil(t, response.Data.(map[string]interface{})["created_at"])
 	}
 	// no payload error
-	rec, err = testRequest(http.MethodPost, "/api/presets", nil, HandlePresetCreate, header, jwtCookie)
+	rec, err = testRequest(http.MethodPost, "/api/presets", nil, HandlePresetCreate, header, nil, jwtCookie)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
@@ -52,7 +82,7 @@ func TestPresetCreate(t *testing.T) {
 	presetInvalid := model.Preset{Title: "test"}
 	resetPreset(&presetInvalid)
 	presetInvalidString, _ := json.Marshal(presetInvalid)
-	rec, err = testRequest(http.MethodPost, "/api/presets", strings.NewReader(string(presetInvalidString)), HandlePresetCreate, header, jwtCookie)
+	rec, err = testRequest(http.MethodPost, "/api/presets", strings.NewReader(string(presetInvalidString)), HandlePresetCreate, header, nil, jwtCookie)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
