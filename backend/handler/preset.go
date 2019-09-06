@@ -12,8 +12,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HandlePresetGet gives back a number of presets
-func HandlePresetGet(c echo.Context) (err error) {
+// HandlePresetsGet gives back a number of presets
+func HandlePresetsGet(c echo.Context) (err error) {
+	return nil
+}
+
+// HandlePresetFind gives back a number of presets
+func HandlePresetFind(c echo.Context) (err error) {
 	return nil
 }
 

@@ -36,8 +36,10 @@ func Server() (*echo.Echo, error) {
 		SigningKey:  []byte(utils.GetEnv("JWT_SECRET", "secret")),
 		TokenLookup: "cookie:" + echo.HeaderAuthorization,
 	}))
+	// presets
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetGet)
+	r.GET("/presets/:id", HandlePresetFind)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

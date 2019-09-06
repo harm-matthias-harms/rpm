@@ -7,6 +7,45 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 )
+func TestCountPresets(t *testing.T) {
+	preset := &model.Preset{Title: "count test"}
+	resetPresetDatabase(preset)
+	_ = CreatePreset(nil, preset)
+	count, err := CountPresets(nil, nil)
+	assert.NoError(t, err)
+	assert.Greater(t, count, int64(0))
+	filter := map[string]interface{}{"title": "count test"}
+	count, err = CountPresets(nil, filter)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(1), count)
+}
+
+func TestGetPresets(t *testing.T) {
+	preset := &model.Preset{Title: "get test", VitalSigns: model.VitalSigns{OoS: "symptom"}}
+	resetPresetDatabase(preset)
+	_ = CreatePreset(nil, preset)
+	// test no filter
+	result, err := GetPresets(nil, nil, 1, 1)
+	assert.NoError(t, err)
+	assert.Equal(t, 1, len(result))
+	// test filter
+	filter := map[string]interface{}{"title": "get test"}
+	result, err = GetPresets(nil, filter, 1, 1)
+	assert.NoError(t, err)
+	assert.Equal(t, 1, len(result))
+	// test multiple filters
+	filter["vital_signs.oos"] = "symptom"
+	result, err = GetPresets(nil, filter, 1, 1)
+	assert.NoError(t, err)
+	assert.Equal(t, 1, len(result))
+	assert.Equal(t, preset.ID, result[0].ID)
+	// test load all
+	preset2 := &model.Preset{Title: "get test", VitalSigns: model.VitalSigns{OoS: "symptom"}}
+	_ = CreatePreset(nil, preset2)
+	result, err = GetPresets(nil, nil, 1, 0)
+	assert.NoError(t, err)
+	assert.Greater(t, len(result), 1)
+} 
 
 func TestFindPreset(t *testing.T) {
 	// First create him because no preset is inserted
@@ -14,11 +53,11 @@ func TestFindPreset(t *testing.T) {
 	resetPresetDatabase(preset)
 	err := CreatePreset(nil, preset)
 	assert.NoError(t, err)
-	presetFound, err := FindPreset(nil, preset)
+	presetFound, err := FindPreset(nil, preset.ID)
 	assert.NoError(t, err)
 	assert.Equal(t, "title", presetFound.Title)
 	notExist := &model.Preset{Title: "title"}
-	_, err = FindPreset(nil, notExist)
+	_, err = FindPreset(nil, notExist.ID)
 	assert.Error(t, err)
 }
 
@@ -32,5 +71,5 @@ func TestCreatePreset(t *testing.T) {
 
 func resetPresetDatabase(preset *model.Preset) {
 	_ = SetMongoDatabase()
-	_, _ = userCollection().DeleteOne(nil, bson.M{"title": preset.Title})
+	_, _ = presetCollection().DeleteMany(nil, bson.M{"title": preset.Title})
 }
