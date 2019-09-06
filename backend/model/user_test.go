@@ -4,11 +4,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestUserHashPassword(t *testing.T) {
-	user := User{ID: primitive.NewObjectID(), Username: "testPerson", Email: "test@mail.com", Password: "123"}
+	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
 	password := user.Password
 	err := user.HashPassword()
 	assert.NoError(t, err)

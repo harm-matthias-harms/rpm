@@ -10,8 +10,9 @@ import (
 )
 
 type jsonStatus struct {
-	Success bool   `json:"success,omitempty"`
-	Message string `json:"message,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
+	Success bool        `json:"success,omitempty"`
+	Message string      `json:"message,omitempty"`
 }
 
 // Server provides the server for the api
@@ -20,8 +21,8 @@ func Server() (*echo.Echo, error) {
 
 	// Middlewares
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{utils.GetEnv("DOMAIN", "http://localhost:3000")},
-		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowOrigins:     []string{utils.GetEnv("DOMAIN", "http://localhost:3000")},
+		AllowMethods:     []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 		AllowCredentials: true,
 	}))
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
@@ -35,6 +36,8 @@ func Server() (*echo.Echo, error) {
 		SigningKey:  []byte(utils.GetEnv("JWT_SECRET", "secret")),
 		TokenLookup: "cookie:" + echo.HeaderAuthorization,
 	}))
+	r.POST("/presets", HandlePresetCreate)
+	r.GET("/presets", HandlePresetGet)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")
