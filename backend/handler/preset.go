@@ -14,7 +14,21 @@ import (
 
 // HandlePresetsGet gives back a number of presets
 func HandlePresetsGet(c echo.Context) (err error) {
-	return nil
+	params := new(model.PresetQuery)
+	if err = c.Bind(params); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "params couldn't be parsed")
+	}
+	filter := map[string]interface{}{}
+	if params.Title != "" {
+		filter["title"] = primitive.Regex{Pattern: params.Title}
+	}
+	if params.Author != "" {
+		filter["author.username"] = primitive.Regex{Pattern: params.Author}
+	}
+	presets, err := storage.GetPresets(c.Request().Context(), filter, params.Page, params.PageSize)
+	count, err := storage.CountPresets(c.Request().Context(), filter)
+	response := model.PresetsList{Count: count, Presets: model.PresetToShortList(presets)}
+	return c.JSON(http.StatusOK, response)
 }
 
 // HandlePresetFind gives back a number of presets

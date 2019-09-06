@@ -18,6 +18,7 @@ type jsonStatus struct {
 // Server provides the server for the api
 func Server() (*echo.Echo, error) {
 	e := echo.New()
+	e.Pre(middleware.RemoveTrailingSlash())
 
 	// Middlewares
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{

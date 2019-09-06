@@ -22,21 +22,30 @@ func TestServer(t *testing.T) {
 func testRequest(method string, url string, body io.Reader, handler func(c echo.Context) error, header http.Header, pathParams map[string]string, cookies ...*http.Cookie) (*httptest.ResponseRecorder, error) {
 	e, _ := Server()
 	req := httptest.NewRequest(method, "/", body)
-	req.Header = header
+	if len(pathParams) == 0 {
+		req = httptest.NewRequest(method, url, body)
+	}
+	if header != nil {
+		req.Header = header
+	}
 	for _, cookie := range cookies {
 		req.AddCookie(cookie)
 	}
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath(url)
-	paramNames := []string{}
-	paramValues := []string{}
-	for key, value := range pathParams {
-		paramNames = append(paramNames, key)
-		paramValues = append(paramValues, value)
+	if len(pathParams) > 0 {
+		c.SetPath(url)
+		paramNames := []string{}
+		paramValues := []string{}
+		for key, value := range pathParams {
+			paramNames = append(paramNames, key)
+			paramValues = append(paramValues, value)
+		}
+
+		c.SetParamNames(paramNames...)
+		c.SetParamValues(paramValues...)
+
 	}
-	c.SetParamNames(paramNames...)
-	c.SetParamValues(paramValues...)
 	err := handler(c)
 	return rec, err
 }

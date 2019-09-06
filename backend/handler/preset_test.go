@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -16,25 +17,77 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+func TestPresetGet(t *testing.T) {
+	preset := model.Preset{Title: "test get", Author: model.LimitedUser{Username: "test"}}
+	preset2 := model.Preset{Title: "test get", Author: model.LimitedUser{Username: "second"}}
+	resetPreset(&preset)
+	resetPreset(&preset2)
+	_ = storage.CreatePreset(nil, &preset)
+	_ = storage.CreatePreset(nil, &preset2)
+	jwtCookie := loginUser(t)
+	q := make(url.Values)
+	rec, err := testRequest(http.MethodGet, "/api/presets?"+q.Encode(), nil, HandlePresetsGet, nil, nil, jwtCookie)
+	if assert.NoError(t, err) {
+		response := model.PresetsList{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, &response)
+		assert.Greater(t, response.Count, int64(0))
+	}
+	q.Add("title", preset.Title)
+	rec, err = testRequest(http.MethodGet, "/api/presets?"+q.Encode(), nil, HandlePresetsGet, nil, nil, jwtCookie)
+	if assert.NoError(t, err) {
+		response := model.PresetsList{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, &response)
+		assert.Greater(t, response.Count, int64(0))
+		assert.Equal(t, preset.Title, response.Presets[0].Title)
+	}
+	q.Add("page", "1")
+	q.Add("limit", "1")
+	rec, err = testRequest(http.MethodGet, "/api/presets?"+q.Encode(), nil, HandlePresetsGet, nil, nil, jwtCookie)
+	if assert.NoError(t, err) {
+		response := model.PresetsList{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, &response)
+		assert.Equal(t, 1, len(response.Presets))
+		assert.Equal(t, preset.Title, response.Presets[0].Title)
+	}
+	q.Del("page")
+	q.Del("limit")
+	q.Add("author", preset.Author.Username)
+	rec, err = testRequest(http.MethodGet, "/api/presets?"+q.Encode(), nil, HandlePresetsGet, nil, nil, jwtCookie)
+	if assert.NoError(t, err) {
+		response := model.PresetsList{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, &response)
+		assert.Greater(t, response.Count, int64(0))
+		assert.Equal(t, preset.Title, response.Presets[0].Title)
+		assert.Equal(t, preset.Author.Username, response.Presets[0].Author.Username)
+	}
+}
+
 func TestPresetFind(t *testing.T) {
 	preset := model.Preset{Title: "test", VitalSigns: model.VitalSigns{OoS: "symptom"}}
 	resetPreset(&preset)
 	_ = storage.CreatePreset(nil, &preset)
-	header := http.Header{}
-	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
 	jwtCookie := loginUser(t)
 	// no id provided
-	_, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": ""}, jwtCookie)
+	_, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, nil, map[string]string{"id": ""}, jwtCookie)
 	if assert.Error(t, err) {
 		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
 	}
 	// false id
-	_, err = testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+	_, err = testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 	if assert.Error(t, err) {
 		assert.Equal(t, "couldn't find preset", err.(*echo.HTTPError).Message)
 	}
 	// good id
-	rec, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	rec, err := testRequest(http.MethodGet, "/api/presets/:id", nil, HandlePresetFind, nil, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
 	if assert.NoError(t, err) {
 		response := &model.Preset{}
 		defer rec.Result().Body.Close()

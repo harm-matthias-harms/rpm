@@ -18,6 +18,14 @@ type Preset struct {
 	VitalSigns VitalSigns         `json:"vital_signs" bson:"vital_signs"`
 }
 
+// PresetQuery is the query fields for the getter
+type PresetQuery struct {
+	Title    string `query:"title"`
+	Author   string `query:"author"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"limit"`
+}
+
 // PresetShort describes a short preset for a list of presets
 type PresetShort struct {
 	ID     primitive.ObjectID `json:"id" bson:"_id,omitempty"`
@@ -46,4 +54,13 @@ func (preset *Preset) Validate() error {
 		return errors.New("vital signs not set")
 	}
 	return nil
+}
+
+// PresetToShortList transfer a preset in a short on for list responses
+func PresetToShortList(presets []Preset) (result []PresetShort) {
+	for _, preset := range presets {
+		short := PresetShort{ID: preset.ID, Author: preset.Author, Title: preset.Title}
+		result = append(result, short)
+	}
+	return
 }

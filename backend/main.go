@@ -1,8 +1,10 @@
 package main
 
 import (
-	"github.com/harm-matthias-harms/rpm/backend/handler"
 	"log"
+
+	"github.com/facebookgo/grace/gracehttp"
+	"github.com/harm-matthias-harms/rpm/backend/handler"
 )
 
 func main() {
@@ -10,6 +12,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	e.Server.Addr = ":3001"
 	//Starts the server
-	e.Logger.Fatal(e.Start(":3001"))
+	e.Logger.Fatal(gracehttp.Serve(e.Server))
 }

@@ -26,3 +26,14 @@ func TestPresetValidate(t *testing.T) {
 	err = preset.Validate()
 	assert.NoError(t, err)
 }
+
+func TestPresetToShortList(t *testing.T) {
+	preset := Preset{ID: primitive.NewObjectID(), Author: LimitedUser{ID: primitive.NewObjectID(), Username: "test"}, Title: "test"}
+	presets := []Preset{preset}
+	result := PresetToShortList(presets)
+	first := result[0]
+	assert.Equal(t, preset.ID, first.ID)
+	assert.Equal(t, preset.Author.ID, first.Author.ID)
+	assert.Equal(t, preset.Author.Username, first.Author.Username)
+	assert.Equal(t, preset.Title, first.Title)
+}
