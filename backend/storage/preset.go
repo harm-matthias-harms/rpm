@@ -58,5 +58,5 @@ func CreatePreset(ctx context.Context, preset *model.Preset) (err error) {
 }
 
 func presetCollection() *mongo.Collection {
-	return MongoSession.Collection("preset")
+	return MongoSession.Collection("presets")
 }

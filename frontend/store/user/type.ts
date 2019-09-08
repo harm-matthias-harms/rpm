@@ -1,6 +1,6 @@
 export interface State {
   user: {
-    id: string | undefined
+    id?: string
     username: string
     email: string
     password: string
@@ -9,5 +9,5 @@ export interface State {
   registerErrorReason: string
   registerSuccess: boolean
   isAuthenticated: boolean
-  expireSession: Date | undefined
+  expireSession?: Date
 }

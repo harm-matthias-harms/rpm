@@ -133,7 +133,7 @@ func TestUserAuthenticate(t *testing.T) {
 
 func resetUserDatabase(user *model.User) {
 	_ = storage.SetMongoDatabase()
-	_, _ = storage.MongoSession.Collection("user").DeleteOne(nil, bson.M{"username": user.Username})
+	_, _ = storage.MongoSession.Collection("users").DeleteOne(nil, bson.M{"username": user.Username})
 }
 
 // Login a user and generates a jwt. Returns nil or the JWT-Token Cookie

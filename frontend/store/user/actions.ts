@@ -1,10 +1,8 @@
-import { ActionContext, ActionTree } from 'vuex/types'
+import { ActionTree } from 'vuex/types'
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 import { State } from './type'
 import { State as RootState } from '@/store/root'
-
-interface UserActionContext extends ActionContext<State, RootState> {}
 
 export const actions: ActionTree<State, RootState> = {
   register ({ state, commit }, user) {
@@ -14,7 +12,6 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/auth/register', state.user)
       .then(() => {
         commit('REGISTER_SUCCESS')
-        commit('loader/SET', false, { root: true })
         commit('UNSET_USER')
       })
       .catch((error) => {
@@ -30,6 +27,8 @@ export const actions: ActionTree<State, RootState> = {
           commit('SET_ERROR_REGISTER', 'connection error')
           commit('snackbar/SET', "Couldn't create new account.", { root: true })
         }
+      })
+      .finally(() => {
         commit('loader/SET', false, { root: true })
       })
   },
@@ -49,7 +48,6 @@ export const actions: ActionTree<State, RootState> = {
         } else {
           commit('snackbar/SET', 'Wrong username or password', { root: true })
         }
-        commit('loader/SET', false, { root: true })
       })
       .catch((error) => {
         if (error.response && error.response.status === 404) {
@@ -57,6 +55,8 @@ export const actions: ActionTree<State, RootState> = {
         } else if (error.response && error.response.status === 401) {
           commit('snackbar/SET', 'Wrong username or password', { root: true })
         }
+      })
+      .finally(() => {
         commit('loader/SET', false, { root: true })
       })
   }

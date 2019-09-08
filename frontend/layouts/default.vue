@@ -58,7 +58,7 @@
 
     <v-footer app>
       <v-spacer />
-      <a href="https://github.com/harm-matthias-harms/rpm">
+      <a target="_blank" href="https://github.com/harm-matthias-harms/rpm">
         <v-icon>fab fa-github</v-icon>
       </a>
     </v-footer>

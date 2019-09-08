@@ -35,7 +35,7 @@ func CreateUser(ctx context.Context, user *model.User) (err error) {
 }
 
 func userCollection() *mongo.Collection {
-	return MongoSession.Collection("user")
+	return MongoSession.Collection("users")
 }
 
 func createUserIndexes() {

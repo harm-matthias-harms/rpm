@@ -147,5 +147,5 @@ func TestPresetCreate(t *testing.T) {
 
 func resetPreset(preset *model.Preset) {
 	_ = storage.SetMongoDatabase()
-	_, _ = storage.MongoSession.Collection("preset").DeleteOne(nil, bson.M{"title": preset.Title})
+	_, _ = storage.MongoSession.Collection("presets").DeleteOne(nil, bson.M{"title": preset.Title})
 }

@@ -2,7 +2,7 @@ import { State } from './type'
 
 export const state = (): State => ({
   user: {
-    id: '',
+    id: undefined,
     username: '',
     email: '',
     password: ''

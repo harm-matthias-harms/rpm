@@ -12,10 +12,10 @@ type Preset struct {
 	ID         primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Author     LimitedUser        `json:"author" bson:"author"`
 	Editor     LimitedUser        `json:"editor" bson:"editor"`
-	CreatedAt  time.Time          `json:"created_at" bson:"created_at"`
-	EditedAt   time.Time          `json:"edited_at" bson:"edited_at"`
+	CreatedAt  time.Time          `json:"createdAt" bson:"createdAt"`
+	EditedAt   time.Time          `json:"editedAt" bson:"editedAt"`
 	Title      string             `json:"title" bson:"title"`
-	VitalSigns VitalSigns         `json:"vital_signs" bson:"vital_signs"`
+	VitalSigns VitalSigns         `json:"vitalSigns" bson:"vitalSigns"`
 }
 
 // PresetQuery is the query fields for the getter
