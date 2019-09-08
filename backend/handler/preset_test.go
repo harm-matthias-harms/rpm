@@ -117,10 +117,10 @@ func TestPresetCreate(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		assert.Equal(t, preset.Title, response.Data.(map[string]interface{})["title"])
 		fmt.Println(response.Data)
-		assert.Equal(t, preset.VitalSigns.OoS, response.Data.(map[string]interface{})["vital_signs"].(map[string]interface{})["oos"])
+		assert.Equal(t, preset.VitalSigns.OoS, response.Data.(map[string]interface{})["vitalSigns"].(map[string]interface{})["oos"])
 		assert.NotNil(t, response.Data.(map[string]interface{})["author"].(map[string]interface{})["id"])
 		assert.NotNil(t, response.Data.(map[string]interface{})["author"].(map[string]interface{})["username"])
-		assert.NotNil(t, response.Data.(map[string]interface{})["created_at"])
+		assert.NotNil(t, response.Data.(map[string]interface{})["createdAt"])
 	}
 	// no payload error
 	rec, err = testRequest(http.MethodPost, "/api/presets", nil, HandlePresetCreate, header, nil, jwtCookie)

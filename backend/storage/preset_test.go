@@ -39,7 +39,7 @@ func TestGetPresets(t *testing.T) {
 		assert.Equal(t, 1, len(result))
 	}
 	// test multiple filters
-	filter["vital_signs.oos"] = "symptom"
+	filter["vitalSigns.oos"] = "symptom"
 	result, err = GetPresets(nil, filter, 1, 1)
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, len(result))
