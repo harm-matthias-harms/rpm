@@ -5,12 +5,8 @@
       <v-toolbar-title>RPM</v-toolbar-title>
       <v-spacer />
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn v-if="!this.$store.state.user.isAuthenticated" text to="/">
-          sign in
-        </v-btn>
-        <v-btn v-if="this.$store.state.user.isAuthenticated" text @click="signout">
-          sign out
-        </v-btn>
+        <v-btn v-if="!this.$store.state.user.isAuthenticated" text to="/">sign in</v-btn>
+        <v-btn v-if="this.$store.state.user.isAuthenticated" text @click="signout">sign out</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -33,16 +29,24 @@
           </v-list-item>
         </v-list>
       </v-toolbar>
-      <v-list class="pt-0" dense>
-        <v-divider />
-        <v-list-item v-for="item in items" :key="item.title">
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-divider />
+      <v-list dense nav>
+        <v-list-group v-for="item in items" :key="item.name" :prepend-icon="item.icon" no-action>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.name"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item v-for="subItem in item.items" :key="subItem.name" :to="subItem.url">
+            <v-list-item-icon>
+              <v-icon>{{subItem.icon}}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.name"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -66,14 +70,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import CookieHint from '@/components/utils/CookieHint.vue'
 import Snackbar from '@/components/utils/Snackbar.vue'
-
-interface SidebarItem {
-  readonly title: string
-  readonly icon: string
-}
 
 @Component({
   components: {
@@ -82,14 +81,26 @@ interface SidebarItem {
   }
 })
 export default class Default extends Vue {
-  items: SidebarItem[] = [
+  items = [
     {
-      title: 'Home',
-      icon: 'dashboard'
+      name: 'Preset',
+      icon: 'fas fa-syringe',
+      items: [
+        {
+          name: 'List',
+          icon: 'fas fa-table',
+          url: '/presets'
+        },
+        {
+          name: 'New',
+          icon: 'fas fa-plus',
+          url: '/presets/new'
+        }
+      ]
     }
   ]
   drawer: boolean = false
-  signout () {
+  signout() {
     this.$store.commit('user/LOGOUT')
     this.$router.push('/')
   }

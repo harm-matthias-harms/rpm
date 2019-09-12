@@ -15,7 +15,10 @@ describe('Index Page', () => {
     cy.get('.v-app-bar__nav-icon').click()
     cy.get('.v-navigation-drawer')
     cy.contains('John Doe')
-    cy.get('.v-list-item')
+    cy.contains('Preset').click()
+    cy.get('[href="/presets"] > .v-list-item__content')
+    cy.get('[href="/presets/new"] > .v-list-item__content')
+    cy.contains('New')
     cy.logout()
   })
   it('shows and closes cookie bar', () => {
