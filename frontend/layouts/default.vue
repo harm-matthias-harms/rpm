@@ -25,7 +25,7 @@
         <v-list class="pa-0">
           <v-list-item>
             <v-list-item-avatar>
-              <v-icon>fa fa-user</v-icon>
+              <v-icon>fa-user</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ this.$store.state.user.user.username }}</v-list-item-title>
