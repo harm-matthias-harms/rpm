@@ -7,7 +7,7 @@
         </h3>
       </v-card-title>
       <v-card-text>
-        <v-form @submit.prevent="$store.dispatch('user/signin', user)">
+        <v-form @submit.prevent="signin(user)">
           <v-text-field
             v-model="user.username"
             v-validate="{ required: true, min: 6, username: true }"
@@ -51,7 +51,14 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import isEmail from 'validator/lib/isEmail'
-@Component
+import { mapActions } from 'vuex'
+@Component({
+  methods: {
+    ...mapActions('user', {
+      signin: 'signin'
+    })
+  }
+})
 export default class SignIn extends Vue {
   user: object = {
     username: '',
@@ -60,8 +67,7 @@ export default class SignIn extends Vue {
 
   created () {
     this.$validator.extend('username', {
-      getMessage: () =>
-        'Type in your valid username or email address',
+      getMessage: () => 'Type in your valid username or email address',
       validate: value => !!value.match(/^[a-z1-9.]+$/) || isEmail(value)
     })
     this.$validator.extend('passwordNoWhitespace', {

@@ -43,8 +43,7 @@ jobs:
         - cd frontend/
       install:
         - yarn install
-        - yarn run build # for cypress
-        - yarn run start & # for cypress
+        - yarn run dev & # for cypress
       script:
         - yarn run lint
         - yarn run test

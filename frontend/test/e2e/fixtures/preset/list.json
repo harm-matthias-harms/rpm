@@ -1,0 +1,21 @@
+{
+    "count": 2,
+    "presets": [
+        {
+            "id": "001",
+            "author": {
+                "id": "001",
+                "username": "John Doe"
+            },
+            "title": "test preset 1"
+        },
+        {
+            "id": "002",
+            "author": {
+                "id": "002",
+                "username": "otherUser"
+            },
+            "title": "test preset 2"
+        }
+    ]
+}

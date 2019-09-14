@@ -22,7 +22,7 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$get('/api/presets')
       .then((response) => {
-        commit('SET_PRESET_LIST', response.data)
+        commit('SET_PRESET_LIST', response)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't load presets.", { root: true })

@@ -4,7 +4,11 @@ import * as root from '@/store/root'
 import * as loader from '@/store/loader'
 import * as snackbar from '@/store/snackbar'
 import { user } from '@/store/user'
+import { preset } from '@/store/preset'
 Vue.use(Vuex)
+
+// mocking axios methods to prevent axios firing
+preset.actions.get_all = () => {}
 
 export const store = new Vuex.Store({
   state: root.state,
@@ -14,6 +18,7 @@ export const store = new Vuex.Store({
   modules: {
     loader: Object.assign({ namespaced: true }, loader),
     snackbar: Object.assign({ namespaced: true }, snackbar),
-    user
+    user,
+    preset
   }
 })

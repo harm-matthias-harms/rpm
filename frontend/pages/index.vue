@@ -16,7 +16,7 @@
 
     <v-row justify="center">
       <v-col lg="4" md="8" sm="12">
-        <SignIn v-if="!this.$store.state.user.isAuthenticated" />
+        <SignIn v-if="!isAuthenticated" />
       </v-col>
     </v-row>
   </v-container>
@@ -24,10 +24,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { mapState } from 'vuex'
 import SignIn from '@/components/auth/SignIn.vue'
 
 @Component({
-  components: { SignIn }
+  components: { SignIn },
+  computed: {
+    ...mapState('user', {
+      isAuthenticated: 'isAuthenticated'
+    })
+  }
 })
 export default class Index extends Vue {}
 </script>
