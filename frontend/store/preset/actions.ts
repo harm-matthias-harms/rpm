@@ -8,7 +8,7 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$post('/api/presets', preset)
       .then((response) => {
-        commit('SET_PRESET', response.data.data)
+        commit('SET_PRESET', response.data)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create preset.", { root: true })
@@ -36,7 +36,7 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$get('/api/presets/' + id)
       .then((response) => {
-        commit('SET_PRESET', response.data)
+        commit('SET_PRESET', response)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't find preset.", { root: true })

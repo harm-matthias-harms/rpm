@@ -90,7 +90,7 @@ const config: Configuration = {
       }
     }
   },
-  buildModules: ['@nuxt/typescript-build']
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/moment']
 }
 
 export default config
