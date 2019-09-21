@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('List presets', () => {
+describe('View a preset', () => {
   beforeEach(() => {
     cy.server()
     cy.route({
