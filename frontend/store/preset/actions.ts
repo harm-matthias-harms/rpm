@@ -5,10 +5,16 @@ import { State as RootState } from '@/store/root'
 export const actions: ActionTree<State, RootState> = {
   create ({ commit }, preset) {
     commit('loader/SET', true, { root: true })
+    for (const key in preset.vitalSigns) {
+      if (!['oos', 'avpu', 'mobility'].includes(key)) {
+        preset.vitalSigns[key] = +preset.vitalSigns[key]
+      }
+    }
     this.$axios
       .$post('/api/presets', preset)
       .then((response) => {
-        commit('SET_PRESET', response.data)
+        commit('SET_PRESET_TO_LIST', response.data)
+        this.$router.push('/presets')
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create preset.", { root: true })

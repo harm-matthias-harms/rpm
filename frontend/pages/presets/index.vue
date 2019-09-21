@@ -9,12 +9,12 @@
         </h3>
       </v-col>
       <v-col md="4" sm="6" class="justify-end d-flex">
-        <v-btn small color="primary" class="mr-2">
+        <v-btn small color="primary" class="mr-2" to="/presets/new">
           <v-icon small>
             fas fa-plus
           </v-icon>
         </v-btn>
-        <v-btn small color="primary">
+        <v-btn small color="primary" @click="getPresets()">
           <v-icon small>
             fas fa-redo
           </v-icon>
