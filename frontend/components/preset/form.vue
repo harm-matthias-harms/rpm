@@ -30,7 +30,7 @@
           v-model="preset.vitalSigns.bloodPressureSystolic"
           v-validate="'integer'"
           type="number"
-          label="Blood pressure systolic"
+          label="Blood Pressure Systolic"
           data-vv-name="systolic"
           :error-messages="errors.collect('systolic')"
         />
@@ -40,7 +40,7 @@
           v-model="preset.vitalSigns.bloodPressureDiastolic"
           v-validate="'integer'"
           type="number"
-          label="Blood pressure diastolic"
+          label="Blood Pressure Diastolic"
           data-vv-name="diastolic"
           :error-messages="errors.collect('diastolic')"
         />
@@ -74,7 +74,7 @@
       v-model="preset.vitalSigns.temperature"
       type="number"
       suffix="°C"
-      label="Temperatur"
+      label="Temperature"
     />
     <v-text-field v-model="preset.vitalSigns.weight" type="number" suffix="kg" label="Weight" />
     <v-text-field
