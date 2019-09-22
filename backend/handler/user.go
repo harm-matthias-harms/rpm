@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"time"
@@ -18,7 +19,7 @@ func HandleRegister(c echo.Context) (err error) {
 	if err := c.Bind(user); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
 	}
-	if err = register(user); err != nil {
+	if err = register(c.Request().Context(), user); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true})
@@ -30,7 +31,7 @@ func HandleAuthenticate(c echo.Context) (err error) {
 	if err := c.Bind(user); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
 	}
-	result, err := authenticate(user)
+	result, err := authenticate(c.Request().Context(), user)
 	if err != nil {
 		return echo.ErrUnauthorized
 	}
@@ -58,21 +59,21 @@ func HandleAuthenticate(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, jsonStatus{Success: true})
 }
 
-func register(user *model.User) (err error) {
+func register(ctx context.Context, user *model.User) (err error) {
 	if err = user.Validate(); err != nil {
 		return
 	}
 	if err = user.HashPassword(); err != nil {
 		return
 	}
-	if err := storage.CreateUser(user); err != nil {
+	if err := storage.CreateUser(ctx, user); err != nil {
 		return errors.New("user already exists")
 	}
 	return nil
 }
 
-func authenticate(user *model.User) (result *model.User, err error) {
-	result, err = storage.FindUser(user)
+func authenticate(ctx context.Context, user *model.User) (result *model.User, err error) {
+	result, err = storage.FindUser(ctx, user)
 	if err != nil {
 		return nil, err
 	}

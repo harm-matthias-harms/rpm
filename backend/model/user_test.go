@@ -16,6 +16,13 @@ func TestUserHashPassword(t *testing.T) {
 	assert.NotEqual(t, password, user.Password)
 }
 
+func TestToLimitedUser(t *testing.T) {
+	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
+	limitedUser := user.ToLimitedUser()
+	assert.Equal(t, user.ID, limitedUser.ID)
+	assert.Equal(t, user.Username, limitedUser.Username)
+}
+
 func TestAuthenticate(t *testing.T) {
 	tests := []struct {
 		User     User

@@ -2,7 +2,7 @@ import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 export default function (context) {
   // const
-  const blockUnAuthorized = ['']
+  const blockUnAuthorized = ['presets']
   // checl for cookie
   const cookie = Cookie.get('Authorization')
   if (cookie) {
@@ -21,7 +21,7 @@ export default function (context) {
   }
   // Check if has AccessRights
   if (!context.store.state.user.isAuthenticated) {
-    if (blockUnAuthorized.includes(context.route.name)) {
+    if (blockUnAuthorized.some(value => context.route.name.includes(value))) {
       context.store.commit(
         'snackbar/SET',
         'You are unauthorized to enter this area, please log in first'

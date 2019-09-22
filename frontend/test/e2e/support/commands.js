@@ -90,5 +90,5 @@ Cypress.Commands.add('login', () => {
   cy.get('form').submit()
 })
 Cypress.Commands.add('logout', () => {
-  cy.get('button').contains('sign out').click()
+  cy.get('button').contains('sign out').click({ force: true })
 })

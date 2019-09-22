@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-if="!this.$store.state.user.registerSuccess" justify="center">
+    <v-row v-if="!registerSuccess" justify="center">
       <v-col lg="4" md="8" sm="12">
         <v-card>
           <v-card-title primary-title>
@@ -9,7 +9,7 @@
             </h3>
           </v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="$store.dispatch('user/register', user)">
+            <v-form @submit.prevent="register(user)">
               <v-text-field
                 v-model="user.username"
                 v-validate="{ required: true, min: 6, username: true }"
@@ -77,7 +77,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-if="this.$store.state.user.registerSuccess" justify="center">
+    <v-row v-if="registerSuccess" justify="center">
       <v-col lg="4" md="8" sm="12" class="text-center">
         <RegisterSuccess />
       </v-col>
@@ -86,13 +86,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
 import RegisterSuccess from '@/components/auth/RegisterSuccess.vue'
 
 @Component({
-  components: { RegisterSuccess }
+  components: { RegisterSuccess },
+  computed: {
+    ...mapState('user', {
+      registerError: 'registerError',
+      registerErrorReason: 'registerErrorReason',
+      storedUser: 'user',
+      registerSuccess: 'registerSuccess'
+    })
+  },
+  methods: {
+    ...mapActions('user', {
+      register: 'register'
+    })
+  }
 })
 export default class SignUp extends Vue {
+  registerError!: boolean
+  registerErrorReason!: string
+  storedUser!: any
+
   user: object = {
     username: '',
     email: '',
@@ -113,14 +131,14 @@ export default class SignUp extends Vue {
   }
 
   mounted () {
-    if (this.$store.state.user.registerError) {
-      if (this.$store.state.user.registerErrorReason === 'already exists') {
+    if (this.registerError) {
+      if (this.registerErrorReason === 'already exists') {
         this.$router.push('/')
       }
       this.user = {
-        username: this.$store.state.user.user.username,
-        email: this.$store.state.user.user.email,
-        password: this.$store.state.user.user.password
+        username: this.storedUser.username,
+        email: this.storedUser.email,
+        password: this.storedUser.password
       }
     }
   }
