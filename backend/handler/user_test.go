@@ -25,7 +25,7 @@ func TestUserRegisterHandler(t *testing.T) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
 			assert.Equal(t, http.StatusBadRequest, err.Code)
-			assert.Equal(t, "couldn't parse request", err.Message)
+			assert.Error(t, err)
 		}
 	}
 
@@ -61,8 +61,8 @@ func TestUserAuthenticateHandler(t *testing.T) {
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {
-			assert.Equal(t, http.StatusBadRequest, err.Code)
-			assert.Equal(t, "couldn't parse request", err.Message)
+			assert.Equal(t, http.StatusUnauthorized, err.Code)
+			assert.Error(t, err)
 		}
 	}
 

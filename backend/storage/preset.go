@@ -18,8 +18,8 @@ func CountPresets(ctx context.Context, params map[string]interface{}) (int64, er
 	return presetCollection().CountDocuments(ctx, params)
 }
 
-// GetPresets gives back an array of preset for different parameters
-func GetPresets(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.Preset, err error) {
+// GetPresets gives back an array of the presets short version for different parameters
+func GetPresets(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.PresetShort, err error) {
 	c := presetCollection()
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})
@@ -31,7 +31,7 @@ func GetPresets(ctx context.Context, params map[string]interface{}, page int, pa
 	}
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
-		var preset model.Preset
+		var preset model.PresetShort
 		cursor.Decode(&preset)
 		result = append(result, preset)
 	}

@@ -55,12 +55,3 @@ func (preset *Preset) Validate() error {
 	}
 	return nil
 }
-
-// PresetToShortList transfer a preset in a short on for list responses
-func PresetToShortList(presets []Preset) (result []PresetShort) {
-	for _, preset := range presets {
-		short := PresetShort{ID: preset.ID, Author: preset.Author, Title: preset.Title}
-		result = append(result, short)
-	}
-	return
-}
