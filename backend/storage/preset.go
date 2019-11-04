@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// CountPresets gives back the number of total documents inserted
+// CountPresets returns the number of total documents inserted
 func CountPresets(ctx context.Context, params map[string]interface{}) (int64, error) {
 	if len(params) == 0 {
 		return presetCollection().CountDocuments(ctx, bson.M{})
@@ -18,7 +18,7 @@ func CountPresets(ctx context.Context, params map[string]interface{}) (int64, er
 	return presetCollection().CountDocuments(ctx, params)
 }
 
-// GetPresets gives back an array of the presets short version for different parameters
+// GetPresets returns an array of the presets in the short version
 func GetPresets(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.PresetShort, err error) {
 	c := presetCollection()
 	options := options.Find()
@@ -49,7 +49,7 @@ func FindPreset(ctx context.Context, id primitive.ObjectID) (result *model.Prese
 	return result, nil
 }
 
-// CreatePreset will create a preset
+// CreatePreset will insert a preset
 func CreatePreset(ctx context.Context, preset *model.Preset) (err error) {
 	c := presetCollection()
 	res, err := c.InsertOne(ctx, preset)
