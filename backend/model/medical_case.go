@@ -56,6 +56,20 @@ type MedicalCaseShort struct {
 	Title  string             `json:"title" bson:"title"`
 }
 
+// MedicalCaseQuery is the query fields for the getter
+type MedicalCaseQuery struct {
+	Title    string `query:"title"`
+	Author   string `query:"author"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"limit"`
+}
+
+// MedicalCaseList is a list response of presets
+type MedicalCaseList struct {
+	Count   int64         `json:"count"`
+	MedicalCases []MedicalCaseShort `json:"medical_cases"`
+}
+
 // Validate validates the medical case
 func (mc *MedicalCase) Validate() error {
 	if mc.Author.ID.IsZero() || mc.Author.Username == "" {
@@ -67,21 +81,5 @@ func (mc *MedicalCase) Validate() error {
 	if mc.Title == "" {
 		return errors.New("title not set")
 	}
-	if !mc.vsPresent() {
-		return errors.New("empty or none vital signs exist")
-	}
 	return nil
-}
-
-// vsPresent checks if all VitalSigns contain data and if any is present
-func (mc *MedicalCase) vsPresent() bool {
-	if len(mc.VitalSigns) == 0 {
-		return false
-	}
-	for _, e := range mc.VitalSigns {
-		if e.Title == "" || e.Data == (VitalSigns{}) {
-			return false
-		}
-	}
-	return true
 }

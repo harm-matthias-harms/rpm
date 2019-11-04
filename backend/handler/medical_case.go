@@ -12,9 +12,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HandlePresetsGet gives back a number of presets
-func HandlePresetsGet(c echo.Context) (err error) {
-	params := new(model.PresetQuery)
+// HandleMedicalCaseGet returns medical cases in a short version
+func HandleMedicalCaseGet(c echo.Context) (err error) {
+	params := new(model.MedicalCaseQuery)
 	if err = c.Bind(params); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "params couldn't be parsed")
 	}
@@ -25,29 +25,29 @@ func HandlePresetsGet(c echo.Context) (err error) {
 	if params.Author != "" {
 		filter["author.username"] = primitive.Regex{Pattern: params.Author}
 	}
-	presets, err := storage.GetPresets(c.Request().Context(), filter, params.Page, params.PageSize)
-	count, err := storage.CountPresets(c.Request().Context(), filter)
-	response := model.PresetsList{Count: count, Presets: presets}
+	mcs, err := storage.GetMedicalCases(c.Request().Context(), filter, params.Page, params.PageSize)
+	count, err := storage.CountMedicalCases(c.Request().Context(), filter)
+	response := model.MedicalCaseList{Count: count, MedicalCases: mcs}
 	return c.JSON(http.StatusOK, response)
 }
 
-// HandlePresetFind returns a preset
-func HandlePresetFind(c echo.Context) (err error) {
+// HandleMedicalCaseFind returns a medical case
+func HandleMedicalCaseFind(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
 	}
-	preset, err := storage.FindPreset(c.Request().Context(), id)
+	mc, err := storage.FindMedicalCase(c.Request().Context(), id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't find preset")
+		return echo.NewHTTPError(http.StatusBadRequest, "couldn't find medical case")
 	}
-	return c.JSON(http.StatusOK, preset)
+	return c.JSON(http.StatusOK, mc)
 }
 
-// HandlePresetCreate creates a preset from a json
-func HandlePresetCreate(c echo.Context) (err error) {
-	preset := new(model.Preset)
-	if err := c.Bind(preset); err != nil {
+// HandleMedicalCaseCreate creates a medical case from a json
+func HandleMedicalCaseCreate(c echo.Context) (err error) {
+	mc := new(model.MedicalCase)
+	if err := c.Bind(mc); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
@@ -60,14 +60,14 @@ func HandlePresetCreate(c echo.Context) (err error) {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
 	}
-	preset.Author.ID = objectID
-	preset.Author.Username = claims["username"].(string)
-	preset.CreatedAt = time.Now()
-	if err = preset.Validate(); err != nil {
+	mc.Author.ID = objectID
+	mc.Author.Username = claims["username"].(string)
+	mc.CreatedAt = time.Now()
+	if err = mc.Validate(); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	if err = storage.CreatePreset(c.Request().Context(), preset); err != nil {
+	if err = storage.CreateMedicalCase(c.Request().Context(), mc); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be created")
 	}
-	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: preset})
+	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: mc})
 }
