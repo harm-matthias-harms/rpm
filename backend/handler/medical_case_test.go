@@ -1,11 +1,15 @@
 package handler
 
 import (
+	"bytes"
 	"encoding/json"
+	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
-	"strings"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
@@ -102,12 +106,23 @@ func TestMedicalCaseCreate(t *testing.T) {
 	mc := model.MedicalCase{Title: "test"}
 	resetMedicalCase(&mc)
 	mcString, _ := json.Marshal(mc)
-	header := http.Header{}
-	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	//header.Set(echo.HeaderContentType, echo.MIMEMultipartForm)
 	jwtCookie := loginUser(t)
 
+	//test file upload
+	file, _ := os.Open("./medical_case_test.go")
+	defer file.Close()
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	writer.WriteField("medicalCase", string(mcString))
+	part, _ := writer.CreateFormFile("files", filepath.Base("./medical_case_test.go"))
+	io.Copy(part, file)
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, writer.FormDataContentType())
+	writer.Close()
+
 	// create medical case
-	rec, err := testRequest(http.MethodPost, "/api/medical_cases", strings.NewReader(string(mcString)), HandleMedicalCaseCreate, header, nil, jwtCookie)
+	rec, err := testRequest(http.MethodPost, "/api/medical_cases", body, HandleMedicalCaseCreate, header, nil, jwtCookie)
 	if assert.NoError(t, err) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		response := &jsonStatus{}
@@ -133,7 +148,14 @@ func TestMedicalCaseCreate(t *testing.T) {
 	mcInvalid := model.MedicalCase{}
 	resetMedicalCase(&mcInvalid)
 	mcInvalidString, _ := json.Marshal(mcInvalid)
-	rec, err = testRequest(http.MethodPost, "/api/medical_cases", strings.NewReader(string(mcInvalidString)), HandleMedicalCaseCreate, header, nil, jwtCookie)
+	//test file upload
+	bodyInvalid := new(bytes.Buffer)
+	writerInvalid := multipart.NewWriter(bodyInvalid)
+	writerInvalid.WriteField("medicalCase", string(mcInvalidString))
+	header = http.Header{}
+	header.Set(echo.HeaderContentType, writerInvalid.FormDataContentType())
+	writerInvalid.Close()
+	rec, err = testRequest(http.MethodPost, "/api/medical_cases", bodyInvalid, HandleMedicalCaseCreate, header, nil, jwtCookie)
 	if assert.Error(t, err) {
 		err, ok := err.(*echo.HTTPError)
 		if ok {

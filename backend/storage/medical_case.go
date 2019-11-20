@@ -1,12 +1,15 @@
 package storage
 
 import (
+	"bufio"
 	"context"
+	"mime/multipart"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -50,13 +53,40 @@ func FindMedicalCase(ctx context.Context, id primitive.ObjectID) (result *model.
 }
 
 // CreateMedicalCase will store a medical case
-func CreateMedicalCase(ctx context.Context, preset *model.MedicalCase) (err error) {
+func CreateMedicalCase(ctx context.Context, mc *model.MedicalCase) (err error) {
 	c := mcCollection()
-	res, err := c.InsertOne(ctx, preset)
-	preset.ID = res.InsertedID.(primitive.ObjectID)
+	res, err := c.InsertOne(ctx, mc)
+	mc.ID = res.InsertedID.(primitive.ObjectID)
 	return
 }
 
+// StoreMedicalCaseFile stores the provided documents to a medical case
+func StoreMedicalCaseFile(ctx context.Context, mc *model.MedicalCase, file *multipart.FileHeader) (err error) {
+	bucket, err := fileBucket()
+	if err != nil {
+		return
+	}
+	src, err := file.Open()
+	if err != nil {
+		return
+	}
+	defer src.Close()
+	id, err := bucket.UploadFromStream(file.Filename, bufio.NewReader(src))
+	if err != nil {
+		return
+	}
+	mc.Files = append(mc.Files, model.MedicalCaseFile{ID: id, Name: file.Filename, Size: file.Size})
+	return nil
+}
+
 func mcCollection() *mongo.Collection {
-	return MongoSession.Collection("medical_cases")
+	return MongoSession.Collection("medicalCases")
+}
+
+func fileBucket() (bucket *gridfs.Bucket, err error) {
+	bucket, err = gridfs.NewBucket(MongoSession, options.GridFSBucket().SetName("files"))
+	if err != nil {
+		return nil, err
+	}
+	return bucket, nil
 }

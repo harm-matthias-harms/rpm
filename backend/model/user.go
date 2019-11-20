@@ -14,16 +14,16 @@ var (
 
 // User is the type of a user
 type User struct {
-	ID       primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Username string             `json:"username" bson:"username"`
-	Email    string             `json:"email" bson:"email"`
-	Password string             `json:"password,omitempty" bson:"password"`
+	ID       primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
+	Username string             `json:"username" form:"username" bson:"username"`
+	Email    string             `json:"email" form:"email" bson:"email"`
+	Password string             `json:"password,omitempty" form:"password" bson:"password"`
 }
 
 // LimitedUser describes a User with none vulnerable information
 type LimitedUser struct {
-	ID       primitive.ObjectID `json:"id" bson:"_id" query:"id"`
-	Username string             `json:"username" bson:"username" query:"username"`
+	ID       primitive.ObjectID `json:"id" form:"id" bson:"_id" query:"id"`
+	Username string             `json:"username" form:"password" bson:"username" query:"username"`
 }
 
 // ToLimitedUser offers the possibility to store the user to other documents without vulnerable data

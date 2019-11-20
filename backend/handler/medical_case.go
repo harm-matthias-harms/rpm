@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -46,8 +47,15 @@ func HandleMedicalCaseFind(c echo.Context) (err error) {
 
 // HandleMedicalCaseCreate creates a medical case from a json
 func HandleMedicalCaseCreate(c echo.Context) (err error) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error()) //"no multipart form provided")
+	}
+
+	jsonString := form.Value["medicalCase"]
 	mc := new(model.MedicalCase)
-	if err := c.Bind(mc); err != nil {
+	err = json.Unmarshal([]byte(jsonString[0]), mc)
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
@@ -66,8 +74,25 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	if err = mc.Validate(); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
+	// load files
+	for _, file := range form.File["files"] {
+		err := storage.StoreMedicalCaseFile(c.Request().Context(), mc, file)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "couldn't store documents")
+		}
+	}
+	// create medical case
 	if err = storage.CreateMedicalCase(c.Request().Context(), mc); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be created")
 	}
+
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: mc})
+}
+
+// HandleMedicalCaseFileGet serves the files for a medical case
+func HandleMedicalCaseFileGet(c echo.Context) error {
+	mc_id := c.Param("mc_id")
+	file_id := c.Param("id")
+	return nil
 }
