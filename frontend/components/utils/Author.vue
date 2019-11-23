@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-import { Prop, Component, Vue } from 'vue-property-decorator'
+  import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-export default class Author extends Vue {
+  export default class Author extends Vue {
   @Prop({ type: Object, required: true }) readonly author!: object
   @Prop({ type: String }) readonly createdAt?: string
-}
+  }
 </script>

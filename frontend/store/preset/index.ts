@@ -13,5 +13,5 @@ export const preset: Module<State, RootState> = {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 }

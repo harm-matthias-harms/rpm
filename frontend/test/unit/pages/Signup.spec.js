@@ -20,16 +20,16 @@ describe('SignUp', () => {
     wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       provide: {
         $validator () {
           return new VeeValidate.Validator()
-        }
+        },
       },
       sync: false,
       store,
-      router
+      router,
     })
   })
   test('is a Vue instance', () => {
@@ -40,16 +40,16 @@ describe('SignUp', () => {
     storeCopy.state.user.user = {
       username: 'name',
       email: 'mail@mail.com',
-      password: '123'
+      password: '123',
     }
     storeCopy.state.user.registerError = true
     wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       store: storeCopy,
-      router
+      router,
     })
     expect(wrapper.vm.user.username).toEqual('name')
     expect(wrapper.vm.user.email).toEqual('mail@mail.com')
@@ -62,10 +62,10 @@ describe('SignUp', () => {
     wrapper = mount(SignUp, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       store: storeCopy,
-      router
+      router,
     })
     expect(wrapper.vm.$route.path).toEqual('/')
   })

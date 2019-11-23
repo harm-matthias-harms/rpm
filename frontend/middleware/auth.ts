@@ -10,7 +10,7 @@ export default function (context) {
     context.store.commit('user/SET_AUTHENTICATE', {
       id: decoded.id,
       username: decoded.username,
-      expire: decoded.exp
+      expire: decoded.exp,
     })
     if (new Date(decoded.exp * 1000) < new Date()) {
       Cookie.remove('Authorization')
@@ -24,7 +24,7 @@ export default function (context) {
     if (blockUnAuthorized.some(value => context.route.name.includes(value))) {
       context.store.commit(
         'snackbar/SET',
-        'You are unauthorized to enter this area, please log in first'
+        'You are unauthorized to enter this area, please log in first',
       )
       return context.redirect('/')
     }

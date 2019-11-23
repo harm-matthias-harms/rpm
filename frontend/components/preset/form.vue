@@ -8,13 +8,19 @@
       required
       data-vv-name="title"
     />
-    <v-text-field v-model="preset.vitalSigns.oos" label="Onset of Symptoms" />
+    <v-text-field
+      v-model="preset.vitalSigns.oos"
+      label="Onset of Symptoms"
+    />
     <v-select
       v-model="preset.vitalSigns.avpu"
       :items="['Altert', 'Voice', 'Pain', 'Unresponsive'] "
       label="AVPU"
     />
-    <v-text-field v-model="preset.vitalSigns.mobility" label="Mobility" />
+    <v-text-field
+      v-model="preset.vitalSigns.mobility"
+      label="Mobility"
+    />
     <v-text-field
       v-model="preset.vitalSigns.pulse"
       v-validate="'integer'"
@@ -76,7 +82,12 @@
       suffix="°C"
       label="Temperature"
     />
-    <v-text-field v-model="preset.vitalSigns.weight" type="number" suffix="kg" label="Weight" />
+    <v-text-field
+      v-model="preset.vitalSigns.weight"
+      type="number"
+      suffix="kg"
+      label="Weight"
+    />
     <v-text-field
       v-model="preset.vitalSigns.height"
       v-validate="'integer'"
@@ -102,10 +113,10 @@
 </template>
 
 <script lang="ts">
-import { Prop, Component, Vue } from 'vue-property-decorator'
+  import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-export default class PresetForm extends Vue {
+  export default class PresetForm extends Vue {
   @Prop({ type: Object, required: true }) readonly preset!: object
   @Prop({ type: Function, required: true }) readonly atSubmit!: void
-}
+  }
 </script>

@@ -1,17 +1,26 @@
 <template>
-  <v-snackbar v-model="show" bottom right :timeout="6000">
+  <v-snackbar
+    v-model="show"
+    bottom
+    right
+    :timeout="6000"
+  >
     {{ message }}
-    <v-btn color="pink" text @click="show = false">
+    <v-btn
+      color="pink"
+      text
+      @click="show = false"
+    >
       <v-icon>close</v-icon>
     </v-btn>
   </v-snackbar>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+  import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class Snackbar extends Vue {
+  export default class Snackbar extends Vue {
   show: boolean = false
   message: string = ''
 
@@ -24,8 +33,8 @@ export default class Snackbar extends Vue {
           this.show = true
           this.message = this.$store.state.snackbar.message
         }
-      }
+      },
     )
   }
-}
+  }
 </script>

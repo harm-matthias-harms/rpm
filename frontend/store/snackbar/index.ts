@@ -8,7 +8,7 @@ export interface State {
 }
 
 export const state = (): State => ({
-  message: ''
+  message: '',
 })
 
 export const getters: GetterTree<State, RootState> = {}
@@ -20,5 +20,5 @@ export const actions: Actions<State, RootState> = {}
 export const mutations: MutationTree<State> = {
   SET (state, message: string) {
     state.message = message
-  }
+  },
 }

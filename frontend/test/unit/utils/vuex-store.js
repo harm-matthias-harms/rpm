@@ -20,6 +20,6 @@ export const store = new Vuex.Store({
     loader: Object.assign({ namespaced: true }, loader),
     snackbar: Object.assign({ namespaced: true }, snackbar),
     user,
-    preset
-  }
+    preset,
+  },
 })

@@ -21,7 +21,7 @@ export const actions: ActionTree<State, RootState> = {
         ) {
           commit('SET_ERROR_REGISTER', 'already exists')
           commit('snackbar/SET', 'Account already exists please login.', {
-            root: true
+            root: true,
           })
         } else {
           commit('SET_ERROR_REGISTER', 'connection error')
@@ -43,7 +43,7 @@ export const actions: ActionTree<State, RootState> = {
           commit('SET_AUTHENTICATE', {
             id: decoded.id,
             username: decoded.username,
-            expire: decoded.exp
+            expire: decoded.exp,
           })
         } else {
           commit('snackbar/SET', 'Wrong username or password', { root: true })
@@ -59,7 +59,7 @@ export const actions: ActionTree<State, RootState> = {
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
-  }
+  },
 }
 
 export default actions

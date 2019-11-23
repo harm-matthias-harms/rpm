@@ -7,7 +7,7 @@ import ShowPreset from '@/pages/presets/_id.vue'
 
 const $route = {
   path: '/presets/001',
-  params: { id: '001' }
+  params: { id: '001' },
 }
 
 Vue.use(Vuetify)
@@ -20,13 +20,13 @@ describe('My Presets', () => {
     wrapper = shallowMount(ShowPreset, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       store,
       router,
       mocks: {
-        $route
-      }
+        $route,
+      },
     })
   })
   test('is a Vue instance', () => {
