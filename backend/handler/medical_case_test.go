@@ -12,6 +12,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	"go.mongodb.org/mongo-driver/mongo/gridfs"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/labstack/echo/v4"
@@ -162,6 +165,43 @@ func TestMedicalCaseCreate(t *testing.T) {
 			assert.Equal(t, http.StatusBadRequest, err.Code)
 			assert.Equal(t, "title not set", err.Message)
 		}
+	}
+}
+
+func TestMedicalCaseFileGet(t *testing.T) {
+	// setup
+	_ = storage.SetMongoDatabase()
+	bucket, _ := fileBucket()
+	jwtCookie := loginUser(t)
+
+	// upload a fil
+	ustream, _ := bucket.OpenUploadStream("test.txt", options.GridFSUpload())
+	_, _ = ustream.Write([]byte("test file"))
+	fileID := ustream.FileID
+	ustream.Close()
+
+	// create medical case with file
+	mc := model.MedicalCase{Title: "test"}
+	resetMedicalCase(&mc)
+	mc.Files = append(mc.Files, model.MedicalCaseFile{ID: fileID.(primitive.ObjectID), Name: "test.txt", Size: 9})
+	_ = storage.CreateMedicalCase(nil, &mc)
+
+	// test get
+	rec, err := testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": fileID.(primitive.ObjectID).Hex()}, jwtCookie)
+	assert.NoError(t, err)
+	assert.Equal(t, []byte("test file"), rec.Body.Bytes())
+}
+
+func fileBucket() (bucket *gridfs.Bucket, err error) {
+	_ = storage.SetMongoDatabase()
+	bucket, err = gridfs.NewBucket(storage.MongoSession, options.GridFSBucket().SetName("files"))
+	return
+}
+
+func resetMedicalCaseFile(mc *model.MedicalCase) {
+	bucket, _ := fileBucket()
+	for _, f := range mc.Files {
+		_ = bucket.Delete(f.ID)
 	}
 }
 

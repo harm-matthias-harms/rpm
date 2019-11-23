@@ -1,11 +1,20 @@
 package storage
 
 import (
+	"bufio"
+	"bytes"
+	"io"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"testing"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func TestCountMedicalCases(t *testing.T) {
@@ -40,7 +49,7 @@ func TestGetMedicalCases(t *testing.T) {
 		assert.Equal(t, 1, len(result))
 	}
 	// test multiple filters
-	filter["general_information.surgical"] = true
+	filter["generalInformation.surgical"] = true
 	result, err = GetMedicalCases(nil, filter, 1, 1)
 	if assert.NoError(t, err) {
 		assert.Equal(t, 1, len(result))
@@ -78,7 +87,62 @@ func TestCreateMedicalCase(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func resetMedicalCaseDatabase(preset *model.MedicalCase) {
+func TestCreateMedicalCaseFile(t *testing.T) {
+	// Setup
 	_ = SetMongoDatabase()
-	_, _ = mcCollection().DeleteMany(nil, bson.M{"title": preset.Title})
+	mc := &model.MedicalCase{Title: "test create file"}
+
+	// create multipart form file to recieve the FileHeader
+	file, _ := os.Open("./medical_case_test.go")
+	defer file.Close()
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	part, _ := writer.CreateFormFile("files", filepath.Base("./medical_case_test.go"))
+	io.Copy(part, file)
+	writer.Close()
+
+	// reading form
+	r := multipart.NewReader(body, writer.Boundary())
+	form, _ := r.ReadForm(10)
+
+	// test file create
+	for _, file := range form.File["files"] {
+		err := StoreMedicalCaseFile(mc, file)
+		assert.NoError(t, err)
+	}
+	resetMedicalCaseFile(mc)
+}
+
+func TestGetMedicalCaseFile(t *testing.T) {
+	// setup
+	_ = SetMongoDatabase()
+	bucket, _ := fileBucket()
+
+	// upload a fil
+	ustream, _ := bucket.OpenUploadStream("test.txt", options.GridFSUpload())
+	_, _ = ustream.Write([]byte("test file"))
+	fileID := ustream.FileID
+	ustream.Close()
+
+	// test get
+	var b bytes.Buffer
+	w := bufio.NewWriter(&b)
+	err := GetMedicalCaseFile(fileID.(primitive.ObjectID), w)
+	assert.NoError(t, err)
+	assert.Equal(t, "test file", b.String())
+
+	//cleanup 
+	_ = bucket.Delete(fileID)
+}
+
+func resetMedicalCaseFile(mc *model.MedicalCase) {
+	bucket, _ := fileBucket()
+	for _, f := range mc.Files {
+		_ = bucket.Delete(f.ID)
+	}
+}
+
+func resetMedicalCaseDatabase(mc *model.MedicalCase) {
+	_ = SetMongoDatabase()
+	_, _ = mcCollection().DeleteMany(nil, bson.M{"title": mc.Title})
 }

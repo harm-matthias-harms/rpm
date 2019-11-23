@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -77,7 +79,7 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 
 	// load files
 	for _, file := range form.File["files"] {
-		err := storage.StoreMedicalCaseFile(c.Request().Context(), mc, file)
+		err := storage.StoreMedicalCaseFile(mc, file)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "couldn't store documents")
 		}
@@ -92,7 +94,27 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 
 // HandleMedicalCaseFileGet serves the files for a medical case
 func HandleMedicalCaseFileGet(c echo.Context) error {
-	mc_id := c.Param("mc_id")
-	file_id := c.Param("id")
-	return nil
+	mcID, err := primitive.ObjectIDFromHex(c.Param("mc_id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+	}
+	fileID, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+	}
+	mc, err := storage.FindMedicalCase(c.Request().Context(), mcID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "medical case does not exist")
+	}
+	for _, file := range mc.Files {
+		if file.ID == fileID {
+			var b bytes.Buffer
+			w := bufio.NewWriter(&b)
+			if err = storage.GetMedicalCaseFile(fileID, w); err != nil {
+				return echo.NewHTTPError(http.StatusBadRequest, "file does not exist")
+			}
+			return c.Stream(http.StatusOK, http.DetectContentType(b.Bytes()), &b)
+		}
+	}
+	return echo.NewHTTPError(http.StatusBadRequest, "file does not exist")
 }
