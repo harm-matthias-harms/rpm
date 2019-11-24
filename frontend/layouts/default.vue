@@ -141,6 +141,27 @@
 
   items = [
     {
+      name: 'Medical Case',
+      icon: 'fas fa-file-medical',
+      items: [
+        {
+          name: 'List',
+          icon: 'fas fa-table',
+          url: '/medical_cases',
+        },
+        {
+          name: 'My',
+          icon: 'fas fa-user',
+          url: '/medical_cases/my',
+        },
+        {
+          name: 'New',
+          icon: 'fas fa-plus',
+          url: '/medical_cases/new',
+        },
+      ],
+    },
+    {
       name: 'Preset',
       icon: 'fas fa-syringe',
       items: [
@@ -150,7 +171,7 @@
           url: '/presets',
         },
         {
-          name: 'My Own',
+          name: 'My',
           icon: 'fas fa-user',
           url: '/presets/my',
         },
