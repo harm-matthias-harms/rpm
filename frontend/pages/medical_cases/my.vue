@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="center">
       <v-col
-        md="5"
+        md="4"
         sm="6"
       >
         <h3 class="headline">
@@ -12,11 +12,11 @@
             color="primary"
           >
             {{ count(user.username) }}
-          </v-chip>Presets
+          </v-chip>Medical Cases
         </h3>
       </v-col>
       <v-col
-        md="5"
+        md="4"
         sm="6"
         class="justify-end d-flex"
       >
@@ -35,7 +35,7 @@
         >
           <v-icon
             small
-            @click="loadPresets"
+            @click="loadMedicalCases"
           >
             fas fa-redo
           </v-icon>
@@ -44,10 +44,10 @@
     </v-row>
     <v-row justify="center">
       <v-col
-        md="10"
+        md="8"
         sm="12"
       >
-        <PresetTable
+        <MedicalCaseTable
           :items="items(user.username)"
           :loading="loading"
         />
@@ -59,44 +59,44 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
   import { mapGetters, mapState, mapActions } from 'vuex'
-  import PresetTable from '@/components/preset/table.vue'
+  import MedicalCaseTable from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    PresetTable,
+    MedicalCaseTable,
   },
   computed: {
-    ...mapGetters('preset', {
+    ...mapGetters('medicalCase', {
       items: 'myOwn',
       count: 'myOwnCount',
     }),
-    ...mapState('preset', {
-      presetsLoaded: 'presetsLoaded',
+    ...mapState('medicalCase', {
+      medicalCasesLoaded: 'medicalCasesLoaded',
     }),
     ...mapState('user', {
       user: 'user',
     }),
   },
   methods: {
-    ...mapActions('preset', {
-      getPresets: 'get_all',
+    ...mapActions('medicalCase', {
+      getMedicalCases: 'get_all',
     }),
   },
 })
-  export default class OwnPresets extends Vue {
-  getPresets!: () => void
-  presetsLoaded!: boolean
+  export default class OwnMedicalCases extends Vue {
+  getMedicalCases!: () => void
+  medicalCasesLoaded!: boolean
 
   loading = false
 
-  loadPresets () {
+  loadMedicalCases () {
     this.loading = true
-    this.getPresets()
+    this.getMedicalCases()
     this.loading = false
   }
 
   mounted () {
-    if (!this.presetsLoaded) {
-      this.loadPresets()
+    if (!this.medicalCasesLoaded) {
+      this.loadMedicalCases()
     }
   }
   }

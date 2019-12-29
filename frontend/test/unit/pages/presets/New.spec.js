@@ -6,7 +6,7 @@ import NewPreset from '@/pages/presets/new.vue'
 
 Vue.use(Vuetify)
 
-describe('Index', () => {
+describe('New Preset', () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallowMount(NewPreset, {

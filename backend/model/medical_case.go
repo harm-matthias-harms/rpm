@@ -17,7 +17,6 @@ type MedicalCase struct {
 	Title            string             `json:"title" form:"title" bson:"title"`
 	MakeUp           string             `json:"makeup" form:"makeup" bson:"makeup"`
 	OtherInformation string             `json:"otherInformation" form:"otherInformation" bson:"otherInformation"`
-	// TODO Documents
 	GeneralInformation struct {
 		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
 		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
@@ -40,21 +39,23 @@ type MedicalCase struct {
 		OnExamination string `json:"onExamination" form:"onExamination" bson:"onExamination"`
 		Expectations  string `json:"expectations" form:"expectations" bson:"expectations"`
 	} `json:"expectations" form:"expectations" bson:"expectations"`
-	// TODO VitalSigns graph
-	VitalSigns []struct {
-		Title      string     `json:"title" form:"title" bson:"title"`
-		Prepending string     `json:"prepending" form:"prepending" bson:"prepending"`
-		Reason     string     `jso:"reason" form:"reason" bson:"reason"`
-		Data       VitalSigns `json:"data" form:"data" bson:"data"`
-	} `json:"vitalSigns" form:"vitalSigns" bson:"vitalSigns"`
-	Files []MedicalCaseFile `json:"files" bson:"files"`
+	VitalSigns []NestedVitalSigns `json:"vitalSigns" form:"vitalSigns" bson:"vitalSigns"`
+	Files      []MedicalCaseFile  `json:"files" bson:"files"`
+}
+
+//NestedVitalSigns enable evolving cases
+type NestedVitalSigns struct {
+	Title  string     `json:"title" form:"title" bson:"title"`
+	Reason string     `jso:"reason" form:"reason" bson:"reason"`
+	Data   VitalSigns `json:"data" form:"data" bson:"data"`
+	Childs []NestedVitalSigns
 }
 
 // MedicalCaseFile describes a document stored at a medical case
 type MedicalCaseFile struct {
 	ID   primitive.ObjectID `json:"id" bson:"_id"`
 	Name string             `json:"name" bson:"name"`
-	Size int64            `json:"size" bson:"size"`
+	Size int64              `json:"size" bson:"size"`
 }
 
 // MedicalCaseShort serves as the short Version of medical cases for lists.
@@ -75,7 +76,7 @@ type MedicalCaseQuery struct {
 // MedicalCaseList is a list response of presets
 type MedicalCaseList struct {
 	Count        int64              `json:"count"`
-	MedicalCases []MedicalCaseShort `json:"medical_cases"`
+	MedicalCases []MedicalCaseShort `json:"medicalCases"`
 }
 
 // Validate validates the medical case

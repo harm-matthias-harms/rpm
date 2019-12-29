@@ -1,20 +1,32 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
+import VueRouter from 'vue-router'
 import { store } from '../../utils/vuex-store'
-import Presets from '@/pages/presets/index.vue'
+import ShowMedicalCase from '@/pages/medical_cases/_id.vue'
+
+const $route = {
+  path: '/medical_cases/001',
+  params: { id: '001' },
+}
 
 Vue.use(Vuetify)
 
-describe('Index Preset', () => {
+describe('Show Medical Case', () => {
   let wrapper
+  let router
   beforeEach(() => {
-    wrapper = shallowMount(Presets, {
+    router = new VueRouter()
+    wrapper = shallowMount(ShowMedicalCase, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub,
       },
       store,
+      router,
+      mocks: {
+        $route,
+      },
     })
   })
   test('is a Vue instance', () => {

@@ -3,33 +3,36 @@ import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
 import { store } from '../../utils/vuex-store'
-import ShowPreset from '@/pages/presets/_id.vue'
-
-const $route = {
-  path: '/presets/001',
-  params: { id: '001' },
-}
+import MedicalCaseTable from '@/components/medical_case/table.vue'
 
 Vue.use(Vuetify)
+Vue.use(VueRouter)
 
-describe('Show Presets', () => {
+describe('Medical case table', () => {
   let wrapper
   let router
   beforeEach(() => {
     router = new VueRouter()
-    wrapper = shallowMount(ShowPreset, {
+    wrapper = shallowMount(MedicalCaseTable, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub,
       },
+      propsData: {
+        loading: false,
+        items: [],
+      },
       store,
       router,
-      mocks: {
-        $route,
-      },
     })
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper.props().loading).toBeFalsy()
+    expect(wrapper.props().items).toMatchObject([])
+  })
+  test('open preset', () => {
+    wrapper.vm.openMedicalCase({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/medical_case/001')
   })
 })

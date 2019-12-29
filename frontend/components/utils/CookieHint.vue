@@ -28,6 +28,7 @@
     localStorage.setItem('accepted_cookie_hint', 'true')
     this.snackbar = false
   }
+
   mounted () {
     this.snackbar = !(localStorage.getItem('accepted_cookie_hint') === 'true')
   }

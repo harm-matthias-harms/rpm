@@ -2,36 +2,36 @@
   <v-container>
     <v-row justify="center">
       <v-col
-        lg="6"
+        lg="4"
         md="8"
         sm="12"
       >
         <v-card>
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
-              {{ preset.title }}
+              {{ medicalCase.title }}
             </h4>
             <v-row justify="center">
               <v-col class="col-auto">
                 <Author
-                  :author="preset.author"
-                  :created-at="preset.createdAt"
+                  :author="medicalCase.author"
+                  :created-at="medicalCase.createdAt"
                 />
               </v-col>
               <v-col class="col-auto mr-auto">
                 <Editor
-                  v-if="preset.editor.username"
-                  :editor="preset.editor"
-                  :updated-at="preset.updatedAt"
+                  v-if="medicalCase.editor.username"
+                  :editor="medicalCase.editor"
+                  :updated-at="medicalCase.updatedAt"
                 />
               </v-col>
             </v-row>
           </v-card-text>
           <v-divider />
-          <VitalSigns
+          <!-- <VitalSigns
             class="black--text"
-            :vital-signs="preset.vitalSigns"
-          />
+            :vital-signs="medicalCase.vitalSigns"
+          /> -->
         </v-card>
       </v-col>
     </v-row>
@@ -51,23 +51,23 @@
     VitalSigns,
   },
   computed: {
-    ...mapState('preset', {
-      preset: 'preset',
+    ...mapState('medicalCase', {
+      medicalCase: 'medicalCase',
     }),
   },
   methods: {
-    ...mapActions('preset', {
+    ...mapActions('medicalCase', {
       find: 'find',
     }),
   },
 })
-  export default class ShowPreset extends Vue {
+  export default class ShowMedicalCase extends Vue {
   find!: (id) => void
-  preset!: any
+  medicalCase!: any
 
   mounted () {
     const id = this.$route.params.id
-    if (this.preset.id !== id) {
+    if (this.medicalCase.id !== id) {
       this.find(id)
     }
   }
