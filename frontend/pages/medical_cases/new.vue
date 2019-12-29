@@ -36,7 +36,7 @@
   },
 })
   export default class NewMedicalCase extends Vue {
-  medicalCase = { generalInformation: {}, medicalHistory: {}, expectations: {}, vitalSigns: [], files: []}
+  medicalCase = { generalInformation: {}, medicalHistory: {}, expectations: {}, vitalSigns: [], files: [] }
   create!: (medicalCase, files) => void
   }
 </script>

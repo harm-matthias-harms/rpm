@@ -3,7 +3,7 @@ import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
 import { store } from '../../utils/vuex-store'
-import MedicalCaseTable from '@/components/medical_case/table.vue'
+import Table from '@/components/medical_case/table.vue'
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
@@ -13,7 +13,7 @@ describe('Medical case table', () => {
   let router
   beforeEach(() => {
     router = new VueRouter()
-    wrapper = shallowMount(MedicalCaseTable, {
+    wrapper = shallowMount(Table, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub,

@@ -13,21 +13,21 @@ describe('Vitalsigns form', () => {
     wrapper = mount(Form, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       propsData: {
-        vitalSigns: {}
+        vitalSigns: {},
       },
       provide: {
-        $validator() {
+        $validator () {
           return new VeeValidate.Validator()
-        }
+        },
       },
       vuetify: new Vuetify(),
-      sync: false
+      sync: false,
     })
   })
-  test('is a Vue instance', done => {
+  test('is a Vue instance', (done) => {
     expect(wrapper.isVueInstance()).toBeTruthy()
     wrapper.find('input[name="oos"]').setValue('test')
 

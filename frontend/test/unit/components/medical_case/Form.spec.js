@@ -13,7 +13,7 @@ describe('Medical case form', () => {
     wrapper = shallowMount(Form, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       propsData: {
         medicalCase: {
@@ -21,16 +21,16 @@ describe('Medical case form', () => {
           medicalHistory: {},
           expectations: {},
           vitalSigns: [],
-          files: []
+          files: [],
         },
-        atSubmit: () => {}
+        atSubmit: () => {},
       },
       provide: {
-        $validator() {
+        $validator () {
           return new VeeValidate.Validator()
-        }
+        },
       },
-      sync: false
+      sync: false,
     })
   })
   test('is a Vue instance', () => {

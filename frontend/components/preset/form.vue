@@ -8,28 +8,32 @@
       required
       data-vv-name="title"
     />
-    <Form :vitalSigns.sync="preset.vitalSigns" />
+    <Form :vital-signs.sync="preset.vitalSigns" />
 
     <v-btn
       :disabled="preset.title && errors.any()"
       class="mr-4"
       type="submit"
       color="primary"
-    >create</v-btn>
-    <v-btn @click="$router.back()">cancel</v-btn>
+    >
+      create
+    </v-btn>
+    <v-btn @click="$router.back()">
+      cancel
+    </v-btn>
   </v-form>
 </template>
 
 <script lang="ts">
-import { Prop, Component, Vue } from 'vue-property-decorator'
-import Form from '@/components/vital_signs/form.vue'
+  import { Prop, Component, Vue } from 'vue-property-decorator'
+  import Form from '@/components/vital_signs/form.vue'
 @Component({
   components: {
-    Form
-  }
+    Form,
+  },
 })
-export default class PresetForm extends Vue {
+  export default class PresetForm extends Vue {
   @Prop({ type: Object, required: true }) readonly preset!: object
   @Prop({ type: Function, required: true }) readonly atSubmit!: void
-}
+  }
 </script>

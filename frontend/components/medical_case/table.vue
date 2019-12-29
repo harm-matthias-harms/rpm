@@ -32,7 +32,7 @@
 <script lang="ts">
   import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-  export default class MedicalCaseTable extends Vue {
+  export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
 
@@ -42,7 +42,7 @@
   ]
 
   openMedicalCase (medicalCase) {
-    this.$router.push('/medical_case/' + medicalCase.id)
+    this.$router.push('/medical_cases/' + medicalCase.id)
   }
   }
 </script>

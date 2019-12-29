@@ -1,12 +1,19 @@
 <template>
   <div>
-    <v-text-field v-model="vitalSigns.oos" label="Onset of Symptoms" name="oos" />
+    <v-text-field
+      v-model="vitalSigns.oos"
+      label="Onset of Symptoms"
+      name="oos"
+    />
     <v-select
       v-model="vitalSigns.avpu"
       :items="['Altert', 'Voice', 'Pain', 'Unresponsive']"
       label="AVPU"
     />
-    <v-text-field v-model="vitalSigns.mobility" label="Mobility" />
+    <v-text-field
+      v-model="vitalSigns.mobility"
+      label="Mobility"
+    />
     <v-text-field
       v-model.number="vitalSigns.pulse"
       v-validate="'integer'"
@@ -68,7 +75,12 @@
       suffix="°C"
       label="Temperature"
     />
-    <v-text-field v-model.number="vitalSigns.weight" type="number" suffix="kg" label="Weight" />
+    <v-text-field
+      v-model.number="vitalSigns.weight"
+      type="number"
+      suffix="kg"
+      label="Weight"
+    />
     <v-text-field
       v-model.number="vitalSigns.height"
       v-validate="'integer'"
@@ -82,13 +94,13 @@
 </template>
 
 <script lang="ts">
-import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
+  import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
 @Component
-export default class Form extends Vue {
+  export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSigns!: object
   @Watch('vitalSigns', { immediate: true, deep: true })
-  updateVitalSignsChanged(val: any, oldVal: any) {
+  updateVitalSignsChanged (val: any) {
     this.$emit('update:vitalSigns', val)
   }
-}
+  }
 </script>

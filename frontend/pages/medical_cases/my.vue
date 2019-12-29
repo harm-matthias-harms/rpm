@@ -47,7 +47,7 @@
         md="8"
         sm="12"
       >
-        <MedicalCaseTable
+        <Table
           :items="items(user.username)"
           :loading="loading"
         />
@@ -59,10 +59,10 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
   import { mapGetters, mapState, mapActions } from 'vuex'
-  import MedicalCaseTable from '@/components/medical_case/table.vue'
+  import Table from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    MedicalCaseTable,
+    Table,
   },
   computed: {
     ...mapGetters('medicalCase', {
