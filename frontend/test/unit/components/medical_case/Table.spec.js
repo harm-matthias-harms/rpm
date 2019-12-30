@@ -33,6 +33,6 @@ describe('Medical case table', () => {
   })
   test('open preset', () => {
     wrapper.vm.openMedicalCase({ id: '001' })
-    expect(wrapper.vm.$route.path).toEqual('/medical_case/001')
+    expect(wrapper.vm.$route.path).toEqual('/medical_cases/001')
   })
 })

@@ -24,6 +24,7 @@
           small
           color="primary"
           class="mr-2"
+          to="/presets/new"
         >
           <v-icon small>
             fas fa-plus
