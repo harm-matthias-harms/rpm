@@ -8,7 +8,7 @@ describe('Create medical case', () => {
   let vitalSigns
   let child
   beforeEach(() => {
-    cy.fixture('medical_case/create.json').then(json => {
+    cy.fixture('medical_case/create.json').then((json) => {
       medicalCase = json.data
       generalInformation = medicalCase.generalInformation
       medicalHistory = medicalCase.medicalHistory
@@ -21,13 +21,13 @@ describe('Create medical case', () => {
       method: 'POST',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/create.json'
+      response: 'fixture:medical_case/create.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json'
+      response: 'fixture:medical_case/list.json',
     })
     cy.login()
   })
