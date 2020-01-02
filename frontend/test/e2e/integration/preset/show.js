@@ -1,26 +1,26 @@
 /* eslint-disable no-undef */
 
-describe('View a preset', () => {
+describe('Show a preset', () => {
   beforeEach(() => {
     cy.server()
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json'
+      response: 'fixture:preset/list.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: 'fixture:preset/preset.json'
+      response: 'fixture:preset/preset.json',
     })
     cy.login()
   })
   afterEach(() => {
     cy.logout()
   })
-  it('views a preset', () => {
+  it('shows a preset', () => {
     cy.visit('/presets')
     cy.contains('test preset 1').click()
     // has title

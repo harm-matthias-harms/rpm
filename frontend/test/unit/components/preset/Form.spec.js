@@ -13,18 +13,18 @@ describe('Preset form', () => {
     wrapper = shallowMount(PresetFrom, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       propsData: {
         preset: { vitalSigns: {} },
-        atSubmit: () => {}
+        atSubmit: () => {},
       },
       provide: {
         $validator () {
           return new VeeValidate.Validator()
-        }
+        },
       },
-      sync: false
+      sync: false,
     })
   })
   test('is a Vue instance', () => {

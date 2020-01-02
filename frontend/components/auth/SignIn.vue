@@ -49,31 +49,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import isEmail from 'validator/lib/isEmail'
-import { mapActions } from 'vuex'
+  import { Component, Vue } from 'nuxt-property-decorator'
+  import isEmail from 'validator/lib/isEmail'
+  import { mapActions } from 'vuex'
 @Component({
   methods: {
     ...mapActions('user', {
-      signin: 'signin'
-    })
-  }
+      signin: 'signin',
+    }),
+  },
 })
-export default class SignIn extends Vue {
+  export default class SignIn extends Vue {
   user: object = {
     username: '',
-    password: ''
+    password: '',
   }
 
   created () {
     this.$validator.extend('username', {
       getMessage: () => 'Type in your valid username or email address',
-      validate: value => !!value.match(/^[a-z1-9.]+$/) || isEmail(value)
+      validate: value => !!value.match(/^[a-z1-9.]+$/) || isEmail(value),
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace.",
-      validate: value => !!value.match(/^\S+$/)
+      validate: value => !!value.match(/^\S+$/),
     })
   }
-}
+  }
 </script>

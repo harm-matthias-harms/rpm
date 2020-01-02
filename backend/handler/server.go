@@ -41,6 +41,11 @@ func Server() (*echo.Echo, error) {
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)
 	r.GET("/presets/:id", HandlePresetFind)
+	// medical cases
+	r.POST("/medical_cases", HandleMedicalCaseCreate)
+	r.GET("/medical_cases", HandleMedicalCaseGet)
+	r.GET("/medical_cases/:id", HandleMedicalCaseFind)
+	r.GET("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileGet)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

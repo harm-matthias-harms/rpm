@@ -5,11 +5,14 @@ import * as loader from '@/store/loader'
 import * as snackbar from '@/store/snackbar'
 import { user } from '@/store/user'
 import { preset } from '@/store/preset'
+import { medicalCase } from '@/store/medicalCase'
 Vue.use(Vuex)
 
 // mocking axios methods to prevent axios firing
 preset.actions.get_all = () => {}
 preset.actions.find = () => {}
+medicalCase.actions.get_all = () => {}
+medicalCase.actions.find = () => {}
 
 export const store = new Vuex.Store({
   state: root.state,
@@ -20,6 +23,7 @@ export const store = new Vuex.Store({
     loader: Object.assign({ namespaced: true }, loader),
     snackbar: Object.assign({ namespaced: true }, snackbar),
     user,
-    preset
-  }
+    preset,
+    medicalCase,
+  },
 })

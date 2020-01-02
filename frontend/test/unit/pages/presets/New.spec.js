@@ -6,15 +6,15 @@ import NewPreset from '@/pages/presets/new.vue'
 
 Vue.use(Vuetify)
 
-describe('Index', () => {
+describe('New Preset', () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallowMount(NewPreset, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
-      store
+      store,
     })
   })
   test('is a Vue instance', () => {

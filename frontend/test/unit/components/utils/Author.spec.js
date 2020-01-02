@@ -14,18 +14,18 @@ describe('Editor', () => {
     wrapper = shallowMount(Author, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       propsData: {
         author: {
           id: '001',
-          username: 'username'
+          username: 'username',
         },
-        createdAt: '1970-01-01T00:00:00'
+        createdAt: '1970-01-01T00:00:00',
       },
       mocks: {
-        $moment
-      }
+        $moment,
+      },
     })
   })
   test('is a Vue instance', () => {
@@ -33,7 +33,7 @@ describe('Editor', () => {
     expect(wrapper.props().createdAt).toEqual('1970-01-01T00:00:00')
     expect(wrapper.props().author).toMatchObject({
       id: '001',
-      username: 'username'
+      username: 'username',
     })
   })
 })

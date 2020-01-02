@@ -4,7 +4,10 @@
       <p class="headline mb-2 pl-4">
         Vital Signs
       </p>
-      <v-list dense class="body-1">
+      <v-list
+        dense
+        class="body-1"
+      >
         <v-list-item>
           <v-list-item-content>Onset of Symptoms:</v-list-item-content>
           <v-list-item-content class="align-end">
@@ -79,9 +82,9 @@
 </template>
 
 <script lang="ts">
-import { Prop, Component, Vue } from 'vue-property-decorator'
+  import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-export default class VitalSigns extends Vue {
+  export default class VitalSigns extends Vue {
   @Prop({ type: Object }) readonly vitalSigns?: object
 
   valueToString (value: number, unit: string) {
@@ -90,5 +93,5 @@ export default class VitalSigns extends Vue {
     }
     return ''
   }
-}
+  }
 </script>

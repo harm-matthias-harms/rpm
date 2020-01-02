@@ -27,11 +27,11 @@ func HandlePresetsGet(c echo.Context) (err error) {
 	}
 	presets, err := storage.GetPresets(c.Request().Context(), filter, params.Page, params.PageSize)
 	count, err := storage.CountPresets(c.Request().Context(), filter)
-	response := model.PresetsList{Count: count, Presets: model.PresetToShortList(presets)}
+	response := model.PresetsList{Count: count, Presets: presets}
 	return c.JSON(http.StatusOK, response)
 }
 
-// HandlePresetFind gives back a number of presets
+// HandlePresetFind returns a preset
 func HandlePresetFind(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {

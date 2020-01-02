@@ -22,7 +22,8 @@
       "cypress",
       "@types/jest",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "@nuxtjs/moment"
     ]
   }
 }

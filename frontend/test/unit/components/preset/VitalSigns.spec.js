@@ -13,11 +13,11 @@ describe('VitalSigns', () => {
     wrapper = shallowMount(VitalSigns, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
       propsData: {
-        vitalSigns: vitalSign
-      }
+        vitalSigns: vitalSign,
+      },
     })
   })
   test('is a Vue instance', () => {

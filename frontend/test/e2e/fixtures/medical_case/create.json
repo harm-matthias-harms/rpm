@@ -1,0 +1,75 @@
+{
+    "data": {
+        "title": "Test Medical Case",
+        "id": "001",
+        "author": {
+            "id": "000000000000000000000000",
+            "username": "John Doe"
+        },
+        "makeup": "makeup",
+        "otherInformation": "other information",
+        "generalInformation": {
+            "surgical": true,
+            "hospilisation": true,
+            "usar": true,
+            "medivac": true,
+            "triage": "Urgent",
+            "shortSummary": "short summary",
+            "age": "0-10",
+            "gender": "male"
+        },
+        "medicalHistory": {
+            "problems": "problems",
+            "vaccinations": "vaccinations",
+            "allergies": "allergies",
+            "medication": "medication",
+            "implantedDevices": "implanted devices"
+        },
+        "expectations": {
+            "generalStatus": "general status",
+            "onExamination": "on examination",
+            "expectations": "expectations"
+        },
+        "vitalSigns": [
+            {
+                "title": "starting treatment",
+                "reason": "reason",
+                "data": {
+                    "oos": "2 hours",
+                    "avpu": "Unresponsive",
+                    "mobility": "none",
+                    "respiratoryRate": 12,
+                    "pulse": 50,
+                    "temperature": 36.3,
+                    "capillaryRefill": 1.5,
+                    "bloodPressureSystolic": 120,
+                    "bloodPressureDiastolic": 80,
+                    "oxygenSaturation": 98,
+                    "weight": 90,
+                    "height": 190
+                },
+                "childs": [
+                    {
+                        "title": "ending treatment",
+                        "reason": "successful treatment",
+                        "data": {
+                            "oos": "2 hours",
+                            "avpu": "Unresponsive",
+                            "mobility": "none",
+                            "respiratoryRate": 12,
+                            "pulse": 50,
+                            "temperature": 36.3,
+                            "capillaryRefill": 1.5,
+                            "bloodPressureSystolic": 120,
+                            "bloodPressureDiastolic": 80,
+                            "oxygenSaturation": 98,
+                            "weight": 90,
+                            "height": 190
+                        },
+                        "childs": []
+                    }
+                ]
+            }
+        ]
+    }
+}

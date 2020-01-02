@@ -12,9 +12,9 @@ describe('My Presets', () => {
     wrapper = shallowMount(MyPresets, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub
+        RouterLink: RouterLinkStub,
       },
-      store
+      store,
     })
   })
   test('is a Vue instance', () => {

@@ -18,6 +18,9 @@ describe('Index Page', () => {
     cy.contains('Preset').click()
     cy.get('[href="/presets"] > .v-list-item__content')
     cy.get('[href="/presets/new"] > .v-list-item__content')
+    cy.contains('Medical Case').click()
+    cy.get('[href="/medical_cases"] > .v-list-item__content')
+    cy.get('[href="/medical_cases/new"] > .v-list-item__content')
     cy.contains('New')
     cy.logout()
   })
@@ -33,7 +36,7 @@ describe('Index Page', () => {
       method: 'POST',
       url: 'http://localhost:3001/auth/authenticate',
       response: {},
-      status: 404
+      status: 404,
     })
     cy.loginEnterForm(false)
     cy.contains("Couldn't connect to network")
@@ -44,7 +47,7 @@ describe('Index Page', () => {
       method: 'POST',
       url: 'http://localhost:3001/auth/authenticate',
       response: {},
-      status: 401
+      status: 401,
     })
     cy.loginEnterForm(false)
     cy.contains('Wrong username or password')
@@ -54,7 +57,7 @@ describe('Index Page', () => {
     cy.route({
       method: 'POST',
       url: 'http://localhost:3001/auth/authenticate',
-      response: { success: true }
+      response: { success: true },
     })
     cy.loginEnterForm(true)
     cy.get('Sign In').should('not.exist')

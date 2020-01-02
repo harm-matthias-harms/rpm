@@ -8,7 +8,8 @@ module.exports = {
     parser: '@typescript-eslint/parser'
   },
   extends: [
-    '@nuxtjs/eslint-config-typescript'
+    '@nuxtjs/eslint-config-typescript',
+    'vuetify'
   ],
   plugins: ['prettier', '@typescript-eslint'],
   // add your custom rules here

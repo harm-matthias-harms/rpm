@@ -7,7 +7,7 @@ describe('List presets', () => {
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json'
+      response: 'fixture:preset/list.json',
     })
     cy.login()
   })

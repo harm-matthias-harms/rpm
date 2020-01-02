@@ -14,7 +14,7 @@ export const mutations: MutationTree<State> = {
     state.presetList.presets.unshift({
       id: preset.id,
       author: { id: preset.author.id, username: preset.author.username },
-      title: preset.title
+      title: preset.title,
     })
   },
   UNSET_PRESET (state) {
@@ -22,11 +22,11 @@ export const mutations: MutationTree<State> = {
       id: undefined,
       author: {
         id: undefined,
-        username: undefined
+        username: undefined,
       },
       editor: {
         id: undefined,
-        username: undefined
+        username: undefined,
       },
       createdAt: undefined,
       updatedAt: undefined,
@@ -43,10 +43,10 @@ export const mutations: MutationTree<State> = {
         bloodPressureDiastolic: undefined,
         oxygenSaturation: undefined,
         weight: undefined,
-        height: undefined
-      }
+        height: undefined,
+      },
     }
-  }
+  },
 }
 
 export default mutations
