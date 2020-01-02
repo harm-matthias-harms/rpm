@@ -2,8 +2,8 @@
   <v-container>
     <v-row justify="center">
       <v-col
-        lg="6"
-        md="8"
+        lg="8"
+        md="10"
         sm="12"
       >
         <v-card>
@@ -12,15 +12,20 @@
               {{ preset.title }}
             </h4>
             <v-row justify="center">
-              <v-col class="col-auto">
+              <v-col
+                v-if="preset.author && preset.author.username"
+                class="col-auto"
+              >
                 <Author
                   :author="preset.author"
                   :created-at="preset.createdAt"
                 />
               </v-col>
-              <v-col class="col-auto mr-auto">
+              <v-col
+                v-if="preset.editor && preset.author.editor"
+                class="col-auto mr-auto"
+              >
                 <Editor
-                  v-if="preset.editor.username"
                   :editor="preset.editor"
                   :updated-at="preset.updatedAt"
                 />

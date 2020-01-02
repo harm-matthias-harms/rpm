@@ -165,7 +165,7 @@
 
 <script lang="ts">
   import { Prop, Component, Vue } from 'vue-property-decorator'
-  import VitalSign from './vitalSign.vue'
+  import VitalSign from './vital_signs/form.vue'
 @Component({
   components: {
     VitalSign,

@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col
       lg="6"
-      md="8"
+      md="10"
       sm="12"
     >
       <v-card>

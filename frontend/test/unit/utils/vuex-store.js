@@ -5,7 +5,7 @@ import * as loader from '@/store/loader'
 import * as snackbar from '@/store/snackbar'
 import { user } from '@/store/user'
 import { preset } from '@/store/preset'
-import { medicalCase } from '~/store/medicalCase'
+import { medicalCase } from '@/store/medicalCase'
 Vue.use(Vuex)
 
 // mocking axios methods to prevent axios firing

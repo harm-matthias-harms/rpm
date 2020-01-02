@@ -15,6 +15,12 @@ Vue.use(Vuetify)
 describe('Show Medical Case', () => {
   let wrapper
   let router
+  store.state.medicalCase.medicalCase = {
+    generalInformation: { usar: true },
+    medicalHistory: { problems: 'problem' },
+    expectations: { expectations: 'expectations' },
+    vitalSigns: [{ title: true }],
+  }
   beforeEach(() => {
     router = new VueRouter()
     wrapper = shallowMount(ShowMedicalCase, {
@@ -31,5 +37,6 @@ describe('Show Medical Case', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper.vm.bytesToSize(10000)).toBe('9.77 KB')
   })
 })

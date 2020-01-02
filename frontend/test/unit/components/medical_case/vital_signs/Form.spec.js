@@ -2,12 +2,12 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VeeValidate from 'vee-validate'
-import VitalSign from '@/components/medical_case/vitalSign.vue'
+import VitalSign from '@/components/medical_case/vital_signs/form.vue'
 
 Vue.use(Vuetify)
 Vue.use(VeeValidate)
 
-describe('Medical case form', () => {
+describe('Medical case vital sign form', () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallowMount(VitalSign, {
