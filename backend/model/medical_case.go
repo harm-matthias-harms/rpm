@@ -9,14 +9,14 @@ import (
 
 // MedicalCase describes a medical case for the injects
 type MedicalCase struct {
-	ID               primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
-	Author           LimitedUser        `json:"author" form:"author" bson:"author"`
-	Editor           LimitedUser        `json:"editor" form:"editor" bson:"editor"`
-	CreatedAt        time.Time          `json:"createdAt" form:"createdAt" bson:"createdAt"`
-	EditedAt         time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
-	Title            string             `json:"title" form:"title" bson:"title"`
-	MakeUp           string             `json:"makeup" form:"makeup" bson:"makeup"`
-	OtherInformation string             `json:"otherInformation" form:"otherInformation" bson:"otherInformation"`
+	ID                 primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
+	Author             LimitedUser        `json:"author" form:"author" bson:"author"`
+	Editor             LimitedUser        `json:"editor" form:"editor" bson:"editor"`
+	CreatedAt          time.Time          `json:"createdAt" form:"createdAt" bson:"createdAt"`
+	EditedAt           time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
+	Title              string             `json:"title" form:"title" bson:"title"`
+	MakeUp             string             `json:"makeup" form:"makeup" bson:"makeup"`
+	OtherInformation   string             `json:"otherInformation" form:"otherInformation" bson:"otherInformation"`
 	GeneralInformation struct {
 		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
 		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
@@ -45,10 +45,10 @@ type MedicalCase struct {
 
 //NestedVitalSigns enable evolving cases
 type NestedVitalSigns struct {
-	Title  string     `json:"title" form:"title" bson:"title"`
-	Reason string     `jso:"reason" form:"reason" bson:"reason"`
-	Data   VitalSigns `json:"data" form:"data" bson:"data"`
-	Childs []NestedVitalSigns
+	Title  string             `json:"title" form:"title" bson:"title"`
+	Reason string             `json:"reason" form:"reason" bson:"reason"`
+	Data   VitalSigns         `json:"data" form:"data" bson:"data"`
+	Childs []NestedVitalSigns `json:"childs" form:"childs" bson:"childs"`
 }
 
 // MedicalCaseFile describes a document stored at a medical case

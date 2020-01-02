@@ -113,6 +113,7 @@ func HandleMedicalCaseFileGet(c echo.Context) error {
 			if err = storage.GetMedicalCaseFile(fileID, w); err != nil {
 				return echo.NewHTTPError(http.StatusBadRequest, "file does not exist")
 			}
+			c.Response().Header().Set("Content-Disposition", "attachment; filename="+file.Name)
 			return c.Stream(http.StatusOK, http.DetectContentType(b.Bytes()), &b)
 		}
 	}

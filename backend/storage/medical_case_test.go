@@ -131,7 +131,7 @@ func TestGetMedicalCaseFile(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "test file", b.String())
 
-	//cleanup 
+	// cleanup
 	_ = bucket.Delete(fileID)
 }
 
