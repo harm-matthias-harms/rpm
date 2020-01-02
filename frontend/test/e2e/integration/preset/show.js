@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('View a preset', () => {
+describe('Show a preset', () => {
   beforeEach(() => {
     cy.server()
     cy.route({
@@ -20,7 +20,7 @@ describe('View a preset', () => {
   afterEach(() => {
     cy.logout()
   })
-  it('views a preset', () => {
+  it('shows a preset', () => {
     cy.visit('/presets')
     cy.contains('test preset 1').click()
     // has title

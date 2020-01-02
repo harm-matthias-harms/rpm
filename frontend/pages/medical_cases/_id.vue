@@ -11,7 +11,7 @@
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
             </h4>
-            <v-row justify="center">
+            <v-row>
               <v-col
                 v-if="medicalCase.author && medicalCase.author.username"
                 class="col-auto"
@@ -27,7 +27,7 @@
               >
                 <Editor
                   :editor="medicalCase.editor"
-                  :updated-at="medicalCase.updatedAt"
+                  :updated-at="medicalCase.editedAt"
                 />
               </v-col>
             </v-row>

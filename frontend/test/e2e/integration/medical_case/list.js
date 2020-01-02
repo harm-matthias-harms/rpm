@@ -17,15 +17,15 @@ describe('List medical case', () => {
   it('lists all medical cases', () => {
     cy.visit('/medical_cases')
     cy.contains('2')
-    cy.contains('test medical case 1')
+    cy.contains('Test Medical Case')
     cy.contains('John Doe')
     cy.contains('test medical case 2')
     cy.contains('otherUser')
   })
-  it('lists my presets', () => {
+  it('lists my medical cases', () => {
     cy.visit('/medical_cases/my')
     cy.contains('1')
-    cy.contains('test medical case 1')
+    cy.contains('Test Medical Case')
     cy.contains('John Doe')
     cy.get('test medical case 2').should('not.exist')
     cy.contains('otherUser').should('not.exist')

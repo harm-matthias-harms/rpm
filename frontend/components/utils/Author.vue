@@ -1,15 +1,15 @@
 <template>
   <v-row class="mx-3">
-    <v-col class="px-0">
+    <v-col class="px-0 col-auto">
       <v-icon color="primary">
         fas fa-user
       </v-icon>
     </v-col>
-    <v-col class="px-2">
+    <v-col class="px-2 col-auto">
       <h5 class="subtitle-1 black--text">
         {{ author.username }}
         <br>
-        <span class="body-2">created at {{ $moment(createdAt).format("MMM DD'YY") }}</span>
+        <span class="body-2">created {{ $moment(createdAt).format("MMM DD'YY") }}</span>
       </h5>
     </v-col>
   </v-row>
