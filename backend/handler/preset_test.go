@@ -154,8 +154,13 @@ func TestPresetEdit(t *testing.T) {
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	jwtCookie := loginUser(t)
+	// no preset provided
+	_, err := testRequest(http.MethodPut, "/api/presets/:id", nil, HandlePresetEdit, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't parse request", err.(*echo.HTTPError).Message)
+	}
 	// no id provided
-	_, err := testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": ""}, jwtCookie)
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": ""}, jwtCookie)
 	if assert.Error(t, err) {
 		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
 	}
@@ -163,6 +168,14 @@ func TestPresetEdit(t *testing.T) {
 	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 	if assert.Error(t, err) {
 		assert.Equal(t, "id's don not match", err.(*echo.HTTPError).Message)
+	}
+	// Invalid
+	invalidPreset := preset
+	invalidPreset.CreatedAt = time.Time{}
+	invalidPresetString, _ := json.Marshal(invalidPreset)
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(invalidPresetString)), HandlePresetEdit, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "created at not set", err.(*echo.HTTPError).Message)
 	}
 	// Could not update
 	id := primitive.NewObjectID()
