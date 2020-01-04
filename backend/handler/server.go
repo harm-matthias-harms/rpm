@@ -41,6 +41,7 @@ func Server() (*echo.Echo, error) {
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)
 	r.GET("/presets/:id", HandlePresetFind)
+	r.PUT("/presets/:id", HandlePresetEdit)
 	// medical cases
 	r.POST("/medical_cases", HandleMedicalCaseCreate)
 	r.GET("/medical_cases", HandleMedicalCaseGet)
