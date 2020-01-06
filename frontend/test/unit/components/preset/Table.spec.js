@@ -35,4 +35,8 @@ describe('My Presets', () => {
     wrapper.vm.openPreset({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/presets/001')
   })
+  test('open edit form', () => {
+    wrapper.vm.editPreset({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/presets/001/edit')
+  })
 })

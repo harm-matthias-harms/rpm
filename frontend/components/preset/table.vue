@@ -23,6 +23,11 @@
           <td @click="openPreset(item)">
             {{ item.author.username }}
           </td>
+          <td class="px-0">
+            <v-icon @click="editPreset(item)">
+              edit
+            </v-icon>
+          </td>
         </tr>
       </tbody>
     </template>
@@ -43,6 +48,10 @@
 
   openPreset (preset) {
     this.$router.push('/presets/' + preset.id)
+  }
+
+  editPreset (preset) {
+    this.$router.push('/presets/' + preset.id + '/edit')
   }
   }
 </script>
