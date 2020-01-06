@@ -47,11 +47,11 @@ func HandleMedicalCaseFind(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, mc)
 }
 
-// HandleMedicalCaseCreate creates a medical case from a json
+// HandleMedicalCaseCreate updates a medical case from a formdata object
 func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	form, err := c.MultipartForm()
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error()) //"no multipart form provided")
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error()) //"no multipart form provided"
 	}
 
 	jsonString := form.Value["medicalCase"]
@@ -90,6 +90,61 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: mc})
+}
+
+// HandleMedicalCaseEdit creates a medical case from a formdata object
+func HandleMedicalCaseEdit(c echo.Context) (err error) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error()) //"no multipart form provided"
+	}
+
+	jsonString := form.Value["medicalCase"]
+	mc := new(model.MedicalCase)
+	err = json.Unmarshal([]byte(jsonString[0]), mc)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+	}
+
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+	}
+	if mc.ID != id {
+		return echo.NewHTTPError(http.StatusBadRequest, "id's do not match")
+	}
+
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
+	}
+	mc.Editor.ID = objectID
+	mc.Editor.Username = claims["username"].(string)
+	mc.EditedAt = time.Now()
+	if err = mc.Validate(); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	// load files
+	for _, file := range form.File["files"] {
+		err := storage.StoreMedicalCaseFile(mc, file)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "couldn't store documents")
+		}
+	}
+
+	// update medical case
+	if err = storage.UpdateMedicalCase(c.Request().Context(), mc); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be updated")
+	}
+
+	return c.JSON(http.StatusOK, mc)
 }
 
 // HandleMedicalCaseFileGet serves the files for a medical case

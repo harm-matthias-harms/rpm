@@ -87,6 +87,25 @@ func TestCreateMedicalCase(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+func TestUpdateMedicalCase(t *testing.T) {
+	mc := &model.MedicalCase{Title: "update medical case"}
+	resetMedicalCaseDatabase(mc)
+	err := CreateMedicalCase(nil, mc)
+	assert.NoError(t, err)
+	mc.MedicalHistroy.Allergies = "allergy"
+	err = UpdateMedicalCase(nil, mc)
+	assert.NoError(t, err)
+	medicalCaseFound, err := FindMedicalCase(nil, mc.ID)
+	if assert.NoError(t, err) {
+		assert.Equal(t, "allergy", medicalCaseFound.MedicalHistroy.Allergies)
+	}
+	notExist := &model.MedicalCase{Title: "title"}
+	err = UpdateMedicalCase(nil, notExist)
+	if assert.Error(t, err) {
+		assert.Equal(t, "no document was found", err.Error())
+	}
+}
+
 func TestCreateMedicalCaseFile(t *testing.T) {
 	// Setup
 	_ = SetMongoDatabase()

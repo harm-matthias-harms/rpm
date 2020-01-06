@@ -88,7 +88,7 @@ func HandlePresetEdit(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
 	}
 	if preset.ID != id {
-		return echo.NewHTTPError(http.StatusBadRequest, "id's don not match")
+		return echo.NewHTTPError(http.StatusBadRequest, "id's do not match")
 	}
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)

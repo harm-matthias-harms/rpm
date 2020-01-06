@@ -167,7 +167,7 @@ func TestPresetEdit(t *testing.T) {
 	// false id
 	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "id's don not match", err.(*echo.HTTPError).Message)
+		assert.Equal(t, "id's do not match", err.(*echo.HTTPError).Message)
 	}
 	// Invalid
 	invalidPreset := preset
