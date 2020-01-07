@@ -177,7 +177,7 @@
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
   files: Array<any> = []
-  expansionPanel: Array<number> = []
+  expansionPanel: Array<number> = [0, 3]
   emptyVitalSign: object = {
     title: undefined,
     reason: undefined,
@@ -246,7 +246,6 @@
       this.medicalCase.vitalSigns.length === 0
     ) {
       this.medicalCase.vitalSigns = [this.emptyVitalSign]
-      this.setExpansionPanel()
     }
   }
   }
