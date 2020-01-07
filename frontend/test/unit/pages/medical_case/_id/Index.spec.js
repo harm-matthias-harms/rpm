@@ -2,20 +2,17 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import { store } from '../../utils/vuex-store'
-import ShowMedicalCase from '@/pages/medical_cases/_id.vue'
-
-const $route = {
-  path: '/medical_cases/001',
-  params: { id: '001' },
-}
+import { store } from '../../../utils/vuex-store'
+import ShowMedicalCase from '@/pages/medical_cases/_id/index.vue'
 
 Vue.use(Vuetify)
+Vue.use(VueRouter)
 
 describe('Show Medical Case', () => {
   let wrapper
   let router
   store.state.medicalCase.medicalCase = {
+    id: '002',
     generalInformation: { usar: true },
     medicalHistory: { problems: 'problem' },
     expectations: { expectations: 'expectations' },
@@ -30,13 +27,14 @@ describe('Show Medical Case', () => {
       },
       store,
       router,
-      mocks: {
-        $route,
-      },
     })
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
     expect(wrapper.vm.bytesToSize(10000)).toBe('9.77 KB')
+  })
+  test('open edit form', () => {
+    wrapper.vm.editMedicalCase({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
   })
 })

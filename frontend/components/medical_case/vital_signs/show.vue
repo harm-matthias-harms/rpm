@@ -7,7 +7,7 @@
       v-for="(vitalSign, i) in vitalSigns"
       :key="i"
     >
-      <v-expansion-panel-header>{{ vitalSign.title }}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : "no title set" }}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list dense>
           <v-list-item v-if="vitalSign.reason">

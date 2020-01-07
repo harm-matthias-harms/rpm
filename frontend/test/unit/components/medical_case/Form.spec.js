@@ -17,13 +17,14 @@ describe('Medical case form', () => {
       },
       propsData: {
         medicalCase: {
-          generalInformation: {},
-          medicalHistory: {},
-          expectations: {},
+          id: '002',
+          generalInformation: { usar: true },
+          medicalHistory: { problems: 'problem' },
+          expectations: { expectations: 'expectations' },
           vitalSigns: [],
-          files: [],
         },
         atSubmit: () => {},
+        isNew: false,
       },
       provide: {
         $validator () {

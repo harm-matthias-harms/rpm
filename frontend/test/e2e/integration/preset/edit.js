@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('Create preset', () => {
+describe('Edit preset', () => {
     let preset
     let vitalSigns
     beforeEach(() => {
@@ -33,7 +33,7 @@ describe('Create preset', () => {
       cy.logout()
     })
 
-    it('creates preset', () => {
+    it('updates preset', () => {
       cy.visit('/presets')
       cy.contains('edit')
       cy.visit('/presets/001')

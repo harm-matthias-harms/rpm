@@ -34,7 +34,7 @@
               >
                 <Editor
                   :editor="preset.editor"
-                  :updated-at="preset.updatedAt"
+                  :updated-at="preset.editedAt"
                 />
               </v-col>
             </v-row>

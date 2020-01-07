@@ -23,6 +23,11 @@
           <td @click="openMedicalCase(item)">
             {{ item.author.username }}
           </td>
+          <td class="px-0">
+            <v-icon @click="editMedicalCase(item)">
+              edit
+            </v-icon>
+          </td>
         </tr>
       </tbody>
     </template>
@@ -43,6 +48,10 @@
 
   openMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id)
+  }
+
+  editMedicalCase (medicalCase) {
+    this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
   }
 </script>

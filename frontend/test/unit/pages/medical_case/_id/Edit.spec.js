@@ -3,16 +3,16 @@ import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
 import { store } from '../../../utils/vuex-store'
-import Edit from '@/pages/presets/_id/edit.vue'
+import Edit from '@/pages/medical_cases/_id/edit.vue'
 
 const $route = {
-  path: '/presets/001',
+  path: '/medical_cases/001',
   params: { id: '001' },
 }
 
 Vue.use(Vuetify)
 
-describe('Edit Presets', () => {
+describe('Edit Medical Case', () => {
   let wrapper
   let router
   beforeEach(() => {
