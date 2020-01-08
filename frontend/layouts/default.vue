@@ -34,24 +34,21 @@
       v-if="isAuthenticated"
       v-model="drawer"
       temporary
-      absolute
       app
     >
-      <v-toolbar
-        text
-        class="transparent"
+      <v-list
+        nav
+        class="px-0"
       >
-        <v-list class="pa-0">
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>fa-user</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ user.username }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-toolbar>
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-icon>fa-user</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ user.username }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
       <v-divider />
       <v-list
         dense
