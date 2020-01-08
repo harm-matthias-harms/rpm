@@ -10,6 +10,12 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
+              <v-icon
+                color="primary"
+                @click="editMedicalCase(medicalCase)"
+              >
+                edit
+              </v-icon>
             </h4>
             <v-row>
               <v-col
@@ -243,6 +249,10 @@
       this.find(id)
     }
     this.setExpansionPanel()
+  }
+
+  editMedicalCase (medicalCase) {
+    this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
 
   setExpansionPanel () {

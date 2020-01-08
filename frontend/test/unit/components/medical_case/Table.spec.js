@@ -35,4 +35,8 @@ describe('Medical case table', () => {
     wrapper.vm.openMedicalCase({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001')
   })
+  test('open edit form', () => {
+    wrapper.vm.editMedicalCase({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
+  })
 })

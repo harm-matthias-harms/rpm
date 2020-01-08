@@ -10,8 +10,15 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ preset.title }}
+              <v-icon
+                color="primary"
+                @click="editPreset(preset)"
+              >
+                edit
+              </v-icon>
             </h4>
-            <v-row justify="center">
+
+            <v-row>
               <v-col
                 v-if="preset.author && preset.author.username"
                 class="col-auto"
@@ -22,12 +29,12 @@
                 />
               </v-col>
               <v-col
-                v-if="preset.editor && preset.author.editor"
+                v-if="preset.editor && preset.editor.username"
                 class="col-auto mr-auto"
               >
                 <Editor
                   :editor="preset.editor"
-                  :updated-at="preset.updatedAt"
+                  :updated-at="preset.editedAt"
                 />
               </v-col>
             </v-row>
@@ -75,6 +82,10 @@
     if (this.preset.id !== id) {
       this.find(id)
     }
+  }
+
+  editPreset (preset) {
+    this.$router.push('/presets/' + preset.id + '/edit')
   }
   }
 </script>

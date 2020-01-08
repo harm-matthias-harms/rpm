@@ -55,7 +55,7 @@ func TestGetPresets(t *testing.T) {
 }
 
 func TestFindPreset(t *testing.T) {
-	// First create him because no preset is inserted
+	// First create it because no preset is inserted
 	preset := &model.Preset{Title: "title"}
 	resetPresetDatabase(preset)
 	err := CreatePreset(nil, preset)
@@ -70,11 +70,30 @@ func TestFindPreset(t *testing.T) {
 }
 
 func TestCreatePreset(t *testing.T) {
-	// Creates a User
+	// Creates a Preset
 	preset := &model.Preset{Title: "test"}
 	resetPresetDatabase(preset)
 	err := CreatePreset(nil, preset)
 	assert.NoError(t, err)
+}
+
+func TestUpdatePreset(t *testing.T) {
+	preset := &model.Preset{Title: "update preset"}
+	resetPresetDatabase(preset)
+	err := CreatePreset(nil, preset)
+	assert.NoError(t, err)
+	preset.VitalSigns.Height = 190
+	err = UpdatePreset(nil, preset)
+	assert.NoError(t, err)
+	presetFound, err := FindPreset(nil, preset.ID)
+	if assert.NoError(t, err) {
+		assert.Equal(t, 190, presetFound.VitalSigns.Height)
+	}
+	notExist := &model.Preset{Title: "title"}
+	err = UpdatePreset(nil, notExist)
+	if assert.Error(t, err) {
+		assert.Equal(t, "no document was found", err.Error())
+	}
 }
 
 func resetPresetDatabase(preset *model.Preset) {

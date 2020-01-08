@@ -13,6 +13,7 @@
           <Form
             :medical-case="medicalCase"
             :at-submit="create"
+            :is-new="true"
           />
         </v-card-text>
       </v-card>
@@ -36,7 +37,14 @@
   },
 })
   export default class NewMedicalCase extends Vue {
-  medicalCase = { generalInformation: {}, medicalHistory: {}, expectations: {}, vitalSigns: [], files: [] }
+  medicalCase = {
+    generalInformation: {},
+    medicalHistory: {},
+    expectations: {},
+    vitalSigns: [],
+    files: [],
+  }
+
   create!: (medicalCase, files) => void
   }
 </script>

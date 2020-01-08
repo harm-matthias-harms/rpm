@@ -41,10 +41,12 @@ func Server() (*echo.Echo, error) {
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)
 	r.GET("/presets/:id", HandlePresetFind)
+	r.PUT("/presets/:id", HandlePresetEdit)
 	// medical cases
 	r.POST("/medical_cases", HandleMedicalCaseCreate)
 	r.GET("/medical_cases", HandleMedicalCaseGet)
 	r.GET("/medical_cases/:id", HandleMedicalCaseFind)
+	r.PUT("/medical_cases/:id", HandleMedicalCaseEdit)
 	r.GET("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileGet)
 
 	// Auth - NO JWT

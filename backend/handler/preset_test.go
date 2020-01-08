@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
@@ -140,6 +141,65 @@ func TestPresetCreate(t *testing.T) {
 			assert.Equal(t, http.StatusBadRequest, err.Code)
 			assert.Equal(t, "vital signs not set", err.Message)
 		}
+	}
+}
+
+func TestPresetEdit(t *testing.T) {
+	preset := model.Preset{Title: "test", Author: model.LimitedUser{ID: primitive.NewObjectID(), Username: "username"}, CreatedAt: time.Now(), VitalSigns: model.VitalSigns{OoS: "symptom"}}
+	resetPreset(&preset)
+	_ = storage.CreatePreset(nil, &preset)
+	preset.VitalSigns.Height = 190
+	presetString, _ := json.Marshal(preset)
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	jwtCookie := loginUser(t)
+	// no preset provided
+	_, err := testRequest(http.MethodPut, "/api/presets/:id", nil, HandlePresetEdit, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't parse request", err.(*echo.HTTPError).Message)
+	}
+	// no id provided
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": ""}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
+	}
+	// false id
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "id's do not match", err.(*echo.HTTPError).Message)
+	}
+	// Invalid
+	invalidPreset := preset
+	invalidPreset.CreatedAt = time.Time{}
+	invalidPresetString, _ := json.Marshal(invalidPreset)
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(invalidPresetString)), HandlePresetEdit, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "created at not set", err.(*echo.HTTPError).Message)
+	}
+	// Could not update
+	id := primitive.NewObjectID()
+	falsePreset := preset
+	falsePreset.ID = id
+	falsePresetString, _ := json.Marshal(falsePreset)
+	_, err = testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(falsePresetString)), HandlePresetEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't be updated", err.(*echo.HTTPError).Message)
+	}
+
+	// good id
+	rec, err := testRequest(http.MethodPut, "/api/presets/:id", strings.NewReader(string(presetString)), HandlePresetEdit, header, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+	if assert.NoError(t, err) {
+		response := &model.Preset{}
+		defer rec.Result().Body.Close()
+		body, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(body, response)
+		assert.Equal(t, preset.Title, response.Title)
+		assert.Equal(t, preset.VitalSigns.OoS, response.VitalSigns.OoS)
+		assert.Equal(t, preset.VitalSigns.Height, response.VitalSigns.Height)
+		assert.NotNil(t, response.EditedAt)
+		assert.NotNil(t, response.Editor.ID)
+		assert.NotNil(t, response.Editor.Username)
 	}
 }
 

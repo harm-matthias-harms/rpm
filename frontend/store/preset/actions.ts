@@ -18,6 +18,21 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
+  update ({ commit }, preset) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$put('/api/presets/' + preset.id, preset)
+      .then((response) => {
+        commit('SET_PRESET', response)
+        this.$router.push('/presets/' + preset.id)
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't edit preset.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
   get_all ({ commit }) {
     commit('loader/SET', true, { root: true })
     this.$axios

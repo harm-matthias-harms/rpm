@@ -17,13 +17,14 @@ describe('Medical case form', () => {
       },
       propsData: {
         medicalCase: {
-          generalInformation: {},
-          medicalHistory: {},
-          expectations: {},
+          id: '002',
+          generalInformation: { usar: true },
+          medicalHistory: { problems: 'problem' },
+          expectations: { expectations: 'expectations' },
           vitalSigns: [],
-          files: [],
         },
         atSubmit: () => {},
+        isNew: false,
       },
       provide: {
         $validator () {
@@ -34,8 +35,10 @@ describe('Medical case form', () => {
     })
   })
   test('is a Vue instance', () => {
+    wrapper.vm.expansionPanel = []
     expect(wrapper.isVueInstance()).toBeTruthy()
     wrapper.vm.addVitalSign()
     expect(wrapper.vm.medicalCase.vitalSigns.length).toBe(1)
+    wrapper.vm.setExpansionPanel()
   })
 })

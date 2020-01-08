@@ -9,7 +9,7 @@
       data-vv-name="title"
     />
     <v-expansion-panels
-      v-model="panel"
+      v-model="expansionPanel"
       multiple
       class="mb-4"
     >
@@ -94,7 +94,7 @@
         <v-expansion-panel-header>
           Vital Signs
           <template
-            v-if="medicalCase.vitalSigns.length === 0"
+            v-if="!medicalCase.vitalSigns || medicalCase.vitalSigns.length === 0"
             v-slot:actions
           >
             <v-icon @click="addVitalSign">
@@ -155,7 +155,7 @@
       type="submit"
       color="primary"
     >
-      create
+      {{ isNew ? "create" : "edit" }}
     </v-btn>
     <v-btn @click="$router.back()">
       cancel
@@ -174,10 +174,10 @@
   export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly medicalCase!: any
   @Prop({ type: Function, required: true }) readonly atSubmit!: void
+  @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
-  panel: Array<Number> = [0, 3]
   files: Array<any> = []
-  basisVitalSignOpen: boolean = false
+  expansionPanel: Array<number> = [0, 3]
   emptyVitalSign: object = {
     title: undefined,
     reason: undefined,
@@ -198,11 +198,55 @@
     childs: [],
   }
 
-  addVitalSign () {
-    if (!this.basisVitalSignOpen && this.medicalCase.vitalSigns.length === 0) {
-      this.medicalCase.vitalSigns.push(this.emptyVitalSign)
+  mounted () {
+    this.setExpansionPanel()
+  }
+
+  setExpansionPanel () {
+    if (this.medicalCase) {
+      if (this.anyFieldPresent(this.medicalCase.generalInformation)) {
+        if (!this.expansionPanel.includes(0)) {
+          this.expansionPanel.push(0)
+        }
+      }
+      if (this.anyFieldPresent(this.medicalCase.medicalHistory)) {
+        if (!this.expansionPanel.includes(1)) {
+          this.expansionPanel.push(1)
+        }
+      }
+      if (
+        this.medicalCase.vitalSigns &&
+        this.medicalCase.vitalSigns.length > 0 &&
+        this.anyFieldPresent(this.medicalCase.vitalSigns[0])
+      ) {
+        if (!this.expansionPanel.includes(2)) {
+          this.expansionPanel.push(2)
+        }
+      }
+      if (this.anyFieldPresent(this.medicalCase.expectations)) {
+        if (!this.expansionPanel.includes(3)) {
+          this.expansionPanel.push(3)
+        }
+      }
     }
-    this.basisVitalSignOpen = !this.basisVitalSignOpen
+  }
+
+  anyFieldPresent (obj: Object) {
+    const exist = (elem) => {
+      if (elem) {
+        return true
+      }
+    }
+    return Object.values(obj).some(exist)
+  }
+
+  addVitalSign () {
+    if (
+      !this.medicalCase.vitalSigns ||
+      this.medicalCase.vitalSigns.length === 0
+    ) {
+      this.medicalCase.vitalSigns = [this.emptyVitalSign]
+    }
   }
   }
 </script>

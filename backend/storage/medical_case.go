@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 	"io"
 	"mime/multipart"
 
@@ -57,6 +58,16 @@ func CreateMedicalCase(ctx context.Context, mc *model.MedicalCase) (err error) {
 	c := mcCollection()
 	res, err := c.InsertOne(ctx, mc)
 	mc.ID = res.InsertedID.(primitive.ObjectID)
+	return
+}
+
+// UpdateMedicalCase updates a medical case
+func UpdateMedicalCase(ctx context.Context, mc *model.MedicalCase) (err error) {
+	c := mcCollection()
+	res, err := c.ReplaceOne(ctx, bson.M{"_id": mc.ID}, mc)
+	if res.MatchedCount == 0 {
+		return errors.New("no document was found")
+	}
 	return
 }
 

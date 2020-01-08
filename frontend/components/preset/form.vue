@@ -16,7 +16,7 @@
       type="submit"
       color="primary"
     >
-      create
+      {{ isNew ? "create" : "edit" }}
     </v-btn>
     <v-btn @click="$router.back()">
       cancel
@@ -35,5 +35,6 @@
   export default class PresetForm extends Vue {
   @Prop({ type: Object, required: true }) readonly preset!: object
   @Prop({ type: Function, required: true }) readonly atSubmit!: void
+  @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
   }
 </script>

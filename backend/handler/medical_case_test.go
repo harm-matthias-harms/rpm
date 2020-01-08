@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -127,7 +128,6 @@ func TestMedicalCaseCreate(t *testing.T) {
 	// create medical case
 	rec, err := testRequest(http.MethodPost, "/api/medical_cases", body, HandleMedicalCaseCreate, header, nil, jwtCookie)
 	if assert.NoError(t, err) {
-		assert.Equal(t, http.StatusCreated, rec.Code)
 		response := &jsonStatus{}
 		defer rec.Result().Body.Close()
 		body, _ := ioutil.ReadAll(rec.Result().Body)
@@ -164,6 +164,114 @@ func TestMedicalCaseCreate(t *testing.T) {
 		if ok {
 			assert.Equal(t, http.StatusBadRequest, err.Code)
 			assert.Equal(t, "title not set", err.Message)
+		}
+	}
+}
+
+func TestMedicalCaseEdit(t *testing.T) {
+	mc := model.MedicalCase{Title: "update test", Author: model.LimitedUser{ID: primitive.NewObjectID(), Username: "username"}, CreatedAt: time.Now()}
+	resetMedicalCase(&mc)
+	_ = storage.CreateMedicalCase(nil, &mc)
+	mcString, _ := json.Marshal(mc)
+	//header.Set(echo.HeaderContentType, echo.MIMEMultipartForm)
+	jwtCookie := loginUser(t)
+
+	//test file upload
+	file, _ := os.Open("./medical_case_test.go")
+	defer file.Close()
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	writer.WriteField("medicalCase", string(mcString))
+	part, _ := writer.CreateFormFile("files", filepath.Base("./medical_case_test.go"))
+	io.Copy(part, file)
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, writer.FormDataContentType())
+	writer.Close()
+	body2 := bytes.NewReader(body.Bytes())
+	body3 := bytes.NewReader(body.Bytes())
+
+	// update medical case
+	rec, err := testRequest(http.MethodPut, "/api/medical_cases/:id", body, HandleMedicalCaseEdit, header, map[string]string{"id": mc.ID.Hex()}, jwtCookie)
+	if assert.NoError(t, err) {
+		response := &model.MedicalCase{}
+		defer rec.Result().Body.Close()
+		recBody, _ := ioutil.ReadAll(rec.Result().Body)
+		_ = json.Unmarshal(recBody, response)
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, mc.Title, response.Title)
+		assert.NotNil(t, response.Editor.ID)
+		assert.NotNil(t, response.Editor.Username)
+		assert.NotNil(t, response.EditedAt)
+	}
+
+	// no payload error
+	_, err = testRequest(http.MethodPost, "/api/medical_cases/:id", nil, HandleMedicalCaseEdit, header, map[string]string{"id": mc.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		err, ok := err.(*echo.HTTPError)
+		if ok {
+			assert.Equal(t, http.StatusBadRequest, err.Code)
+			assert.Error(t, err)
+		}
+	}
+
+	// no id provided
+	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", body2, HandleMedicalCaseEdit, header, nil, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
+	}
+
+	// id not match
+	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", body3, HandleMedicalCaseEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "id's do not match", err.(*echo.HTTPError).Message)
+	}
+
+	// false id
+	falseMC := mc
+	id := primitive.NewObjectID()
+	falseMC.ID = id
+	falseMCString, _ := json.Marshal(falseMC)
+	bodyFalse := new(bytes.Buffer)
+	writerFalse := multipart.NewWriter(bodyFalse)
+	writerFalse.WriteField("medicalCase", string(falseMCString))
+	header = http.Header{}
+	header.Set(echo.HeaderContentType, writerFalse.FormDataContentType())
+	writerFalse.Close()
+	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", bodyFalse, HandleMedicalCaseEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't be updated", err.(*echo.HTTPError).Message)
+	}
+
+	// broken payload
+	bodyBroken := new(bytes.Buffer)
+	writerBroken := multipart.NewWriter(bodyBroken)
+	writerBroken.WriteField("medicalCase", string(mcString[0:10]))
+	header = http.Header{}
+	header.Set(echo.HeaderContentType, writerBroken.FormDataContentType())
+	writerBroken.Close()
+	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", bodyBroken, HandleMedicalCaseEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		assert.Equal(t, "couldn't parse request", err.(*echo.HTTPError).Message)
+	}
+
+	// not update invalid
+	mcInvalid := model.MedicalCase{Title: "invalid update test"}
+	resetMedicalCase(&mcInvalid)
+	_ = storage.CreateMedicalCase(nil, &mcInvalid)
+	mcInvalidString, _ := json.Marshal(mcInvalid)
+	//test file upload
+	bodyInvalid := new(bytes.Buffer)
+	writerInvalid := multipart.NewWriter(bodyInvalid)
+	writerInvalid.WriteField("medicalCase", string(mcInvalidString))
+	header = http.Header{}
+	header.Set(echo.HeaderContentType, writerInvalid.FormDataContentType())
+	writerInvalid.Close()
+	_, err = testRequest(http.MethodPost, "/api/medical_cases/:id", bodyInvalid, HandleMedicalCaseEdit, header, map[string]string{"id": mcInvalid.ID.Hex()}, jwtCookie)
+	if assert.Error(t, err) {
+		err, ok := err.(*echo.HTTPError)
+		if ok {
+			assert.Equal(t, http.StatusBadRequest, err.Code)
+			assert.Equal(t, "author not set", err.Message)
 		}
 	}
 }

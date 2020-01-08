@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -54,6 +55,16 @@ func CreatePreset(ctx context.Context, preset *model.Preset) (err error) {
 	c := presetCollection()
 	res, err := c.InsertOne(ctx, preset)
 	preset.ID = res.InsertedID.(primitive.ObjectID)
+	return
+}
+
+// UpdatePreset updates a preset
+func UpdatePreset(ctx context.Context, preset *model.Preset) (err error) {
+	c := presetCollection()
+	res, err := c.ReplaceOne(ctx, bson.M{"_id": preset.ID}, preset)
+	if res.MatchedCount == 0 {
+		return errors.New("no document was found")
+	}
 	return
 }
 

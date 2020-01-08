@@ -18,6 +18,7 @@ describe('Preset form', () => {
       propsData: {
         preset: { vitalSigns: {} },
         atSubmit: () => {},
+        isNew: false,
       },
       provide: {
         $validator () {

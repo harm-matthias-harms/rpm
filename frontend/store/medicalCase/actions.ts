@@ -25,6 +25,28 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
+  update ({ commit }, payload) {
+    const medicalCase = payload.medicalCase
+    const files = payload.files
+    const form = new FormData()
+    form.append('medicalCase', JSON.stringify(medicalCase))
+    files.forEach((file) => {
+      form.append('files', file)
+    })
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$put('/api/medical_cases/' + medicalCase.id, form)
+      .then((response) => {
+        commit('SET_MEDICAL_CASE', response)
+        this.$router.push('/medical_cases/' + response.id)
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't update medical case.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
   get_all ({ commit }) {
     commit('loader/SET', true, { root: true })
     this.$axios
