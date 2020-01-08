@@ -1,16 +1,22 @@
 import Vue from 'vue'
-import { mount, RouterLinkStub } from '@vue/test-utils'
-import Index from '@/pages/index.vue'
+import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
+import Vuex from 'vuex'
+import { store } from '../utils/vuex-store'
+import Index from '@/pages/index.vue'
+
+Vue.use(Vuex)
+Vue.use(Vuetify)
 
 describe('Index', () => {
   let wrapper
   beforeEach(() => {
-    Vue.use(Vuetify)
-    wrapper = mount(Index, {
+    wrapper = shallowMount(Index, {
       stubs: {
-        NuxtLink: RouterLinkStub
-      }
+        NuxtLink: RouterLinkStub,
+        RouterLink: RouterLinkStub,
+      },
+      store,
     })
   })
   test('is a Vue instance', () => {

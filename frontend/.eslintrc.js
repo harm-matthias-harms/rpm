@@ -8,16 +8,10 @@ module.exports = {
     parser: '@typescript-eslint/parser'
   },
   extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended',
-    'plugin:prettier/recommended',
-    'prettier',
-    'prettier/vue'
+    '@nuxtjs/eslint-config-typescript',
+    'vuetify'
   ],
-  plugins: [
-    'prettier',
-    '@typescript-eslint'
-  ],
+  plugins: ['prettier', '@typescript-eslint'],
   // add your custom rules here
   rules: {
     '@typescript-eslint/no-unused-vars': 'error'

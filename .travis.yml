@@ -11,7 +11,7 @@ jobs:
   include:
     - stage: test
       language: go
-      go: 1.12.x
+      go: 1.13.x
       env:
         - GO111MODULE=on
       services:
@@ -21,12 +21,12 @@ jobs:
       install:
         - go mod download
       script:
-        - go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+        - go test -coverprofile=coverage.txt -covermode=atomic ./...
       after_success:
         - bash <(curl -s https://codecov.io/bash)
     - stage: test
       language: node_js
-      node_js: 12
+      node_js: 10
       addons:
         apt:
           packages:
@@ -43,8 +43,7 @@ jobs:
         - cd frontend/
       install:
         - yarn install
-        - yarn run build # for cypress
-        - yarn run start & # for cypress
+        - yarn run dev & # for cypress
       script:
         - yarn run lint
         - yarn run test

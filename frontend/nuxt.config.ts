@@ -1,8 +1,7 @@
-import NuxtConfiguration from '@nuxt/config'
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
+import { Configuration } from '@nuxt/types'
 
-const config: NuxtConfiguration = {
-  mode: 'universal',
+const config: Configuration = {
+  mode: 'spa',
 
   /*
    ** Headers of the page
@@ -15,17 +14,17 @@ const config: NuxtConfiguration = {
       {
         hid: 'description',
         name: 'description',
-        content: 'role play management for medical exercises'
-      }
+        content: 'role play management for medical exercises',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
-      }
-    ]
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons',
+      },
+    ],
   },
 
   /*
@@ -41,36 +40,57 @@ const config: NuxtConfiguration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify'],
+  plugins: [],
+
+  /*
+   ** Router middlewares
+   */
+  router: {
+    middleware: ['auth'],
+  },
 
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-validate',
+    '@nuxtjs/vuetify',
   ],
   /*
    ** Axios module configuration
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    https: true
+    https: true,
+    baseURL: 'http://localhost:3001',
+    // xsrfCookieName: 'csrf',
+    // xsrfHeaderName: 'X-CSRF-Token',
+    credentials: true,
     // API_URL must be used for api url
   },
-
+  /*
+   ** vuetify module configuration
+   */
+  vuetify: {
+    icons: {
+      iconfont: 'fa',
+    },
+  },
   /*
    ** Build configuration
    */
   build: {
-    transpile: ['vuetify/lib'],
-    plugins: [new VuetifyLoaderPlugin()],
+    transpile: [],
+    plugins: [],
     loaders: {
       stylus: {
-        import: ['~assets/style/variables.styl']
-      }
-    }
-  }
+        import: [],
+      },
+    },
+  },
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/moment'],
 }
 
 export default config

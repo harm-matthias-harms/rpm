@@ -1,91 +1,194 @@
 <template>
-  <v-app dark>
+  <v-app>
+    <v-app-bar
+      app
+      dense
+      dark
+      color="primary"
+    >
+      <v-app-bar-nav-icon
+        v-if="isAuthenticated"
+        @click="drawer = !drawer"
+      />
+      <v-toolbar-title>RPM</v-toolbar-title>
+      <v-spacer />
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn
+          v-if="!isAuthenticated"
+          text
+          to="/"
+        >
+          sign in
+        </v-btn>
+        <v-btn
+          v-if="isAuthenticated"
+          text
+          @click="signout"
+        >
+          sign out
+        </v-btn>
+      </v-toolbar-items>
+    </v-app-bar>
+
     <v-navigation-drawer
+      v-if="isAuthenticated"
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
+      temporary
+      absolute
       app
     >
-      <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+      <v-toolbar
+        text
+        class="transparent"
+      >
+        <v-list class="pa-0">
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-icon>fa-user</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{ user.username }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-toolbar>
+      <v-divider />
+      <v-list
+        dense
+        nav
+      >
+        <v-list-group
+          v-for="item in items"
+          :key="item.name"
+          :prepend-icon="item.icon"
+          no-action
         >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
-          </v-list-tile-content>
-        </v-list-tile>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.name" />
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="subItem in item.items"
+            :key="subItem.name"
+            :to="subItem.url"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ subItem.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.name" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
-      </v-btn>
-    </v-toolbar>
+
+    <CookieHint />
+    <Snackbar />
+
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <Nuxt v-if="!isLoading" />
+      <v-overlay :value="isLoading">
+        <v-progress-circular
+          indeterminate
+          size="64"
+        />
+      </v-overlay>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
-            <v-icon light>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
+
+    <v-footer app>
+      <v-spacer />
+      <a
+        target="_blank"
+        href="https://github.com/harm-matthias-harms/rpm"
+      >
+        <v-icon>fab fa-github</v-icon>
+      </a>
     </v-footer>
   </v-app>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
+<script lang="ts">
+  import { Component, Vue } from 'vue-property-decorator'
+  import { mapState, mapMutations } from 'vuex'
+  import CookieHint from '@/components/utils/CookieHint.vue'
+  import Snackbar from '@/components/utils/Snackbar.vue'
+
+@Component({
+  components: {
+    CookieHint,
+    Snackbar,
+  },
+  computed: {
+    ...mapState('loader', {
+      isLoading: 'isLoading',
+    }),
+    ...mapState('user', {
+      user: 'user',
+      isAuthenticated: 'isAuthenticated',
+    }),
+  },
+  methods: {
+    ...mapMutations('user', {
+      logout: 'LOGOUT',
+    }),
+  },
+})
+  export default class Default extends Vue {
+  logout!: () => void
+
+  items = [
+    {
+      name: 'Medical Case',
+      icon: 'fas fa-file-medical',
       items: [
         {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
+          name: 'List',
+          icon: 'fas fa-table',
+          url: '/medical_cases',
         },
         {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          name: 'My',
+          icon: 'fas fa-user',
+          url: '/medical_cases/my',
+        },
+        {
+          name: 'New',
+          icon: 'fas fa-plus',
+          url: '/medical_cases/new',
+        },
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
+    },
+    {
+      name: 'Preset',
+      icon: 'fas fa-syringe',
+      items: [
+        {
+          name: 'List',
+          icon: 'fas fa-table',
+          url: '/presets',
+        },
+        {
+          name: 'My',
+          icon: 'fas fa-user',
+          url: '/presets/my',
+        },
+        {
+          name: 'New',
+          icon: 'fas fa-plus',
+          url: '/presets/new',
+        },
+      ],
+    },
+  ]
+
+  drawer: boolean = false
+
+  signout () {
+    this.logout()
+    this.$router.push('/')
   }
-}
+  }
 </script>
