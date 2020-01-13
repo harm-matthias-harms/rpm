@@ -34,14 +34,14 @@
               {{ vitalSign.data.mobility }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.pulse">
+          <v-list-item v-if="vitalSign.data.pulse != null">
             <v-list-item-content>Pulse:</v-list-item-content>
             <v-list-item-content class="align-end">
               {{ valueToString(vitalSign.data.pulse, 'bpm') }}
             </v-list-item-content>
           </v-list-item>
           <v-list-item
-            v-if="vitalSign.data.bloodPressureSystolic || vitalSign.data.bloodPressureSystolic "
+            v-if="vitalSign.data.bloodPressureSystolic != null || vitalSign.data.bloodPressureSystolic != null"
           >
             <v-list-item-content>Blood Pressure:</v-list-item-content>
             <v-list-item-content
@@ -50,7 +50,7 @@
               {{ valueToString(vitalSign.data.bloodPressureSystolic, '') }}{{ vitalSign.data.bloodPressureSystolic ? "/" : "" }}{{ valueToString(vitalSign.data.bloodPressureDiastolic, '') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.respiratoryRate">
+          <v-list-item v-if="vitalSign.data.respiratoryRate != null">
             <v-list-item-content>Respiratory Rate:</v-list-item-content>
             <v-list-item-content
               class="align-end"
@@ -58,7 +58,7 @@
               {{ valueToString(vitalSign.data.respiratoryRate, 'bpm') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.oxygenSaturation">
+          <v-list-item v-if="vitalSign.data.oxygenSaturation != null">
             <v-list-item-content>Oxygen Saturation:</v-list-item-content>
             <v-list-item-content
               class="align-end"
@@ -66,7 +66,7 @@
               {{ valueToString(vitalSign.data.oxygenSaturation, '%') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.capillaryRefill">
+          <v-list-item v-if="vitalSign.data.capillaryRefill != null">
             <v-list-item-content>Capillary Refill:</v-list-item-content>
             <v-list-item-content
               class="align-end"
@@ -74,7 +74,7 @@
               {{ valueToString(vitalSign.data.capillaryRefill, 's') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.temperature">
+          <v-list-item v-if="vitalSign.data.temperature != null">
             <v-list-item-content>Temperatur:</v-list-item-content>
             <v-list-item-content
               class="align-end"
@@ -82,13 +82,13 @@
               {{ valueToString(vitalSign.data.temperature, '°C') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.weight">
+          <v-list-item v-if="vitalSign.data.weight != null">
             <v-list-item-content>Weight:</v-list-item-content>
             <v-list-item-content class="align-end">
               {{ valueToString(vitalSign.data.weight, 'kg') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.height">
+          <v-list-item v-if="vitalSign.data.height != null">
             <v-list-item-content>Height:</v-list-item-content>
             <v-list-item-content
               class="align-end"
@@ -111,9 +111,7 @@
   @Prop({ type: Array, required: true }) readonly vitalSigns!: any
 
   valueToString (value: number, unit: string) {
-    if (value !== 0) {
       return value + (unit ? ' ' + unit : '')
-    }
   }
   }
 </script>

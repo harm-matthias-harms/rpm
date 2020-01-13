@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="atSubmit(preset)">
+  <v-form @submit.prevent="submit()">
     <v-text-field
       v-model="preset.title"
       v-validate="'required|max:50'"
@@ -33,8 +33,18 @@
   },
 })
   export default class PresetForm extends Vue {
-  @Prop({ type: Object, required: true }) readonly preset!: object
-  @Prop({ type: Function, required: true }) readonly atSubmit!: void
+  @Prop({ type: Object, required: true }) readonly preset!: any
+  @Prop({ type: Function, required: true }) readonly atSubmit!: (payload) => void
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
+
+  submit () {
+    const keys = Object.keys(this.preset.vitalSigns)
+    keys.forEach((k) => {
+      if (this.preset.vitalSigns[k] === '') {
+        delete this.preset.vitalSigns[k]
+      }
+    })
+    this.atSubmit(this.preset)
+  }
   }
 </script>

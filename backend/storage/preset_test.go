@@ -82,12 +82,13 @@ func TestUpdatePreset(t *testing.T) {
 	resetPresetDatabase(preset)
 	err := CreatePreset(nil, preset)
 	assert.NoError(t, err)
-	preset.VitalSigns.Height = 190
+	helper := int(190)
+	preset.VitalSigns.Height = &helper
 	err = UpdatePreset(nil, preset)
 	assert.NoError(t, err)
 	presetFound, err := FindPreset(nil, preset.ID)
 	if assert.NoError(t, err) {
-		assert.Equal(t, 190, presetFound.VitalSigns.Height)
+		assert.Equal(t, 190, *presetFound.VitalSigns.Height)
 	}
 	notExist := &model.Preset{Title: "title"}
 	err = UpdatePreset(nil, notExist)
