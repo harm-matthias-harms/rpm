@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="atSubmit({medicalCase: medicalCase, files: files})">
+  <v-form @submit.prevent="submit()">
     <v-text-field
       v-model="medicalCase.title"
       v-validate="'required|max:50'"
@@ -173,7 +173,7 @@
 })
   export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly medicalCase!: any
-  @Prop({ type: Function, required: true }) readonly atSubmit!: void
+  @Prop({ type: Function, required: true }) readonly atSubmit!: (payload) => void
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
   files: Array<any> = []
@@ -247,6 +247,25 @@
     ) {
       this.medicalCase.vitalSigns = [this.emptyVitalSign]
     }
+  }
+
+  vitalSignsEmptyStringFix (vs) {
+    const keys = Object.keys(vs.data)
+    keys.forEach((k) => {
+      if (vs.data[k] === '') {
+        delete vs.data[k]
+      }
+    })
+    vs.childs.forEach((c) => {
+      this.vitalSignsEmptyStringFix(c)
+    })
+  }
+
+  submit () {
+    this.medicalCase.vitalSigns.forEach((vs) => {
+      this.vitalSignsEmptyStringFix(vs)
+    })
+    this.atSubmit({ medicalCase: this.medicalCase, files: this.files })
   }
   }
 </script>

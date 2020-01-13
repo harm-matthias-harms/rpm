@@ -7,13 +7,13 @@ type VitalSigns struct {
 	AVPU     string `json:"avpu" form:"avpu" bson:"avpu"`
 	Mobility string `json:"mobility" form:"mobility" bson:"mobility"`
 	// Respiratory rate
-	RespiratoryRate        int     `json:"respiratoryRate" form:"respiratoryRate" bson:"respiratoryRate"`
-	Pulse                  int     `json:"pulse" form:"pulse" bson:"pulse"`
-	Temperature            float32 `json:"temperature" form:"temperature" bson:"temperature"`
-	CapillaryRefill        float32 `json:"capillaryRefill" form:"capillaryRefill" bson:"capillaryRefill"`
-	BloodPressureSystolic  int     `json:"bloodPressureSystolic" form:"bloodPressureSystolic" bson:"bloodPressureSystolic"`
-	BloodPressureDiastolic int     `json:"bloodPressureDiastolic" form:"bloodPressureDiastolic" bson:"bloodPressureDiastolic"`
-	OxygenSaturation       int     `json:"oxygenSaturation" form:"oxygenSaturation" bson:"oxygenSaturation"`
-	Weight                 float32 `json:"weight" form:"weight" bson:"weight"`
-	Height                 int     `json:"height" form:"height" bson:"height"`
+	RespiratoryRate        *int     `json:"respiratoryRate" form:"respiratoryRate" bson:"respiratoryRate"`
+	Pulse                  *int     `json:"pulse" form:"pulse" bson:"pulse"`
+	Temperature            *float32 `json:"temperature" form:"temperature" bson:"temperature"`
+	CapillaryRefill        *float32 `json:"capillaryRefill" form:"capillaryRefill" bson:"capillaryRefill"`
+	BloodPressureSystolic  *int     `json:"bloodPressureSystolic" form:"bloodPressureSystolic" bson:"bloodPressureSystolic"`
+	BloodPressureDiastolic *int     `json:"bloodPressureDiastolic" form:"bloodPressureDiastolic" bson:"bloodPressureDiastolic"`
+	OxygenSaturation       *int     `json:"oxygenSaturation" form:"oxygenSaturation" bson:"oxygenSaturation"`
+	Weight                 *float32 `json:"weight" form:"weight" bson:"weight"`
+	Height                 *int     `json:"height" form:"height" bson:"height"`
 }
