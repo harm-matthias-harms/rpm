@@ -3,10 +3,9 @@ package model
 // VitalSigns are describing the vital signs in a medical case
 type VitalSigns struct {
 	// Onset of symptoms
-	OoS      string `json:"oos" form:"oos" bson:"oos"`
-	AVPU     string `json:"avpu" form:"avpu" bson:"avpu"`
-	Mobility string `json:"mobility" form:"mobility" bson:"mobility"`
-	// Respiratory rate
+	OoS                    string   `json:"oos" form:"oos" bson:"oos"`
+	AVPU                   string   `json:"avpu" form:"avpu" bson:"avpu"`
+	Mobility               string   `json:"mobility" form:"mobility" bson:"mobility"`
 	RespiratoryRate        *int     `json:"respiratoryRate" form:"respiratoryRate" bson:"respiratoryRate"`
 	Pulse                  *int     `json:"pulse" form:"pulse" bson:"pulse"`
 	Temperature            *float32 `json:"temperature" form:"temperature" bson:"temperature"`
