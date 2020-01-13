@@ -33,8 +33,10 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  get_all ({ commit }) {
-    commit('loader/SET', true, { root: true })
+  get_all ({ commit }, payload = { disableLoader: false }) {
+    if (!payload.disableLoader) {
+      commit('loader/SET', true, { root: true })
+    }
     this.$axios
       .$get('/api/presets')
       .then((response) => {
@@ -44,21 +46,28 @@ export const actions: ActionTree<State, RootState> = {
         commit('snackbar/SET', "Couldn't load presets.", { root: true })
       })
       .finally(() => {
-        commit('loader/SET', false, { root: true })
+        if (!payload.disableLoader) {
+          commit('loader/SET', false, { root: true })
+        }
       })
   },
-  find ({ commit }, id) {
-    commit('loader/SET', true, { root: true })
-    this.$axios
-      .$get('/api/presets/' + id)
+  find ({ commit }, payload = { id: null, disableLoader: false }) {
+    if (!payload.disableLoader) {
+      commit('loader/SET', true, { root: true })
+    }
+    return this.$axios
+      .$get('/api/presets/' + payload.id)
       .then((response) => {
         commit('SET_PRESET', response)
+        return response
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't find preset.", { root: true })
       })
       .finally(() => {
-        commit('loader/SET', false, { root: true })
+        if (!payload.disableLoader) {
+          commit('loader/SET', false, { root: true })
+        }
       })
   },
 }

@@ -40,5 +40,9 @@ describe('Medical case form', () => {
     wrapper.vm.addVitalSign()
     expect(wrapper.vm.medicalCase.vitalSigns.length).toBe(1)
     wrapper.vm.setExpansionPanel()
+    wrapper.vm.medicalCase.vitalSigns[0].data.height = ''
+    wrapper.vm.medicalCase.vitalSigns[0].childs = [{ data: {}, childs: [] }]
+    wrapper.vm.submit()
+    expect(wrapper.vm.medicalCase.vitalSigns[0].data.height).not.toBeDefined()
   })
 })

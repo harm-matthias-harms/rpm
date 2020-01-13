@@ -44,7 +44,7 @@
   mounted () {
     const id = this.$route.params.id
     if (this.preset.id !== id) {
-      this.find(id).then(() => {
+      this.find({ id }).then(() => {
         this.preset = JSON.parse(JSON.stringify(this.$store.state.preset.preset))
       })
     }

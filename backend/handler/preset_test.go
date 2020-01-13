@@ -148,7 +148,8 @@ func TestPresetEdit(t *testing.T) {
 	preset := model.Preset{Title: "test", Author: model.LimitedUser{ID: primitive.NewObjectID(), Username: "username"}, CreatedAt: time.Now(), VitalSigns: model.VitalSigns{OoS: "symptom"}}
 	resetPreset(&preset)
 	_ = storage.CreatePreset(nil, &preset)
-	preset.VitalSigns.Height = 190
+	helper := int(190)
+	preset.VitalSigns.Height = &helper
 	presetString, _ := json.Marshal(preset)
 	header := http.Header{}
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

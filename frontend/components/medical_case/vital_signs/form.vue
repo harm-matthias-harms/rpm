@@ -6,6 +6,14 @@
         v-model="vitalSign.title"
         label="Title"
       />
+      <v-autocomplete
+        v-model="presetID"
+        :items="presets.presets"
+        :loading="loading"
+        :item-text="item => item.title + ' - ' + item.author.username"
+        item-value="id"
+        label="Select a preset"
+      />
       <v-text-field
         v-model="vitalSign.reason"
         label="Reason"
@@ -33,10 +41,24 @@
 
 <script lang="ts">
   import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
+  import { mapState, mapActions } from 'vuex'
   import Form from '@/components/vital_signs/form.vue'
 @Component({
   components: {
     Form,
+  },
+  computed: {
+    ...mapState('preset', {
+      presetsLoaded: 'presetsLoaded',
+      presets: 'presetList',
+      preset: 'preset',
+    }),
+  },
+  methods: {
+    ...mapActions('preset', {
+      getPresets: 'get_all',
+      findPreset: 'find',
+    }),
   },
 })
   export default class VitalSign extends Vue {
@@ -45,6 +67,23 @@
   updateVitalSignChanged (val: any) {
     this.$emit('update:vitalSign', val)
   }
+
+  @Watch('presetID')
+  presetIDChanged (val: string) {
+    if (val) {
+      this.findPreset({ id: val, disableLoader: true }).then((res) => {
+        this.vitalSign.data = res.vitalSigns
+      })
+    }
+  }
+
+  presetsLoaded!: boolean
+  getPresets!: (payload) => void
+  findPreset!: (payload) => Promise<any>
+  presets!: []
+  preset: any
+  loading = false
+  presetID: string = ''
 
   emptyVitalSign: object = {
     title: undefined,
@@ -68,6 +107,18 @@
 
   addChild () {
     this.vitalSign.childs.push(this.emptyVitalSign)
+  }
+
+  loadPresets () {
+    this.loading = true
+    this.getPresets({ disableLoader: true })
+    this.loading = false
+  }
+
+  mounted () {
+    if (!this.presetsLoaded) {
+      this.loadPresets()
+    }
   }
   }
 </script>
