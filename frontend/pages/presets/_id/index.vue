@@ -80,7 +80,7 @@
   mounted () {
     const id = this.$route.params.id
     if (this.preset.id !== id) {
-      this.find(id)
+      this.find({ id })
     }
   }
 
