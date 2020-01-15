@@ -9,6 +9,15 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+var errorParseRequest = "couldn't parse request"
+var errorParseParams = "params couldn't be parsed"
+var errorNoIDParam = "no or false id provided"
+var errorIDNotMatch = "ids do not match"
+var errorFind = "couldn't find entinity"
+var errorCreated = "couldn't be created"
+var errorUpdated = "couldn't be updated"
+var errorAuthParse = "authorization couldn't be parsed"
+
 type jsonStatus struct {
 	Data    interface{} `json:"data,omitempty"`
 	Success bool        `json:"success,omitempty"`

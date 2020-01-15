@@ -87,12 +87,12 @@ func TestMedicalCaseFind(t *testing.T) {
 	// no id provided
 	_, err := testRequest(http.MethodGet, "/api/medical_cases/:id", nil, HandleMedicalCaseFind, nil, map[string]string{"id": ""}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
 	}
 	// false id
 	_, err = testRequest(http.MethodGet, "/api/medical_cases/:id", nil, HandleMedicalCaseFind, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "couldn't find medical case", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
 	}
 	// good id
 	rec, err := testRequest(http.MethodGet, "/api/medical_cases/:id", nil, HandleMedicalCaseFind, nil, map[string]string{"id": mc.ID.Hex()}, jwtCookie)
@@ -217,13 +217,13 @@ func TestMedicalCaseEdit(t *testing.T) {
 	// no id provided
 	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", body2, HandleMedicalCaseEdit, header, nil, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "no or false id provided", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
 	}
 
 	// id not match
 	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", body3, HandleMedicalCaseEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "id's do not match", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorIDNotMatch, err.(*echo.HTTPError).Message)
 	}
 
 	// false id
@@ -239,7 +239,7 @@ func TestMedicalCaseEdit(t *testing.T) {
 	writerFalse.Close()
 	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", bodyFalse, HandleMedicalCaseEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "couldn't be updated", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorUpdated, err.(*echo.HTTPError).Message)
 	}
 
 	// broken payload
@@ -251,7 +251,7 @@ func TestMedicalCaseEdit(t *testing.T) {
 	writerBroken.Close()
 	_, err = testRequest(http.MethodPut, "/api/medical_cases/:id", bodyBroken, HandleMedicalCaseEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
 	if assert.Error(t, err) {
-		assert.Equal(t, "couldn't parse request", err.(*echo.HTTPError).Message)
+		assert.Equal(t, errorParseRequest, err.(*echo.HTTPError).Message)
 	}
 
 	// not update invalid
