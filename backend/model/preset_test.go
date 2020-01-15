@@ -26,7 +26,7 @@ func TestPresetValidate(t *testing.T) {
 	preset.Title = "title"
 	err = preset.Validate()
 	assert.EqualError(t, err, "vital signs not set")
-	
+
 	preset.VitalSigns.OoS = "symptoms"
 	err = preset.Validate()
 	assert.NoError(t, err)

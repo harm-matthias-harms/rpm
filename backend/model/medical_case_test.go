@@ -22,7 +22,7 @@ func TestMedicalCaseValidate(t *testing.T) {
 	mc.CreatedAt = time.Now()
 	err = mc.Validate()
 	assert.EqualError(t, err, "title not set")
-	
+
 	mc.Title = "title"
 	err = mc.Validate()
 	assert.NoError(t, err)
