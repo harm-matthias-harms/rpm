@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"encoding/json"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -75,4 +77,15 @@ func jsonHeader() http.Header {
 	header := http.Header{}
 	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	return header
+}
+
+func structToJSONString(v interface{}) string {
+	s, _ := json.Marshal(v)
+	return string(s)
+}
+
+func parseResponse(rec *httptest.ResponseRecorder, v interface{}) {
+	defer rec.Result().Body.Close()
+	body, _ := ioutil.ReadAll(rec.Result().Body)
+	_ = json.Unmarshal(body, v)
 }
