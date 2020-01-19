@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"testing"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
@@ -94,6 +95,15 @@ func TestPreset(t *testing.T) {
 		if assert.NoError(t, err) {
 			assert.Equal(t, int64(1), count)
 		}
+	})
+
+	t.Run("deletes preset", func(t *testing.T) {
+		c, err := DeletePreset(nil, preset.ID, preset.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(1), c)
+		c, err = DeletePreset(nil, primitive.NewObjectID(), preset.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(0), c)
 	})
 
 	// cleanup

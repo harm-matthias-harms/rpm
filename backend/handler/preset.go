@@ -115,3 +115,29 @@ func HandlePresetEdit(c echo.Context) (err error) {
 
 	return c.JSON(http.StatusOK, preset)
 }
+
+// HandlePresetDelete updates an preset
+func HandlePresetDelete(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	userID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+
+	count, err := storage.DeletePreset(c.Request().Context(), id, userID)
+	if err != nil || count == int64(0) {
+		return echo.NewHTTPError(http.StatusBadRequest, errorDelete)
+	}
+
+	return c.JSON(http.StatusOK, jsonStatus{Success: true})
+}
