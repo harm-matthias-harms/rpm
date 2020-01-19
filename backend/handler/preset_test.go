@@ -190,6 +190,22 @@ func TestPreset(t *testing.T) {
 		}
 	})
 
+	t.Run("delete", func(t *testing.T) {
+		// no id provided
+		_, err := testRequest(http.MethodDelete, "/api/presets/:id", nil, HandlePresetDelete, nil, map[string]string{"id": ""}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
+		}
+		// false id
+		_, err = testRequest(http.MethodDelete, "/api/presets/:id", nil, HandlePresetDelete, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorDelete, err.(*echo.HTTPError).Message)
+		}
+		// good id
+		_, err = testRequest(http.MethodDelete, "/api/presets/:id", nil, HandlePresetDelete, nil, map[string]string{"id": preset.ID.Hex()}, jwtCookie)
+		assert.NoError(t, err)
+	})
+
 	// cleanup
 	resetPreset(&preset)
 }

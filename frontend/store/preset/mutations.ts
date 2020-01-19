@@ -17,6 +17,9 @@ export const mutations: MutationTree<State> = {
       title: preset.title,
     })
   },
+  DELETE_FROM_LIST (state, id) {
+    state.presetList.presets = state.presetList.presets.filter(item => item.id !== id)
+  },
   UNSET_PRESET (state) {
     state.preset = {
       id: undefined,

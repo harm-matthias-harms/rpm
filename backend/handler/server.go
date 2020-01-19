@@ -16,6 +16,7 @@ var errorIDNotMatch = "ids do not match"
 var errorFind = "couldn't find entinity"
 var errorCreated = "couldn't be created"
 var errorUpdated = "couldn't be updated"
+var errorDelete = "couldn't be deleted"
 var errorAuthParse = "authorization couldn't be parsed"
 
 type jsonStatus struct {
@@ -51,6 +52,7 @@ func Server() (*echo.Echo, error) {
 	r.GET("/presets", HandlePresetsGet)
 	r.GET("/presets/:id", HandlePresetFind)
 	r.PUT("/presets/:id", HandlePresetEdit)
+	r.DELETE("/presets/:id", HandlePresetDelete)
 	// medical cases
 	r.POST("/medical_cases", HandleMedicalCaseCreate)
 	r.GET("/medical_cases", HandleMedicalCaseGet)

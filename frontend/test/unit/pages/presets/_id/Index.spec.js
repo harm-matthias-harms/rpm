@@ -12,7 +12,7 @@ describe('Show Presets', () => {
   let wrapper
   let router
   const storeCopy = store
-  storeCopy.state.preset.preset = { id: '002' }
+  storeCopy.state.preset.preset = { id: '002', author: { id: '001' } }
   beforeEach(() => {
     router = new VueRouter()
     wrapper = shallowMount(ShowPreset, {

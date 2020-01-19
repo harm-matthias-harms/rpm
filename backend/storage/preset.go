@@ -68,6 +68,13 @@ func UpdatePreset(ctx context.Context, preset *model.Preset) (err error) {
 	return
 }
 
+// DeletePreset deletes a preset by a given id
+func DeletePreset(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
+	c := presetCollection()
+	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}, {Key: "author._id", Value: userID}})
+	return result.DeletedCount, err
+}
+
 func presetCollection() *mongo.Collection {
 	return MongoSession.Collection("presets")
 }
