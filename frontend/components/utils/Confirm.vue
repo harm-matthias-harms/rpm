@@ -11,14 +11,14 @@
           text
           @click="atCancel()"
         >
-          Cancel
+          cancel
         </v-btn>
         <v-btn
           color="primary"
           text
           @click="atSubmit(item)"
         >
-          OK
+          ok
         </v-btn>
       </v-card-actions>
     </v-card>
