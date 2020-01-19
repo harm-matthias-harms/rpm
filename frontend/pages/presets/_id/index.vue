@@ -16,6 +16,11 @@
               >
                 edit
               </v-icon>
+              <DeleteButton
+                v-if="preset.author.id == $store.state.user.user.id"
+                :item="preset"
+                :go-back="true"
+              />
             </h4>
 
             <v-row>
@@ -56,11 +61,13 @@
   import Author from '@/components/utils/Author.vue'
   import Editor from '@/components/utils/Editor.vue'
   import VitalSigns from '@/components/preset/vitalSigns.vue'
+  import DeleteButton from '@/components/preset/Delete.vue'
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
+    DeleteButton,
   },
   computed: {
     ...mapState('preset', {

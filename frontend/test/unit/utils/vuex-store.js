@@ -11,8 +11,10 @@ Vue.use(Vuex)
 // mocking axios methods to prevent axios firing
 preset.actions.get_all = () => {}
 preset.actions.find = () => {}
+preset.actions.delete = () => {}
 medicalCase.actions.get_all = () => {}
 medicalCase.actions.find = () => {}
+medicalCase.actions.delete = () => {}
 
 export const store = new Vuex.Store({
   state: root.state,

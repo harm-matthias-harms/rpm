@@ -7,7 +7,7 @@ const $moment = () => ({ format: () => '1970-01-01T00:00:00' })
 
 Vue.use(Vuetify)
 
-describe('Editor', () => {
+describe('Author', () => {
   let wrapper
 
   beforeEach(() => {
