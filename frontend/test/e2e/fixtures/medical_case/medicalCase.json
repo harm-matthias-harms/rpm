@@ -2,7 +2,7 @@
     "title": "Test Medical Case",
     "id": "001",
     "author": {
-        "id": "000000000000000000000000",
+        "id": "001",
         "username": "John Doe"
     },
     "editor": {

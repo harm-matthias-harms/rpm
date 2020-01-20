@@ -13,6 +13,7 @@ describe('Show Medical Case', () => {
   let router
   store.state.medicalCase.medicalCase = {
     id: '002',
+    author: { id: '001' },
     generalInformation: { usar: true },
     medicalHistory: { problems: 'problem' },
     expectations: { expectations: 'expectations' },
