@@ -22,8 +22,8 @@ func TestMedicalCase(t *testing.T) {
 	_ = SetMongoDatabase()
 
 	// models
-	mc := &model.MedicalCase{Title: "title"}
-	mc2 := &model.MedicalCase{Title: "title 2"}
+	mc := &model.MedicalCase{Title: "title", Author: model.LimitedUser{ID: primitive.NewObjectID()}}
+	mc2 := &model.MedicalCase{Title: "title 2", Author: model.LimitedUser{ID: primitive.NewObjectID()}}
 	noneExistingMC := &model.MedicalCase{Title: "title"}
 
 	// tests
@@ -135,6 +135,24 @@ func TestMedicalCase(t *testing.T) {
 
 		// cleanup
 		_ = bucket.Delete(fileID)
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		// setup
+		mc2.Files = append(mc2.Files, model.MedicalCaseFile{ID: primitive.NewObjectID()})
+		_ = UpdateMedicalCase(nil, mc)
+		_ = UpdateMedicalCase(nil, mc2)
+
+		count, err := DeleteMedicalCase(nil, mc.ID, primitive.NewObjectID())
+		assert.Error(t, err)
+		assert.Equal(t, "not authorized", err.Error())
+		count, err = DeleteMedicalCase(nil, mc.ID, mc.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(1), count)
+		count, err = DeleteMedicalCase(nil, mc.ID, mc.Author.ID)
+		assert.Error(t, err)
+		count, err = DeleteMedicalCase(nil, mc2.ID, mc2.Author.ID)
+		assert.Error(t, err)
 	})
 
 	// cleanup
