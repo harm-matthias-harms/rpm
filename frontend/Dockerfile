@@ -9,9 +9,9 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run generate
+RUN yarn generate
 
-## PRODUCTION
+# PRODUCTION
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html/

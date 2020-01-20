@@ -15,12 +15,6 @@ describe('Edit Medical Case', () => {
     })
     cy.route({
       method: 'GET',
-      url: 'http://localhost:3001/api/medical_cases',
-      status: 200,
-      response: 'fixture:medical_case/list.json',
-    })
-    cy.route({
-      method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
       response: 'fixture:medical_case/medicalCase.json',
@@ -32,10 +26,7 @@ describe('Edit Medical Case', () => {
   })
 
   it('updates medical case', () => {
-    cy.visit('/medical_cases')
-    cy.contains('edit')
-    cy.visit('/medical_cases/001')
-    cy.contains('edit').click()
+    cy.visit('/medical_cases/001/edit')
     cy.contains('Edit Medical Case')
     cy.contains('div', 'Problems')
       .find('input')

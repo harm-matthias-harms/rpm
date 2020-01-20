@@ -34,7 +34,6 @@ jobs:
         directories:
           # we also need to cache folder with Cypress binary
           - ~/.cache
-          - frontend/node_modules
       before_install:
         - cd frontend/
       install:
