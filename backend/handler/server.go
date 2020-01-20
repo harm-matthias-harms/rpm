@@ -58,6 +58,7 @@ func Server() (*echo.Echo, error) {
 	r.GET("/medical_cases", HandleMedicalCaseGet)
 	r.GET("/medical_cases/:id", HandleMedicalCaseFind)
 	r.PUT("/medical_cases/:id", HandleMedicalCaseEdit)
+	r.DELETE("/medical_cases/:id", HandleMedicalCaseDelete)
 	r.GET("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileGet)
 
 	// Auth - NO JWT
