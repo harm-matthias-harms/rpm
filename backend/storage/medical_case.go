@@ -24,21 +24,27 @@ func CountMedicalCases(ctx context.Context, params map[string]interface{}) (int6
 
 // GetMedicalCases returns an array of the medicalcases in the short version
 func GetMedicalCases(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.MedicalCaseShort, err error) {
+	// setup & prevent null array
+	result = []model.MedicalCaseShort{}
 	c := mcCollection()
+
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})
 	options.SetSkip(int64((page - 1) * pageSize))
 	options.SetLimit(int64(pageSize))
+
 	cursor, err := c.Find(ctx, params, options)
 	if err != nil {
 		return nil, err
 	}
+
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
 		var preset model.MedicalCaseShort
 		cursor.Decode(&preset)
 		result = append(result, preset)
 	}
+
 	return result, nil
 }
 
