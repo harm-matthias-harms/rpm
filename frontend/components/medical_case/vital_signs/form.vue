@@ -39,7 +39,7 @@
         <VitalSign
           v-for="(vs, i) in vitalSign.childs"
           :key="i"
-          :vital-sign.sync="vs"
+          :vital-sign.sync="vitalSign.childs[i]"
         />
       </v-expansion-panels>
     </v-expansion-panel-content>
@@ -50,11 +50,9 @@
   import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
   import { mapState, mapActions } from 'vuex'
   import Form from '@/components/vital_signs/form.vue'
+  const components: any = { Form }
 @Component({
-  components: {
-    Form,
-    VitalSign: () => import('./form.vue'),
-  },
+  components,
   computed: {
     ...mapState('preset', {
       presetsLoaded: 'presetsLoaded',
@@ -114,7 +112,7 @@
   }
 
   addChild () {
-    this.vitalSign.childs.push(this.emptyVitalSign)
+    this.vitalSign.childs.push(Object.assign({}, this.emptyVitalSign))
   }
 
   loadPresets () {
@@ -129,4 +127,5 @@
     }
   }
   }
+  components.VitalSign = VitalSign
 </script>

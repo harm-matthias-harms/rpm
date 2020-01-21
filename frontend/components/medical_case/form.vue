@@ -111,7 +111,7 @@
             <VitalSign
               v-for="(vs, i) in medicalCase.vitalSigns"
               :key="i"
-              :vital-sign.sync="vs"
+              :vital-sign.sync="medicalCase.vitalSigns[i]"
             />
           </v-expansion-panels>
         </v-expansion-panel-content>
@@ -245,7 +245,7 @@
       !this.medicalCase.vitalSigns ||
       this.medicalCase.vitalSigns.length === 0
     ) {
-      this.medicalCase.vitalSigns = [this.emptyVitalSign]
+      this.medicalCase.vitalSigns = [Object.assign({}, this.emptyVitalSign)]
     }
   }
 
