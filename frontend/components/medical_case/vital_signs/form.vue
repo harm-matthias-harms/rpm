@@ -53,7 +53,7 @@
 @Component({
   components: {
     Form,
-    VitalSign: () => import('./form.vue')
+    VitalSign: () => import('./form.vue'),
   },
   computed: {
     ...mapState('preset', {
