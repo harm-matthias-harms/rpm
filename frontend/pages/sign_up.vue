@@ -71,7 +71,7 @@
               </v-btn>
             </v-form>
             <div>
-              By clicking Sign Up button, you agree that your information will
+              By clicking Sign Up, you agree that your information will
               be stored for further authentification.
             </div>
           </v-card-text>

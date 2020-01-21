@@ -17,7 +17,7 @@ import (
 func HandleRegister(c echo.Context) (err error) {
 	user := new(model.User)
 	if err := c.Bind(user); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 	if err = register(c.Request().Context(), user); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -29,7 +29,7 @@ func HandleRegister(c echo.Context) (err error) {
 func HandleAuthenticate(c echo.Context) (err error) {
 	user := new(model.User)
 	if err := c.Bind(user); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 	result, err := authenticate(c.Request().Context(), user)
 	if err != nil {

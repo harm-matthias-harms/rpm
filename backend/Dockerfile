@@ -40,7 +40,7 @@ COPY --from=builder /go/bin/backend /go/bin/backend
 USER appuser
 
 #Expose port of backend
-EXPOSE 3000
+EXPOSE 3001
 
 # Run the hello binary.
 ENTRYPOINT ["/go/bin/backend"]

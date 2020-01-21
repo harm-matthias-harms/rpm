@@ -20,6 +20,9 @@ export const mutations: MutationTree<State> = {
       title: medicalCase.title,
     })
   },
+  DELETE_FROM_LIST (state, id) {
+    state.medicalCasesList.medicalCases = state.medicalCasesList.medicalCases.filter(item => item.id !== id)
+  },
   UNSET_MEDICAL_CASE (state) {
     state.medicalCase = {
       id: undefined,

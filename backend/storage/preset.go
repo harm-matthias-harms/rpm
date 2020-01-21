@@ -21,21 +21,27 @@ func CountPresets(ctx context.Context, params map[string]interface{}) (int64, er
 
 // GetPresets returns an array of the presets in the short version
 func GetPresets(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.PresetShort, err error) {
+	// setup & prevent null array
+	result = []model.PresetShort{}
 	c := presetCollection()
+
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})
 	options.SetSkip(int64((page - 1) * pageSize))
 	options.SetLimit(int64(pageSize))
+
 	cursor, err := c.Find(ctx, params, options)
 	if err != nil {
 		return nil, err
 	}
+
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
 		var preset model.PresetShort
 		cursor.Decode(&preset)
 		result = append(result, preset)
 	}
+
 	return result, nil
 }
 
@@ -66,6 +72,13 @@ func UpdatePreset(ctx context.Context, preset *model.Preset) (err error) {
 		return errors.New("no document was found")
 	}
 	return
+}
+
+// DeletePreset deletes a preset by a given id
+func DeletePreset(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
+	c := presetCollection()
+	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}, {Key: "author._id", Value: userID}})
+	return result.DeletedCount, err
 }
 
 func presetCollection() *mongo.Collection {

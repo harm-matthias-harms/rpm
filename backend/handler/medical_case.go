@@ -19,7 +19,7 @@ import (
 func HandleMedicalCaseGet(c echo.Context) (err error) {
 	params := new(model.MedicalCaseQuery)
 	if err = c.Bind(params); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "params couldn't be parsed")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseParams)
 	}
 	filter := map[string]interface{}{}
 	if params.Title != "" {
@@ -38,11 +38,11 @@ func HandleMedicalCaseGet(c echo.Context) (err error) {
 func HandleMedicalCaseFind(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	mc, err := storage.FindMedicalCase(c.Request().Context(), id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't find medical case")
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 	}
 	return c.JSON(http.StatusOK, mc)
 }
@@ -58,7 +58,7 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	mc := new(model.MedicalCase)
 	err = json.Unmarshal([]byte(jsonString[0]), mc)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
@@ -68,7 +68,7 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	claims := token.Claims.(jwt.MapClaims)
 	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
 	mc.Author.ID = objectID
 	mc.Author.Username = claims["username"].(string)
@@ -81,12 +81,12 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	for _, file := range form.File["files"] {
 		err := storage.StoreMedicalCaseFile(mc, file)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "couldn't store documents")
+			return echo.NewHTTPError(http.StatusInternalServerError, errorCreated)
 		}
 	}
 	// create medical case
 	if err = storage.CreateMedicalCase(c.Request().Context(), mc); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be created")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorCreated)
 	}
 
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: mc})
@@ -103,15 +103,15 @@ func HandleMedicalCaseEdit(c echo.Context) (err error) {
 	mc := new(model.MedicalCase)
 	err = json.Unmarshal([]byte(jsonString[0]), mc)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	if mc.ID != id {
-		return echo.NewHTTPError(http.StatusBadRequest, "id's do not match")
+		return echo.NewHTTPError(http.StatusBadRequest, errorIDNotMatch)
 	}
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
@@ -122,7 +122,7 @@ func HandleMedicalCaseEdit(c echo.Context) (err error) {
 	claims := token.Claims.(jwt.MapClaims)
 	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
 	mc.Editor.ID = objectID
 	mc.Editor.Username = claims["username"].(string)
@@ -135,42 +135,68 @@ func HandleMedicalCaseEdit(c echo.Context) (err error) {
 	for _, file := range form.File["files"] {
 		err := storage.StoreMedicalCaseFile(mc, file)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "couldn't store documents")
+			return echo.NewHTTPError(http.StatusInternalServerError, errorCreated)
 		}
 	}
 
 	// update medical case
 	if err = storage.UpdateMedicalCase(c.Request().Context(), mc); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be updated")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
 	}
 
 	return c.JSON(http.StatusOK, mc)
+}
+
+// HandleMedicalCaseDelete updates an preset
+func HandleMedicalCaseDelete(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	userID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+
+	count, err := storage.DeleteMedicalCase(c.Request().Context(), id, userID)
+	if err != nil || count == int64(0) {
+		return echo.NewHTTPError(http.StatusBadRequest, errorDelete)
+	}
+
+	return c.JSON(http.StatusOK, jsonStatus{Success: true})
 }
 
 // HandleMedicalCaseFileGet serves the files for a medical case
 func HandleMedicalCaseFileGet(c echo.Context) error {
 	mcID, err := primitive.ObjectIDFromHex(c.Param("mc_id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	fileID, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	mc, err := storage.FindMedicalCase(c.Request().Context(), mcID)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "medical case does not exist")
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 	}
 	for _, file := range mc.Files {
 		if file.ID == fileID {
 			var b bytes.Buffer
 			w := bufio.NewWriter(&b)
 			if err = storage.GetMedicalCaseFile(fileID, w); err != nil {
-				return echo.NewHTTPError(http.StatusBadRequest, "file does not exist")
+				return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 			}
 			c.Response().Header().Set("Content-Disposition", "attachment; filename="+file.Name)
 			return c.Stream(http.StatusOK, http.DetectContentType(b.Bytes()), &b)
 		}
 	}
-	return echo.NewHTTPError(http.StatusBadRequest, "file does not exist")
+	return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 }

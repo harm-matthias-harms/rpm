@@ -86,7 +86,7 @@ Cypress.Commands.add('login', () => {
   cy.contains('The password field must be at least 6 characters')
   cy.get('input[name=password]').type('456')
   // submit form
-  cy.setCookie('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZXhwaXJlIjo5OTk5OTk5OTk5fQ.3kI7MFEnpQ9lCWetnVJFCGtH--LsXndEy8cKq-a2poA')
+  cy.setCookie('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwMSIsInVzZXJuYW1lIjoiSm9obiBEb2UiLCJleHBpcmUiOjk5OTk5OTk5OTl9.zgNJyIg5UHkLGdbPTfMSXigJb1DyN97Xmf4M9o5O39k')
   cy.get('form').submit()
 })
 Cypress.Commands.add('logout', () => {

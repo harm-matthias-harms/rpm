@@ -16,6 +16,11 @@
               >
                 edit
               </v-icon>
+              <DeleteButton
+                v-if="medicalCase.author.id == $store.state.user.user.id"
+                :item="medicalCase"
+                :go-back="true"
+              />
             </h4>
             <v-row>
               <v-col
@@ -220,12 +225,14 @@
   import Author from '@/components/utils/Author.vue'
   import Editor from '@/components/utils/Editor.vue'
   import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
+  import DeleteButton from '@/components/medical_case/Delete.vue'
 
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
+    DeleteButton,
   },
   computed: {
     ...mapState('medicalCase', {

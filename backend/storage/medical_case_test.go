@@ -17,141 +17,148 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func TestCountMedicalCases(t *testing.T) {
-	mc := &model.MedicalCase{Title: "count test"}
-	resetMedicalCaseDatabase(mc)
-	_ = CreateMedicalCase(nil, mc)
-	count, err := CountMedicalCases(nil, nil)
-	if assert.NoError(t, err) {
-		assert.Greater(t, count, int64(0))
-	}
-	filter := map[string]interface{}{"title": "count test"}
-	count, err = CountMedicalCases(nil, filter)
-	if assert.NoError(t, err) {
-		assert.Equal(t, int64(1), count)
-	}
-}
-
-func TestGetMedicalCases(t *testing.T) {
-	mc := &model.MedicalCase{Title: "get medical cases test"}
-	mc.GeneralInformation.Surgical = true
-	resetMedicalCaseDatabase(mc)
-	_ = CreateMedicalCase(nil, mc)
-	// test no filter
-	result, err := GetMedicalCases(nil, nil, 1, 1)
-	if assert.NoError(t, err) {
-		assert.Equal(t, 1, len(result))
-	}
-	// test filter
-	filter := map[string]interface{}{"title": "get medical cases test"}
-	result, err = GetMedicalCases(nil, filter, 1, 1)
-	if assert.NoError(t, err) {
-		assert.Equal(t, 1, len(result))
-	}
-	// test multiple filters
-	filter["generalInformation.surgical"] = true
-	result, err = GetMedicalCases(nil, filter, 1, 1)
-	if assert.NoError(t, err) {
-		assert.Equal(t, 1, len(result))
-		assert.Equal(t, mc.ID, result[0].ID)
-	}
-	// test load all
-	mc2 := &model.MedicalCase{Title: "get test"}
-	resetMedicalCaseDatabase(mc2)
-	_ = CreateMedicalCase(nil, mc2)
-	result, err = GetMedicalCases(nil, nil, 1, 0)
-	if assert.NoError(t, err) {
-		assert.Greater(t, len(result), 1)
-	}
-}
-
-func TestFindMedicalCase(t *testing.T) {
-	// First create it because no medical case is inserted
-	mc := &model.MedicalCase{Title: "test find medical case"}
-	resetMedicalCaseDatabase(mc)
-	err := CreateMedicalCase(nil, mc)
-	assert.NoError(t, err)
-	mcFound, err := FindMedicalCase(nil, mc.ID)
-	if assert.NoError(t, err) {
-		assert.Equal(t, "test find medical case", mcFound.Title)
-	}
-	notExist := &model.MedicalCase{Title: "title"}
-	_, err = FindMedicalCase(nil, notExist.ID)
-	assert.Error(t, err)
-}
-
-func TestCreateMedicalCase(t *testing.T) {
-	mc := &model.MedicalCase{Title: "test create medical case"}
-	resetMedicalCaseDatabase(mc)
-	err := CreateMedicalCase(nil, mc)
-	assert.NoError(t, err)
-}
-
-func TestUpdateMedicalCase(t *testing.T) {
-	mc := &model.MedicalCase{Title: "update medical case"}
-	resetMedicalCaseDatabase(mc)
-	err := CreateMedicalCase(nil, mc)
-	assert.NoError(t, err)
-	mc.MedicalHistroy.Allergies = "allergy"
-	err = UpdateMedicalCase(nil, mc)
-	assert.NoError(t, err)
-	medicalCaseFound, err := FindMedicalCase(nil, mc.ID)
-	if assert.NoError(t, err) {
-		assert.Equal(t, "allergy", medicalCaseFound.MedicalHistroy.Allergies)
-	}
-	notExist := &model.MedicalCase{Title: "title"}
-	err = UpdateMedicalCase(nil, notExist)
-	if assert.Error(t, err) {
-		assert.Equal(t, "no document was found", err.Error())
-	}
-}
-
-func TestCreateMedicalCaseFile(t *testing.T) {
-	// Setup
-	_ = SetMongoDatabase()
-	mc := &model.MedicalCase{Title: "test create file"}
-
-	// create multipart form file to recieve the FileHeader
-	file, _ := os.Open("./medical_case_test.go")
-	defer file.Close()
-	body := new(bytes.Buffer)
-	writer := multipart.NewWriter(body)
-	part, _ := writer.CreateFormFile("files", filepath.Base("./medical_case_test.go"))
-	io.Copy(part, file)
-	writer.Close()
-
-	// reading form
-	r := multipart.NewReader(body, writer.Boundary())
-	form, _ := r.ReadForm(10)
-
-	// test file create
-	for _, file := range form.File["files"] {
-		err := StoreMedicalCaseFile(mc, file)
-		assert.NoError(t, err)
-	}
-	resetMedicalCaseFile(mc)
-}
-
-func TestGetMedicalCaseFile(t *testing.T) {
+func TestMedicalCase(t *testing.T) {
 	// setup
 	_ = SetMongoDatabase()
-	bucket, _ := fileBucket()
 
-	// upload a fil
-	ustream, _ := bucket.OpenUploadStream("test.txt", options.GridFSUpload())
-	_, _ = ustream.Write([]byte("test file"))
-	fileID := ustream.FileID
-	ustream.Close()
+	// models
+	mc := &model.MedicalCase{Title: "title", Author: model.LimitedUser{ID: primitive.NewObjectID()}}
+	mc2 := &model.MedicalCase{Title: "title 2", Author: model.LimitedUser{ID: primitive.NewObjectID()}}
+	noneExistingMC := &model.MedicalCase{Title: "title"}
 
-	// test get
-	var b bytes.Buffer
-	w := bufio.NewWriter(&b)
-	err := GetMedicalCaseFile(fileID.(primitive.ObjectID), w)
-	assert.NoError(t, err)
-	assert.Equal(t, "test file", b.String())
+	// tests
+	t.Run("create medical case", func(t *testing.T) {
+		err := CreateMedicalCase(nil, mc)
+		assert.NoError(t, err)
+		err = CreateMedicalCase(nil, mc2)
+		assert.NoError(t, err)
+	})
+
+	t.Run("update medical case", func(t *testing.T) {
+		mc.MedicalHistroy.Allergies = "allergy"
+		err := UpdateMedicalCase(nil, mc)
+		assert.NoError(t, err)
+
+		// medical case doesn't exists
+		err = UpdateMedicalCase(nil, noneExistingMC)
+		if assert.Error(t, err) {
+			assert.Equal(t, "no document was found", err.Error())
+		}
+	})
+
+	t.Run("find medical case", func(t *testing.T) {
+		mcFound, err := FindMedicalCase(nil, mc.ID)
+		if assert.NoError(t, err) {
+			assert.Equal(t, "title", mcFound.Title)
+			assert.Equal(t, "allergy", mcFound.MedicalHistroy.Allergies)
+		}
+
+		// doesn't find none existing medical case
+		_, err = FindMedicalCase(nil, noneExistingMC.ID)
+		assert.Error(t, err)
+	})
+
+	t.Run("get medical case", func(t *testing.T) {
+		result, err := GetMedicalCases(nil, nil, 1, 1)
+		if assert.NoError(t, err) {
+			assert.Equal(t, 1, len(result))
+		}
+		// test filter
+		filter := map[string]interface{}{"title": "title"}
+		result, err = GetMedicalCases(nil, filter, 1, 1)
+		if assert.NoError(t, err) {
+			assert.Equal(t, 1, len(result))
+		}
+		// test multiple filters
+		filter["medicalHistory.allergies"] = "allergy"
+		result, err = GetMedicalCases(nil, filter, 1, 1)
+		if assert.NoError(t, err) {
+			assert.Equal(t, 1, len(result))
+			assert.Equal(t, mc.ID, result[0].ID)
+		}
+		// test load all
+		result, err = GetMedicalCases(nil, nil, 1, 0)
+		if assert.NoError(t, err) {
+			assert.Greater(t, len(result), 1)
+		}
+	})
+
+	t.Run("count medical case", func(t *testing.T) {
+		count, err := CountMedicalCases(nil, nil)
+		if assert.NoError(t, err) {
+			assert.Greater(t, count, int64(0))
+		}
+		filter := map[string]interface{}{"title": "title"}
+		count, err = CountMedicalCases(nil, filter)
+		if assert.NoError(t, err) {
+			assert.Equal(t, int64(1), count)
+		}
+	})
+
+	t.Run("create file", func(t *testing.T) {
+		// setup
+		file, _ := os.Open("./medical_case_test.go")
+		defer file.Close()
+		body := new(bytes.Buffer)
+		writer := multipart.NewWriter(body)
+		part, _ := writer.CreateFormFile("files", filepath.Base("./medical_case_test.go"))
+		io.Copy(part, file)
+		writer.Close()
+
+		// reading form
+		r := multipart.NewReader(body, writer.Boundary())
+		form, _ := r.ReadForm(10)
+
+		// test file create
+		for _, file := range form.File["files"] {
+			err := StoreMedicalCaseFile(mc, file)
+			assert.NoError(t, err)
+		}
+	})
+
+	t.Run("get file", func(t *testing.T) {
+		// setup
+		bucket, _ := fileBucket()
+
+		// upload a file
+		ustream, _ := bucket.OpenUploadStream("test.txt", options.GridFSUpload())
+		_, _ = ustream.Write([]byte("test file"))
+		fileID := ustream.FileID
+		ustream.Close()
+
+		// test get
+		var b bytes.Buffer
+		w := bufio.NewWriter(&b)
+		err := GetMedicalCaseFile(fileID.(primitive.ObjectID), w)
+		assert.NoError(t, err)
+		assert.Equal(t, "test file", b.String())
+
+		// cleanup
+		_ = bucket.Delete(fileID)
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		// setup
+		mc2.Files = append(mc2.Files, model.MedicalCaseFile{ID: primitive.NewObjectID()})
+		_ = UpdateMedicalCase(nil, mc)
+		_ = UpdateMedicalCase(nil, mc2)
+
+		count, err := DeleteMedicalCase(nil, mc.ID, primitive.NewObjectID())
+		assert.Error(t, err)
+		assert.Equal(t, "not authorized", err.Error())
+		count, err = DeleteMedicalCase(nil, mc.ID, mc.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(1), count)
+		count, err = DeleteMedicalCase(nil, mc.ID, mc.Author.ID)
+		assert.Error(t, err)
+		count, err = DeleteMedicalCase(nil, mc2.ID, mc2.Author.ID)
+		assert.Error(t, err)
+	})
 
 	// cleanup
-	_ = bucket.Delete(fileID)
+	resetMedicalCaseFile(mc)
+	resetMedicalCaseDatabase(mc)
+	resetMedicalCaseDatabase(mc2)
 }
 
 func resetMedicalCaseFile(mc *model.MedicalCase) {
@@ -162,6 +169,5 @@ func resetMedicalCaseFile(mc *model.MedicalCase) {
 }
 
 func resetMedicalCaseDatabase(mc *model.MedicalCase) {
-	_ = SetMongoDatabase()
 	_, _ = mcCollection().DeleteMany(nil, bson.M{"title": mc.Title})
 }

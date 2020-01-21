@@ -13,7 +13,14 @@
         :item-text="item => item.title + ' - ' + item.author.username"
         item-value="id"
         label="Select a preset"
-      />
+      >
+        <template v-slot:item="data">
+          <v-list-item-content>
+            <v-list-item-title v-html="data.item.title" />
+            <v-list-item-subtitle v-html="data.item.author.username" />
+          </v-list-item-content>
+        </template>
+      </v-autocomplete>
       <v-text-field
         v-model="vitalSign.reason"
         label="Reason"

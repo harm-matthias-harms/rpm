@@ -70,6 +70,24 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
+  delete ({ commit }, payload = { id: null, goBack: false }) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$delete('/api/presets/' + payload.id)
+      .then(() => {
+        commit('DELETE_FROM_LIST', payload.id)
+        commit('snackbar/SET', 'Preset  was successfully deleted.', { root: true })
+        if (payload.goBack) {
+          this.$router.back()
+        }
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't delete preset.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
 }
 
 export default actions

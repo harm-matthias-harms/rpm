@@ -1,11 +1,15 @@
 package handler
 
 import (
+	"encoding/json"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
+	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
@@ -48,4 +52,40 @@ func testRequest(method string, url string, body io.Reader, handler func(c echo.
 	}
 	err := handler(c)
 	return rec, err
+}
+
+// Login a user and generates a jwt. Returns nil or the JWT-Token Cookie
+func loginUser(t *testing.T) *http.Cookie {
+	userString := `{"username":"testuser", "password":"abc123" }`
+	user := &model.User{Username: "testuser", Email: "user@test.com", Password: "abc123"}
+	_ = register(nil, user)
+
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec, err := testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(userString), HandleAuthenticate, header, nil)
+	assert.NoError(t, err)
+	cookies := rec.Result().Cookies()
+	for _, cookie := range cookies {
+		if cookie.Name == echo.HeaderAuthorization {
+			return cookie
+		}
+	}
+	return nil
+}
+
+func jsonHeader() http.Header {
+	header := http.Header{}
+	header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	return header
+}
+
+func structToJSONString(v interface{}) string {
+	s, _ := json.Marshal(v)
+	return string(s)
+}
+
+func parseResponse(rec *httptest.ResponseRecorder, v interface{}) {
+	defer rec.Result().Body.Close()
+	body, _ := ioutil.ReadAll(rec.Result().Body)
+	_ = json.Unmarshal(body, v)
 }

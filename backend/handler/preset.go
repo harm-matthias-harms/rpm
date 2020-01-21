@@ -18,7 +18,7 @@ import (
 func HandlePresetsGet(c echo.Context) (err error) {
 	params := new(model.PresetQuery)
 	if err = c.Bind(params); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "params couldn't be parsed")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseParams)
 	}
 	filter := map[string]interface{}{}
 	if params.Title != "" {
@@ -37,11 +37,11 @@ func HandlePresetsGet(c echo.Context) (err error) {
 func HandlePresetFind(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	preset, err := storage.FindPreset(c.Request().Context(), id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't find preset")
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 	}
 	return c.JSON(http.StatusOK, preset)
 }
@@ -50,7 +50,7 @@ func HandlePresetFind(c echo.Context) (err error) {
 func HandlePresetCreate(c echo.Context) (err error) {
 	preset := new(model.Preset)
 	if err := c.Bind(preset); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
@@ -60,7 +60,7 @@ func HandlePresetCreate(c echo.Context) (err error) {
 	claims := token.Claims.(jwt.MapClaims)
 	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
 	preset.Author.ID = objectID
 	preset.Author.Username = claims["username"].(string)
@@ -69,7 +69,7 @@ func HandlePresetCreate(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	if err = storage.CreatePreset(c.Request().Context(), preset); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be created")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorCreated)
 	}
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: preset})
 }
@@ -81,14 +81,14 @@ func HandlePresetEdit(c echo.Context) (err error) {
 	body, err := ioutil.ReadAll(c.Request().Body)
 	err = json.Unmarshal(body, preset)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "couldn't parse request")
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "no or false id provided")
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
 	if preset.ID != id {
-		return echo.NewHTTPError(http.StatusBadRequest, "id's do not match")
+		return echo.NewHTTPError(http.StatusBadRequest, errorIDNotMatch)
 	}
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
@@ -99,7 +99,7 @@ func HandlePresetEdit(c echo.Context) (err error) {
 	claims := token.Claims.(jwt.MapClaims)
 	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "authorization couldn't be parsed")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
 
 	preset.Editor.ID = objectID
@@ -110,8 +110,34 @@ func HandlePresetEdit(c echo.Context) (err error) {
 	}
 
 	if err = storage.UpdatePreset(c.Request().Context(), preset); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "couldn't be updated")
+		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
 	}
 
 	return c.JSON(http.StatusOK, preset)
+}
+
+// HandlePresetDelete updates an preset
+func HandlePresetDelete(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	userID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+
+	count, err := storage.DeletePreset(c.Request().Context(), id, userID)
+	if err != nil || count == int64(0) {
+		return echo.NewHTTPError(http.StatusBadRequest, errorDelete)
+	}
+
+	return c.JSON(http.StatusOK, jsonStatus{Success: true})
 }

@@ -17,12 +17,6 @@ describe('Edit preset', () => {
       })
       cy.route({
         method: 'GET',
-        url: 'http://localhost:3001/api/presets',
-        status: 200,
-        response: 'fixture:preset/list.json',
-      })
-      cy.route({
-        method: 'GET',
         url: 'http://localhost:3001/api/presets/001',
         status: 200,
         response: 'fixture:preset/preset.json',
@@ -34,10 +28,7 @@ describe('Edit preset', () => {
     })
 
     it('updates preset', () => {
-      cy.visit('/presets')
-      cy.contains('edit')
-      cy.visit('/presets/001')
-      cy.contains('edit').click()
+      cy.visit('/presets/001/edit')
       cy.contains('Edit Preset')
       cy.contains('div', 'Height').find('input').first().clear().type(vitalSigns.height)
       cy.contains('edit').click()

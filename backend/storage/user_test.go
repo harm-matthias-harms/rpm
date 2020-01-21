@@ -8,47 +8,53 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func TestCreateUser(t *testing.T) {
-	// Creates a User
-	user := &model.User{Username: "test", Email: "test1@mail.com", Password: "test"}
-	resetUserDatabase(user)
-	err := CreateUser(nil, user)
-	assert.NoError(t, err)
-	// Can't create twice
-	err = CreateUser(nil, user)
-	assert.Error(t, err)
-}
+func TestUser(t *testing.T) {
+	// setup
+	_ = SetMongoDatabase()
 
-func TestFindUser(t *testing.T) {
-	// Find user by id
-	// First create him because no user is inserted
-	user := &model.User{Username: "test", Email: "test1@mail.com"}
-	resetUserDatabase(user)
-	// Find user by username
-	userWithUsername := &model.User{Username: "test"}
-	// Find user by email for login
-	userWithEmail := &model.User{Username: "test1@mail.com"}
-	err := CreateUser(nil, user)
-	assert.NoError(t, err)
-	userFound, err := FindUser(nil, user)
-	assert.NoError(t, err)
-	//set nil to find only by id
-	userFound.Username = ""
-	userFound.Email = ""
-	tests := []*model.User{userFound, userWithUsername, userWithEmail}
-	for _, tt := range tests {
-		userFound, err = FindUser(nil, tt)
+	// model
+	user := &model.User{Username: "test", Email: "test1@mail.com", Password: "test"}
+
+	// tests
+	t.Run("create user", func(t *testing.T) {
+		err := CreateUser(nil, user)
 		assert.NoError(t, err)
-		assert.Equal(t, "test", userFound.Username)
-		assert.Equal(t, "test1@mail.com", userFound.Email)
-	}
-	// Dont't find not existing user
-	userNotExist := &model.User{Username: "test1"}
-	_, err = FindUser(nil, userNotExist)
-	assert.Error(t, err)
+		// Can't create twice
+		err = CreateUser(nil, user)
+		assert.Error(t, err)
+	})
+
+	t.Run("find user", func(t *testing.T) {
+		// submodel setup
+		userWithUsername := &model.User{Username: "test"}
+		userWithEmail := &model.User{Username: "test1@mail.com"}
+		userNotExist := &model.User{Username: "test1"}
+
+		// find base user
+		userFound, err := FindUser(nil, user)
+
+		//set nil to find only by id
+		userFound.Username = ""
+		userFound.Email = ""
+
+		// find different user
+		tests := []*model.User{userFound, userWithUsername, userWithEmail}
+		for _, tt := range tests {
+			userFound, err = FindUser(nil, tt)
+			assert.NoError(t, err)
+			assert.Equal(t, "test", userFound.Username)
+			assert.Equal(t, "test1@mail.com", userFound.Email)
+		}
+
+		// Dont't find not existing user
+		_, err = FindUser(nil, userNotExist)
+		assert.Error(t, err)
+	})
+
+	// cleanup
+	resetUserDatabase(user)
 }
 
 func resetUserDatabase(user *model.User) {
-	_ = SetMongoDatabase()
-	_, _ = userCollection().DeleteOne(nil, bson.M{"username": user.Username})
+	_, _ = userCollection().DeleteMany(nil, bson.M{"username": user.Username})
 }

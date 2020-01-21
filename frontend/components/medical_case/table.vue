@@ -27,6 +27,11 @@
             <v-icon @click="editMedicalCase(item)">
               edit
             </v-icon>
+            <DeleteButton
+              v-if="item.author.id == $store.state.user.user.id"
+              :item="item"
+              :go-back="false"
+            />
           </td>
         </tr>
       </tbody>
@@ -36,7 +41,12 @@
 
 <script lang="ts">
   import { Prop, Component, Vue } from 'vue-property-decorator'
-@Component
+  import DeleteButton from '@/components/medical_case/Delete.vue'
+@Component({
+  components: {
+    DeleteButton,
+  },
+})
   export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>

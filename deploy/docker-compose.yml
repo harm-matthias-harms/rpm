@@ -22,7 +22,7 @@ services:
       DOMAIN: CHANGE_TO_YOUR_DOMAIN
       JWT_SECTRET: CHANGE_TO_A_SECURE_SECRET
     ports:
-      - 5001:3000
+      - 5001:3001
     restart: always
     links:
       - mongo

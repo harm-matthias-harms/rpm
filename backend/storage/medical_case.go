@@ -24,21 +24,27 @@ func CountMedicalCases(ctx context.Context, params map[string]interface{}) (int6
 
 // GetMedicalCases returns an array of the medicalcases in the short version
 func GetMedicalCases(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.MedicalCaseShort, err error) {
+	// setup & prevent null array
+	result = []model.MedicalCaseShort{}
 	c := mcCollection()
+
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})
 	options.SetSkip(int64((page - 1) * pageSize))
 	options.SetLimit(int64(pageSize))
+
 	cursor, err := c.Find(ctx, params, options)
 	if err != nil {
 		return nil, err
 	}
+
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
 		var preset model.MedicalCaseShort
 		cursor.Decode(&preset)
 		result = append(result, preset)
 	}
+
 	return result, nil
 }
 
@@ -71,6 +77,28 @@ func UpdateMedicalCase(ctx context.Context, mc *model.MedicalCase) (err error) {
 	return
 }
 
+// DeleteMedicalCase deletes a preset by a given id
+func DeleteMedicalCase(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
+	c := mcCollection()
+	mc, err := FindMedicalCase(ctx, id)
+	if err != nil {
+		return int64(0), err
+	}
+	// make sure only author could delete his medical case
+	if mc.Author.ID != userID {
+		return int64(0), errors.New("not authorized")
+	}
+	// make sure all files are clean uped
+	for _, file := range mc.Files {
+		err = DeleteMedicalCaseFile(file.ID)
+		if err != nil {
+			return int64(0), err
+		}
+	}
+	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}, {Key: "author._id", Value: userID}})
+	return result.DeletedCount, err
+}
+
 // StoreMedicalCaseFile stores the provided documents to a medical case
 func StoreMedicalCaseFile(mc *model.MedicalCase, fh *multipart.FileHeader) (err error) {
 	bucket, err := fileBucket()
@@ -97,6 +125,16 @@ func GetMedicalCaseFile(id primitive.ObjectID, stream io.Writer) (err error) {
 		return
 	}
 	_, err = bucket.DownloadToStream(id, stream)
+	return
+}
+
+// DeleteMedicalCaseFile deletes a file from a bucket
+func DeleteMedicalCaseFile(id primitive.ObjectID) (err error) {
+	bucket, err := fileBucket()
+	if err != nil {
+		return
+	}
+	err = bucket.Delete(id)
 	return
 }
 
