@@ -202,7 +202,7 @@
               lg="3"
             >
               <v-card
-                :href="$axios.defaults.baseURL + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
+                :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
               >
                 <v-icon>attach_file</v-icon>
                 <v-card-title class="body-2">
