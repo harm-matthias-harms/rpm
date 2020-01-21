@@ -50,9 +50,9 @@
   import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
   import { mapState, mapActions } from 'vuex'
   import Form from '@/components/vital_signs/form.vue'
-  const components: any = { Form }
 @Component({
-  components,
+  name: 'VitalSign',
+  components: { Form },
   computed: {
     ...mapState('preset', {
       presetsLoaded: 'presetsLoaded',
@@ -127,5 +127,4 @@
     }
   }
   }
-  components.VitalSign = VitalSign
 </script>
