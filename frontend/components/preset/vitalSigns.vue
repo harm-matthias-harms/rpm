@@ -9,7 +9,7 @@
         class="body-1"
       >
         <v-list-item v-if="vitalSigns.oos">
-          <v-list-item-content>Onset of Symptoms:</v-list-item-content>
+          <v-list-item-content>Onset of symptoms:</v-list-item-content>
           <v-list-item-content class="align-end">
             {{ vitalSigns.oos }}
           </v-list-item-content>
@@ -33,7 +33,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.bloodPressureSystolic != null || vitalSigns.bloodPressureDiastolic != null">
-          <v-list-item-content>Blood Pressure:</v-list-item-content>
+          <v-list-item-content>Blood pressure:</v-list-item-content>
           <v-list-item-content
             class="align-end"
           >
@@ -41,19 +41,19 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.respiratoryRate != null">
-          <v-list-item-content>Respiratory Rate:</v-list-item-content>
+          <v-list-item-content>Respiratory rate:</v-list-item-content>
           <v-list-item-content class="align-end">
             {{ valueToString(vitalSigns.respiratoryRate, 'bpm') }}
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.oxygenSaturation != null">
-          <v-list-item-content>Oxygen Saturation:</v-list-item-content>
+          <v-list-item-content>Oxygen saturation:</v-list-item-content>
           <v-list-item-content class="align-end">
             {{ valueToString(vitalSigns.oxygenSaturation, '%') }}
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.capillaryRefill != null">
-          <v-list-item-content>Capillary Refill:</v-list-item-content>
+          <v-list-item-content>Capillary refill:</v-list-item-content>
           <v-list-item-content class="align-end">
             {{ valueToString(vitalSigns.capillaryRefill, 's') }}
           </v-list-item-content>

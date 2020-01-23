@@ -48,7 +48,7 @@
             multiple
           >
             <v-expansion-panel>
-              <v-expansion-panel-header>General Information</v-expansion-panel-header>
+              <v-expansion-panel-header>General information</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-chip v-if="medicalCase.generalInformation.usar">
                   USAR
@@ -60,11 +60,11 @@
                   Surgical
                 </v-chip>
                 <v-chip v-if="medicalCase.generalInformation.hospilisation">
-                  Need for Hospilisation
+                  Need for hospilisation
                 </v-chip>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.generalInformation.shortSummary">
-                    <v-list-item-content>Short Summary:</v-list-item-content>
+                    <v-list-item-content>Short summary:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
                     >
@@ -97,11 +97,11 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-header>Medical History</v-expansion-panel-header>
+              <v-expansion-panel-header>Medical history</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.medicalHistory.problems ">
-                    <v-list-item-content>Problems/Conditions:</v-list-item-content>
+                    <v-list-item-content>Problems/conditions:</v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ medicalCase.medicalHistory.problems }}
                     </v-list-item-content>
@@ -131,7 +131,7 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medicalHistory.implantedDevices">
-                    <v-list-item-content>Implantable Devices:</v-list-item-content>
+                    <v-list-item-content>Implantable devices:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
                     >
@@ -142,7 +142,7 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-header>Vital Signs</v-expansion-panel-header>
+              <v-expansion-panel-header>Vital signs</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <VitalSigns :vital-signs="medicalCase.vitalSigns" />
               </v-expansion-panel-content>
@@ -152,7 +152,7 @@
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.expectations.generalStatus">
-                    <v-list-item-content>General Status:</v-list-item-content>
+                    <v-list-item-content>General status:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
                     >
@@ -160,7 +160,7 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.expectations.onExamination">
-                    <v-list-item-content>On Examination:</v-list-item-content>
+                    <v-list-item-content>On examination:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
                     >
@@ -181,13 +181,13 @@
           </v-expansion-panels>
           <v-list dense>
             <v-list-item v-if="medicalCase.otherInformation">
-              <v-list-item-content>Other Information:</v-list-item-content>
+              <v-list-item-content>Other information:</v-list-item-content>
               <v-list-item-content class="align-end">
                 {{ medicalCase.otherInformation }}
               </v-list-item-content>
             </v-list-item>
             <v-list-item v-if="medicalCase.makeup">
-              <v-list-item-content>Needed Make-Up and Attributes:</v-list-item-content>
+              <v-list-item-content>Needed make-up and attributes:</v-list-item-content>
               <v-list-item-content class="align-end">
                 {{ medicalCase.makeup }}
               </v-list-item-content>

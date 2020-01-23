@@ -30,7 +30,7 @@
                 v-validate="'required|email'"
                 :error-messages="errors.collect('email')"
                 name="email"
-                label="Email Adress"
+                label="E-mail address"
                 data-vv-as="email"
               />
               <v-text-field
@@ -51,7 +51,7 @@
                 v-model="user.passwordConfirm"
                 v-validate="'required|confirmed:password'"
                 :error-messages="errors.collect('password_confirm')"
-                label="Confirm Password"
+                label="Confirm password"
                 name="password_confirm"
                 type="password"
                 data-vv-as="password"
@@ -71,7 +71,7 @@
               </v-btn>
             </v-form>
             <div>
-              By clicking Sign Up, you agree that your information will
+              By clicking sign up, you agree that your information will
               be stored for further authentification.
             </div>
           </v-card-text>
