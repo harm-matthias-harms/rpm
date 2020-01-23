@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panels
     multiple
-    :value="[...Array(vitalSigns).keys()].map((k, i) => i)"
+    :value="vitalSigns.map((k, i) => i)"
   >
     <v-expansion-panel
       v-for="(vitalSign, i) in vitalSigns"
@@ -17,7 +17,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="vitalSign.data.oos">
-            <v-list-item-content>Onset of Symptoms:</v-list-item-content>
+            <v-list-item-content>Onset of symptoms:</v-list-item-content>
             <v-list-item-content class="align-end">
               {{ vitalSign.data.oos }}
             </v-list-item-content>
@@ -43,7 +43,7 @@
           <v-list-item
             v-if="vitalSign.data.bloodPressureSystolic != null || vitalSign.data.bloodPressureSystolic != null"
           >
-            <v-list-item-content>Blood Pressure:</v-list-item-content>
+            <v-list-item-content>Blood pressure:</v-list-item-content>
             <v-list-item-content
               class="align-end"
             >
@@ -51,7 +51,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="vitalSign.data.respiratoryRate != null">
-            <v-list-item-content>Respiratory Rate:</v-list-item-content>
+            <v-list-item-content>Respiratory rate:</v-list-item-content>
             <v-list-item-content
               class="align-end"
             >
@@ -59,7 +59,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="vitalSign.data.oxygenSaturation != null">
-            <v-list-item-content>Oxygen Saturation:</v-list-item-content>
+            <v-list-item-content>Oxygen saturation:</v-list-item-content>
             <v-list-item-content
               class="align-end"
             >
@@ -67,7 +67,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="vitalSign.data.capillaryRefill != null">
-            <v-list-item-content>Capillary Refill:</v-list-item-content>
+            <v-list-item-content>Capillary refill:</v-list-item-content>
             <v-list-item-content
               class="align-end"
             >
@@ -106,7 +106,9 @@
 <script lang="ts">
   import { Prop, Component, Vue } from 'vue-property-decorator'
 
-@Component
+@Component({
+  name: 'VitalSigns',
+})
   export default class VitalSigns extends Vue {
   @Prop({ type: Array, required: true }) readonly vitalSigns!: any
 

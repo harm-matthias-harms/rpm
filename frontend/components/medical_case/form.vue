@@ -26,7 +26,7 @@
             <v-col>
               <v-checkbox
                 v-model="medicalCase.generalInformation.hospilisation"
-                label="Need for Hospilisation"
+                label="Need for hospilisation"
               />
             </v-col>
           </v-row>
@@ -51,7 +51,7 @@
           />
           <v-textarea
             v-model="medicalCase.generalInformation.shortSummary"
-            label="Short Summary"
+            label="Short summary"
           />
           <v-select
             v-model="medicalCase.generalInformation.age"
@@ -70,7 +70,7 @@
         <v-expansion-panel-content>
           <v-text-field
             v-model="medicalCase.medicalHistory.problems"
-            label="Problems/Conditions"
+            label="Problems/conditions"
           />
           <v-text-field
             v-model="medicalCase.medicalHistory.vaccinations"
@@ -86,7 +86,7 @@
           />
           <v-text-field
             v-model="medicalCase.medicalHistory.implantedDevices"
-            label="Implantable Devices"
+            label="Implantable devices"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -104,7 +104,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-expansion-panels
-            :value="[...Array(medicalCase.vitalSigns).keys()].map((k, i) => i)"
+            :value="medicalCase.vitalSigns.map((k, i) => i)"
             multiple
             class="mb-4"
           >
@@ -121,11 +121,11 @@
         <v-expansion-panel-content>
           <v-textarea
             v-model="medicalCase.expectations.generalStatus"
-            label="General Status"
+            label="General status"
           />
           <v-textarea
             v-model="medicalCase.expectations.onExamination"
-            label="On Examination"
+            label="On examination"
           />
           <v-textarea
             v-model="medicalCase.expectations.expectations"
@@ -136,11 +136,11 @@
     </v-expansion-panels>
     <v-textarea
       v-model="medicalCase.otherInformation"
-      label="Other Information"
+      label="Other information"
     />
     <v-textarea
       v-model="medicalCase.makeup"
-      label="Needed Make-Up and Attributes"
+      label="Needed make-up and attributes"
     />
     <v-file-input
       v-model="files"

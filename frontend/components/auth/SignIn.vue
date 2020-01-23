@@ -13,7 +13,7 @@
             v-validate="{ required: true, min: 6, username: true }"
             :error-messages="errors.collect('username')"
             name="username"
-            label="Username or Email"
+            label="Username or e-mail"
             data-vv-as="username"
           />
           <v-text-field
