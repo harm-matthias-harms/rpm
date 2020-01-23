@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 @Component
-  export default class RegisterSuccess extends Vue {}
+export default class RegisterSuccess extends Vue {}
 </script>

@@ -220,32 +220,32 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import Author from '@/components/utils/Author.vue'
-  import Editor from '@/components/utils/Editor.vue'
-  import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
-  import DeleteButton from '@/components/medical_case/Delete.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import Author from '@/components/utils/Author.vue'
+import Editor from '@/components/utils/Editor.vue'
+import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
+import DeleteButton from '@/components/medical_case/Delete.vue'
 
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
-    DeleteButton,
+    DeleteButton
   },
   computed: {
     ...mapState('medicalCase', {
-      medicalCase: 'medicalCase',
-    }),
+      medicalCase: 'medicalCase'
+    })
   },
   methods: {
     ...mapActions('medicalCase', {
-      find: 'find',
-    }),
-  },
+      find: 'find'
+    })
+  }
 })
-  export default class ShowMedicalCase extends Vue {
+export default class ShowMedicalCase extends Vue {
   find!: (id) => void
   medicalCase!: any
   expansionPanel: Array<number> = []
@@ -294,10 +294,10 @@
 
   bytesToSize (bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    if (bytes === 0) return 'n/a'
+    if (bytes === 0) { return 'n/a' }
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
-    if (i === 0) return bytes + ' ' + sizes[i]
+    if (i === 0) { return bytes + ' ' + sizes[i] }
     return (bytes / 1024 ** i).toFixed(2) + ' ' + sizes[i]
   }
-  }
+}
 </script>

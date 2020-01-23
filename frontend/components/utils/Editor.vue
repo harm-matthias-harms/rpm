@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
+import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-  export default class Editor extends Vue {
+export default class Editor extends Vue {
   @Prop({ type: Object, required: true }) readonly editor!: object
   @Prop({ type: String }) readonly updatedAt?: string
-  }
+}
 </script>
 
 <style scoped>

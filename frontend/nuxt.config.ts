@@ -14,17 +14,17 @@ const config: Configuration = {
       {
         hid: 'description',
         name: 'description',
-        content: 'role play management for medical exercises',
-      },
+        content: 'role play management for medical exercises'
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons',
-      },
-    ],
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+      }
+    ]
   },
 
   /*
@@ -46,7 +46,7 @@ const config: Configuration = {
    ** Router middlewares
    */
   router: {
-    middleware: ['auth'],
+    middleware: ['auth']
   },
 
   /*
@@ -56,7 +56,7 @@ const config: Configuration = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'nuxt-validate',
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify'
   ],
   /*
    ** Axios module configuration
@@ -68,7 +68,7 @@ const config: Configuration = {
       process.env.NODE_ENV !== 'production' ? 'http://localhost:3001' : '/',
     // xsrfCookieName: 'csrf',
     // xsrfHeaderName: 'X-CSRF-Token',
-    credentials: true,
+    credentials: true
     // API_URL must be used for api url
   },
   /*
@@ -76,8 +76,8 @@ const config: Configuration = {
    */
   vuetify: {
     icons: {
-      iconfont: 'fa',
-    },
+      iconfont: 'fa'
+    }
   },
   /*
    ** Build configuration
@@ -87,11 +87,11 @@ const config: Configuration = {
     plugins: [],
     loaders: {
       stylus: {
-        import: [],
-      },
-    },
+        import: []
+      }
+    }
   },
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/moment'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/moment']
 }
 
 export default config

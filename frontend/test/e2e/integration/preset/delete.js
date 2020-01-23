@@ -7,19 +7,19 @@ describe('Delete preset', () => {
       method: 'DELETE',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: { status: 200 },
+      response: { status: 200 }
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json',
+      response: 'fixture:preset/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: 'fixture:preset/preset.json',
+      response: 'fixture:preset/preset.json'
     })
     cy.login()
   })

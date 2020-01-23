@@ -12,16 +12,16 @@ describe('Show Presets', () => {
   let wrapper
   let router
   const storeCopy = store
-  storeCopy.state.preset.preset = { id: '002', author: { id: '001' } }
+  storeCopy.state.preset.preset = { id: '002', author: { id: '001', username: 'username' }, editor: { id: '001', username: 'username' } }
   beforeEach(() => {
     router = new VueRouter()
     wrapper = shallowMount(ShowPreset, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {

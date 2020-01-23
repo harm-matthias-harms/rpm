@@ -35,17 +35,17 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator'
-  import { mapState } from 'vuex'
-  import SignIn from '@/components/auth/SignIn.vue'
+import { Component, Vue } from 'nuxt-property-decorator'
+import { mapState } from 'vuex'
+import SignIn from '@/components/auth/SignIn.vue'
 
 @Component({
   components: { SignIn },
   computed: {
     ...mapState('user', {
-      isAuthenticated: 'isAuthenticated',
-    }),
-  },
+      isAuthenticated: 'isAuthenticated'
+    })
+  }
 })
-  export default class Index extends Vue {}
+export default class Index extends Vue {}
 </script>

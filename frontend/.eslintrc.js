@@ -9,7 +9,6 @@ module.exports = {
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
-    'vuetify'
   ],
   plugins: ['prettier', '@typescript-eslint'],
   // add your custom rules here

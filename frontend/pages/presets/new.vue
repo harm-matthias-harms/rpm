@@ -22,22 +22,22 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapActions } from 'vuex'
-  import PresetForm from '@/components/preset/form.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapActions } from 'vuex'
+import PresetForm from '@/components/preset/form.vue'
 
 @Component({
   components: {
-    PresetForm,
+    PresetForm
   },
   methods: {
     ...mapActions('preset', {
-      create: 'create',
-    }),
-  },
+      create: 'create'
+    })
+  }
 })
-  export default class NewPreset extends Vue {
+export default class NewPreset extends Vue {
   preset = { vitalSigns: {} }
   create!: (preset) => void
-  }
+}
 </script>

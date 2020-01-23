@@ -26,6 +26,6 @@ export const store = new Vuex.Store({
     snackbar: Object.assign({ namespaced: true }, snackbar),
     user,
     preset,
-    medicalCase,
-  },
+    medicalCase
+  }
 })

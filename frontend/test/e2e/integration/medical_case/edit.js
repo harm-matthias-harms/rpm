@@ -11,13 +11,13 @@ describe('Edit Medical Case', () => {
       method: 'PUT',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: 'fixture:medical_case/edit.json',
+      response: 'fixture:medical_case/edit.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: 'fixture:medical_case/medicalCase.json',
+      response: 'fixture:medical_case/medicalCase.json'
     })
     cy.login()
   })

@@ -8,7 +8,7 @@ export const mutations: MutationTree<State> = {
       id: undefined,
       username: user.username,
       email: user.email,
-      password: user.password,
+      password: user.password
     }
   },
   SET_ERROR_REGISTER (state, reason: string) {
@@ -20,7 +20,7 @@ export const mutations: MutationTree<State> = {
       id: undefined,
       username: '',
       email: '',
-      password: '',
+      password: ''
     }
   },
   REGISTER_SUCCESS (state) {
@@ -38,7 +38,7 @@ export const mutations: MutationTree<State> = {
     state.isAuthenticated = false
     state.expireSession = undefined
     Cookie.remove('Authorization')
-  },
+  }
 }
 
 export default mutations

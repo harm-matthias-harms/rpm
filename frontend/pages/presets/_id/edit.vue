@@ -22,21 +22,21 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapActions } from 'vuex'
-  import PresetForm from '@/components/preset/form.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapActions } from 'vuex'
+import PresetForm from '@/components/preset/form.vue'
 @Component({
   components: {
-    PresetForm,
+    PresetForm
   },
   methods: {
     ...mapActions('preset', {
       find: 'find',
-      update: 'update',
-    }),
-  },
+      update: 'update'
+    })
+  }
 })
-  export default class Edit extends Vue {
+export default class Edit extends Vue {
   find!: (id) => Promise<any>
   update!: (preset) => void
   preset: any = JSON.parse(JSON.stringify(this.$store.state.preset.preset))
@@ -49,5 +49,5 @@
       })
     }
   }
-  }
+}
 </script>

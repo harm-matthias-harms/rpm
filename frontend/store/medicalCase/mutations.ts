@@ -15,9 +15,9 @@ export const mutations: MutationTree<State> = {
       id: medicalCase.id,
       author: {
         id: medicalCase.author.id,
-        username: medicalCase.author.username,
+        username: medicalCase.author.username
       },
-      title: medicalCase.title,
+      title: medicalCase.title
     })
   },
   DELETE_FROM_LIST (state, id) {
@@ -28,11 +28,11 @@ export const mutations: MutationTree<State> = {
       id: undefined,
       author: {
         id: undefined,
-        username: undefined,
+        username: undefined
       },
       editor: {
         id: undefined,
-        username: undefined,
+        username: undefined
       },
       createdAt: undefined,
       updatedAt: undefined,
@@ -47,24 +47,24 @@ export const mutations: MutationTree<State> = {
         triage: undefined,
         shortSummary: undefined,
         age: undefined,
-        gender: undefined,
+        gender: undefined
       },
       medicalHistory: {
         problems: undefined,
         vaccinations: undefined,
         allergies: undefined,
         medication: undefined,
-        implantedDevices: undefined,
+        implantedDevices: undefined
       },
       expectations: {
         generalStatus: undefined,
         onExamination: undefined,
-        expectations: undefined,
+        expectations: undefined
       },
       vitalSigns: [],
-      files: [],
+      files: []
     }
-  },
+  }
 }
 
 export default mutations

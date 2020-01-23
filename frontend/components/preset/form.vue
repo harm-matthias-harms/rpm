@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
-  import Form from '@/components/vital_signs/form.vue'
+import { Prop, Component, Vue } from 'vue-property-decorator'
+import Form from '@/components/vital_signs/form.vue'
 @Component({
   components: {
-    Form,
-  },
+    Form
+  }
 })
-  export default class PresetForm extends Vue {
+export default class PresetForm extends Vue {
   @Prop({ type: Object, required: true }) readonly preset!: any
   @Prop({ type: Function, required: true }) readonly atSubmit!: (payload) => void
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
@@ -46,5 +46,5 @@
     })
     this.atSubmit(this.preset)
   }
-  }
+}
 </script>

@@ -24,22 +24,22 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapActions } from 'vuex'
-  import Form from '@/components/medical_case/form.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapActions } from 'vuex'
+import Form from '@/components/medical_case/form.vue'
 
 @Component({
   components: {
-    Form,
+    Form
   },
   methods: {
     ...mapActions('medicalCase', {
       find: 'find',
-      update: 'update',
-    }),
-  },
+      update: 'update'
+    })
+  }
 })
-  export default class ShowMedicalCase extends Vue {
+export default class ShowMedicalCase extends Vue {
   find!: (id) => Promise<any>
   create!: (medicalCase) => void
   medicalCase: any = JSON.parse(JSON.stringify(this.$store.state.medicalCase.medicalCase))
@@ -53,5 +53,5 @@
       })
     }
   }
-  }
+}
 </script>

@@ -11,16 +11,16 @@ describe('Medical case show vital signs', () => {
     wrapper = shallowMount(VitalSigns, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         vitalSigns: [
           {
             data: { temperature: 1 },
-            childs: [],
-          },
-        ],
-      },
+            childs: []
+          }
+        ]
+      }
     })
   })
   test('is a Vue instance', () => {

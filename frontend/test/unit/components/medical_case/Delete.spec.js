@@ -12,14 +12,14 @@ describe('Delete Button', () => {
     wrapper = shallowMount(DeleteButton, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         item: { id: '001', vitalSigns: {} },
-        goBack: false,
+        goBack: false
       },
       sync: false,
-      store,
+      store
     })
   })
   test('is a Vue instance', () => {

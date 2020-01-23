@@ -101,9 +101,9 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import RegisterSuccess from '@/components/auth/RegisterSuccess.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import RegisterSuccess from '@/components/auth/RegisterSuccess.vue'
 
 @Component({
   components: { RegisterSuccess },
@@ -112,16 +112,16 @@
       registerError: 'registerError',
       registerErrorReason: 'registerErrorReason',
       storedUser: 'user',
-      registerSuccess: 'registerSuccess',
-    }),
+      registerSuccess: 'registerSuccess'
+    })
   },
   methods: {
     ...mapActions('user', {
-      register: 'register',
-    }),
-  },
+      register: 'register'
+    })
+  }
 })
-  export default class SignUp extends Vue {
+export default class SignUp extends Vue {
   registerError!: boolean
   registerErrorReason!: string
   storedUser!: any
@@ -130,18 +130,18 @@
     username: '',
     email: '',
     password: '',
-    passwordConfirm: '',
+    passwordConfirm: ''
   }
 
   created () {
     this.$validator.extend('username', {
       getMessage: () =>
         'The username can contain letters (a-z), numbers (0-9), and periods (.)',
-      validate: value => !!value.match(/^[a-z1-9.]+$/),
+      validate: value => !!value.match(/^[a-z1-9.]+$/)
     })
     this.$validator.extend('passwordNoWhitespace', {
       getMessage: () => "The password can't contain a whitespace",
-      validate: value => !!value.match(/^\S+$/),
+      validate: value => !!value.match(/^\S+$/)
     })
   }
 
@@ -153,9 +153,9 @@
       this.user = {
         username: this.storedUser.username,
         email: this.storedUser.email,
-        password: this.storedUser.password,
+        password: this.storedUser.password
       }
     }
   }
-  }
+}
 </script>

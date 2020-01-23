@@ -19,9 +19,9 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 @Component
-  export default class CookieHint extends Vue {
+export default class CookieHint extends Vue {
   snackbar: boolean = false
 
   acceptCookieHint () {
@@ -32,5 +32,5 @@
   mounted () {
     this.snackbar = !(localStorage.getItem('accepted_cookie_hint') === 'true')
   }
-  }
+}
 </script>

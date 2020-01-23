@@ -104,16 +104,16 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
+import { Prop, Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  name: 'VitalSigns',
+  name: 'VitalSigns'
 })
-  export default class VitalSigns extends Vue {
+export default class VitalSigns extends Vue {
   @Prop({ type: Array, required: true }) readonly vitalSigns!: any
 
   valueToString (value: number, unit: string) {
-      return value + (unit ? ' ' + unit : '')
+    return value + (unit ? ' ' + unit : '')
   }
-  }
+}
 </script>

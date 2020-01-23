@@ -7,7 +7,7 @@ import Edit from '@/pages/presets/_id/edit.vue'
 
 const $route = {
   path: '/presets/001',
-  params: { id: '001' },
+  params: { id: '001' }
 }
 
 Vue.use(Vuetify)
@@ -20,13 +20,13 @@ describe('Edit Presets', () => {
     wrapper = shallowMount(Edit, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       store,
       router,
       mocks: {
-        $route,
-      },
+        $route
+      }
     })
   })
   test('is a Vue instance', () => {

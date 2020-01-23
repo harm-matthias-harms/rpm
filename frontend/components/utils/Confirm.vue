@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts">
-  import { Watch, Prop, Component, Vue } from 'vue-property-decorator'
+import { Watch, Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-  export default class Confirm extends Vue {
+export default class Confirm extends Vue {
   @Prop({ type: Boolean, required: true }) readonly dialog!: boolean
   @Prop({ type: String, required: true }) readonly text!: string
   @Prop({ type: Object, required: true }) readonly item!: object
@@ -42,5 +42,5 @@
   dialogChanged (val: any) {
     this.$emit('update:dialog', val)
   }
-  }
+}
 </script>

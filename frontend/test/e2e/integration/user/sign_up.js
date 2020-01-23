@@ -12,7 +12,7 @@ describe('SignUp', () => {
       method: 'POST',
       url: 'http://localhost:3001/auth/register',
       response: {},
-      status: 404,
+      status: 404
     })
     cy.register()
     cy.contains("Couldn't create new account.")
@@ -22,7 +22,7 @@ describe('SignUp', () => {
     cy.route({
       method: 'POST',
       url: 'http://localhost:3001/auth/register',
-      response: { success: true },
+      response: { success: true }
     })
     cy.register()
     cy.get('div > .v-icon')
@@ -34,9 +34,9 @@ describe('SignUp', () => {
       method: 'POST',
       url: 'http://localhost:3001/auth/register',
       response: {
-        message: 'user already exists',
+        message: 'user already exists'
       },
-      status: 400,
+      status: 400
     })
     cy.register()
     cy.url().should('include', '/')

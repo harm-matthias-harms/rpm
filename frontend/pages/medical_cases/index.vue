@@ -56,26 +56,26 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import Table from '@/components/medical_case/table.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import Table from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    Table,
+    Table
   },
   computed: {
     ...mapState('medicalCase', {
       medicalCasesList: 'medicalCasesList',
-      medicalCasesLoaded: 'medicalCasesLoaded',
-    }),
+      medicalCasesLoaded: 'medicalCasesLoaded'
+    })
   },
   methods: {
     ...mapActions('medicalCase', {
-      getMedicalCases: 'get_all',
-    }),
-  },
+      getMedicalCases: 'get_all'
+    })
+  }
 })
-  export default class MedicalCases extends Vue {
+export default class MedicalCases extends Vue {
   getMedicalCases!: () => void
   medicalCasesLoaded!: boolean
   medicalCasesList!: object
@@ -93,5 +93,5 @@
       this.loadMedicalCases()
     }
   }
-  }
+}
 </script>

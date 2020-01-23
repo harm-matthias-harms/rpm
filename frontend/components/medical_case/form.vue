@@ -66,7 +66,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>Medical History</v-expansion-panel-header>
+        <v-expansion-panel-header>Medical history</v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-text-field
             v-model="medicalCase.medicalHistory.problems"
@@ -164,14 +164,14 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
-  import VitalSign from './vital_signs/form.vue'
+import { Prop, Component, Vue } from 'vue-property-decorator'
+import VitalSign from './vital_signs/form.vue'
 @Component({
   components: {
-    VitalSign,
-  },
+    VitalSign
+  }
 })
-  export default class Form extends Vue {
+export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly medicalCase!: any
   @Prop({ type: Function, required: true }) readonly atSubmit!: (payload) => void
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
@@ -193,9 +193,9 @@
       bloodPressureDiastolic: undefined,
       oxygenSaturation: undefined,
       weight: undefined,
-      height: undefined,
+      height: undefined
     },
-    childs: [],
+    childs: []
   }
 
   mounted () {
@@ -267,5 +267,5 @@
     })
     this.atSubmit({ medicalCase: this.medicalCase, files: this.files })
   }
-  }
+}
 </script>

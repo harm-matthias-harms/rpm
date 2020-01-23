@@ -87,7 +87,7 @@ export const actions: ActionTree<State, RootState> = {
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
-  },
+  }
 }
 
 export default actions

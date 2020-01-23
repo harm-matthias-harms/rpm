@@ -40,20 +40,20 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
-  import DeleteButton from '@/components/medical_case/Delete.vue'
+import { Prop, Component, Vue } from 'vue-property-decorator'
+import DeleteButton from '@/components/medical_case/Delete.vue'
 @Component({
   components: {
-    DeleteButton,
-  },
+    DeleteButton
+  }
 })
-  export default class Table extends Vue {
+export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
 
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
-    { text: 'Author', sortable: true, value: 'author.username' },
+    { text: 'Author', sortable: true, value: 'author.username' }
   ]
 
   openMedicalCase (medicalCase) {
@@ -63,5 +63,5 @@
   editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
-  }
+}
 </script>

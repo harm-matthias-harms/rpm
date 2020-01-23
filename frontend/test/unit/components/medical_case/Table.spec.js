@@ -16,14 +16,14 @@ describe('Medical case table', () => {
     wrapper = shallowMount(Table, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         loading: false,
-        items: [],
+        items: []
       },
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {

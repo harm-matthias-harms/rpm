@@ -7,19 +7,19 @@ describe('Delete Medical Case', () => {
       method: 'DELETE',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: { status: 200 },
+      response: { status: 200 }
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json',
+      response: 'fixture:medical_case/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: 'fixture:medical_case/medicalCase.json',
+      response: 'fixture:medical_case/medicalCase.json'
     })
     cy.login()
   })

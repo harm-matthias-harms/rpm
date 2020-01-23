@@ -94,13 +94,13 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
+import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
 @Component
-  export default class Form extends Vue {
+export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSigns!: object
   @Watch('vitalSigns', { immediate: true, deep: true })
   updateVitalSignsChanged (val: any) {
     this.$emit('update:vitalSigns', val)
   }
-  }
+}
 </script>

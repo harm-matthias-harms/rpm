@@ -7,7 +7,7 @@ describe('List medical case', () => {
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json',
+      response: 'fixture:medical_case/list.json'
     })
     cy.login()
   })

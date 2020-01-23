@@ -108,32 +108,32 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapMutations } from 'vuex'
-  import CookieHint from '@/components/utils/CookieHint.vue'
-  import Snackbar from '@/components/utils/Snackbar.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapMutations } from 'vuex'
+import CookieHint from '@/components/utils/CookieHint.vue'
+import Snackbar from '@/components/utils/Snackbar.vue'
 
 @Component({
   components: {
     CookieHint,
-    Snackbar,
+    Snackbar
   },
   computed: {
     ...mapState('loader', {
-      isLoading: 'isLoading',
+      isLoading: 'isLoading'
     }),
     ...mapState('user', {
       user: 'user',
-      isAuthenticated: 'isAuthenticated',
-    }),
+      isAuthenticated: 'isAuthenticated'
+    })
   },
   methods: {
     ...mapMutations('user', {
-      logout: 'LOGOUT',
-    }),
-  },
+      logout: 'LOGOUT'
+    })
+  }
 })
-  export default class Default extends Vue {
+export default class Default extends Vue {
   logout!: () => void
 
   items = [
@@ -144,19 +144,19 @@
         {
           name: 'List',
           icon: 'fas fa-table',
-          url: '/medical_cases',
+          url: '/medical_cases'
         },
         {
           name: 'My',
           icon: 'fas fa-user',
-          url: '/medical_cases/my',
+          url: '/medical_cases/my'
         },
         {
           name: 'New',
           icon: 'fas fa-plus',
-          url: '/medical_cases/new',
-        },
-      ],
+          url: '/medical_cases/new'
+        }
+      ]
     },
     {
       name: 'Preset',
@@ -165,20 +165,20 @@
         {
           name: 'List',
           icon: 'fas fa-table',
-          url: '/presets',
+          url: '/presets'
         },
         {
           name: 'My',
           icon: 'fas fa-user',
-          url: '/presets/my',
+          url: '/presets/my'
         },
         {
           name: 'New',
           icon: 'fas fa-plus',
-          url: '/presets/new',
-        },
-      ],
-    },
+          url: '/presets/new'
+        }
+      ]
+    }
   ]
 
   drawer: boolean = false
@@ -187,5 +187,5 @@
     this.logout()
     this.$router.push('/')
   }
-  }
+}
 </script>

@@ -16,8 +16,8 @@
       >
         <template v-slot:item="data">
           <v-list-item-content>
-            <v-list-item-title v-html="data.item.title" />
-            <v-list-item-subtitle v-html="data.item.author.username" />
+            <v-list-item-title>{{ data.item.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ data.item.author.username }}</v-list-item-subtitle>
           </v-list-item-content>
         </template>
       </v-autocomplete>
@@ -47,9 +47,9 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import Form from '@/components/vital_signs/form.vue'
+import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import Form from '@/components/vital_signs/form.vue'
 @Component({
   name: 'VitalSign',
   components: { Form },
@@ -57,17 +57,17 @@
     ...mapState('preset', {
       presetsLoaded: 'presetsLoaded',
       presets: 'presetList',
-      preset: 'preset',
-    }),
+      preset: 'preset'
+    })
   },
   methods: {
     ...mapActions('preset', {
       getPresets: 'get_all',
-      findPreset: 'find',
-    }),
-  },
+      findPreset: 'find'
+    })
+  }
 })
-  export default class VitalSign extends Vue {
+export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSign!: any
   @Watch('vitalSign', { immediate: true, deep: true })
   updateVitalSignChanged (val: any) {
@@ -106,9 +106,9 @@
       bloodPressureDiastolic: undefined,
       oxygenSaturation: undefined,
       weight: undefined,
-      height: undefined,
+      height: undefined
     },
-    childs: [],
+    childs: []
   }
 
   addChild () {
@@ -126,5 +126,5 @@
       this.loadPresets()
     }
   }
-  }
+}
 </script>

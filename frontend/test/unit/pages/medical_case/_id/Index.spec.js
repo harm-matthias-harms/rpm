@@ -17,17 +17,17 @@ describe('Show Medical Case', () => {
     generalInformation: { usar: true },
     medicalHistory: { problems: 'problem' },
     expectations: { expectations: 'expectations' },
-    vitalSigns: [{ title: true }],
+    vitalSigns: [{ title: true }]
   }
   beforeEach(() => {
     router = new VueRouter()
     wrapper = shallowMount(ShowMedicalCase, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {
