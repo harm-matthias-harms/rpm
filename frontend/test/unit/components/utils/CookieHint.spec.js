@@ -12,8 +12,8 @@ describe('Index', () => {
     wrapper = shallowMount(CookieHint, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
-      },
+        RouterLink: RouterLinkStub
+      }
     })
     global.localStorage = LocalStorageMock
   })

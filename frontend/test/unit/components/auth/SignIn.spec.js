@@ -20,16 +20,16 @@ describe('SignIn', () => {
     wrapper = mount(SignIn, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       provide: {
         $validator () {
           return new VeeValidate.Validator()
-        },
+        }
       },
       sync: false,
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {

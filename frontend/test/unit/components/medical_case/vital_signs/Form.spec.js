@@ -14,21 +14,21 @@ describe('Medical case vital sign form', () => {
     wrapper = shallowMount(VitalSign, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         vitalSign: {
           data: {},
-          childs: [],
-        },
+          childs: []
+        }
       },
       provide: {
         $validator () {
           return new VeeValidate.Validator()
-        },
+        }
       },
       store,
-      sync: false,
+      sync: false
     })
   })
   test('is a Vue instance', () => {

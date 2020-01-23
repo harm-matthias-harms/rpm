@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-  export default class Snackbar extends Vue {
+export default class Snackbar extends Vue {
   show: boolean = false
   message: string = ''
 
@@ -33,8 +33,8 @@
           this.show = true
           this.message = this.$store.state.snackbar.message
         }
-      },
+      }
     )
   }
-  }
+}
 </script>

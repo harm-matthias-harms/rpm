@@ -13,18 +13,18 @@ describe('Vitalsigns form', () => {
     wrapper = mount(Form, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
-        vitalSigns: {},
+        vitalSigns: {}
       },
       provide: {
         $validator () {
           return new VeeValidate.Validator()
-        },
+        }
       },
       vuetify: new Vuetify(),
-      sync: false,
+      sync: false
     })
   })
   test('is a Vue instance', (done) => {

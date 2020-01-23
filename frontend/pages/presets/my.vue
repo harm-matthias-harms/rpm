@@ -58,32 +58,32 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapGetters, mapState, mapActions } from 'vuex'
-  import PresetTable from '@/components/preset/table.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters, mapState, mapActions } from 'vuex'
+import PresetTable from '@/components/preset/table.vue'
 @Component({
   components: {
-    PresetTable,
+    PresetTable
   },
   computed: {
     ...mapGetters('preset', {
       items: 'myOwn',
-      count: 'myOwnCount',
+      count: 'myOwnCount'
     }),
     ...mapState('preset', {
-      presetsLoaded: 'presetsLoaded',
+      presetsLoaded: 'presetsLoaded'
     }),
     ...mapState('user', {
-      user: 'user',
-    }),
+      user: 'user'
+    })
   },
   methods: {
     ...mapActions('preset', {
-      getPresets: 'get_all',
-    }),
-  },
+      getPresets: 'get_all'
+    })
+  }
 })
-  export default class OwnPresets extends Vue {
+export default class OwnPresets extends Vue {
   getPresets!: () => void
   presetsLoaded!: boolean
 
@@ -100,5 +100,5 @@
       this.loadPresets()
     }
   }
-  }
+}
 </script>

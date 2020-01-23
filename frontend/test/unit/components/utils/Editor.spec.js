@@ -14,18 +14,18 @@ describe('Editor', () => {
     wrapper = shallowMount(Editor, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         editor: {
           id: '001',
-          username: 'username',
+          username: 'username'
         },
-        updatedAt: '1970-01-01T00:00:00',
+        updatedAt: '1970-01-01T00:00:00'
       },
       mocks: {
-        $moment,
-      },
+        $moment
+      }
     })
     // wrapper.vm.$moment = moment
     // inject('moment', moment)
@@ -35,7 +35,7 @@ describe('Editor', () => {
     expect(wrapper.props().updatedAt).toEqual('1970-01-01T00:00:00')
     expect(wrapper.props().editor).toMatchObject({
       id: '001',
-      username: 'username',
+      username: 'username'
     })
   })
 })

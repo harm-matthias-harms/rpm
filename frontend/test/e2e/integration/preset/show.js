@@ -7,13 +7,13 @@ describe('Show a preset', () => {
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json',
+      response: 'fixture:preset/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: 'fixture:preset/preset.json',
+      response: 'fixture:preset/preset.json'
     })
     cy.login()
   })
@@ -29,14 +29,14 @@ describe('Show a preset', () => {
     cy.contains('John Doe')
     cy.contains("Jan 01'70")
     // contains prefix
-    cy.contains('Onset of Symptoms:')
+    cy.contains('Onset of symptoms:')
     cy.contains('AVPU:')
     cy.contains('Mobility:')
     cy.contains('Pulse:')
-    cy.contains('Blood Pressure:')
-    cy.contains('Respiratory Rate:')
-    cy.contains('Oxygen Saturation:')
-    cy.contains('Capillary Refill:')
+    cy.contains('Blood pressure:')
+    cy.contains('Respiratory rate:')
+    cy.contains('Oxygen saturation:')
+    cy.contains('Capillary refill:')
     cy.contains('Temperatur:')
     cy.contains('Weight:')
     cy.contains('Height:')

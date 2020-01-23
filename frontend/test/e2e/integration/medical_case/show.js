@@ -7,13 +7,13 @@ describe('Show a medical case', () => {
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json',
+      response: 'fixture:medical_case/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: 'fixture:medical_case/medicalCase.json',
+      response: 'fixture:medical_case/medicalCase.json'
     })
     cy.login()
   })
@@ -32,12 +32,12 @@ describe('Show a medical case', () => {
     cy.contains('Sam Who')
     cy.contains("Jan 01'01")
     // contains general Information
-    cy.contains('General Information')
+    cy.contains('General information')
     cy.contains('USAR')
     cy.contains('MEDIVAC')
     cy.contains('Surgical')
-    cy.contains('Need for Hospilisation')
-    cy.contains('Short Summary:')
+    cy.contains('Need for hospilisation')
+    cy.contains('Short summary:')
     cy.contains('short summary')
     cy.contains('Triage:')
     cy.contains('Urgent')
@@ -46,28 +46,28 @@ describe('Show a medical case', () => {
     cy.contains('Gender:')
     cy.contains('male')
     // contains medical history
-    cy.contains('Medical History')
-    cy.contains('Problems/Conditions:')
+    cy.contains('Medical history')
+    cy.contains('Problems/conditions:')
     cy.contains('problems')
     cy.contains('Vaccinations:').should('not.exist')
     cy.contains('Allergies:')
     cy.contains('allergies')
     cy.contains('Medication:')
     cy.contains('medication')
-    cy.contains('Implantable Devices:')
+    cy.contains('Implantable devices:')
     cy.contains('implanted devices')
     // contains expectations
     cy.contains('Expectations')
-    cy.contains('General Status:')
+    cy.contains('General status:')
     cy.contains('general status')
-    cy.contains('On Examination:')
+    cy.contains('On examination:')
     cy.contains('on examination')
     cy.contains('Expectations:')
     cy.contains('expectations')
     // contains make-up etc.
-    cy.contains('Other Information:')
+    cy.contains('Other information:')
     cy.contains('other information')
-    cy.contains('Needed Make-Up and Attributes:')
+    cy.contains('Needed make-up and attributes:')
     cy.contains('makeup')
     // contains files
     cy.contains('Protokoll 1.11.2018 M-Lab.pdf')
@@ -77,14 +77,14 @@ describe('Show a medical case', () => {
     cy.contains('ending treatment')
     cy.contains('successful treatment')
     cy.contains('Reason:')
-    cy.contains('Onset of Symptoms:')
+    cy.contains('Onset of symptoms:')
     cy.contains('AVPU:')
     cy.contains('Mobility:')
     cy.contains('Pulse:')
-    cy.contains('Blood Pressure:')
-    cy.contains('Respiratory Rate:')
-    cy.contains('Oxygen Saturation:')
-    cy.contains('Capillary Refill:')
+    cy.contains('Blood pressure:')
+    cy.contains('Respiratory rate:')
+    cy.contains('Oxygen saturation:')
+    cy.contains('Capillary refill:')
     cy.contains('Temperatur:')
     cy.contains('Weight:')
     cy.contains('Height:')

@@ -56,31 +56,31 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import Author from '@/components/utils/Author.vue'
-  import Editor from '@/components/utils/Editor.vue'
-  import VitalSigns from '@/components/preset/vitalSigns.vue'
-  import DeleteButton from '@/components/preset/Delete.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import Author from '@/components/utils/Author.vue'
+import Editor from '@/components/utils/Editor.vue'
+import VitalSigns from '@/components/preset/vitalSigns.vue'
+import DeleteButton from '@/components/preset/Delete.vue'
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
-    DeleteButton,
+    DeleteButton
   },
   computed: {
     ...mapState('preset', {
-      preset: 'preset',
-    }),
+      preset: 'preset'
+    })
   },
   methods: {
     ...mapActions('preset', {
-      find: 'find',
-    }),
-  },
+      find: 'find'
+    })
+  }
 })
-  export default class ShowPreset extends Vue {
+export default class ShowPreset extends Vue {
   find!: (id) => void
   preset!: any
 
@@ -94,5 +94,5 @@
   editPreset (preset) {
     this.$router.push('/presets/' + preset.id + '/edit')
   }
-  }
+}
 </script>

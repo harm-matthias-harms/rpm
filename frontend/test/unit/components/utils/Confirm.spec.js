@@ -12,15 +12,15 @@ describe('Confirm', () => {
     wrapper = shallowMount(Confirm, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         dialog: true,
         text: 'text',
         item: {},
         atSubmit: () => {},
-        atCancel: () => {},
-      },
+        atCancel: () => {}
+      }
     })
   })
   test('is a Vue instance', () => {

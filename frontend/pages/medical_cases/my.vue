@@ -58,32 +58,32 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapGetters, mapState, mapActions } from 'vuex'
-  import Table from '@/components/medical_case/table.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters, mapState, mapActions } from 'vuex'
+import Table from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    Table,
+    Table
   },
   computed: {
     ...mapGetters('medicalCase', {
       items: 'myOwn',
-      count: 'myOwnCount',
+      count: 'myOwnCount'
     }),
     ...mapState('medicalCase', {
-      medicalCasesLoaded: 'medicalCasesLoaded',
+      medicalCasesLoaded: 'medicalCasesLoaded'
     }),
     ...mapState('user', {
-      user: 'user',
-    }),
+      user: 'user'
+    })
   },
   methods: {
     ...mapActions('medicalCase', {
-      getMedicalCases: 'get_all',
-    }),
-  },
+      getMedicalCases: 'get_all'
+    })
+  }
 })
-  export default class OwnMedicalCases extends Vue {
+export default class OwnMedicalCases extends Vue {
   getMedicalCases!: () => void
   medicalCasesLoaded!: boolean
 
@@ -100,5 +100,5 @@
       this.loadMedicalCases()
     }
   }
-  }
+}
 </script>

@@ -56,26 +56,26 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import PresetTable from '@/components/preset/table.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapState, mapActions } from 'vuex'
+import PresetTable from '@/components/preset/table.vue'
 @Component({
   components: {
-    PresetTable,
+    PresetTable
   },
   computed: {
     ...mapState('preset', {
       presetList: 'presetList',
-      presetsLoaded: 'presetsLoaded',
-    }),
+      presetsLoaded: 'presetsLoaded'
+    })
   },
   methods: {
     ...mapActions('preset', {
-      getPresets: 'get_all',
-    }),
-  },
+      getPresets: 'get_all'
+    })
+  }
 })
-  export default class Presets extends Vue {
+export default class Presets extends Vue {
   getPresets!: () => void
   presetsLoaded!: boolean
 
@@ -92,5 +92,5 @@
       this.loadPresets()
     }
   }
-  }
+}
 </script>

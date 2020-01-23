@@ -11,8 +11,8 @@ describe('Index', () => {
     wrapper = shallowMount(RegisterSuccess, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
-      },
+        RouterLink: RouterLinkStub
+      }
     })
   })
   test('is a Vue instance', () => {

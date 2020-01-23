@@ -22,29 +22,29 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import { mapActions } from 'vuex'
-  import Form from '@/components/medical_case/form.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapActions } from 'vuex'
+import Form from '@/components/medical_case/form.vue'
 
 @Component({
   components: {
-    Form,
+    Form
   },
   methods: {
     ...mapActions('medicalCase', {
-      create: 'create',
-    }),
-  },
+      create: 'create'
+    })
+  }
 })
-  export default class NewMedicalCase extends Vue {
+export default class NewMedicalCase extends Vue {
   medicalCase = {
     generalInformation: {},
     medicalHistory: {},
     expectations: {},
     vitalSigns: [],
-    files: [],
+    files: []
   }
 
   create!: (medicalCase, files) => void
-  }
+}
 </script>

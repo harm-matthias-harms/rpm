@@ -12,9 +12,9 @@ describe('My Medical Cases', () => {
     wrapper = shallowMount(MyMedicalCases, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
-      store,
+      store
     })
   })
   test('is a Vue instance', () => {

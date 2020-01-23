@@ -5,11 +5,11 @@ export const state = (): State => ({
     id: undefined,
     author: {
       id: undefined,
-      username: undefined,
+      username: undefined
     },
     editor: {
       id: undefined,
-      username: undefined,
+      username: undefined
     },
     createdAt: undefined,
     updatedAt: undefined,
@@ -26,14 +26,14 @@ export const state = (): State => ({
       bloodPressureDiastolic: undefined,
       oxygenSaturation: undefined,
       weight: undefined,
-      height: undefined,
-    },
+      height: undefined
+    }
   },
   presetList: {
     count: 0,
-    presets: [],
+    presets: []
   },
-  presetsLoaded: false,
+  presetsLoaded: false
 })
 
 export default state

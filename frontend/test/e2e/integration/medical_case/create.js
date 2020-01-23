@@ -21,25 +21,25 @@ describe('Create medical case', () => {
       method: 'POST',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/create.json',
+      response: 'fixture:medical_case/create.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json',
+      response: 'fixture:medical_case/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json',
+      response: 'fixture:preset/list.json'
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: 'fixture:preset/preset.json',
+      response: 'fixture:preset/preset.json'
     })
     cy.login()
   })
@@ -55,18 +55,18 @@ describe('Create medical case', () => {
       .find('input')
       .first()
       .type(medicalCase.title)
-    cy.contains('div', 'Make-Up')
+    cy.contains('div', 'make-up')
       .find('textarea')
       .first()
       .type(medicalCase.makeup)
-    cy.contains('div', 'Other Information')
+    cy.contains('div', 'Other information')
       .find('textarea')
       .first()
       .type(medicalCase.otherInformation)
 
     // general information
     cy.contains('Surgical').click()
-    cy.contains('Need for Hospilisation').click()
+    cy.contains('Need for hospilisation').click()
     cy.contains('USAR').click()
     cy.contains('MEDIVAC').click()
 
@@ -77,7 +77,7 @@ describe('Create medical case', () => {
       .first('div[role="option"]')
       .click()
 
-    cy.contains('div', 'Short Summary')
+    cy.contains('div', 'Short summary')
       .find('textarea')
       .first()
       .type(generalInformation.shortSummary)
@@ -97,7 +97,7 @@ describe('Create medical case', () => {
       .click()
 
     // medical history
-    cy.contains('Medical History').click()
+    cy.contains('Medical history').click()
 
     cy.contains('div', 'Problems')
       .find('input')
@@ -119,18 +119,18 @@ describe('Create medical case', () => {
       .first()
       .type(medicalHistory.medication)
 
-    cy.contains('div', 'Implantable Devices')
+    cy.contains('div', 'Implantable devices')
       .find('input')
       .first()
       .type(medicalHistory.implantedDevices)
 
     // expectations
-    cy.contains('div', 'General Status')
+    cy.contains('div', 'General status')
       .find('textarea')
       .first()
       .type(expectations.generalStatus)
 
-    cy.contains('div', 'On Examination')
+    cy.contains('div', 'On examination')
       .find('textarea')
       .first()
       .type(expectations.onExamination)
@@ -159,7 +159,7 @@ describe('Create medical case', () => {
       .last()
       .type(vitalSigns.reason)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Onset of Symptoms')
+      .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
       .type(vitalSigns.data.oos)
@@ -181,27 +181,27 @@ describe('Create medical case', () => {
       .first()
       .type(vitalSigns.data.pulse)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Blood Pressure Systolic')
+      .contains('div', 'Blood pressure systolic')
       .find('input')
       .first()
       .type(vitalSigns.data.bloodPressureSystolic)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Blood Pressure Diastolic')
+      .contains('div', 'Blood pressure diastolic')
       .find('input')
       .first()
       .type(vitalSigns.data.bloodPressureDiastolic)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Respiratory Rate')
+      .contains('div', 'Respiratory rate')
       .find('input')
       .first()
       .type(vitalSigns.data.respiratoryRate)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Oxygen Saturation')
+      .contains('div', 'Oxygen saturation')
       .find('input')
       .first()
       .type(vitalSigns.data.oxygenSaturation)
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Capillary Refill')
+      .contains('div', 'Capillary refill')
       .find('input')
       .first()
       .type(vitalSigns.data.capillaryRefill)
@@ -228,9 +228,9 @@ describe('Create medical case', () => {
       .first()
       .type('test preset 1')
 
-      cy.contains('div', 'test preset 1').click()
+    cy.contains('div', 'test preset 1').click()
 
-      cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
+    cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Height')
       .find('input')
       .first()
@@ -255,7 +255,7 @@ describe('Create medical case', () => {
       .last()
       .type(child.reason)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Onset of Symptoms')
+      .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
       .type(child.data.oos)
@@ -277,27 +277,27 @@ describe('Create medical case', () => {
       .first()
       .type(child.data.pulse)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Blood Pressure Systolic')
+      .contains('div', 'Blood pressure systolic')
       .find('input')
       .first()
       .type(child.data.bloodPressureSystolic)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Blood Pressure Diastolic')
+      .contains('div', 'Blood pressure diastolic')
       .find('input')
       .first()
       .type(child.data.bloodPressureDiastolic)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Respiratory Rate')
+      .contains('div', 'Respiratory rate')
       .find('input')
       .first()
       .type(child.data.respiratoryRate)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Oxygen Saturation')
+      .contains('div', 'Oxygen saturation')
       .find('input')
       .first()
       .type(child.data.oxygenSaturation)
     cy.get(':nth-child(6) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Capillary Refill')
+      .contains('div', 'Capillary refill')
       .find('input')
       .first()
       .type(child.data.capillaryRefill)

@@ -42,19 +42,19 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
-  import Confirm from '@/components/utils/Confirm.vue'
-  import DeleteButton from '@/components/preset/Delete.vue'
+import { Prop, Component, Vue } from 'vue-property-decorator'
+import Confirm from '@/components/utils/Confirm.vue'
+import DeleteButton from '@/components/preset/Delete.vue'
 @Component({
-  components: { Confirm, DeleteButton },
+  components: { Confirm, DeleteButton }
 })
-  export default class PresetTable extends Vue {
+export default class PresetTable extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
 
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
-    { text: 'Author', sortable: true, value: 'author.username' },
+    { text: 'Author', sortable: true, value: 'author.username' }
   ]
 
   openPreset (preset) {
@@ -64,5 +64,5 @@
   editPreset (preset) {
     this.$router.push('/presets/' + preset.id + '/edit')
   }
-  }
+}
 </script>

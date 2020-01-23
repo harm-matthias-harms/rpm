@@ -82,13 +82,13 @@
 </template>
 
 <script lang="ts">
-  import { Prop, Component, Vue } from 'vue-property-decorator'
+import { Prop, Component, Vue } from 'vue-property-decorator'
 @Component
-  export default class VitalSigns extends Vue {
+export default class VitalSigns extends Vue {
   @Prop({ type: Object }) readonly vitalSigns?: object
 
   valueToString (value: number, unit: string) {
     return value + (unit ? ' ' + unit : '')
   }
-  }
+}
 </script>
