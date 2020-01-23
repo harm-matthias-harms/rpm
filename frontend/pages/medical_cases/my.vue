@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="center">
       <v-col
-        md="4"
+        md="5"
         sm="6"
       >
         <h3 class="headline">
@@ -16,7 +16,7 @@
         </h3>
       </v-col>
       <v-col
-        md="4"
+        md="5"
         sm="6"
         class="justify-end d-flex"
       >
@@ -45,7 +45,7 @@
     </v-row>
     <v-row justify="center">
       <v-col
-        md="8"
+        md="10"
         sm="12"
       >
         <Table
