@@ -13,7 +13,8 @@ require (
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
-	github.com/labstack/echo/v4 v4.1.13
+	github.com/labstack/echo/v4 v4.1.14
+	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.4.0

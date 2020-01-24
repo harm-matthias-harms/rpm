@@ -2,7 +2,7 @@
   <div style="display: inline;">
     <v-icon
       color="red"
-      @click="confirmDeletePreset()"
+      @click="dialog = true"
     >
       delete
     </v-icon>
@@ -34,10 +34,6 @@ export default class DeleteButton extends Vue {
 
   dialog: boolean = false
   delete!: ({ id: string, goBack: boolean }) => void
-
-  confirmDeletePreset () {
-    this.dialog = true
-  }
 
   deletePreset (preset) {
     this.delete({ id: preset.id, goBack: this.goBack })

@@ -1,19 +1,12 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        lg="8"
-        md="10"
-        sm="12"
-      >
+      <v-col lg="8" md="10" sm="12">
         <v-card>
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
-              <v-icon
-                color="primary"
-                @click="editMedicalCase(medicalCase)"
-              >
+              <v-icon color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
               <DeleteButton
@@ -23,30 +16,18 @@
               />
             </h4>
             <v-row>
-              <v-col
-                v-if="medicalCase.author && medicalCase.author.username"
-                class="col-auto"
-              >
-                <Author
-                  :author="medicalCase.author"
-                  :created-at="medicalCase.createdAt"
-                />
+              <v-col v-if="medicalCase.author && medicalCase.author.username" class="col-auto">
+                <Author :author="medicalCase.author" :created-at="medicalCase.createdAt" />
               </v-col>
               <v-col
                 v-if="medicalCase.editor && medicalCase.editor.username"
                 class="col-auto mr-auto"
               >
-                <Editor
-                  :editor="medicalCase.editor"
-                  :updated-at="medicalCase.editedAt"
-                />
+                <Editor :editor="medicalCase.editor" :updated-at="medicalCase.editedAt" />
               </v-col>
             </v-row>
           </v-card-text>
-          <v-expansion-panels
-            v-model="expansionPanel"
-            multiple
-          >
+          <v-expansion-panels v-model="expansionPanel" multiple>
             <v-expansion-panel>
               <v-expansion-panel-header>General information</v-expansion-panel-header>
               <v-expansion-panel-content>
@@ -194,22 +175,30 @@
             </v-list-item>
           </v-list>
           <v-row class="px-4">
-            <v-col
-              v-for="(file, i) in medicalCase.files"
-              :key="i"
-              sm="12"
-              md="4"
-              lg="3"
-            >
-              <v-card
-                :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
-              >
+            <v-col v-for="(file, i) in medicalCase.files" :key="i" sm="12" md="4" lg="3">
+              <v-card>
                 <v-icon>attach_file</v-icon>
                 <v-card-title class="body-2">
-                  {{ file.name }}
-                  <br>
-                  ({{ bytesToSize(file.size) }})
+                  <a
+                    :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
+                  >
+                    {{ file.name }}
+                    <br>
+                    ({{ bytesToSize(file.size) }})
+                  </a>
                 </v-card-title>
+                <v-card-actions v-if="medicalCase.author.id == $store.state.user.user.id">
+                  <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">
+                    Delete
+                  </v-btn>
+                  <Confirm
+                    text="Are you sure you want to delete this file?"
+                    :dialog.sync="deleteFileDialog[i]"
+                    :item="{mcID: medicalCase.id, id: file.id}"
+                    :at-submit="deleteFile"
+                    :at-cancel="onCancel"
+                  />
+                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
@@ -226,13 +215,15 @@ import Author from '@/components/utils/Author.vue'
 import Editor from '@/components/utils/Editor.vue'
 import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
 import DeleteButton from '@/components/medical_case/Delete.vue'
+import Confirm from '@/components/utils/Confirm.vue'
 
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
-    DeleteButton
+    DeleteButton,
+    Confirm
   },
   computed: {
     ...mapState('medicalCase', {
@@ -241,12 +232,15 @@ import DeleteButton from '@/components/medical_case/Delete.vue'
   },
   methods: {
     ...mapActions('medicalCase', {
-      find: 'find'
+      find: 'find',
+      deleteFile: 'deleteFile'
     })
   }
 })
 export default class ShowMedicalCase extends Vue {
   find!: (id) => void
+  deleteFile!: ({ mcID, id }) => void
+  deleteFileDialog: any = new Array(100).fill(false)
   medicalCase!: any
   expansionPanel: Array<number> = []
 
@@ -260,6 +254,10 @@ export default class ShowMedicalCase extends Vue {
 
   editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  onCancel () {
+    this.deleteFileDialog = new Array(100).fill(false)
   }
 
   setExpansionPanel () {
@@ -294,10 +292,20 @@ export default class ShowMedicalCase extends Vue {
 
   bytesToSize (bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    if (bytes === 0) { return 'n/a' }
+    if (bytes === 0) {
+      return 'n/a'
+    }
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
-    if (i === 0) { return bytes + ' ' + sizes[i] }
+    if (i === 0) {
+      return bytes + ' ' + sizes[i]
+    }
     return (bytes / 1024 ** i).toFixed(2) + ' ' + sizes[i]
   }
 }
 </script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>

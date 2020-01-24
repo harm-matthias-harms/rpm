@@ -24,7 +24,6 @@ describe('Delete Button', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
-    wrapper.vm.confirmDeleteMedicalCase({})
     wrapper.vm.deleteMedicalCase({ id: '001' })
     wrapper.vm.onCancel()
   })

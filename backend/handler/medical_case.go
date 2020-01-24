@@ -200,3 +200,43 @@ func HandleMedicalCaseFileGet(c echo.Context) error {
 	}
 	return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 }
+
+// HandleMedicalCaseFileDelete deletes a specific file of a medical case
+func HandleMedicalCaseFileDelete(c echo.Context) error {
+	mcID, err := primitive.ObjectIDFromHex(c.Param("mc_id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+	fileID, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+	mc, err := storage.FindMedicalCase(c.Request().Context(), mcID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	userID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+	if mc.Author.ID != userID {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNotAuthorized)
+	}
+	for i, file := range mc.Files {
+		if file.ID == fileID {
+			if err = storage.DeleteMedicalCaseFile(fileID); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, errorDelete)
+			}
+			mc.Files = append(mc.Files[:i], mc.Files[i+1:]...)
+			_ = storage.UpdateMedicalCase(c.Request().Context(), mc)
+			return c.JSON(http.StatusOK, mc)
+		}
+	}
+	return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+}

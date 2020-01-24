@@ -203,31 +203,81 @@ func TestMedicalCase(t *testing.T) {
 		}
 
 		// no id
-		rec, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": "", "id": mc.Files[0].ID.Hex()}, jwtCookie)
+		_, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": "", "id": mc.Files[0].ID.Hex()}, jwtCookie)
 		if assert.Error(t, err) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
 			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
 		}
 
 		// no document id
-		rec, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": ""}, jwtCookie)
+		_, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": ""}, jwtCookie)
 		if assert.Error(t, err) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
 			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
 		}
 
 		// false mc id
-		rec, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": primitive.NewObjectID().Hex(), "id": mc.Files[0].ID.Hex()}, jwtCookie)
+		_, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": primitive.NewObjectID().Hex(), "id": mc.Files[0].ID.Hex()}, jwtCookie)
 		if assert.Error(t, err) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
 			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
 		}
 
 		// false document id
-		rec, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": primitive.NewObjectID().Hex()}, jwtCookie)
+		_, err = testRequest(http.MethodGet, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileGet, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": primitive.NewObjectID().Hex()}, jwtCookie)
 		if assert.Error(t, err) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
 			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
+		}
+	})
+
+	t.Run("delete file", func(t *testing.T) {
+		//setup
+		mc2 := mc
+		mc2.ID = primitive.NilObjectID
+		mc2.Author.ID = primitive.NewObjectID()
+		_ = storage.CreateMedicalCase(nil, &mc2)
+
+		// no id
+		_, err := testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": "", "id": mc.Files[0].ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
+		}
+
+		// no document id
+		_, err = testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": ""}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
+		}
+
+		// false mc id
+		_, err = testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": primitive.NewObjectID().Hex(), "id": mc.Files[0].ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
+		}
+
+		// false document id
+		_, err = testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": primitive.NewObjectID().Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
+		}
+
+		// not author
+		_, err = testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": mc2.ID.Hex(), "id": mc2.Files[0].ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorNotAuthorized, err.(*echo.HTTPError).Message)
+		}
+
+		// good
+		fileID := mc.Files[0].ID.Hex()
+		rec, err := testRequest(http.MethodDelete, "/api/medical_cases/:mc_id/documents/:id", nil, HandleMedicalCaseFileDelete, nil, map[string]string{"mc_id": mc.ID.Hex(), "id": fileID}, jwtCookie)
+		if assert.NoError(t, err) {
+			parseResponse(rec, &mc)
 		}
 	})
 
@@ -286,5 +336,5 @@ func resetMedicalCaseFile(mc *model.MedicalCase) {
 }
 
 func resetMedicalCase(mc *model.MedicalCase) {
-	_, _ = storage.MongoSession.Collection("medical_cases").DeleteMany(nil, bson.M{"title": mc.Title})
+	_, _ = storage.MongoSession.Collection("medicalCases").DeleteMany(nil, bson.M{"title": mc.Title})
 }

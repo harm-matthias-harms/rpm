@@ -79,7 +79,7 @@
         <div text-xs-center>
           Already have an account?
           <nuxt-link to="/">
-            Sign In here
+            Sign in here
           </nuxt-link>
         </div>
       </v-col>
