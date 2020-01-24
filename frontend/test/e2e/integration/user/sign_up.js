@@ -3,7 +3,7 @@
 describe('SignUp', () => {
   it('has link to sign in', () => {
     cy.visit('/sign_up')
-    cy.contains('Sign In here').click()
+    cy.contains('Sign in here').click()
     cy.url().should('include', '/')
   })
   it('error on no connection', () => {

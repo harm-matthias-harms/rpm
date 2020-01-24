@@ -33,9 +33,12 @@ describe('Show Medical Case', () => {
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
     expect(wrapper.vm.bytesToSize(10000)).toBe('9.77 KB')
+    expect(wrapper.vm.bytesToSize(0)).toBe('n/a')
+    expect(wrapper.vm.bytesToSize(1)).toBe('1 Bytes')
   })
   test('open edit form', () => {
     wrapper.vm.editMedicalCase({ id: '001' })
+    wrapper.vm.onCancel()
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
   })
 })

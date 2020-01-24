@@ -336,5 +336,5 @@ func resetMedicalCaseFile(mc *model.MedicalCase) {
 }
 
 func resetMedicalCase(mc *model.MedicalCase) {
-	_, _ = storage.MongoSession.Collection("medical_cases").DeleteMany(nil, bson.M{"title": mc.Title})
+	_, _ = storage.MongoSession.Collection("medicalCases").DeleteMany(nil, bson.M{"title": mc.Title})
 }

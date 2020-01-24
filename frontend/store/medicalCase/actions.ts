@@ -81,13 +81,34 @@ export const actions: ActionTree<State, RootState> = {
       .$delete('/api/medical_cases/' + payload.id)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
-        commit('snackbar/SET', 'Medical case was successfully deleted.', { root: true })
+        commit('snackbar/SET', 'Medical case was successfully deleted.', {
+          root: true
+        })
         if (payload.goBack) {
           this.$router.back()
         }
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't delete preset.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
+  deleteFile ({ commit }, payload = { mcID: null, id: null }) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$delete(
+        '/api/medical_cases/' + payload.mcID + '/documents/' + payload.id
+      )
+      .then((response) => {
+        commit('SET_MEDICAL_CASE', response)
+        commit('snackbar/SET', 'File was successfully deleted.', {
+          root: true
+        })
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't delete file.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })
