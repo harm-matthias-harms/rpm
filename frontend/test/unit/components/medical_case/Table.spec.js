@@ -39,4 +39,8 @@ describe('Medical case table', () => {
     wrapper.vm.editMedicalCase({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
   })
+  test('get tags', () => {
+    const mc = { generalInformation: { surgical: true, usar: true, medivac: true, hospilisation: true, triage: 'Urgent', age: '18-30', gender: 'Male' } }
+    expect(wrapper.vm.tags(mc)).toEqual(['USAR', 'MEDIVAC', 'Need for hospilisation', 'Surgical', 'Triage: Urgent', 'Age: 18-30', 'Gender: Male'])
+  })
 })
