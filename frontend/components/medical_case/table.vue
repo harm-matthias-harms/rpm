@@ -13,12 +13,14 @@
   >
     <template v-slot:body="{ items }">
       <tbody>
-        <tr
-          v-for="item in items"
-          :key="item.id"
-        >
+        <tr v-for="item in items" :key="item.id">
           <td @click="openMedicalCase(item)">
             {{ item.title }}
+          </td>
+          <td @click="openMedicalCase(item)">
+            <v-chip v-for="(tag,i) in tags(item)" :key="i" class="ma-1">
+              {{ tag }}
+            </v-chip>
           </td>
           <td @click="openMedicalCase(item)">
             {{ item.author.username }}
@@ -53,7 +55,9 @@ export default class Table extends Vue {
 
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
-    { text: 'Author', sortable: true, value: 'author.username' }
+    { text: 'Tags', width: '40%', sortable: false, value: 'tags' },
+    { text: 'Author', sortable: true, value: 'author.username' },
+    { text: 'Actions', sortable: false, value: 'action' }
   ]
 
   openMedicalCase (medicalCase) {
@@ -62,6 +66,18 @@ export default class Table extends Vue {
 
   editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  tags (medicalCase) {
+    const tags : string[] = []
+    if (medicalCase.generalInformation.usar) { tags.push('USAR') }
+    if (medicalCase.generalInformation.medivac) { tags.push('MEDIVAC') }
+    if (medicalCase.generalInformation.hospilisation) { tags.push('Need for hospilisation') }
+    if (medicalCase.generalInformation.surgical) { tags.push('Surgical') }
+    if (medicalCase.generalInformation.triage) { tags.push('Triage: ' + medicalCase.generalInformation.triage) }
+    if (medicalCase.generalInformation.age) { tags.push('Age: ' + medicalCase.generalInformation.age) }
+    if (medicalCase.generalInformation.gender) { tags.push('Gender: ' + medicalCase.generalInformation.gender) }
+    return tags
   }
 }
 </script>

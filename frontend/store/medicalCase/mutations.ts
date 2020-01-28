@@ -17,7 +17,8 @@ export const mutations: MutationTree<State> = {
         id: medicalCase.author.id,
         username: medicalCase.author.username
       },
-      title: medicalCase.title
+      title: medicalCase.title,
+      generalInformation: medicalCase.generalInformation
     })
   },
   DELETE_FROM_LIST (state, id) {

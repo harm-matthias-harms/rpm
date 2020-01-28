@@ -40,9 +40,9 @@ func GetMedicalCases(ctx context.Context, params map[string]interface{}, page in
 
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
-		var preset model.MedicalCaseShort
-		cursor.Decode(&preset)
-		result = append(result, preset)
+		var medicalCases model.MedicalCaseShort
+		cursor.Decode(&medicalCases)
+		result = append(result, medicalCases)
 	}
 
 	return result, nil
@@ -77,7 +77,7 @@ func UpdateMedicalCase(ctx context.Context, mc *model.MedicalCase) (err error) {
 	return
 }
 
-// DeleteMedicalCase deletes a preset by a given id
+// DeleteMedicalCase deletes a medical case by a given id
 func DeleteMedicalCase(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
 	c := mcCollection()
 	mc, err := FindMedicalCase(ctx, id)
