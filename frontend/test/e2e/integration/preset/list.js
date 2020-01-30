@@ -11,9 +11,11 @@ describe('List presets', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('lists all presets', () => {
     cy.visit('/presets')
     cy.contains('2')
@@ -22,9 +24,22 @@ describe('List presets', () => {
     cy.contains('test preset 2')
     cy.contains('otherUser')
   })
+
   it('lists my presets', () => {
     cy.visit('/presets/my')
     cy.contains('1')
+    cy.contains('test preset 1')
+    cy.contains('John Doe')
+    cy.get('test preset 2').should('not.exist')
+    cy.contains('otherUser').should('not.exist')
+  })
+
+  it('filters presets', () => {
+    cy.visit('/presets')
+    cy.contains('div', 'Search')
+      .find('input')
+      .first()
+      .type('John')
     cy.contains('test preset 1')
     cy.contains('John Doe')
     cy.get('test preset 2').should('not.exist')

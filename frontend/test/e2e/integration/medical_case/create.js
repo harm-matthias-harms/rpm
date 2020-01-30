@@ -43,6 +43,7 @@ describe('Create medical case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })

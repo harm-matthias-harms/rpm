@@ -6,6 +6,7 @@ describe('SignUp', () => {
     cy.contains('Sign in here').click()
     cy.url().should('include', '/')
   })
+
   it('error on no connection', () => {
     cy.server()
     cy.route({
@@ -17,6 +18,7 @@ describe('SignUp', () => {
     cy.register()
     cy.contains("Couldn't create new account.")
   })
+
   it('create account', () => {
     cy.server()
     cy.route({
@@ -28,6 +30,7 @@ describe('SignUp', () => {
     cy.get('div > .v-icon')
     cy.contains('a', 'Sign in here')
   })
+
   it('recognises if account already exists', () => {
     cy.server()
     cy.route({

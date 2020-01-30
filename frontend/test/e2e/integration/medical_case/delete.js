@@ -23,6 +23,7 @@ describe('Delete Medical Case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })

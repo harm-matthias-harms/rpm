@@ -23,6 +23,7 @@ describe('Create preset', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })

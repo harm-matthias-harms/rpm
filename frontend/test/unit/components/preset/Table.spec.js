@@ -39,4 +39,13 @@ describe('My Presets', () => {
     wrapper.vm.editPreset({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/presets/001/edit')
   })
+  test('filter table', () => {
+    wrapper.props().items.push({ title: 'test', author: { username: 'John' } })
+    expect(
+      wrapper.vm.filterPresets('test', 'John', wrapper.props().items[0])
+    ).toBeTruthy()
+    expect(
+      wrapper.vm.filterPresets('test', 'test Jack', wrapper.props().items[0])
+    ).toBeFalsy()
+  })
 })
