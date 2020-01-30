@@ -27,6 +27,7 @@ describe('Edit Medical Case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })

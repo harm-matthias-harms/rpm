@@ -11,9 +11,11 @@ describe('List medical case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('lists all medical cases', () => {
     cy.visit('/medical_cases')
     cy.contains('2')
@@ -22,6 +24,7 @@ describe('List medical case', () => {
     cy.contains('test medical case 2')
     cy.contains('otherUser')
   })
+
   it('lists my medical cases', () => {
     cy.visit('/medical_cases/my')
     cy.contains('1')

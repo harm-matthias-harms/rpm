@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details />
     <v-data-table
       :headers="headers"
       :items="items"
@@ -7,6 +8,8 @@
       :footer-props="{
         itemsPerPageOptions: [10, 25, 50],
       }"
+      :search="search"
+      :custom-filter="filterPresets"
       class="elevation-1"
       :loading="loading"
       loading-text="Loading... Please wait"
@@ -14,10 +17,7 @@
     >
       <template v-slot:body="{ items }">
         <tbody>
-          <tr
-            v-for="item in items"
-            :key="item.id"
-          >
+          <tr v-for="item in items" :key="item.id">
             <td @click="openPreset(item)">
               {{ item.title }}
             </td>
@@ -57,12 +57,42 @@ export default class PresetTable extends Vue {
     { text: 'Author', sortable: true, value: 'author.username' }
   ]
 
+  search: string = ''
+
   openPreset (preset) {
     this.$router.push('/presets/' + preset.id)
   }
 
   editPreset (preset) {
     this.$router.push('/presets/' + preset.id + '/edit')
+  }
+
+  filterPresets (value, search, item) {
+    // Split search into an array
+    const needleArry = search
+      .toString()
+      .toLowerCase()
+      .split(' ')
+      .filter(x => x.trim().length > 0)
+
+    function filterAll (item, search) {
+      return filterTitle(item, search) || filterAuthor(item, search)
+    }
+
+    function filterTitle (item, search) {
+      return item.title && item.title.toLowerCase().includes(search)
+    }
+
+    function filterAuthor (item, search) {
+      return (
+        item.author.username &&
+        item.author.username.toLowerCase().includes(search)
+      )
+    }
+
+    return (
+      value && search && needleArry.every(needle => filterAll(item, needle))
+    )
   }
 }
 </script>

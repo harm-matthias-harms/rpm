@@ -17,9 +17,11 @@ describe('Show a medical case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('shows a medical Case', () => {
     cy.visit('/medical_cases')
     cy.contains('Test Medical Case').click()

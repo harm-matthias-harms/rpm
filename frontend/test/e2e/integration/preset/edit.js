@@ -23,6 +23,7 @@ describe('Edit preset', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })

@@ -23,6 +23,7 @@ describe('Delete preset', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
