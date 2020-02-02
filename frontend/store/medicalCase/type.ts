@@ -82,6 +82,15 @@ export interface State {
         username: string
       }
       title: string
+      generalInformation: {
+        surgical: boolean
+        hospilisation: boolean
+        usar: boolean
+        medivac: boolean
+        triage?: string
+        age?: string
+        gender?: string
+      }
     }[]
   }
   medicalCasesLoaded: boolean

@@ -17,9 +17,11 @@ describe('Show a preset', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('shows a preset', () => {
     cy.visit('/presets')
     cy.contains('test preset 1').click()

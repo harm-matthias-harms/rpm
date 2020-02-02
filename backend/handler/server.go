@@ -18,6 +18,7 @@ var errorCreated = "couldn't be created"
 var errorUpdated = "couldn't be updated"
 var errorDelete = "couldn't be deleted"
 var errorAuthParse = "authorization couldn't be parsed"
+var errorNotAuthorized = "not authorized"
 
 type jsonStatus struct {
 	Data    interface{} `json:"data,omitempty"`
@@ -60,6 +61,7 @@ func Server() (*echo.Echo, error) {
 	r.PUT("/medical_cases/:id", HandleMedicalCaseEdit)
 	r.DELETE("/medical_cases/:id", HandleMedicalCaseDelete)
 	r.GET("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileGet)
+	r.DELETE("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileDelete)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

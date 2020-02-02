@@ -24,7 +24,6 @@ describe('Delete Button', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
-    wrapper.vm.confirmDeletePreset({})
     wrapper.vm.deletePreset({ id: '001' })
     wrapper.vm.onCancel()
   })

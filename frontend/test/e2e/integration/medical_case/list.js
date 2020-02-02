@@ -11,9 +11,11 @@ describe('List medical case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('lists all medical cases', () => {
     cy.visit('/medical_cases')
     cy.contains('2')
@@ -22,12 +24,23 @@ describe('List medical case', () => {
     cy.contains('test medical case 2')
     cy.contains('otherUser')
   })
+
   it('lists my medical cases', () => {
     cy.visit('/medical_cases/my')
     cy.contains('1')
     cy.contains('Test Medical Case')
     cy.contains('John Doe')
     cy.get('test medical case 2').should('not.exist')
+    cy.contains('otherUser').should('not.exist')
+  })
+
+  it('filters medical cases', () => {
+    cy.visit('/medical_cases')
+    cy.contains('div', 'Search')
+      .find('input')
+      .first()
+      .type('John')
+    cy.contains('John Doe')
     cy.contains('otherUser').should('not.exist')
   })
 })

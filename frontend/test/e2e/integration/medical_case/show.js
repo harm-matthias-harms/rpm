@@ -17,9 +17,11 @@ describe('Show a medical case', () => {
     })
     cy.login()
   })
+
   afterEach(() => {
     cy.logout()
   })
+
   it('shows a medical Case', () => {
     cy.visit('/medical_cases')
     cy.contains('Test Medical Case').click()
@@ -32,19 +34,14 @@ describe('Show a medical case', () => {
     cy.contains('Sam Who')
     cy.contains("Jan 01'01")
     // contains general Information
-    cy.contains('General information')
     cy.contains('USAR')
     cy.contains('MEDIVAC')
     cy.contains('Surgical')
     cy.contains('Need for hospilisation')
-    cy.contains('Short summary:')
     cy.contains('short summary')
-    cy.contains('Triage:')
-    cy.contains('Urgent')
-    cy.contains('Age:')
-    cy.contains('0-10')
-    cy.contains('Gender:')
-    cy.contains('male')
+    cy.contains('Triage: Urgent')
+    cy.contains('Age: 0-10')
+    cy.contains('Gender: male')
     // contains medical history
     cy.contains('Medical history')
     cy.contains('Problems/conditions:')

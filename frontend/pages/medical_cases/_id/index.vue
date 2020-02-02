@@ -1,19 +1,12 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        lg="8"
-        md="10"
-        sm="12"
-      >
+      <v-col lg="8" md="10" sm="12">
         <v-card>
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
-              <v-icon
-                color="primary"
-                @click="editMedicalCase(medicalCase)"
-              >
+              <v-icon color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
               <DeleteButton
@@ -23,113 +16,80 @@
               />
             </h4>
             <v-row>
-              <v-col
-                v-if="medicalCase.author && medicalCase.author.username"
-                class="col-auto"
-              >
-                <Author
-                  :author="medicalCase.author"
-                  :created-at="medicalCase.createdAt"
-                />
+              <v-col v-if="medicalCase.author && medicalCase.author.username" class="col-auto">
+                <Author :author="medicalCase.author" :created-at="medicalCase.createdAt" />
               </v-col>
               <v-col
                 v-if="medicalCase.editor && medicalCase.editor.username"
                 class="col-auto mr-auto"
               >
-                <Editor
-                  :editor="medicalCase.editor"
-                  :updated-at="medicalCase.editedAt"
-                />
+                <Editor :editor="medicalCase.editor" :updated-at="medicalCase.editedAt" />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-chip v-for="(tag,i) in tags(medicalCase)" :key="i" class="ma-1">
+                  {{ tag }}
+                </v-chip>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <p class="body-1 py-3 black--text">
+                  {{ medicalCase.generalInformation.shortSummary }}
+                </p>
               </v-col>
             </v-row>
           </v-card-text>
-          <v-expansion-panels
-            v-model="expansionPanel"
-            multiple
-          >
-            <v-expansion-panel>
-              <v-expansion-panel-header>General information</v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-chip v-if="medicalCase.generalInformation.usar">
-                  USAR
-                </v-chip>
-                <v-chip v-if="medicalCase.generalInformation.medivac">
-                  MEDIVAC
-                </v-chip>
-                <v-chip v-if="medicalCase.generalInformation.surgical">
-                  Surgical
-                </v-chip>
-                <v-chip v-if="medicalCase.generalInformation.hospilisation">
-                  Need for hospilisation
-                </v-chip>
-                <v-list dense>
-                  <v-list-item v-if="medicalCase.generalInformation.shortSummary">
-                    <v-list-item-content>Short summary:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.generalInformation.shortSummary }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.generalInformation.triage">
-                    <v-list-item-content>Triage:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.generalInformation.triage }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.generalInformation.age">
-                    <v-list-item-content>Age:</v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ medicalCase.generalInformation.age }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.generalInformation.gender">
-                    <v-list-item-content>Gender:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.generalInformation.gender }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
+          <v-expansion-panels v-model="expansionPanel" multiple>
             <v-expansion-panel>
               <v-expansion-panel-header>Medical history</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
-                  <v-list-item v-if="medicalCase.medicalHistory.problems ">
-                    <v-list-item-content>Problems/conditions:</v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ medicalCase.medicalHistory.problems }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.medicalHistory.vaccinations">
-                    <v-list-item-content>Vaccinations:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.medicalHistory.vaccinations }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.medicalHistory.allergies">
-                    <v-list-item-content>Allergies:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.medicalHistory.allergies }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.medicalHistory.medication">
-                    <v-list-item-content>Medication:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.medicalHistory.medication }}
-                    </v-list-item-content>
-                  </v-list-item>
+                  <div v-if="medicalCase.medicalHistory.problems">
+                    <v-list-item>
+                      <v-list-item-content>Problems/conditions:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.medicalHistory.problems }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
+                  <div v-if="medicalCase.medicalHistory.vaccinations">
+                    <v-list-item>
+                      <v-list-item-content>Vaccinations:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.medicalHistory.vaccinations }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
+                  <div v-if="medicalCase.medicalHistory.allergies">
+                    <v-list-item>
+                      <v-list-item-content>Allergies:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.medicalHistory.allergies }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
+                  <div v-if="medicalCase.medicalHistory.medication">
+                    <v-list-item>
+                      <v-list-item-content>Medication:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.medicalHistory.medication }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
                   <v-list-item v-if="medicalCase.medicalHistory.implantedDevices">
                     <v-list-item-content>Implantable devices:</v-list-item-content>
                     <v-list-item-content
@@ -151,22 +111,28 @@
               <v-expansion-panel-header>Expectations</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
-                  <v-list-item v-if="medicalCase.expectations.generalStatus">
-                    <v-list-item-content>General status:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.expectations.generalStatus }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="medicalCase.expectations.onExamination">
-                    <v-list-item-content>On examination:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.expectations.onExamination }}
-                    </v-list-item-content>
-                  </v-list-item>
+                  <div v-if="medicalCase.expectations.generalStatus">
+                    <v-list-item>
+                      <v-list-item-content>General status:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.expectations.generalStatus }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
+                  <div v-if="medicalCase.expectations.onExamination">
+                    <v-list-item>
+                      <v-list-item-content>On examination:</v-list-item-content>
+                      <v-list-item-content
+                        class="align-end"
+                      >
+                        {{ medicalCase.expectations.onExamination }}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider />
+                  </div>
                   <v-list-item v-if="medicalCase.expectations.expectations">
                     <v-list-item-content>Expectations:</v-list-item-content>
                     <v-list-item-content
@@ -186,6 +152,7 @@
                 {{ medicalCase.otherInformation }}
               </v-list-item-content>
             </v-list-item>
+            <v-divider v-if="medicalCase.makeup && medicalCase.otherInformation" />
             <v-list-item v-if="medicalCase.makeup">
               <v-list-item-content>Needed make-up and attributes:</v-list-item-content>
               <v-list-item-content class="align-end">
@@ -194,22 +161,30 @@
             </v-list-item>
           </v-list>
           <v-row class="px-4">
-            <v-col
-              v-for="(file, i) in medicalCase.files"
-              :key="i"
-              sm="12"
-              md="4"
-              lg="3"
-            >
-              <v-card
-                :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
-              >
+            <v-col v-for="(file, i) in medicalCase.files" :key="i" sm="12" md="4" lg="3">
+              <v-card>
                 <v-icon>attach_file</v-icon>
                 <v-card-title class="body-2">
-                  {{ file.name }}
-                  <br>
-                  ({{ bytesToSize(file.size) }})
+                  <a
+                    :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
+                  >
+                    {{ file.name }}
+                    <br>
+                    ({{ bytesToSize(file.size) }})
+                  </a>
                 </v-card-title>
+                <v-card-actions v-if="medicalCase.author.id == $store.state.user.user.id">
+                  <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">
+                    Delete
+                  </v-btn>
+                  <Confirm
+                    text="Are you sure you want to delete this file?"
+                    :dialog.sync="deleteFileDialog[i]"
+                    :item="{mcID: medicalCase.id, id: file.id}"
+                    :at-submit="deleteFile"
+                    :at-cancel="onCancel"
+                  />
+                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
@@ -226,13 +201,15 @@ import Author from '@/components/utils/Author.vue'
 import Editor from '@/components/utils/Editor.vue'
 import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
 import DeleteButton from '@/components/medical_case/Delete.vue'
+import Confirm from '@/components/utils/Confirm.vue'
 
 @Component({
   components: {
     Author,
     Editor,
     VitalSigns,
-    DeleteButton
+    DeleteButton,
+    Confirm
   },
   computed: {
     ...mapState('medicalCase', {
@@ -241,12 +218,15 @@ import DeleteButton from '@/components/medical_case/Delete.vue'
   },
   methods: {
     ...mapActions('medicalCase', {
-      find: 'find'
+      find: 'find',
+      deleteFile: 'deleteFile'
     })
   }
 })
 export default class ShowMedicalCase extends Vue {
   find!: (id) => void
+  deleteFile!: ({ mcID, id }) => void
+  deleteFileDialog: any = new Array(100).fill(false)
   medicalCase!: any
   expansionPanel: Array<number> = []
 
@@ -260,6 +240,10 @@ export default class ShowMedicalCase extends Vue {
 
   editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  onCancel () {
+    this.deleteFileDialog = new Array(100).fill(false)
   }
 
   setExpansionPanel () {
@@ -292,12 +276,38 @@ export default class ShowMedicalCase extends Vue {
     return Object.values(object).some(exist)
   }
 
+  tags (medicalCase) {
+    const tags: string[] = []
+    if (medicalCase.generalInformation.usar) { tags.push('USAR') }
+    if (medicalCase.generalInformation.medivac) { tags.push('MEDIVAC') }
+    if (medicalCase.generalInformation.hospilisation) { tags.push('Need for hospilisation') }
+    if (medicalCase.generalInformation.surgical) { tags.push('Surgical') }
+    if (medicalCase.generalInformation.triage) { tags.push('Triage: ' + medicalCase.generalInformation.triage) }
+    if (medicalCase.generalInformation.age) { tags.push('Age: ' + medicalCase.generalInformation.age) }
+    if (medicalCase.generalInformation.gender) { tags.push('Gender: ' + medicalCase.generalInformation.gender) }
+    return tags
+  }
+
   bytesToSize (bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    if (bytes === 0) { return 'n/a' }
+    if (bytes === 0) {
+      return 'n/a'
+    }
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
-    if (i === 0) { return bytes + ' ' + sizes[i] }
+    if (i === 0) {
+      return bytes + ' ' + sizes[i]
+    }
     return (bytes / 1024 ** i).toFixed(2) + ' ' + sizes[i]
   }
 }
 </script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+p,
+.v-list-item__content {
+  white-space: pre-line;
+}
+</style>

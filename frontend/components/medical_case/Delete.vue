@@ -2,7 +2,7 @@
   <div style="display: inline;">
     <v-icon
       color="red"
-      @click="confirmDeleteMedicalCase()"
+      @click="dialog = true"
     >
       delete
     </v-icon>
@@ -34,10 +34,6 @@ export default class DeleteButton extends Vue {
 
   dialog: boolean = false
   delete!: ({ id: string, goBack: boolean }) => void
-
-  confirmDeleteMedicalCase () {
-    this.dialog = true
-  }
 
   deleteMedicalCase (mc) {
     this.delete({ id: mc.id, goBack: this.goBack })

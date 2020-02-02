@@ -9,6 +9,7 @@ describe('Index Page', () => {
     cy.contains('.display-1', 'Sign In')
     cy.contains('a', 'Create new account?')
   })
+
   it('toogles the side bar', () => {
     cy.get('.v-app-bar__nav-icon').should('not.exist')
     cy.login()
@@ -24,12 +25,14 @@ describe('Index Page', () => {
     cy.contains('New')
     cy.logout()
   })
+
   it('shows and closes cookie bar', () => {
     cy.clearLocalStorage()
     cy.contains('.v-snack__content', 'This site uses 🍪 for your security')
     cy.get('.v-snack__content > .v-btn > .v-btn__content > .v-icon').click()
     cy.get('.v-snack__content').should('not.exist')
   })
+
   it('no sign in if no connection', () => {
     cy.server()
     cy.route({
@@ -41,6 +44,7 @@ describe('Index Page', () => {
     cy.loginEnterForm(false)
     cy.contains("Couldn't connect to network")
   })
+
   it('blocks unkown user', () => {
     cy.server()
     cy.route({
@@ -52,6 +56,7 @@ describe('Index Page', () => {
     cy.loginEnterForm(false)
     cy.contains('Wrong username or password')
   })
+
   it('signs in successfully', () => {
     cy.server()
     cy.route({
