@@ -43,4 +43,21 @@ describe('Medical case table', () => {
     const mc = { generalInformation: { surgical: true, usar: true, medivac: true, hospilisation: true, triage: 'Urgent', age: '18-30', gender: 'Male' } }
     expect(wrapper.vm.tags(mc)).toEqual(['USAR', 'MEDIVAC', 'Need for hospilisation', 'Surgical', 'Triage: Urgent', 'Age: 18-30', 'Gender: Male'])
   })
+  test('filter table', () => {
+    const mc = { author: {}, generalInformation: { surgical: true, usar: true, medivac: true, hospilisation: false, triage: 'Urgent', age: '18-30', gender: 'Male' } }
+    expect(
+      wrapper.vm.filterMedicalCases('test', 'surgical 18', mc)
+    ).toBeTruthy()
+    mc.generalInformation.age = '60+'
+    expect(
+      wrapper.vm.filterMedicalCases('test', 'surgical 70', mc)
+    ).toBeTruthy()
+    mc.generalInformation.age = null
+    expect(
+      wrapper.vm.filterMedicalCases('test', 'surgical usar medivac urgent 70', mc)
+    ).toBeFalsy()
+    expect(
+      wrapper.vm.filterMedicalCases('test', 'hospital', mc)
+    ).toBeFalsy()
+  })
 })

@@ -33,4 +33,14 @@ describe('List medical case', () => {
     cy.get('test medical case 2').should('not.exist')
     cy.contains('otherUser').should('not.exist')
   })
+
+  it('filters medical cases', () => {
+    cy.visit('/medical_cases')
+    cy.contains('div', 'Search')
+      .find('input')
+      .first()
+      .type('John')
+    cy.contains('John Doe')
+    cy.contains('otherUser').should('not.exist')
+  })
 })
