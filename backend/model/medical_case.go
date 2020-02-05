@@ -60,9 +60,9 @@ type MedicalCaseFile struct {
 
 // MedicalCaseShort serves as the short Version of medical cases for lists.
 type MedicalCaseShort struct {
-	ID     primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Author LimitedUser        `json:"author" bson:"author"`
-	Title  string             `json:"title" bson:"title"`
+	ID                 primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Author             LimitedUser        `json:"author" bson:"author"`
+	Title              string             `json:"title" bson:"title"`
 	GeneralInformation struct {
 		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
 		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
