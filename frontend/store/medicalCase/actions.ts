@@ -16,7 +16,7 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/api/medical_cases', form)
       .then((response) => {
         commit('SET_MEDICAL_CASE_TO_LIST', response.data)
-        this.$router.push('/medical_cases')
+        this.$router.push('/medical_cases/' + response.data.id)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create medical case.", { root: true })

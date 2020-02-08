@@ -9,7 +9,7 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/api/presets', preset)
       .then((response) => {
         commit('SET_PRESET_TO_LIST', response.data)
-        this.$router.push('/presets')
+        this.$router.push('/presets/' + response.data.id)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create preset.", { root: true })
