@@ -18,6 +18,7 @@ export const mutations: MutationTree<State> = {
         username: medicalCase.author.username
       },
       title: medicalCase.title,
+      approved: medicalCase.approved,
       generalInformation: medicalCase.generalInformation
     })
   },
@@ -38,6 +39,7 @@ export const mutations: MutationTree<State> = {
       createdAt: undefined,
       updatedAt: undefined,
       title: '',
+      approved: false,
       makeup: undefined,
       otherInformation: undefined,
       generalInformation: {

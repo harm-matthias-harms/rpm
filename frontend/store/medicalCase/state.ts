@@ -14,6 +14,7 @@ export const state = (): State => ({
     createdAt: undefined,
     updatedAt: undefined,
     title: '',
+    approved: false,
     makeup: undefined,
     otherInformation: undefined,
     generalInformation: {

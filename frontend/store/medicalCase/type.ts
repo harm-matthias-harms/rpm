@@ -46,6 +46,7 @@ export interface State {
     createdAt?: Date
     updatedAt?: Date
     title: string
+    approved: boolean
     makeup?: string
     otherInformation?: string
     generalInformation: {
@@ -82,6 +83,7 @@ export interface State {
         username: string
       }
       title: string
+      approved: boolean
       generalInformation: {
         surgical: boolean
         hospilisation: boolean

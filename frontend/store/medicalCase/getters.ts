@@ -3,13 +3,10 @@ import { State } from './type'
 import { State as RootState } from '@/store/root'
 
 export const getters: GetterTree<State, RootState> = {
-  myOwn: state => (username) => {
+  requireReview: state => () => {
     return state.medicalCasesList.medicalCases.filter(
-      medicalCase => medicalCase.author.username === username
+      medicalCase => !medicalCase.approved
     )
-  },
-  myOwnCount: (_, getters) => (username) => {
-    return getters.myOwn(username).length
   }
 }
 
