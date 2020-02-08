@@ -25,15 +25,6 @@ describe('List presets', () => {
     cy.contains('otherUser')
   })
 
-  it('lists my presets', () => {
-    cy.visit('/presets/my')
-    cy.contains('1')
-    cy.contains('test preset 1')
-    cy.contains('John Doe')
-    cy.get('test preset 2').should('not.exist')
-    cy.contains('otherUser').should('not.exist')
-  })
-
   it('filters presets', () => {
     cy.visit('/presets')
     cy.contains('div', 'Search')

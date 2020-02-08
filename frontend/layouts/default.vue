@@ -147,11 +147,6 @@ export default class Default extends Vue {
           url: '/medical_cases'
         },
         {
-          name: 'My',
-          icon: 'fas fa-user',
-          url: '/medical_cases/my'
-        },
-        {
           name: 'New',
           icon: 'fas fa-plus',
           url: '/medical_cases/new'
@@ -166,11 +161,6 @@ export default class Default extends Vue {
           name: 'List',
           icon: 'fas fa-table',
           url: '/presets'
-        },
-        {
-          name: 'My',
-          icon: 'fas fa-user',
-          url: '/presets/my'
         },
         {
           name: 'New',
