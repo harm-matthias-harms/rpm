@@ -10,7 +10,7 @@
                 edit
               </v-icon>
               <DeleteButton
-                v-if="medicalCase.author.id == $store.state.user.user.id"
+                v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id"
                 :item="medicalCase"
                 :go-back="true"
               />
@@ -173,7 +173,7 @@
                     ({{ bytesToSize(file.size) }})
                   </a>
                 </v-card-title>
-                <v-card-actions v-if="medicalCase.author.id == $store.state.user.user.id">
+                <v-card-actions v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id">
                   <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">
                     Delete
                   </v-btn>
