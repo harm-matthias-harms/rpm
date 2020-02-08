@@ -25,6 +25,13 @@ describe('List medical case', () => {
     cy.contains('otherUser')
   })
 
+  it('review medical cases', () => {
+    cy.visit('/medical_cases/review')
+    cy.contains('1')
+    cy.contains('test medical case')
+    cy.contains('John Doe')
+  })
+
   it('filters medical cases', () => {
     cy.visit('/medical_cases')
     cy.contains('div', 'Search')

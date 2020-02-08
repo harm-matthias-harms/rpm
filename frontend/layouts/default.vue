@@ -147,6 +147,11 @@ export default class Default extends Vue {
           url: '/medical_cases'
         },
         {
+          name: 'Review',
+          icon: 'fas fa-clipboard-check',
+          url: '/medical_cases/review'
+        },
+        {
           name: 'New',
           icon: 'fas fa-plus',
           url: '/medical_cases/new'

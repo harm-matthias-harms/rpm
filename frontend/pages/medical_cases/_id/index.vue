@@ -6,6 +6,9 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
+              <v-icon v-if="!medicalCase.approved" color="green" @click="approve(medicalCase)">
+                check
+              </v-icon>
               <v-icon color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
@@ -219,6 +222,7 @@ import Confirm from '@/components/utils/Confirm.vue'
   methods: {
     ...mapActions('medicalCase', {
       find: 'find',
+      approve: 'approve',
       deleteFile: 'deleteFile'
     })
   }
