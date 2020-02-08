@@ -34,7 +34,7 @@
                 edit
               </v-icon>
               <DeleteButton
-                v-if="item.author.id == $store.state.user.user.id"
+                v-if="!item.author.username || item.author.id == $store.state.user.user.id"
                 :item="item"
                 :go-back="false"
               />

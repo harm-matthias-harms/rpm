@@ -21,6 +21,12 @@ describe('Create preset', () => {
       status: 200,
       response: 'fixture:preset/list.json'
     })
+    cy.route({
+      method: 'GET',
+      url: 'http://localhost:3001/api/presets/001',
+      status: 200,
+      response: 'fixture:preset/preset.json'
+    })
     cy.login()
   })
 

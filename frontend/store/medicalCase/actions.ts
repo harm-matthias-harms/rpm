@@ -16,7 +16,7 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/api/medical_cases', form)
       .then((response) => {
         commit('SET_MEDICAL_CASE_TO_LIST', response.data)
-        this.$router.push('/medical_cases')
+        this.$router.push('/medical_cases/' + response.data.id)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create medical case.", { root: true })
@@ -109,6 +109,27 @@ export const actions: ActionTree<State, RootState> = {
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't delete file.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
+  approve ({ commit }, payload) {
+    const medicalCase = Object.assign({}, payload)
+    medicalCase.approved = true
+    const form = new FormData()
+    form.append('medicalCase', JSON.stringify(medicalCase))
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$put('/api/medical_cases/' + medicalCase.id, form)
+      .then((response) => {
+        commit('SET_MEDICAL_CASE', response)
+        commit('DELETE_FROM_LIST', medicalCase.id)
+        commit('SET_MEDICAL_CASE_TO_LIST', response)
+        commit('snackbar/SET', 'Medical case approved ✅', { root: true })
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't update medical case.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })

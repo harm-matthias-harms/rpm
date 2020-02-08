@@ -11,8 +11,8 @@
             label
             color="primary"
           >
-            {{ count(user.username) }}
-          </v-chip>Presets
+            {{ items().length }}
+          </v-chip>Medical Cases
         </h3>
       </v-col>
       <v-col
@@ -24,7 +24,7 @@
           small
           color="primary"
           class="mr-2"
-          to="/presets/new"
+          to="/medical_cases/new"
         >
           <v-icon small>
             fas fa-plus
@@ -36,7 +36,7 @@
         >
           <v-icon
             small
-            @click="loadPresets"
+            @click="loadMedicalCases"
           >
             fas fa-redo
           </v-icon>
@@ -48,8 +48,8 @@
         md="10"
         sm="12"
       >
-        <PresetTable
-          :items="items(user.username)"
+        <Table
+          :items="items()"
           :loading="loading"
         />
       </v-col>
@@ -60,44 +60,41 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { mapGetters, mapState, mapActions } from 'vuex'
-import PresetTable from '@/components/preset/table.vue'
+import Table from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    PresetTable
+    Table
   },
   computed: {
-    ...mapGetters('preset', {
-      items: 'myOwn',
-      count: 'myOwnCount'
+    ...mapGetters('medicalCase', {
+      items: 'requireReview'
     }),
-    ...mapState('preset', {
-      presetsLoaded: 'presetsLoaded'
+    ...mapState('medicalCase', {
+      medicalCasesLoaded: 'medicalCasesLoaded'
     }),
     ...mapState('user', {
       user: 'user'
     })
   },
   methods: {
-    ...mapActions('preset', {
-      getPresets: 'get_all'
+    ...mapActions('medicalCase', {
+      getMedicalCases: 'get_all'
     })
   }
 })
-export default class OwnPresets extends Vue {
-  getPresets!: () => void
-  presetsLoaded!: boolean
-
+export default class ReviewMedicalCases extends Vue {
+  getMedicalCases!: () => void
+  medicalCasesLoaded!: boolean
   loading = false
-
-  loadPresets () {
+  loadMedicalCases () {
     this.loading = true
-    this.getPresets()
+    this.getMedicalCases()
     this.loading = false
   }
 
   mounted () {
-    if (!this.presetsLoaded) {
-      this.loadPresets()
+    if (!this.medicalCasesLoaded) {
+      this.loadMedicalCases()
     }
   }
 }

@@ -25,13 +25,11 @@ describe('List medical case', () => {
     cy.contains('otherUser')
   })
 
-  it('lists my medical cases', () => {
-    cy.visit('/medical_cases/my')
+  it('review medical cases', () => {
+    cy.visit('/medical_cases/review')
     cy.contains('1')
-    cy.contains('Test Medical Case')
+    cy.contains('test medical case')
     cy.contains('John Doe')
-    cy.get('test medical case 2').should('not.exist')
-    cy.contains('otherUser').should('not.exist')
   })
 
   it('filters medical cases', () => {

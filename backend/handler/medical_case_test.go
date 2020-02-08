@@ -133,7 +133,7 @@ func TestMedicalCase(t *testing.T) {
 		_, err = testRequest(http.MethodPost, "/api/medical_cases/:id", bodyInvalid, HandleMedicalCaseEdit, headerInvalid, map[string]string{"id": mcInvalid.ID.Hex()}, jwtCookie)
 		if assert.Error(t, err) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
-			assert.Equal(t, "author not set", err.(*echo.HTTPError).Message)
+			assert.Equal(t, "title not set", err.(*echo.HTTPError).Message)
 		}
 	})
 
