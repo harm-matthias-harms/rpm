@@ -19,6 +19,20 @@ type Team struct {
 	Medivac   bool               `json:"medivac" bson:"medivac"`
 }
 
+// TeamQuery is the query fields for the getter
+type TeamQuery struct {
+	Title    string `query:"title"`
+	Author   string `query:"author"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"limit"`
+}
+
+// TeamsList is a list response of teams
+type TeamsList struct {
+	Count int64  `json:"count"`
+	Teams []Team `json:"teams"`
+}
+
 // Validate validates a team
 func (team *Team) Validate() error {
 	if team.Author.ID.IsZero() || team.Author.Username == "" {

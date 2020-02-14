@@ -64,6 +64,8 @@ func Server() (*echo.Echo, error) {
 	r.DELETE("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileDelete)
 	// teams
 	r.POST("/teams", HandleTeamCreate)
+	r.GET("/teams", HandleTeamsGet)
+	r.GET("/teams/:id", HandleTeamFind)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")
