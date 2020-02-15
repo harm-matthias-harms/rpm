@@ -9,25 +9,10 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/api/teams', team)
       .then((response) => {
         commit('SET_TEAM_TO_LIST', response.data)
-        this.$router.push('/presets')
+        this.$router.push('/teams/' + response.data.id)
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't create preset.", { root: true })
-      })
-      .finally(() => {
-        commit('loader/SET', false, { root: true })
-      })
-  },
-  update ({ commit }, preset) {
-    commit('loader/SET', true, { root: true })
-    this.$axios
-      .$put('/api/presets/' + preset.id, preset)
-      .then((response) => {
-        commit('SET_PRESET', response)
-        this.$router.push('/presets/' + preset.id)
-      })
-      .catch(() => {
-        commit('snackbar/SET', "Couldn't edit preset.", { root: true })
+        commit('snackbar/SET', "Couldn't create team.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })
@@ -38,12 +23,12 @@ export const actions: ActionTree<State, RootState> = {
       commit('loader/SET', true, { root: true })
     }
     this.$axios
-      .$get('/api/presets')
+      .$get('/api/teams')
       .then((response) => {
-        commit('SET_PRESET_LIST', response)
+        commit('SET_TEAM_LIST', response)
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't load presets.", { root: true })
+        commit('snackbar/SET', "Couldn't load teams.", { root: true })
       })
       .finally(() => {
         if (!payload.disableLoader) {
@@ -56,36 +41,18 @@ export const actions: ActionTree<State, RootState> = {
       commit('loader/SET', true, { root: true })
     }
     return this.$axios
-      .$get('/api/presets/' + payload.id)
+      .$get('/api/teams/' + payload.id)
       .then((response) => {
-        commit('SET_PRESET', response)
+        commit('SET_TEAM', response)
         return response
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't find preset.", { root: true })
+        commit('snackbar/SET', "Couldn't find team.", { root: true })
       })
       .finally(() => {
         if (!payload.disableLoader) {
           commit('loader/SET', false, { root: true })
         }
-      })
-  },
-  delete ({ commit }, payload = { id: null, goBack: false }) {
-    commit('loader/SET', true, { root: true })
-    this.$axios
-      .$delete('/api/presets/' + payload.id)
-      .then(() => {
-        commit('DELETE_FROM_LIST', payload.id)
-        commit('snackbar/SET', 'Preset  was successfully deleted.', { root: true })
-        if (payload.goBack) {
-          this.$router.back()
-        }
-      })
-      .catch(() => {
-        commit('snackbar/SET', "Couldn't delete preset.", { root: true })
-      })
-      .finally(() => {
-        commit('loader/SET', false, { root: true })
       })
   }
 }

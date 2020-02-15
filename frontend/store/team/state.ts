@@ -1,7 +1,7 @@
 import { State } from './type'
 
 export const state = (): State => ({
-  preset: {
+  team: {
     id: undefined,
     author: {
       id: undefined,
@@ -14,26 +14,14 @@ export const state = (): State => ({
     createdAt: undefined,
     updatedAt: undefined,
     title: '',
-    vitalSigns: {
-      oos: undefined,
-      avpu: undefined,
-      mobility: undefined,
-      respiratoryRate: undefined,
-      pulse: undefined,
-      temperature: undefined,
-      capillaryRefill: undefined,
-      bloodPressureSystolic: undefined,
-      bloodPressureDiastolic: undefined,
-      oxygenSaturation: undefined,
-      weight: undefined,
-      height: undefined
-    }
+    type: undefined,
+    medivac: undefined
   },
-  presetList: {
+  teamList: {
     count: 0,
-    presets: []
+    teams: []
   },
-  presetsLoaded: false
+  teamsLoaded: false
 })
 
 export default state

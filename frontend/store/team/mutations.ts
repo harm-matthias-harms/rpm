@@ -2,26 +2,19 @@ import { MutationTree } from 'vuex'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
-  SET_PRESET (state, preset) {
-    state.preset = preset
+  SET_TEAM (state, team) {
+    state.team = team
   },
-  SET_PRESET_LIST (state, list) {
-    state.presetList = list
-    state.presetsLoaded = true
+  SET_TEAM_LIST (state, list) {
+    state.teamList = list
+    state.teamsLoaded = true
   },
-  SET_PRESET_TO_LIST (state, preset) {
-    state.presetList.count += 1
-    state.presetList.presets.unshift({
-      id: preset.id,
-      author: { id: preset.author.id, username: preset.author.username },
-      title: preset.title
-    })
+  SET_TEAM_TO_LIST (state, team) {
+    state.teamList.count += 1
+    state.teamList.teams.unshift(team)
   },
-  DELETE_FROM_LIST (state, id) {
-    state.presetList.presets = state.presetList.presets.filter(item => item.id !== id)
-  },
-  UNSET_PRESET (state) {
-    state.preset = {
+  UNSET_TEAM (state) {
+    state.team = {
       id: undefined,
       author: {
         id: undefined,
@@ -34,20 +27,8 @@ export const mutations: MutationTree<State> = {
       createdAt: undefined,
       updatedAt: undefined,
       title: '',
-      vitalSigns: {
-        oos: undefined,
-        avpu: undefined,
-        mobility: undefined,
-        respiratoryRate: undefined,
-        pulse: undefined,
-        temperature: undefined,
-        capillaryRefill: undefined,
-        bloodPressureSystolic: undefined,
-        bloodPressureDiastolic: undefined,
-        oxygenSaturation: undefined,
-        weight: undefined,
-        height: undefined
-      }
+      type: undefined,
+      medivac: undefined
     }
   }
 }

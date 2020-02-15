@@ -1,42 +1,38 @@
 export interface State {
-    preset: {
+  team: {
+    id?: string
+    author: {
+      id?: string
+      username?: string
+    }
+    editor: {
+      id?: string
+      username?: string
+    }
+    createdAt?: Date
+    updatedAt?: Date
+    title: string
+    type?: string
+    medivac?: boolean
+  }
+  teamList: {
+    count: number
+    teams: {
+      id?: string
+      author: {
         id?: string
-        author: {
-            id?: string
-            username?: string
-        }
-        editor: {
-            id?: string
-            username?: string
-        }
-        createdAt?: Date
-        updatedAt?: Date
-        title: string
-        vitalSigns: {
-            oos?: string
-            avpu?: string
-            mobility?: string
-            respiratoryRate?: number
-            pulse?: number
-            temperature?: number
-            capillaryRefill?: number
-            bloodPressureSystolic?: number
-            bloodPressureDiastolic?: number
-            oxygenSaturation?: number
-            weight?: number
-            height?: number
-        }
-    }
-    presetList: {
-        count: number
-        presets: {
-            id: string
-            author: {
-                id: string
-                username: string
-            }
-            title: string
-        }[]
-    }
-    presetsLoaded: boolean
+        username?: string
+      }
+      editor: {
+        id?: string
+        username?: string
+      }
+      createdAt?: Date
+      updatedAt?: Date
+      title: string
+      type?: string
+      medivac?: boolean
+    }[]
+  }
+  teamsLoaded: boolean
 }

@@ -1,1 +1,1 @@
-export const name = 'preset'
+export const name = 'team'
