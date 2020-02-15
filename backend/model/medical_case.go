@@ -14,6 +14,7 @@ type MedicalCase struct {
 	Editor             LimitedUser        `json:"editor" form:"editor" bson:"editor"`
 	CreatedAt          time.Time          `json:"createdAt" form:"createdAt" bson:"createdAt"`
 	EditedAt           time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
+	Approved           bool               `json:"approved" form:"approved" bson:"approved"`
 	Title              string             `json:"title" form:"title" bson:"title"`
 	MakeUp             string             `json:"makeup" form:"makeup" bson:"makeup"`
 	OtherInformation   string             `json:"otherInformation" form:"otherInformation" bson:"otherInformation"`
@@ -63,6 +64,7 @@ type MedicalCaseShort struct {
 	ID                 primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Author             LimitedUser        `json:"author" bson:"author"`
 	Title              string             `json:"title" bson:"title"`
+	Approved           bool               `json:"approved" bson:"approved"`
 	GeneralInformation struct {
 		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
 		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
@@ -90,12 +92,6 @@ type MedicalCaseList struct {
 
 // Validate validates the medical case
 func (mc *MedicalCase) Validate() error {
-	if mc.Author.ID.IsZero() || mc.Author.Username == "" {
-		return errors.New("author not set")
-	}
-	if mc.CreatedAt.IsZero() {
-		return errors.New("created at not set")
-	}
 	if mc.Title == "" {
 		return errors.New("title not set")
 	}

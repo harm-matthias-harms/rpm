@@ -72,9 +72,6 @@ func Server() (*echo.Echo, error) {
 	a.POST("/register", HandleRegister)
 	a.POST("/authenticate", HandleAuthenticate)
 
-	// ADD THE ENDPOINTS HERE
-	// r.GET("/endpoint", handler)
-
 	// Gives a healthcheck entrypoint
 	e.GET("/api/healthcheck", handlerHealthCheck)
 

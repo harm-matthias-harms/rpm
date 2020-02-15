@@ -3,13 +3,13 @@ import { State } from './type'
 import { State as RootState } from '@/store/root'
 
 export const actions: ActionTree<State, RootState> = {
-  create ({ commit }, preset) {
+  create ({ commit }, team) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$post('/api/presets', preset)
+      .$post('/api/teams', team)
       .then((response) => {
-        commit('SET_PRESET_TO_LIST', response.data)
-        this.$router.push('/presets/' + response.data.id)
+        commit('SET_TEAM_TO_LIST', response.data)
+        this.$router.push('/presets')
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create preset.", { root: true })
