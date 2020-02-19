@@ -18,14 +18,24 @@
       <template v-slot:body="{ items }">
         <tbody>
           <tr v-for="item in items" :key="item.id">
-            <td @click="openTeam(item)">{{ item.title }}</td>
-            <td @click="openTeam(item)">{{ item.type }}</td>
             <td @click="openTeam(item)">
-              <v-icon small v-if="item.medivac"> done</v-icon>
-              <v-icon small v-if="!item.medivac"> clear</v-icon>
+              {{ item.title }}
             </td>
-            <td @click="openTeam(item)">{{ item.author.username }}</td>
-            <td class="px-0"></td>
+            <td @click="openTeam(item)">
+              {{ item.type }}
+            </td>
+            <td @click="openTeam(item)">
+              <v-icon v-if="item.medivac" small>
+                done
+              </v-icon>
+              <v-icon v-if="!item.medivac" small>
+                clear
+              </v-icon>
+            </td>
+            <td @click="openTeam(item)">
+              {{ item.author.username }}
+            </td>
+            <td class="px-0" />
           </tr>
         </tbody>
       </template>
@@ -50,11 +60,11 @@ export default class TeamTable extends Vue {
 
   search: string = ''
 
-  openTeam(team) {
+  openTeam (team) {
     this.$router.push('/teams/' + team.id)
   }
 
-  filterTeams(value, search, item) {
+  filterTeams (value, search, item) {
     // Split search into an array
     const needleArry = search
       .toString()
@@ -62,7 +72,7 @@ export default class TeamTable extends Vue {
       .split(' ')
       .filter(x => x.trim().length > 0)
 
-    function filterAll(item, search) {
+    function filterAll (item, search) {
       return (
         filterTitle(item, search) ||
         filterAuthor(item, search) ||
@@ -71,22 +81,22 @@ export default class TeamTable extends Vue {
       )
     }
 
-    function filterTitle(item, search) {
+    function filterTitle (item, search) {
       return item.title && item.title.toLowerCase().includes(search)
     }
 
-    function filterType(item, search) {
+    function filterType (item, search) {
       return item.type && item.type.toLowerCase().includes(search)
     }
 
-    function filterMedivac(item, search) {
+    function filterMedivac (item, search) {
       if ('medivac'.includes(search)) {
         return item.medivac
       }
       return false
     }
 
-    function filterAuthor(item, search) {
+    function filterAuthor (item, search) {
       return (
         item.author.username &&
         item.author.username.toLowerCase().includes(search)

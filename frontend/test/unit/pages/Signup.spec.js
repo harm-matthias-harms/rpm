@@ -4,8 +4,8 @@ import Vuetify from 'vuetify'
 import Vuex from 'vuex'
 import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
-import { store } from '../utils/vuex-store'
 import SignUp from '@/pages/sign_up.vue'
+import { store } from '../utils/vuex-store'
 
 Vue.use(Vuex)
 Vue.use(VeeValidate)

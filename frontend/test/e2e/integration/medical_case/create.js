@@ -8,7 +8,7 @@ describe('Create medical case', () => {
   let vitalSigns
   let child
   beforeEach(() => {
-    cy.fixture('medical_case/create.json').then(json => {
+    cy.fixture('medical_case/create.json').then((json) => {
       medicalCase = json.data
       generalInformation = medicalCase.generalInformation
       medicalHistory = medicalCase.medicalHistory

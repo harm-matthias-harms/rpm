@@ -3,15 +3,21 @@
     <v-row justify="center">
       <v-col md="5" sm="6">
         <h3 class="headline">
-          <v-chip small label color="primary">{{ teamList.count }}</v-chip>Teams
+          <v-chip small label color="primary">
+            {{ teamList.count }}
+          </v-chip>Teams
         </h3>
       </v-col>
       <v-col md="5" sm="6" class="justify-end d-flex">
         <v-btn small color="primary" class="mr-2" to="/teams/new">
-          <v-icon small>fas fa-plus</v-icon>
+          <v-icon small>
+            fas fa-plus
+          </v-icon>
         </v-btn>
         <v-btn small color="primary" @click="getTeams()">
-          <v-icon small>fas fa-redo</v-icon>
+          <v-icon small>
+            fas fa-redo
+          </v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -49,13 +55,13 @@ export default class Teams extends Vue {
 
   loading: boolean = false
 
-  loadTeams() {
+  loadTeams () {
     this.loading = true
     this.getTeams()
     this.loading = false
   }
 
-  mounted() {
+  mounted () {
     if (!this.teamsLoaded) {
       this.loadTeams()
     }

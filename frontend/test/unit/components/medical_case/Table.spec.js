@@ -2,8 +2,8 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import { store } from '../../utils/vuex-store'
 import Table from '@/components/medical_case/table.vue'
+import { store } from '../../utils/vuex-store'
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)

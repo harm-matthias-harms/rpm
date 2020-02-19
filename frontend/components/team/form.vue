@@ -9,10 +9,10 @@
       data-vv-name="title"
     />
     <v-select
-      :items="['AMP', 'AMPS', 'EMT 1', 'EMT 1 mobile', 'EMT 2', 'EMT 3', 'other']"
       v-model="team.type"
-      label="Type"
       v-validate="'required'"
+      :items="['AMP', 'AMPS', 'EMT 1', 'EMT 1 mobile', 'EMT 2', 'EMT 3', 'other']"
+      label="Type"
     />
     <v-checkbox v-model="team.medivac" label="Medivac" />
     <v-btn
@@ -20,8 +20,12 @@
       class="mr-4"
       type="submit"
       color="primary"
-    >{{ isNew ? "create" : "edit" }}</v-btn>
-    <v-btn @click="$router.back()">cancel</v-btn>
+    >
+      {{ isNew ? "create" : "edit" }}
+    </v-btn>
+    <v-btn @click="$router.back()">
+      cancel
+    </v-btn>
   </v-form>
 </template>
 
@@ -33,9 +37,10 @@ export default class TeamForm extends Vue {
   @Prop({ type: Function, required: true }) readonly atSubmit!: (
     payload
   ) => void
+
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
-  submit() {
+  submit () {
     this.atSubmit(this.team)
   }
 }

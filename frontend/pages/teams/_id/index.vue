@@ -4,7 +4,9 @@
       <v-col lg="8" md="10" sm="12">
         <v-card>
           <v-card-text>
-            <h4 class="display-1 font-weight-light mb-2 black--text">{{ team.title }}</h4>
+            <h4 class="display-1 font-weight-light mb-2 black--text">
+              {{ team.title }}
+            </h4>
 
             <v-row>
               <v-col v-if="team.author && team.author.username" class="col-auto">
@@ -23,8 +25,12 @@
             <v-list-item>
               <v-list-item-content>Medivac:</v-list-item-content>
               <v-list-item-content>
-                <v-icon v-if="team.medivac">done</v-icon>
-                <v-icon v-if="!team.medivac">clear</v-icon>
+                <v-icon v-if="team.medivac">
+                  done
+                </v-icon>
+                <v-icon v-if="!team.medivac">
+                  clear
+                </v-icon>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -59,7 +65,7 @@ export default class ShowTeam extends Vue {
   find!: (id) => void
   team!: any
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
     if (this.team.id !== id) {
       this.find({ id })

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import { store } from '../../utils/vuex-store'
 import DeleteButton from '@/components/preset/Delete.vue'
+import { store } from '../../utils/vuex-store'
 
 Vue.use(Vuetify)
 

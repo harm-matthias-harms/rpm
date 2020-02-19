@@ -2,8 +2,8 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import { store } from '../../../utils/vuex-store'
 import Edit from '@/pages/medical_cases/_id/edit.vue'
+import { store } from '../../../utils/vuex-store'
 
 const $route = {
   path: '/medical_cases/001',

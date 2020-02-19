@@ -2,7 +2,9 @@
   <v-row justify="center">
     <v-col lg="6" md="10" sm="12">
       <v-card>
-        <v-card-title primary-title>New Team</v-card-title>
+        <v-card-title primary-title>
+          New Team
+        </v-card-title>
         <v-card-text>
           <TeamForm :team="team" :at-submit="create" :is-new="true" />
         </v-card-text>
