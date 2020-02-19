@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex/types'
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
-import { State } from './type'
 import { State as RootState } from '@/store/root'
+import { State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
   register ({ state, commit }, user) {

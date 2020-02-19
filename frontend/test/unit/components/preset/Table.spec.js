@@ -2,13 +2,13 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import { store } from '../../utils/vuex-store'
 import PresetTable from '@/components/preset/table.vue'
+import { store } from '../../utils/vuex-store'
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 
-describe('My Presets', () => {
+describe('Preset Table', () => {
   let wrapper
   let router
   beforeEach(() => {

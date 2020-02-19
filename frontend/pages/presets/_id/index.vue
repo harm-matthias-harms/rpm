@@ -44,7 +44,6 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-divider />
           <VitalSigns
             class="black--text"
             :vital-signs="preset.vitalSigns"

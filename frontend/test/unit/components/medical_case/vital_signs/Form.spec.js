@@ -2,8 +2,8 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VeeValidate from 'vee-validate'
-import { store } from '../../../utils/vuex-store'
 import VitalSign from '@/components/medical_case/vital_signs/form.vue'
+import { store } from '../../../utils/vuex-store'
 
 Vue.use(Vuetify)
 Vue.use(VeeValidate)

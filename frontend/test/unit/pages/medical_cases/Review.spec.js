@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
+import ReviewMedicalCases from '@/pages/medical_cases/review.vue'
 import { store } from '../../utils/vuex-store'
-import MedicalCases from '@/pages/medical_cases/index.vue'
 
 Vue.use(Vuetify)
 
 describe('Index Medical Cases', () => {
   let wrapper
   beforeEach(() => {
-    wrapper = shallowMount(MedicalCases, {
+    wrapper = shallowMount(ReviewMedicalCases, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub
