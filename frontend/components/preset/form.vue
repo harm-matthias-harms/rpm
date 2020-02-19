@@ -11,7 +11,7 @@
     <Form :vital-signs.sync="preset.vitalSigns" />
 
     <v-btn
-      :disabled="preset.title && errors.any()"
+      :disabled="!preset.title || errors.any()"
       class="mr-4"
       type="submit"
       color="primary"
