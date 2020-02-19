@@ -1,0 +1,30 @@
+import Vue from 'vue'
+import { shallowMount, RouterLinkStub } from '@vue/test-utils'
+import Vuetify from 'vuetify'
+import VueRouter from 'vue-router'
+import { store } from '../../../utils/vuex-store'
+import ShowTeam from '@/pages/teams/_id/index.vue'
+
+Vue.use(Vuetify)
+Vue.use(VueRouter)
+
+describe('Show team', () => {
+  let wrapper
+  let router
+  const storeCopy = store
+  storeCopy.state.team.team = { id: '002', author: { id: '001', username: 'username' }, editor: { id: '001', username: 'username' } }
+  beforeEach(() => {
+    router = new VueRouter()
+    wrapper = shallowMount(ShowTeam, {
+      stubs: {
+        NuxtLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
+      },
+      store,
+      router
+    })
+  })
+  test('is a Vue instance', () => {
+    expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+})
