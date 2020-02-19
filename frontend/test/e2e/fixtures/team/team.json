@@ -1,0 +1,16 @@
+{
+    "id": "001",
+    "author": {
+        "id": "001",
+        "username": "John Doe"
+    },
+    "editor": {
+        "id": "000000000000000000000000",
+        "username": ""
+    },
+    "createdAt": "1970-01-01T00:00:00Z",
+    "editedAt": "0001-01-01T00:00:00Z",
+    "title": "Test team",
+    "type": "EMT 1",
+    "medivac": true
+}
