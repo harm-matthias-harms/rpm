@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -61,6 +62,23 @@ func CreateTeam(ctx context.Context, team *model.Team) (err error) {
 	res, err := c.InsertOne(ctx, team)
 	team.ID = res.InsertedID.(primitive.ObjectID)
 	return
+}
+
+// UpdateTeam updates a team
+func UpdateTeam(ctx context.Context, team *model.Team) (err error) {
+	c := teamCollection()
+	res, err := c.ReplaceOne(ctx, bson.M{"_id": team.ID}, team)
+	if res.MatchedCount == 0 {
+		return errors.New("no document was found")
+	}
+	return
+}
+
+// DeleteTeam deletes a team by a given id
+func DeleteTeam(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
+	c := teamCollection()
+	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}, {Key: "author._id", Value: userID}})
+	return result.DeletedCount, err
 }
 
 func teamCollection() *mongo.Collection {
