@@ -13,6 +13,10 @@ export const mutations: MutationTree<State> = {
     state.teamList.count += 1
     state.teamList.teams.unshift(team)
   },
+  DELETE_FROM_LIST (state, id) {
+    state.teamList.teams = state.teamList.teams.filter(item => item.id !== id)
+    state.teamList.count--
+  },
   UNSET_TEAM (state) {
     state.team = {
       id: undefined,

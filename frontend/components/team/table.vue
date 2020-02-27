@@ -35,7 +35,16 @@
             <td @click="openTeam(item)">
               {{ item.author.username }}
             </td>
-            <td class="px-0" />
+            <td class="px-0">
+              <v-icon @click="editTeam(item)">
+                edit
+              </v-icon>
+              <DeleteButton
+                v-if="item.author.id == $store.state.user.user.id"
+                :item="item"
+                :go-back="false"
+              />
+            </td>
           </tr>
         </tbody>
       </template>
@@ -45,8 +54,11 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
+import DeleteButton from '@/components/team/Delete.vue'
 
-@Component
+@Component({
+  components: { DeleteButton }
+})
 export default class TeamTable extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
@@ -62,6 +74,10 @@ export default class TeamTable extends Vue {
 
   openTeam (team) {
     this.$router.push('/teams/' + team.id)
+  }
+
+  editTeam (team) {
+    this.$router.push('/teams/' + team.id + '/edit')
   }
 
   filterTeams (value, search, item) {

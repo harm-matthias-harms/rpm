@@ -43,10 +43,9 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
-import Confirm from '@/components/utils/Confirm.vue'
 import DeleteButton from '@/components/preset/Delete.vue'
 @Component({
-  components: { Confirm, DeleteButton }
+  components: { DeleteButton }
 })
 export default class PresetTable extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean

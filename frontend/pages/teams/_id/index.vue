@@ -6,6 +6,17 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ team.title }}
+              <v-icon
+                color="primary"
+                @click="editTeam(team)"
+              >
+                edit
+              </v-icon>
+              <DeleteButton
+                v-if="team.author.id == $store.state.user.user.id"
+                :item="team"
+                :go-back="true"
+              />
             </h4>
 
             <v-row>
@@ -45,10 +56,12 @@ import { Component, Vue } from 'vue-property-decorator'
 import { mapState, mapActions } from 'vuex'
 import Author from '@/components/utils/Author.vue'
 import Editor from '@/components/utils/Editor.vue'
+import DeleteButton from '@/components/team/Delete.vue'
 @Component({
   components: {
     Author,
-    Editor
+    Editor,
+    DeleteButton
   },
   computed: {
     ...mapState('team', {
@@ -70,6 +83,10 @@ export default class ShowTeam extends Vue {
     if (this.team.id !== id) {
       this.find({ id })
     }
+  }
+
+  editTeam (team) {
+    this.$router.push('/teams/' + team.id + '/edit')
   }
 }
 </script>

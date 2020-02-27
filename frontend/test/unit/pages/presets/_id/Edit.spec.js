@@ -12,7 +12,7 @@ const $route = {
 
 Vue.use(Vuetify)
 
-describe('Edit Presets', () => {
+describe('Edit preset', () => {
   let wrapper
   let router
   beforeEach(() => {
