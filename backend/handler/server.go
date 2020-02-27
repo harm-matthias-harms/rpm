@@ -66,6 +66,8 @@ func Server() (*echo.Echo, error) {
 	r.POST("/teams", HandleTeamCreate)
 	r.GET("/teams", HandleTeamsGet)
 	r.GET("/teams/:id", HandleTeamFind)
+	r.PUT("/teams/:id", HandleTeamEdit)
+	r.DELETE("/teams/:id", HandleTeamDelete)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

@@ -62,7 +62,6 @@ func HandleMedicalCaseCreate(c echo.Context) (err error) {
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)
@@ -116,7 +115,6 @@ func HandleMedicalCaseEdit(c echo.Context) (err error) {
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)
@@ -156,7 +154,6 @@ func HandleMedicalCaseDelete(c echo.Context) (err error) {
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)
@@ -217,7 +214,6 @@ func HandleMedicalCaseFileDelete(c echo.Context) error {
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)

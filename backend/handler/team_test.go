@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
@@ -29,7 +30,7 @@ func TestTeam(t *testing.T) {
 	// tests
 	t.Run("create", func(t *testing.T) {
 
-		// create preset
+		// create team
 		rec, err := testRequest(http.MethodPost, "/api/teams", strings.NewReader(structToJSONString(team)), HandleTeamCreate, header, nil, jwtCookie)
 		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
@@ -65,6 +66,67 @@ func TestTeam(t *testing.T) {
 			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
 			assert.Equal(t, "title not set", err.(*echo.HTTPError).Message)
 		}
+	})
+
+	t.Run("update", func(t *testing.T) {
+		// setup
+		team.Type = "EMT 2"
+
+		invalidTeam := team
+		invalidTeam.CreatedAt = time.Time{}
+
+		id := primitive.NewObjectID()
+		falseTeam := team
+		falseTeam.ID = id
+
+		// requests
+		rec, err := testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(structToJSONString(team)), HandleTeamEdit, header, map[string]string{"id": team.ID.Hex()}, jwtCookie)
+		if assert.NoError(t, err) {
+			response := &model.Team{}
+			parseResponse(rec, response)
+			assert.Equal(t, team.Title, response.Title)
+			assert.Equal(t, team.Type, response.Type)
+			assert.NotNil(t, response.EditedAt)
+			assert.NotNil(t, response.Editor.ID)
+			assert.NotNil(t, response.Editor.Username)
+		}
+
+		// no team provided
+		_, err = testRequest(http.MethodPut, "/api/teams/:id", nil, HandleTeamEdit, header, map[string]string{"id": team.ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorParseRequest, err.(*echo.HTTPError).Message)
+		}
+
+		// bad request
+		rec, err = testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(triggerBadRequest), HandleTeamEdit, header, map[string]string{"id": team.ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, http.StatusBadRequest, err.(*echo.HTTPError).Code)
+			assert.Equal(t, errorParseRequest, err.(*echo.HTTPError).Message)
+		}
+
+		// no id provided
+		_, err = testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(structToJSONString(team)), HandleTeamEdit, header, map[string]string{"id": ""}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
+		}
+
+		// false id
+		_, err = testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(structToJSONString(team)), HandleTeamEdit, header, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorIDNotMatch, err.(*echo.HTTPError).Message)
+		}
+
+		// Invalid
+		_, err = testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(structToJSONString(invalidTeam)), HandleTeamEdit, header, map[string]string{"id": team.ID.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, "created at not set", err.(*echo.HTTPError).Message)
+		}
+		// Could not update
+		_, err = testRequest(http.MethodPut, "/api/teams/:id", strings.NewReader(structToJSONString(falseTeam)), HandleTeamEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorUpdated, err.(*echo.HTTPError).Message)
+		}
+
 	})
 
 	t.Run("find", func(t *testing.T) {
@@ -123,6 +185,22 @@ func TestTeam(t *testing.T) {
 			assert.Equal(t, team.Title, response.Teams[0].Title)
 			assert.Equal(t, team.Author.Username, response.Teams[0].Author.Username)
 		}
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		// no id provided
+		_, err := testRequest(http.MethodDelete, "/api/teams/:id", nil, HandleTeamDelete, nil, map[string]string{"id": ""}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
+		}
+		// false id
+		_, err = testRequest(http.MethodDelete, "/api/teams/:id", nil, HandleTeamDelete, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
+		if assert.Error(t, err) {
+			assert.Equal(t, errorDelete, err.(*echo.HTTPError).Message)
+		}
+		// good id
+		_, err = testRequest(http.MethodDelete, "/api/teams/:id", nil, HandleTeamDelete, nil, map[string]string{"id": team.ID.Hex()}, jwtCookie)
+		assert.NoError(t, err)
 	})
 
 	// cleanup

@@ -18,6 +18,21 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
+  update ({ commit }, team) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$put('/api/teams/' + team.id, team)
+      .then((response) => {
+        commit('SET_TEAM', response)
+        this.$router.push('/teams/' + team.id)
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't edit team.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
+      })
+  },
   get_all ({ commit }, payload = { disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
@@ -53,6 +68,24 @@ export const actions: ActionTree<State, RootState> = {
         if (!payload.disableLoader) {
           commit('loader/SET', false, { root: true })
         }
+      })
+  },
+  delete ({ commit }, payload = { id: null, goBack: false }) {
+    commit('loader/SET', true, { root: true })
+    this.$axios
+      .$delete('/api/teams/' + payload.id)
+      .then(() => {
+        commit('DELETE_FROM_LIST', payload.id)
+        commit('snackbar/SET', 'Team  was successfully deleted.', { root: true })
+        if (payload.goBack) {
+          this.$router.back()
+        }
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't delete team.", { root: true })
+      })
+      .finally(() => {
+        commit('loader/SET', false, { root: true })
       })
   }
 }

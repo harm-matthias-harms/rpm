@@ -6,6 +6,7 @@ import (
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestTeam(t *testing.T) {
@@ -21,13 +22,29 @@ func TestTeam(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("update team", func(t *testing.T) {
+		//additional model
+		notExist := &model.Team{Title: "title"}
+
+		// change preset
+		team.Title = "team 2"
+		err := UpdateTeam(nil, team)
+		assert.NoError(t, err)
+
+		// don't update non existing
+		err = UpdateTeam(nil, notExist)
+		if assert.Error(t, err) {
+			assert.Equal(t, "no document was found", err.Error())
+		}
+	})
+
 	t.Run("find team", func(t *testing.T) {
 		// additional model
 		notExist := &model.Team{Title: "title"}
 
 		teamFound, err := FindTeam(nil, team.ID)
 		if assert.NoError(t, err) {
-			assert.Equal(t, "team 1", teamFound.Title)
+			assert.Equal(t, "team 2", teamFound.Title)
 		}
 
 		_, err = FindTeam(nil, notExist.ID)
@@ -41,7 +58,7 @@ func TestTeam(t *testing.T) {
 		}
 
 		// test filter
-		filter := map[string]interface{}{"title": "team 1"}
+		filter := map[string]interface{}{"title": "team 2"}
 		result, err = GetTeams(nil, filter, 1, 1)
 		if assert.NoError(t, err) {
 			assert.Equal(t, 1, len(result))
@@ -60,11 +77,20 @@ func TestTeam(t *testing.T) {
 			assert.GreaterOrEqual(t, count, int64(0))
 		}
 
-		filter := map[string]interface{}{"title": "team 1"}
+		filter := map[string]interface{}{"title": "team 2"}
 		count, err = CountTeams(nil, filter)
 		if assert.NoError(t, err) {
 			assert.Equal(t, int64(1), count)
 		}
+	})
+
+	t.Run("deletes team", func(t *testing.T) {
+		c, err := DeleteTeam(nil, team.ID, team.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(1), c)
+		c, err = DeleteTeam(nil, primitive.NewObjectID(), team.Author.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, int64(0), c)
 	})
 
 	// cleanup

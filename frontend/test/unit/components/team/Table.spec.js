@@ -35,6 +35,10 @@ describe('Team table', () => {
     wrapper.vm.openTeam({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/teams/001')
   })
+  test('open edit form', () => {
+    wrapper.vm.editTeam({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/teams/001/edit')
+  })
   test('filter table', () => {
     wrapper.props().items.push({ title: 'test', author: { username: 'John' }, type: 'EMT 1', medivac: true })
     expect(
