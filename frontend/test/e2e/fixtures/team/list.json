@@ -1,0 +1,38 @@
+{
+    "count": 2,
+    "teams": [
+        {
+            "id": "003",
+            "title": "Test team",
+            "author": {
+                "id": "000000000000000000000000",
+                "username": "John Doe"
+            },
+            "createdAt": "1970-01-01T00:00:00",
+            "type": "EMT 1",
+            "medivac": true
+        },
+        {
+            "id": "001",
+            "author": {
+                "id": "001",
+                "username": "John Doe"
+            },
+            "title": "test team 1",
+            "createdAt": "1970-01-01T00:00:00",
+            "type": "EMT 2",
+            "medivac": false
+        },
+        {
+            "id": "002",
+            "author": {
+                "id": "002",
+                "username": "otherUser"
+            },
+            "title": "test team 2",
+            "createdAt": "1970-01-01T00:00:00",
+            "type": "EMT 3",
+            "medivac": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex/types'
-import { State } from './type'
 import { State as RootState } from '@/store/root'
+import { State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
   create ({ commit }, preset) {

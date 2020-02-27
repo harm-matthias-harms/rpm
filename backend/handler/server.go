@@ -62,14 +62,17 @@ func Server() (*echo.Echo, error) {
 	r.DELETE("/medical_cases/:id", HandleMedicalCaseDelete)
 	r.GET("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileGet)
 	r.DELETE("/medical_cases/:mc_id/documents/:id", HandleMedicalCaseFileDelete)
+	// teams
+	r.POST("/teams", HandleTeamCreate)
+	r.GET("/teams", HandleTeamsGet)
+	r.GET("/teams/:id", HandleTeamFind)
+	r.PUT("/teams/:id", HandleTeamEdit)
+	r.DELETE("/teams/:id", HandleTeamDelete)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")
 	a.POST("/register", HandleRegister)
 	a.POST("/authenticate", HandleAuthenticate)
-
-	// ADD THE ENDPOINTS HERE
-	// r.GET("/endpoint", handler)
 
 	// Gives a healthcheck entrypoint
 	e.GET("/api/healthcheck", handlerHealthCheck)

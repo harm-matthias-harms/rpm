@@ -150,7 +150,7 @@
       label="Files"
     />
     <v-btn
-      :disabled="medicalCase.title && errors.any()"
+      :disabled="!medicalCase.title || errors.any()"
       class="mr-4"
       type="submit"
       color="primary"

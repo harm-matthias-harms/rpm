@@ -2,8 +2,8 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import { store } from '../../../utils/vuex-store'
 import Edit from '@/pages/presets/_id/edit.vue'
+import { store } from '../../../utils/vuex-store'
 
 const $route = {
   path: '/presets/001',
@@ -12,7 +12,7 @@ const $route = {
 
 Vue.use(Vuetify)
 
-describe('Edit Presets', () => {
+describe('Edit preset', () => {
   let wrapper
   let router
   beforeEach(() => {

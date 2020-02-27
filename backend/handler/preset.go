@@ -54,7 +54,6 @@ func HandlePresetCreate(c echo.Context) (err error) {
 	}
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)
@@ -77,6 +76,7 @@ func HandlePresetCreate(c echo.Context) (err error) {
 // HandlePresetEdit updates an preset
 func HandlePresetEdit(c echo.Context) (err error) {
 	preset := new(model.Preset)
+	// c.Bind is not working here
 	defer c.Request().Body.Close()
 	body, err := ioutil.ReadAll(c.Request().Body)
 	err = json.Unmarshal(body, preset)
@@ -93,7 +93,6 @@ func HandlePresetEdit(c echo.Context) (err error) {
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)
@@ -125,7 +124,6 @@ func HandlePresetDelete(c echo.Context) (err error) {
 
 	cookie, _ := c.Cookie(echo.HeaderAuthorization)
 	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
 	})
 	claims := token.Claims.(jwt.MapClaims)

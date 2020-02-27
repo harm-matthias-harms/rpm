@@ -19,6 +19,7 @@ export const mutations: MutationTree<State> = {
   },
   DELETE_FROM_LIST (state, id) {
     state.presetList.presets = state.presetList.presets.filter(item => item.id !== id)
+    state.presetList.count--
   },
   UNSET_PRESET (state) {
     state.preset = {

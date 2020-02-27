@@ -173,6 +173,22 @@ export default class Default extends Vue {
           url: '/presets/new'
         }
       ]
+    },
+    {
+      name: 'Team',
+      icon: 'fas fa-users',
+      items: [
+        {
+          name: 'List',
+          icon: 'fas fa-table',
+          url: '/teams'
+        },
+        {
+          name: 'New',
+          icon: 'fas fa-plus',
+          url: '/teams/new'
+        }
+      ]
     }
   ]
 
