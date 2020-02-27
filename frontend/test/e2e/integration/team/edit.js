@@ -3,7 +3,7 @@
 describe('Edit team', () => {
   let team
   beforeEach(() => {
-    cy.fixture('team/edit.json').then(json => {
+    cy.fixture('team/edit.json').then((json) => {
       team = json
     })
     cy.server()
