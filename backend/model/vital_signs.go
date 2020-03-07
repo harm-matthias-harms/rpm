@@ -16,7 +16,7 @@ type VitalSigns struct {
 	Expectations           Expectations `json:"expectations" bson:"Expectations"`
 }
 
-// Expectations are
+// Expectations are the expected treatment for a vital sign
 type Expectations struct {
 	Foe               string `json:"foe" bson:"foe"`
 	TreatmentExpected string `json:"treatmentExpected" bson:"treatmentExpected"`
