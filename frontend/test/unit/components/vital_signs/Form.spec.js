@@ -16,7 +16,7 @@ describe('Vitalsigns form', () => {
         RouterLink: RouterLinkStub
       },
       propsData: {
-        vitalSigns: {}
+        vitalSigns: { expectations: {} }
       },
       provide: {
         $validator () {

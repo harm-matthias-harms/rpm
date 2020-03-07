@@ -16,7 +16,7 @@ describe('Preset form', () => {
         RouterLink: RouterLinkStub
       },
       propsData: {
-        preset: { vitalSigns: {} },
+        preset: { vitalSigns: { expectations: {} } },
         atSubmit: () => {},
         isNew: false
       },
@@ -32,7 +32,7 @@ describe('Preset form', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
   test('handle empty vital signs on submit', () => {
-    wrapper.vm.preset.vitalSigns.height = ''
+    wrapper.vm.preset.vitalSigns.oxygenSaturation = ''
     wrapper.vm.submit()
     expect(wrapper.vm.preset.vitalSigns).toMatchObject({})
   })

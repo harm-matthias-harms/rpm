@@ -1,20 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-col
-      lg="6"
-      md="10"
-      sm="12"
-    >
+    <v-col lg="6" md="10" sm="12">
       <v-card>
         <v-card-title primary-title>
           New Preset
         </v-card-title>
         <v-card-text>
-          <PresetForm
-            :preset="preset"
-            :at-submit="create"
-            :is-new="true"
-          />
+          <PresetForm :preset="preset" :at-submit="create" :is-new="true" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -37,7 +29,7 @@ import PresetForm from '@/components/preset/form.vue'
   }
 })
 export default class NewPreset extends Vue {
-  preset = { vitalSigns: {} }
+  preset = { vitalSigns: { expectations: {} } }
   create!: (preset) => void
 }
 </script>

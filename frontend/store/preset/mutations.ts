@@ -46,8 +46,10 @@ export const mutations: MutationTree<State> = {
         bloodPressureSystolic: undefined,
         bloodPressureDiastolic: undefined,
         oxygenSaturation: undefined,
-        weight: undefined,
-        height: undefined
+        expectations: {
+          foe: undefined,
+          treatmentExpected: undefined
+        }
       }
     }
   }
