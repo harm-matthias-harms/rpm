@@ -18,7 +18,7 @@
     "upgrade": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^0.3.7",
+    "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/axios": "^5.9.3",
     "cross-env": "^6.0.3",
     "js-cookie": "^2.2.1",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",
-    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxt/typescript-build": "^0.6.0",
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/moment": "^1.5.0",
@@ -44,7 +44,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "codecov": "^3.6.5",
-    "cypress": "^3.8.2",
+    "cypress": "^4.1.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.9.0",
     "eslint-config-standard": ">=14.1.0",

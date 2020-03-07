@@ -4,10 +4,7 @@
       <p class="headline mb-2 pl-4">
         Vital Signs
       </p>
-      <v-list
-        dense
-        class="body-1"
-      >
+      <v-list dense class="body-1">
         <v-list-item v-if="vitalSigns.oos">
           <v-list-item-content>Onset of symptoms:</v-list-item-content>
           <v-list-item-content class="align-end">
@@ -32,7 +29,9 @@
             {{ valueToString(vitalSigns.pulse, 'bpm') }}
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="vitalSigns.bloodPressureSystolic != null || vitalSigns.bloodPressureDiastolic != null">
+        <v-list-item
+          v-if="vitalSigns.bloodPressureSystolic != null || vitalSigns.bloodPressureDiastolic != null"
+        >
           <v-list-item-content>Blood pressure:</v-list-item-content>
           <v-list-item-content
             class="align-end"
@@ -42,38 +41,47 @@
         </v-list-item>
         <v-list-item v-if="vitalSigns.respiratoryRate != null">
           <v-list-item-content>Respiratory rate:</v-list-item-content>
-          <v-list-item-content class="align-end">
+          <v-list-item-content
+            class="align-end"
+          >
             {{ valueToString(vitalSigns.respiratoryRate, 'bpm') }}
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.oxygenSaturation != null">
           <v-list-item-content>Oxygen saturation:</v-list-item-content>
-          <v-list-item-content class="align-end">
+          <v-list-item-content
+            class="align-end"
+          >
             {{ valueToString(vitalSigns.oxygenSaturation, '%') }}
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.capillaryRefill != null">
           <v-list-item-content>Capillary refill:</v-list-item-content>
-          <v-list-item-content class="align-end">
+          <v-list-item-content
+            class="align-end"
+          >
             {{ valueToString(vitalSigns.capillaryRefill, 's') }}
           </v-list-item-content>
         </v-list-item>
         <v-list-item v-if="vitalSigns.temperature != null">
-          <v-list-item-content>Temperatur:</v-list-item-content>
+          <v-list-item-content>Body temperatur:</v-list-item-content>
           <v-list-item-content class="align-end">
             {{ valueToString(vitalSigns.temperature, '°C') }}
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="vitalSigns.weight != null">
-          <v-list-item-content>Weight:</v-list-item-content>
+        <p class="headline mb-2 pl-4">
+          Expectations
+        </p>
+        <v-list-item v-if="vitalSigns.expectations.foe">
+          <v-list-item-content>Findings on examination:</v-list-item-content>
           <v-list-item-content class="align-end">
-            {{ valueToString(vitalSigns.weight, 'kg') }}
+            {{ vitalSigns.expectations.foe }}
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="vitalSigns.height != null">
-          <v-list-item-content>Height:</v-list-item-content>
+        <v-list-item v-if="vitalSigns.expectations.treatmentExpected">
+          <v-list-item-content>Expected treatment:</v-list-item-content>
           <v-list-item-content class="align-end">
-            {{ valueToString(vitalSigns.height / 100, 'm') }}
+            {{ vitalSigns.expectations.treatmentExpected }}
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -92,3 +100,10 @@ export default class VitalSigns extends Vue {
   }
 }
 </script>
+
+<style scoped>
+p,
+.v-list-item__content {
+  white-space: pre-line;
+}
+</style>

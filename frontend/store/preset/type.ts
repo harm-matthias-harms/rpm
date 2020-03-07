@@ -23,8 +23,10 @@ export interface State {
             bloodPressureSystolic?: number
             bloodPressureDiastolic?: number
             oxygenSaturation?: number
-            weight?: number
-            height?: number
+            expectations: {
+                foe?: string
+                treatmentExpected?: string
+            }
         }
     }
     presetList: {

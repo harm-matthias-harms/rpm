@@ -70,8 +70,8 @@ func TestPreset(t *testing.T) {
 
 	t.Run("update", func(t *testing.T) {
 		// setup
-		helper := int(190)
-		preset.VitalSigns.Height = &helper
+		helper := int(150)
+		preset.VitalSigns.Pulse = &helper
 
 		invalidPreset := preset
 		invalidPreset.CreatedAt = time.Time{}
@@ -87,7 +87,7 @@ func TestPreset(t *testing.T) {
 			parseResponse(rec, response)
 			assert.Equal(t, preset.Title, response.Title)
 			assert.Equal(t, preset.VitalSigns.OoS, response.VitalSigns.OoS)
-			assert.Equal(t, preset.VitalSigns.Height, response.VitalSigns.Height)
+			assert.Equal(t, preset.VitalSigns.Pulse, response.VitalSigns.Pulse)
 			assert.NotNil(t, response.EditedAt)
 			assert.NotNil(t, response.Editor.ID)
 			assert.NotNil(t, response.Editor.Username)

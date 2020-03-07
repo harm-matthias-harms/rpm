@@ -7,11 +7,12 @@
     />
     <v-select
       v-model="vitalSigns.avpu"
-      :items="['Altert', 'Voice', 'Pain', 'Unresponsive']"
+      :items="['A - Awake', 'V - Verbal', 'P - Pain', 'U - Unresponsive']"
       label="AVPU"
     />
-    <v-text-field
+    <v-select
       v-model="vitalSigns.mobility"
+      :items="['Walking', 'Sitting', 'Laying down']"
       label="Mobility"
     />
     <v-text-field
@@ -73,22 +74,17 @@
       v-model.number="vitalSigns.temperature"
       type="number"
       suffix="°C"
-      label="Temperature"
+      label="Body temperature"
     />
-    <v-text-field
-      v-model.number="vitalSigns.weight"
-      type="number"
-      suffix="kg"
-      label="Weight"
+    <v-textarea
+      v-model.number="vitalSigns.expectations.foe"
+      type="text"
+      label="Findings on examination"
     />
-    <v-text-field
-      v-model.number="vitalSigns.height"
-      v-validate="'integer'"
-      type="number"
-      suffix="cm"
-      label="Height"
-      data-vv-name="height"
-      :error-messages="errors.collect('height')"
+    <v-textarea
+      v-model.number="vitalSigns.expectations.treatmentExpected"
+      type="text"
+      label="Expected treatment"
     />
   </div>
 </template>

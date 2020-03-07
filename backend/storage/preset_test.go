@@ -30,8 +30,8 @@ func TestPreset(t *testing.T) {
 		notExist := &model.Preset{Title: "title"}
 
 		// change preset
-		helper := int(190)
-		preset.VitalSigns.Height = &helper
+		helper := int(150)
+		preset.VitalSigns.Pulse = &helper
 		err := UpdatePreset(nil, preset)
 		assert.NoError(t, err)
 
@@ -49,7 +49,7 @@ func TestPreset(t *testing.T) {
 		presetFound, err := FindPreset(nil, preset.ID)
 		if assert.NoError(t, err) {
 			assert.Equal(t, "title", presetFound.Title)
-			assert.Equal(t, 190, *presetFound.VitalSigns.Height)
+			assert.Equal(t, 150, *presetFound.VitalSigns.Pulse)
 		}
 
 		_, err = FindPreset(nil, notExist.ID)
@@ -70,7 +70,7 @@ func TestPreset(t *testing.T) {
 		}
 
 		// test multiple filters
-		filter["vitalSigns.height"] = 190
+		filter["vitalSigns.pulse"] = 150
 		result, err = GetPresets(nil, filter, 1, 1)
 		if assert.NoError(t, err) {
 			assert.Equal(t, 1, len(result))
