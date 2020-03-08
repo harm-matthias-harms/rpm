@@ -19,7 +19,7 @@ export const mutations: MutationTree<State> = {
       },
       title: medicalCase.title,
       approved: medicalCase.approved,
-      generalInformation: medicalCase.generalInformation
+      general: medicalCase.general
     })
   },
   DELETE_FROM_LIST (state, id) {
@@ -41,29 +41,28 @@ export const mutations: MutationTree<State> = {
       updatedAt: undefined,
       title: '',
       approved: false,
-      makeup: undefined,
-      otherInformation: undefined,
-      generalInformation: {
-        surgical: false,
-        hospilisation: false,
-        usar: false,
-        medivac: false,
-        triage: undefined,
-        shortSummary: undefined,
-        age: undefined,
-        gender: undefined
+      general: {
+        discipline: undefined,
+        context: [],
+        scenario: []
       },
-      medicalHistory: {
-        problems: undefined,
-        vaccinations: undefined,
+      patient: {
+        type: undefined,
+        triage: undefined,
+        gender: [],
+        age: undefined
+      },
+      medical: {
+        signs: undefined,
         allergies: undefined,
         medication: undefined,
-        implantedDevices: undefined
+        past: undefined,
+        loi: undefined,
+        events: undefined
       },
-      expectations: {
-        generalStatus: undefined,
-        onExamination: undefined,
-        expectations: undefined
+      makeup: {
+        makeup: undefined,
+        acting: undefined
       },
       vitalSigns: [],
       files: []

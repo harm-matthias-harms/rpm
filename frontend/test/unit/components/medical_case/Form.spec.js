@@ -18,9 +18,10 @@ describe('Medical case form', () => {
       propsData: {
         medicalCase: {
           id: '002',
-          generalInformation: { usar: true },
-          medicalHistory: { problems: 'problem' },
-          expectations: { expectations: 'expectations' },
+          general: { scenario: ['scenario'] },
+          patient: { type: 'type' },
+          medical: { signs: 'signs' },
+          makeup: { makeup: 'make-up' },
           vitalSigns: []
         },
         atSubmit: () => {},
@@ -40,9 +41,10 @@ describe('Medical case form', () => {
     wrapper.vm.addVitalSign()
     expect(wrapper.vm.medicalCase.vitalSigns.length).toBe(1)
     wrapper.vm.setExpansionPanel()
-    wrapper.vm.medicalCase.vitalSigns[0].data.height = ''
-    wrapper.vm.medicalCase.vitalSigns[0].childs = [{ data: {}, childs: [] }]
+    wrapper.vm.medicalCase.vitalSigns[0].data.temperature = ''
+    wrapper.vm.medicalCase.vitalSigns[0].data.expectations.foe = ''
+    wrapper.vm.medicalCase.vitalSigns[0].childs = [{ data: { expectations: {} }, childs: [] }]
     wrapper.vm.submit()
-    expect(wrapper.vm.medicalCase.vitalSigns[0].data.height).not.toBeDefined()
+    expect(wrapper.vm.medicalCase.vitalSigns[0].data.temperature).not.toBeDefined()
   })
 })

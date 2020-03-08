@@ -16,7 +16,7 @@ describe('Medical case show vital signs', () => {
       propsData: {
         vitalSigns: [
           {
-            data: { temperature: 1 },
+            data: { temperature: 1, expectations: {} },
             childs: []
           }
         ]

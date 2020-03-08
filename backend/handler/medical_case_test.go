@@ -74,7 +74,7 @@ func TestMedicalCase(t *testing.T) {
 	})
 
 	t.Run("update", func(t *testing.T) {
-		mc.MedicalHistroy.Allergies = "allergy"
+		mc.Medical.Allergies = "allergy"
 		falseMC := mc
 		id := primitive.NewObjectID()
 		falseMC.ID = id
@@ -154,7 +154,7 @@ func TestMedicalCase(t *testing.T) {
 			response := &model.MedicalCase{}
 			parseResponse(rec, response)
 			assert.Equal(t, mc.Title, response.Title)
-			assert.Equal(t, "allergy", response.MedicalHistroy.Allergies)
+			assert.Equal(t, "allergy", response.Medical.Allergies)
 		}
 	})
 
