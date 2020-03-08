@@ -14,79 +14,80 @@
       class="mb-4"
     >
       <v-expansion-panel>
-        <v-expansion-panel-header>General Information</v-expansion-panel-header>
+        <v-expansion-panel-header>General</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-row>
-            <v-col>
-              <v-checkbox
-                v-model="medicalCase.generalInformation.surgical"
-                label="Surgical"
-              />
-            </v-col>
-            <v-col>
-              <v-checkbox
-                v-model="medicalCase.generalInformation.hospilisation"
-                label="Need for hospilisation"
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-checkbox
-                v-model="medicalCase.generalInformation.usar"
-                label="USAR"
-              />
-            </v-col>
-            <v-col>
-              <v-checkbox
-                v-model="medicalCase.generalInformation.medivac"
-                label="MEDIVAC"
-              />
-            </v-col>
-          </v-row>
           <v-select
-            v-model="medicalCase.generalInformation.triage"
-            :items="['Less Urgent', 'Urgent', 'Emergent']"
-            label="Triage"
-          />
-          <v-textarea
-            v-model="medicalCase.generalInformation.shortSummary"
-            label="Short summary"
+            v-model="medicalCase.general.discipline"
+            :items="['Internal med', 'Surgery', 'Gyn/Obs', 'Infectious diseases', 'Trauma', 'Public health']"
+            label="Area/Discipline"
           />
           <v-select
-            v-model="medicalCase.generalInformation.age"
-            :items="['0-10', '11-17', '18-30', '31-60', '60+']"
-            label="Age"
+            v-model="medicalCase.general.context"
+            :items="['Europe', 'LAMIC']"
+            :multiple="true"
+            label="Context"
           />
           <v-select
-            v-model="medicalCase.generalInformation.gender"
-            :items="['Male', 'Female']"
-            label="Gender"
+            v-model="medicalCase.general.scenario"
+            :multiple="true"
+            :items="['Conflict', 'Natural disaster', 'Man-made disaster', 'Mass-Casualty-Incident', 'Outbreak', 'People displacement/Refugees']"
+            label="Scenario"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>Medical history</v-expansion-panel-header>
+        <v-expansion-panel-header>Patient's characteristics</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-select
+            v-model="medicalCase.patient.type"
+            :items="['Chronic', 'Acute']"
+            label="Patient type"
+          />
+      <v-select
+            v-model="medicalCase.patient.triage"
+            :items="['Deceased/Unsalvageable', 'Red', 'Yellow', 'Green']"
+            label="Triage"
+          />
+          <v-select
+            v-model="medicalCase.patient.gender"
+            :multiple="true"
+            :items="['Male', 'Female', 'Undefined']"
+            label="Gender"
+          />
+      <v-select
+            v-model="medicalCase.patient.age"
+            :items="['Neonate', 'Infant', 'Adolescent', 'Adult', 'Elderly']"
+            label="Age"
+          />
+          
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Medical assessment</v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-text-field
-            v-model="medicalCase.medicalHistory.problems"
-            label="Problems/conditions"
+            v-model="medicalCase.medical.signs"
+            label="S – Signs/Symptoms"
           />
           <v-text-field
-            v-model="medicalCase.medicalHistory.vaccinations"
-            label="Vaccinations"
+            v-model="medicalCase.medical.allergies"
+            label="A – Allergies"
           />
           <v-text-field
-            v-model="medicalCase.medicalHistory.allergies"
-            label="Allergies"
+            v-model="medicalCase.medical.medication"
+            label="M – Medications"
           />
           <v-text-field
-            v-model="medicalCase.medicalHistory.medication"
-            label="Medication"
+            v-model="medicalCase.medical.past"
+            label="P – Past pertinent medical history"
           />
           <v-text-field
-            v-model="medicalCase.medicalHistory.implantedDevices"
-            label="Implantable devices"
+            v-model="medicalCase.medical.loi"
+            label="L – Last oral intake"
+          />
+          <v-text-field
+            v-model="medicalCase.medical.events"
+            label="E – Events leading up to present illness/injury"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -116,32 +117,21 @@
           </v-expansion-panels>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header>Expectations</v-expansion-panel-header>
+
+    <v-expansion-panel>
+        <v-expansion-panel-header>Make-up and attributes</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-textarea
-            v-model="medicalCase.expectations.generalStatus"
-            label="General status"
-          />
-          <v-textarea
-            v-model="medicalCase.expectations.onExamination"
-            label="On examination"
-          />
-          <v-textarea
-            v-model="medicalCase.expectations.expectations"
-            label="Expectations"
-          />
+    <v-textarea
+      v-model="medicalCase.makeup.makeup"
+      label="Make-up instructions"
+    />
+    <v-textarea
+      v-model="medicalCase.makeup.acting"
+      label="Acting instructions"
+    />
         </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-    <v-textarea
-      v-model="medicalCase.otherInformation"
-      label="Other information"
-    />
-    <v-textarea
-      v-model="medicalCase.makeup"
-      label="Needed make-up and attributes"
-    />
+    </v-expansion-panel>
+        </v-expansion-panels>
     <v-file-input
       v-model="files"
       chips
@@ -177,10 +167,9 @@ export default class Form extends Vue {
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
   files: Array<any> = []
-  expansionPanel: Array<number> = [0, 3]
+  expansionPanel: Array<number> = [0,1,2,4]
   emptyVitalSign: object = {
     title: undefined,
-    reason: undefined,
     data: {
       oos: undefined,
       avpu: undefined,
@@ -192,8 +181,10 @@ export default class Form extends Vue {
       bloodPressureSystolic: undefined,
       bloodPressureDiastolic: undefined,
       oxygenSaturation: undefined,
-      weight: undefined,
-      height: undefined
+      expectations: {
+        foe: undefined,
+        treatmentExpected: undefined
+      }
     },
     childs: []
   }
@@ -204,14 +195,19 @@ export default class Form extends Vue {
 
   setExpansionPanel () {
     if (this.medicalCase) {
-      if (this.anyFieldPresent(this.medicalCase.generalInformation)) {
+      if (this.anyFieldPresent(this.medicalCase.general)) {
         if (!this.expansionPanel.includes(0)) {
           this.expansionPanel.push(0)
         }
       }
-      if (this.anyFieldPresent(this.medicalCase.medicalHistory)) {
+      if (this.anyFieldPresent(this.medicalCase.patient)) {
         if (!this.expansionPanel.includes(1)) {
           this.expansionPanel.push(1)
+        }
+      }
+      if (this.anyFieldPresent(this.medicalCase.medical)) {
+        if (!this.expansionPanel.includes(2)) {
+          this.expansionPanel.push(2)
         }
       }
       if (
@@ -219,13 +215,13 @@ export default class Form extends Vue {
         this.medicalCase.vitalSigns.length > 0 &&
         this.anyFieldPresent(this.medicalCase.vitalSigns[0])
       ) {
-        if (!this.expansionPanel.includes(2)) {
-          this.expansionPanel.push(2)
-        }
-      }
-      if (this.anyFieldPresent(this.medicalCase.expectations)) {
         if (!this.expansionPanel.includes(3)) {
           this.expansionPanel.push(3)
+        }
+      }
+      if (this.anyFieldPresent(this.medicalCase.makeup)) {
+        if (!this.expansionPanel.includes(4)) {
+          this.expansionPanel.push(4)
         }
       }
     }
@@ -254,6 +250,11 @@ export default class Form extends Vue {
     keys.forEach((k) => {
       if (vs.data[k] === '') {
         delete vs.data[k]
+      }
+    })
+    Object.keys(vs.data.expectations).forEach((k) => {
+      if (vs.data.expectations[k] === '') {
+        delete vs.data.expectations[k]
       }
     })
     vs.childs.forEach((c) => {

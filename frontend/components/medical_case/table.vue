@@ -22,9 +22,13 @@
               {{ item.title }}
             </td>
             <td @click="openMedicalCase(item)">
-              <v-chip v-for="(tag,i) in tags(item)" :key="i" class="ma-1">
-                {{ tag }}
-              </v-chip>
+              {{item.general.discipline}}
+            </td>
+            <td @click="openMedicalCase(item)">
+              {{item.general.context ? item.general.context.join(', ') : ''}}
+            </td>
+            <td @click="openMedicalCase(item)">
+              {{item.general.scenario ? item.general.scenario.join(', ') : ''}}
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.author.username }}
@@ -60,7 +64,9 @@ export default class Table extends Vue {
 
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
-    { text: 'Tags', width: '40%', sortable: false, value: 'tags' },
+    { text: 'Area', sortable: true, value: 'general.area' },
+    { text: 'Context', sortable: true, value: 'general.context' },
+    { text: 'Scenario', sortable: true, value: 'general.scenario' },
     { text: 'Author', sortable: true, value: 'author.username' },
     { text: 'Actions', sortable: false, value: 'action' }
   ]
@@ -73,32 +79,6 @@ export default class Table extends Vue {
 
   editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
-  }
-
-  tags (medicalCase) {
-    const tags: string[] = []
-    if (medicalCase.generalInformation.usar) {
-      tags.push('USAR')
-    }
-    if (medicalCase.generalInformation.medivac) {
-      tags.push('MEDIVAC')
-    }
-    if (medicalCase.generalInformation.hospilisation) {
-      tags.push('Need for hospilisation')
-    }
-    if (medicalCase.generalInformation.surgical) {
-      tags.push('Surgical')
-    }
-    if (medicalCase.generalInformation.triage) {
-      tags.push('Triage: ' + medicalCase.generalInformation.triage)
-    }
-    if (medicalCase.generalInformation.age) {
-      tags.push('Age: ' + medicalCase.generalInformation.age)
-    }
-    if (medicalCase.generalInformation.gender) {
-      tags.push('Gender: ' + medicalCase.generalInformation.gender)
-    }
-    return tags
   }
 
   filterMedicalCases (value, search, item) {

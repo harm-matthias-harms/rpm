@@ -16,7 +16,6 @@ type MedicalCase struct {
 	EditedAt  time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
 	Approved  bool               `json:"approved" form:"approved" bson:"approved"`
 	Title     string             `json:"title" form:"title" bson:"title"`
-	Number    int                `json="number" form="number" bson:"number"`
 	General   struct {
 		Discipline string   `json:"discipline" form:"discipline" bson:"discipline"`
 		Context    []string `json:"context" form:"context" bson:"context"`
