@@ -35,7 +35,7 @@ func TestMedicalCase(t *testing.T) {
 	})
 
 	t.Run("update medical case", func(t *testing.T) {
-		mc.MedicalHistroy.Allergies = "allergy"
+		mc.Medical.Allergies = "allergy"
 		err := UpdateMedicalCase(nil, mc)
 		assert.NoError(t, err)
 
@@ -50,7 +50,7 @@ func TestMedicalCase(t *testing.T) {
 		mcFound, err := FindMedicalCase(nil, mc.ID)
 		if assert.NoError(t, err) {
 			assert.Equal(t, "title", mcFound.Title)
-			assert.Equal(t, "allergy", mcFound.MedicalHistroy.Allergies)
+			assert.Equal(t, "allergy", mcFound.Medical.Allergies)
 		}
 
 		// doesn't find none existing medical case
@@ -70,7 +70,7 @@ func TestMedicalCase(t *testing.T) {
 			assert.Equal(t, 1, len(result))
 		}
 		// test multiple filters
-		filter["medicalHistory.allergies"] = "allergy"
+		filter["medical.allergies"] = "allergy"
 		result, err = GetMedicalCases(nil, filter, 1, 1)
 		if assert.NoError(t, err) {
 			assert.Equal(t, 1, len(result))

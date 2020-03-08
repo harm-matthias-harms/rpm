@@ -9,37 +9,36 @@ import (
 
 // MedicalCase describes a medical case for the injects
 type MedicalCase struct {
-	ID                 primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
-	Author             LimitedUser        `json:"author" form:"author" bson:"author"`
-	Editor             LimitedUser        `json:"editor" form:"editor" bson:"editor"`
-	CreatedAt          time.Time          `json:"createdAt" form:"createdAt" bson:"createdAt"`
-	EditedAt           time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
-	Approved           bool               `json:"approved" form:"approved" bson:"approved"`
-	Title              string             `json:"title" form:"title" bson:"title"`
-	MakeUp             string             `json:"makeup" form:"makeup" bson:"makeup"`
-	OtherInformation   string             `json:"otherInformation" form:"otherInformation" bson:"otherInformation"`
-	GeneralInformation struct {
-		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
-		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
-		USAR          bool   `json:"usar" form:"usar" bson:"usar"`
-		Medicav       bool   `json:"medivac" form:"medivac" bson:"medivac"`
-		Triage        string `json:"triage" form:"triage" bson:"triage"`
-		ShortSummary  string `json:"shortSummary" form:"shortSummary" bson:"shortSummary"`
-		Age           string `json:"age" form:"age" bson:"age"`
-		Gender        string `json:"gender" form:"gender" bson:"gender"`
-	} `json:"generalInformation" form:"generalInformation" bson:"generalInformation"`
-	MedicalHistroy struct {
-		Problems         string `json:"problems" form:"problems" bson:"problems"`
-		Vaccinations     string `json:"vaccinations" form:"vaccinations" bson:"vaccinations"`
-		Allergies        string `json:"allergies" form:"allergies" bson:"allergies"`
-		Medication       string `json:"medication" form:"medication" bson:"medication"`
-		ImplantedDevices string `json:"implantedDevices" form:"implantedDevices" bson:"implantedDevices"`
-	} `json:"medicalHistory" form:"medicalHistory" bson:"medicalHistory"`
-	Expectations struct {
-		GeneralStatus string `json:"generalStatus" form:"generalStatus" bson:"generalStatus"`
-		OnExamination string `json:"onExamination" form:"onExamination" bson:"onExamination"`
-		Expectations  string `json:"expectations" form:"expectations" bson:"expectations"`
-	} `json:"expectations" form:"expectations" bson:"expectations"`
+	ID        primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
+	Author    LimitedUser        `json:"author" form:"author" bson:"author"`
+	Editor    LimitedUser        `json:"editor" form:"editor" bson:"editor"`
+	CreatedAt time.Time          `json:"createdAt" form:"createdAt" bson:"createdAt"`
+	EditedAt  time.Time          `json:"editedAt" form:"editedAt" bson:"editedAt"`
+	Approved  bool               `json:"approved" form:"approved" bson:"approved"`
+	Title     string             `json:"title" form:"title" bson:"title"`
+	General   struct {
+		Discipline string   `json:"discipline" form:"discipline" bson:"discipline"`
+		Context    []string `json:"context" form:"context" bson:"context"`
+		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
+	} `json:"general" form:"general" bson:"general"`
+	Patient struct {
+		Type   string   `json:"type" form:"type" bson:"type"`
+		Triage string   `json:"triage" form:"triage" bson:"triage"`
+		Gender []string `json:"gender" form:"gender" bson:"gender"`
+		Age    string   `json:"age" form:"age" bson:"age"`
+	} `json:"patient" form:"patient" bson:"patient"`
+	Medical struct {
+		Signs      string `json:"signs" form:"signs" bson:"signs"`
+		Allergies  string `json:"allergies" form:"allergies" bson:"allergies"`
+		Medication string `json:"medication" form:"medication" bson:"medication"`
+		Past       string `json:"past" form:"past" bson:"past"`
+		Loi        string `json:"loi" form:"loi" bson:"loi"`
+		Events     string `json:"events" form:"events" bson:"events"`
+	} `json:"medical" form:"medical" bson:"medical"`
+	MakeUp struct {
+		MakeUp string `json:"makeup" form:"makeup" bson:"makeup"`
+		Acting string `json:"acting" form:"acting" bson:"acting"`
+	} `json:"makeup" form:"makeup" bson:"makeup"`
 	VitalSigns []NestedVitalSigns `json:"vitalSigns" form:"vitalSigns" bson:"vitalSigns"`
 	Files      []MedicalCaseFile  `json:"files" bson:"files"`
 }
@@ -47,7 +46,6 @@ type MedicalCase struct {
 //NestedVitalSigns enable evolving cases
 type NestedVitalSigns struct {
 	Title  string             `json:"title" form:"title" bson:"title"`
-	Reason string             `json:"reason" form:"reason" bson:"reason"`
 	Data   VitalSigns         `json:"data" form:"data" bson:"data"`
 	Childs []NestedVitalSigns `json:"childs" form:"childs" bson:"childs"`
 }
@@ -61,19 +59,16 @@ type MedicalCaseFile struct {
 
 // MedicalCaseShort serves as the short Version of medical cases for lists.
 type MedicalCaseShort struct {
-	ID                 primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Author             LimitedUser        `json:"author" bson:"author"`
-	Title              string             `json:"title" bson:"title"`
-	Approved           bool               `json:"approved" bson:"approved"`
-	GeneralInformation struct {
-		Surgical      bool   `json:"surgical" form:"surgical" bson:"surgical"`
-		Hospilisation bool   `json:"hospilisation" form:"hospilisation" bson:"hospilisation"`
-		USAR          bool   `json:"usar" form:"usar" bson:"usar"`
-		Medicav       bool   `json:"medivac" form:"medivac" bson:"medivac"`
-		Triage        string `json:"triage" form:"triage" bson:"triage"`
-		Age           string `json:"age" form:"age" bson:"age"`
-		Gender        string `json:"gender" form:"gender" bson:"gender"`
-	} `json:"generalInformation" form:"generalInformation" bson:"generalInformation"`
+	ID       primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Author   LimitedUser        `json:"author" bson:"author"`
+	Title    string             `json:"title" bson:"title"`
+	Number   int                `json="number" form="number" bson:"number"`
+	Approved bool               `json:"approved" bson:"approved"`
+	General  struct {
+		Discipline string   `json:"discipline" form:"discipline" bson:"discipline"`
+		Context    []string `json:"context" form:"context" bson:"context"`
+		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
+	} `json:"general" form:"general" bson:"general"`
 }
 
 // MedicalCaseQuery is the query fields for the getter

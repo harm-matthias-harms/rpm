@@ -38,9 +38,10 @@ import Form from '@/components/medical_case/form.vue'
 })
 export default class NewMedicalCase extends Vue {
   medicalCase = {
-    generalInformation: {},
-    medicalHistory: {},
-    expectations: {},
+    general: {},
+    patient: {},
+    medical: {},
+    makeup: {},
     vitalSigns: [],
     files: []
   }

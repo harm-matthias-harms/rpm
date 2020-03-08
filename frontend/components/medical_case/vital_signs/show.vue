@@ -1,21 +1,12 @@
 <template>
-  <v-expansion-panels
-    multiple
-    :value="vitalSigns.map((k, i) => i)"
-  >
-    <v-expansion-panel
-      v-for="(vitalSign, i) in vitalSigns"
-      :key="i"
-    >
+  <v-expansion-panels multiple :value="vitalSigns.map((k, i) => i)">
+    <v-expansion-panel v-for="(vitalSign, i) in vitalSigns" :key="i">
       <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : "no title set" }}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list dense>
-          <v-list-item v-if="vitalSign.reason">
-            <v-list-item-content>Reason:</v-list-item-content>
-            <v-list-item-content class="align-end">
-              {{ vitalSign.reason }}
-            </v-list-item-content>
-          </v-list-item>
+          <p class="headline mb-2 pl-4">
+            Vital Signs
+          </p>
           <v-list-item v-if="vitalSign.data.oos">
             <v-list-item-content>Onset of symptoms:</v-list-item-content>
             <v-list-item-content class="align-end">
@@ -75,25 +66,26 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="vitalSign.data.temperature != null">
-            <v-list-item-content>Temperatur:</v-list-item-content>
+            <v-list-item-content>Body temperatur:</v-list-item-content>
             <v-list-item-content
               class="align-end"
             >
               {{ valueToString(vitalSign.data.temperature, '°C') }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.weight != null">
-            <v-list-item-content>Weight:</v-list-item-content>
+          <p class="headline mb-2 pl-4">
+            Expectations
+          </p>
+          <v-list-item v-if="vitalSign.data.expectations.foe">
+            <v-list-item-content>Findings on examination:</v-list-item-content>
             <v-list-item-content class="align-end">
-              {{ valueToString(vitalSign.data.weight, 'kg') }}
+              {{ vitalSign.data.expectations.foe }}
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="vitalSign.data.height != null">
-            <v-list-item-content>Height:</v-list-item-content>
-            <v-list-item-content
-              class="align-end"
-            >
-              {{ valueToString(vitalSign.data.height / 100, 'm') }}
+          <v-list-item v-if="vitalSign.data.expectations.treatmentExpected">
+            <v-list-item-content>Expected treatment:</v-list-item-content>
+            <v-list-item-content class="align-end">
+              {{ vitalSign.data.expectations.treatmentExpected }}
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -117,3 +109,13 @@ export default class VitalSigns extends Vue {
   }
 }
 </script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+p,
+.v-list-item__content {
+  white-space: pre-line;
+}
+</style>

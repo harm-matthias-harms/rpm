@@ -2,8 +2,9 @@
   <v-expansion-panel>
     <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : 'No title set' }}</v-expansion-panel-header>
     <v-expansion-panel-content>
-      <v-text-field
+      <v-select
         v-model="vitalSign.title"
+        :items="['T0 - Start', 'T1 - Improvement', 'T2 - Deterioration']"
         label="Title"
       />
       <v-autocomplete
@@ -21,10 +22,6 @@
           </v-list-item-content>
         </template>
       </v-autocomplete>
-      <v-text-field
-        v-model="vitalSign.reason"
-        label="Reason"
-      />
       <Form :vital-signs.sync="vitalSign.data" />
       <v-btn
         class="mb-4"
@@ -93,7 +90,6 @@ export default class VitalSign extends Vue {
 
   emptyVitalSign: object = {
     title: undefined,
-    reason: undefined,
     data: {
       oos: undefined,
       avpu: undefined,
@@ -105,8 +101,10 @@ export default class VitalSign extends Vue {
       bloodPressureSystolic: undefined,
       bloodPressureDiastolic: undefined,
       oxygenSaturation: undefined,
-      weight: undefined,
-      height: undefined
+      expectations: {
+        foe: undefined,
+        treatmentExpected: undefined
+      }
     },
     childs: []
   }

@@ -14,15 +14,17 @@
     "vitalSigns": {
         "oos": "2 hours",
         "avpu": "unconscious",
-        "mobility": "none",
+        "mobility": "Walking",
         "respiratoryRate": 12,
         "pulse": 50,
         "temperature": 36.3,
-        "capillaryRefill": 1.5,
+        "capillaryRefill": 1.8,
         "bloodPressureSystolic": 120,
         "bloodPressureDiastolic": 80,
         "oxygenSaturation": 98,
-        "weight": 90,
-        "height": 195
+        "expectations": {
+            "foe": "some injury",
+            "treatmentExpected": "some treatment"
+        }
     }
 }

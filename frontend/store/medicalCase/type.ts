@@ -1,6 +1,5 @@
 interface nestedVitalSign {
   title?: string
-  reason?: string
   data?: {
     oos?: string
     avpu?: string
@@ -12,8 +11,10 @@ interface nestedVitalSign {
     bloodPressureSystolic?: number
     bloodPressureDiastolic?: number
     oxygenSaturation?: number
-    weight?: number
-    height?: number
+    expectations: {
+      foe?: string
+      treatmentExpected?: string
+    }
   }
   childs?: nestedVitalSignArray
 }
@@ -47,29 +48,28 @@ export interface State {
     updatedAt?: Date
     title: string
     approved: boolean
-    makeup?: string
-    otherInformation?: string
-    generalInformation: {
-      surgical: boolean
-      hospilisation: boolean
-      usar: boolean
-      medivac: boolean
-      triage?: string
-      shortSummary?: string
-      age?: string
-      gender?: string
+    general: {
+      discipline?: string
+      context: string[]
+      scenario: string[]
     }
-    medicalHistory: {
-      problems?: string
-      vaccinations?: string
+    patient: {
+      type?: string
+      triage?: string
+      gender: string[]
+      age?: string
+    }
+    medical: {
+      signs?: string
       allergies?: string
       medication?: string
-      implantedDevices?: string
+      past?: string
+      loi?: string
+      events?: string
     }
-    expectations: {
-      generalStatus?: string
-      onExamination?: string
-      expectations?: string
+    makeup: {
+      makeup?: string
+      acting?: string
     }
     vitalSigns: nestedVitalSignArray
     files: fileArray
@@ -84,14 +84,10 @@ export interface State {
       }
       title: string
       approved: boolean
-      generalInformation: {
-        surgical: boolean
-        hospilisation: boolean
-        usar: boolean
-        medivac: boolean
-        triage?: string
-        age?: string
-        gender?: string
+      general: {
+        discipline?: string
+        context: string[]
+        scenario: string[]
       }
     }[]
   }

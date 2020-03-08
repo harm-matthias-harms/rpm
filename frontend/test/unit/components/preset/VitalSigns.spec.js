@@ -5,7 +5,7 @@ import VitalSigns from '@/components/preset/vitalSigns.vue'
 
 Vue.use(Vuetify)
 
-const vitalSign = { temperature: 37 }
+const vitalSign = { temperature: 37, expectations: {} }
 
 describe('VitalSigns', () => {
   let wrapper
