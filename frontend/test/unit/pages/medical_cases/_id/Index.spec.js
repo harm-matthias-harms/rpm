@@ -14,10 +14,11 @@ describe('Show Medical Case', () => {
   store.state.medicalCase.medicalCase = {
     id: '002',
     author: { id: '001' },
-    generalInformation: { usar: true },
-    medicalHistory: { problems: 'problem' },
-    expectations: { expectations: 'expectations' },
-    vitalSigns: [{ title: true }]
+    general: { context: ['context'] },
+    patient: { type: 'Acute' },
+    medical: { signs: 'signs' },
+    makeup: { makeup: 'makeup' },
+    vitalSigns: [{ title: 'title' }]
   }
   beforeEach(() => {
     router = new VueRouter()
@@ -42,10 +43,5 @@ describe('Show Medical Case', () => {
     wrapper.vm.editMedicalCase({ id: '001' })
     wrapper.vm.onCancel()
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
-  })
-
-  test('get tags', () => {
-    const mc = { generalInformation: { surgical: true, usar: true, medivac: true, hospilisation: true, triage: 'Urgent', age: '18-30', gender: 'Male' } }
-    expect(wrapper.vm.tags(mc)).toEqual(['USAR', 'MEDIVAC', 'Need for hospilisation', 'Surgical', 'Triage: Urgent', 'Age: 18-30', 'Gender: Male'])
   })
 })

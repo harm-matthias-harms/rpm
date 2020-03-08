@@ -6,38 +6,44 @@
             "id": "000000000000000000000000",
             "username": "John Doe"
         },
-        "makeup": "makeup",
-        "otherInformation": "other information",
-        "generalInformation": {
-            "surgical": true,
-            "hospilisation": true,
-            "usar": true,
-            "medivac": true,
-            "triage": "Urgent",
-            "shortSummary": "short summary",
-            "age": "0-10",
-            "gender": "male"
+        "general": {
+            "discipline": "Surgery",
+            "context": [
+                "Europe",
+                "LAMIC"
+            ],
+            "scenario": [
+                "Conflict",
+                "Outbreak"
+            ]
         },
-        "medicalHistory": {
-            "problems": "problems",
-            "vaccinations": "vaccinations",
+        "patient": {
+            "type": "Acute",
+            "triage": "Red",
+            "gender": [
+                "Male"
+            ],
+            "age": "Adult"
+        },
+        "medical": {
+            "signs": "signs",
             "allergies": "allergies",
             "medication": "medication",
-            "implantedDevices": "implanted devices"
+            "past": "past medical history",
+            "loi": "loi",
+            "events": "events"
         },
-        "expectations": {
-            "generalStatus": "general status",
-            "onExamination": "on examination",
-            "expectations": "expectations"
+        "makeup": {
+            "makeup": "make-up instructions",
+            "acting": "acting instructions"
         },
         "vitalSigns": [
             {
-                "title": "starting treatment",
-                "reason": "reason",
+                "title": "T0 - Start",
                 "data": {
                     "oos": "2 hours",
-                    "avpu": "Unresponsive",
-                    "mobility": "none",
+                    "avpu": "U - Unresponsive",
+                    "mobility": "Walking",
                     "respiratoryRate": 12,
                     "pulse": 50,
                     "temperature": 36.3,
@@ -45,17 +51,18 @@
                     "bloodPressureSystolic": 120,
                     "bloodPressureDiastolic": 80,
                     "oxygenSaturation": 98,
-                    "weight": 90,
-                    "height": 190
+                    "expectations": {
+                        "foe": "foe",
+                        "treatmentExpected": "expected treatment"
+                    }
                 },
                 "childs": [
                     {
-                        "title": "ending treatment",
-                        "reason": "successful treatment",
+                        "title": "T1 - Improvement",
                         "data": {
                             "oos": "2 hours",
-                            "avpu": "Unresponsive",
-                            "mobility": "none",
+                            "avpu": "U - Unresponsive",
+                            "mobility": "Walking",
                             "respiratoryRate": 12,
                             "pulse": 50,
                             "temperature": 36.3,
@@ -63,8 +70,10 @@
                             "bloodPressureSystolic": 120,
                             "bloodPressureDiastolic": 80,
                             "oxygenSaturation": 98,
-                            "weight": 90,
-                            "height": 190
+                            "expectations": {
+                                "foe": "foe",
+                                "treatmentExpected": "expected treatment"
+                            }
                         },
                         "childs": []
                     }

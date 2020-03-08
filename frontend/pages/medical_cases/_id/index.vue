@@ -6,8 +6,12 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
-              <v-icon v-if="!medicalCase.approved" color="green" @click="approve(medicalCase)">check</v-icon>
-              <v-icon color="primary" @click="editMedicalCase(medicalCase)">edit</v-icon>
+              <v-icon v-if="!medicalCase.approved" color="green" @click="approve(medicalCase)">
+                check
+              </v-icon>
+              <v-icon color="primary" @click="editMedicalCase(medicalCase)">
+                edit
+              </v-icon>
               <DeleteButton
                 v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id"
                 :item="medicalCase"
@@ -33,19 +37,25 @@
                 <v-list dense>
                   <v-list-item v-if="medicalCase.general.discipline">
                     <v-list-item-content>Area/Discipline:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.general.discipline }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.general.discipline }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.context">
                     <v-list-item-content>Context:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
-                    >{{ medicalCase.general.context.join(', ') }}</v-list-item-content>
+                    >
+                      {{ medicalCase.general.context.join(', ') }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.scenario">
                     <v-list-item-content>Scenario:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
-                    >{{ medicalCase.general.scenario.join(', ') }}</v-list-item-content>
+                    >
+                      {{ medicalCase.general.scenario.join(', ') }}
+                    </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
@@ -56,19 +66,27 @@
                 <v-list dense>
                   <v-list-item v-if="medicalCase.patient.type">
                     <v-list-item-content>Patient type:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{medicalCase.patient.type}}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.patient.type }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.patient.triage">
                     <v-list-item-content>Triage:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{medicalCase.patient.triage}}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.patient.triage }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.patient.gender">
                     <v-list-item-content>Gender:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{medicalCase.patient.gender.join(', ')}}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.patient.gender.join(', ') }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.patient.age">
                     <v-list-item-content>Age:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{medicalCase.patient.age}}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.patient.age }}
+                    </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
@@ -79,27 +97,39 @@
                 <v-list dense>
                   <v-list-item v-if="medicalCase.medical.signs">
                     <v-list-item-content>S - Signs/Symptoms:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.signs }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.signs }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.allergies">
                     <v-list-item-content>A - Allergies:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.allergies }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.allergies }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.medication">
                     <v-list-item-content>M - Medications:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.medication }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.medication }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.past">
                     <v-list-item-content>P - Past pertinent medical history:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.past }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.past }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.loi">
                     <v-list-item-content>L - Last oral intake:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.loi }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.loi }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.events">
                     <v-list-item-content>E - Events leading up to present illness/injury:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.medical.events }}</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.medical.events }}
+                    </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
@@ -115,14 +145,18 @@
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.makeup.makeup">
-                    <v-list-item-content>Make-up intructions:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{ medicalCase.makeup.makeup}}</v-list-item-content>
+                    <v-list-item-content>Make-up instructions:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ medicalCase.makeup.makeup }}
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.makeup.acting">
                     <v-list-item-content>Acting instructions:</v-list-item-content>
                     <v-list-item-content
                       class="align-end"
-                    >{{ medicalCase.makeup.acting }}</v-list-item-content>
+                    >
+                      {{ medicalCase.makeup.acting }}
+                    </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
@@ -137,14 +171,16 @@
                     :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
                   >
                     {{ file.name }}
-                    <br />
+                    <br>
                     ({{ bytesToSize(file.size) }})
                   </a>
                 </v-card-title>
                 <v-card-actions
                   v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id"
                 >
-                  <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">Delete</v-btn>
+                  <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">
+                    Delete
+                  </v-btn>
                   <Confirm
                     text="Are you sure you want to delete this file?"
                     :dialog.sync="deleteFileDialog[i]"
@@ -199,7 +235,7 @@ export default class ShowMedicalCase extends Vue {
   medicalCase!: any
   expansionPanel: Array<number> = []
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
     if (this.medicalCase.id !== id) {
       this.find(id)
@@ -207,15 +243,15 @@ export default class ShowMedicalCase extends Vue {
     this.setExpansionPanel()
   }
 
-  editMedicalCase(medicalCase) {
+  editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
 
-  onCancel() {
+  onCancel () {
     this.deleteFileDialog = new Array(100).fill(false)
   }
 
-  setExpansionPanel() {
+  setExpansionPanel () {
     if (this.medicalCase) {
       if (this.anyFieldPresent(this.medicalCase.general)) {
         this.expansionPanel.push(0)
@@ -239,8 +275,8 @@ export default class ShowMedicalCase extends Vue {
     }
   }
 
-  anyFieldPresent(object: Object) {
-    const exist = elem => {
+  anyFieldPresent (object: Object) {
+    const exist = (elem) => {
       if (elem) {
         return true
       }
@@ -248,7 +284,7 @@ export default class ShowMedicalCase extends Vue {
     return Object.values(object).some(exist)
   }
 
-  bytesToSize(bytes) {
+  bytesToSize (bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     if (bytes === 0) {
       return 'n/a'

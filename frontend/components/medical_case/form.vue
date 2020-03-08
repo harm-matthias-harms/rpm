@@ -43,7 +43,7 @@
             :items="['Chronic', 'Acute']"
             label="Patient type"
           />
-      <v-select
+          <v-select
             v-model="medicalCase.patient.triage"
             :items="['Deceased/Unsalvageable', 'Red', 'Yellow', 'Green']"
             label="Triage"
@@ -54,12 +54,11 @@
             :items="['Male', 'Female', 'Undefined']"
             label="Gender"
           />
-      <v-select
+          <v-select
             v-model="medicalCase.patient.age"
             :items="['Neonate', 'Infant', 'Adolescent', 'Adult', 'Elderly']"
             label="Age"
           />
-          
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -118,20 +117,20 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-    <v-expansion-panel>
+      <v-expansion-panel>
         <v-expansion-panel-header>Make-up and attributes</v-expansion-panel-header>
         <v-expansion-panel-content>
-    <v-textarea
-      v-model="medicalCase.makeup.makeup"
-      label="Make-up instructions"
-    />
-    <v-textarea
-      v-model="medicalCase.makeup.acting"
-      label="Acting instructions"
-    />
+          <v-textarea
+            v-model="medicalCase.makeup.makeup"
+            label="Make-up instructions"
+          />
+          <v-textarea
+            v-model="medicalCase.makeup.acting"
+            label="Acting instructions"
+          />
         </v-expansion-panel-content>
-    </v-expansion-panel>
-        </v-expansion-panels>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <v-file-input
       v-model="files"
       chips
@@ -167,7 +166,7 @@ export default class Form extends Vue {
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
   files: Array<any> = []
-  expansionPanel: Array<number> = [0,1,2,4]
+  expansionPanel: Array<number> = [0, 1, 2, 4]
   emptyVitalSign: object = {
     title: undefined,
     data: {

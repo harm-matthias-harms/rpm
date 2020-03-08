@@ -22,13 +22,17 @@
               {{ item.title }}
             </td>
             <td @click="openMedicalCase(item)">
-              {{item.general.discipline}}
+              {{ item.general.discipline }}
             </td>
-            <td @click="openMedicalCase(item)">
-              {{item.general.context ? item.general.context.join(', ') : ''}}
+            <td
+              @click="openMedicalCase(item)"
+            >
+              {{ item.general.context ? item.general.context.join(', ') : '' }}
             </td>
-            <td @click="openMedicalCase(item)">
-              {{item.general.scenario ? item.general.scenario.join(', ') : ''}}
+            <td
+              @click="openMedicalCase(item)"
+            >
+              {{ item.general.scenario ? item.general.scenario.join(', ') : '' }}
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.author.username }}
@@ -93,13 +97,7 @@ export default class Table extends Vue {
       return (
         filterTitle(item, search) ||
         filterAuthor(item, search) ||
-        filterUSAR(item, search) ||
-        filterMedivac(item, search) ||
-        filterHospital(item, search) ||
-        filterSurgical(item, search) ||
-        filterAge(item, search) ||
-        filterGender(item, search) ||
-        filterTriage(item, search)
+        filterGeneral(item, search)
       )
     }
 
@@ -114,64 +112,14 @@ export default class Table extends Vue {
       )
     }
 
-    function filterSurgical (item, search) {
-      if ('surgical'.includes(search)) {
-        return item.generalInformation.surgical
-      }
-      return false
+    function filterGeneral (item, search) {
+      return (
+        item.general.discipline.toLowerCase().includes(search) ||
+        item.general.context.some(e => e.toLowerCase().includes(search)) ||
+        item.general.scenario.some(e => e.toLowerCase().includes(search))
+      )
     }
 
-    function filterHospital (item, search) {
-      if ('hospital'.includes(search)) {
-        return item.generalInformation.hospilisation
-      }
-      return false
-    }
-    function filterUSAR (item, search) {
-      if ('usar'.includes(search)) {
-        return item.generalInformation.usar
-      }
-      return false
-    }
-    function filterMedivac (item, search) {
-      if ('medivac'.includes(search)) {
-        return item.generalInformation.medivac
-      }
-      return false
-    }
-    function filterAge (item, search) {
-      const ageSpans = ['0-10', '11-17', '18-30', '31-60', '60+']
-      if (item.generalInformation.age == null) {
-        return false
-      }
-      for (let i = 0; i < ageSpans.length; i++) {
-        const arr = ageSpans[i].split('-')
-        if (arr.length > 1) {
-          const min = arr[0]
-          const max = arr[1]
-          if (
-            parseInt(search) >= parseInt(min) &&
-            parseInt(search) <= parseInt(max)
-          ) {
-            return item.generalInformation.age === ageSpans[i]
-          }
-        } else if (arr[0] === '60+' && parseInt(search) >= 60) {
-          return item.generalInformation.age === '60+'
-        }
-      }
-    }
-
-    function filterGender (item, search) {
-      return item.generalInformation.gender.toLowerCase().includes(search)
-    }
-
-    function filterTriage (item, search) {
-      const triages = ['Less Urgent', 'Urgent', 'Emergent']
-      if (triages.some(triage => triage.toLowerCase().includes(search))) {
-        return item.generalInformation.triage.toLowerCase().includes(search)
-      }
-      return false
-    }
     return (
       value && search && needleArry.every(needle => filterAll(item, needle))
     )
