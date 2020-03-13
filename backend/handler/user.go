@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"time"
+	"fmt"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/harm-matthias-harms/rpm/backend/model"
@@ -42,6 +43,7 @@ func HandleAuthenticate(c echo.Context) (err error) {
 	claims["username"] = result.Username
 	claims["id"] = result.ID
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 10).Unix()
+	claims["code"] = result.Code
 
 	t, err := token.SignedString([]byte(utils.GetEnv("JWT_SECRET", "secret")))
 	if err != nil {
@@ -73,7 +75,10 @@ func register(ctx context.Context, user *model.User) (err error) {
 }
 
 func authenticate(ctx context.Context, user *model.User) (result *model.User, err error) {
+	fmt.Println(user)
 	result, err = storage.FindUser(ctx, user)
+	fmt.Println(err)
+	fmt.Println(result)
 	if err != nil {
 		return nil, err
 	}

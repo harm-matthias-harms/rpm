@@ -2,7 +2,7 @@ import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 export default function (context) {
   // const
-  const blockUnAuthorized = ['presets', 'medical_cases']
+  const blockUnAuthorized = ['presets', 'medical_cases', 'teams']
   // checl for cookie
   const cookie = Cookie.get('Authorization')
   if (cookie) {
@@ -10,7 +10,8 @@ export default function (context) {
     context.store.commit('user/SET_AUTHENTICATE', {
       id: decoded.id,
       username: decoded.username,
-      expire: decoded.exp
+      expire: decoded.exp,
+      code: decoded.code
     })
     if (new Date(decoded.exp * 1000) < new Date()) {
       Cookie.remove('Authorization')
@@ -20,7 +21,7 @@ export default function (context) {
     }
   }
   // Check if has AccessRights
-  if (!context.store.state.user.isAuthenticated) {
+  if (!context.store.state.user.isAuthenticated || context.store.state.user.isCodeUser) {
     if (blockUnAuthorized.some(value => context.route.name.includes(value))) {
       context.store.commit(
         'snackbar/SET',

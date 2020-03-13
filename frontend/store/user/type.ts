@@ -4,10 +4,12 @@ export interface State {
     username: string
     email: string
     password: string
+    code?: string
   }
   registerError: boolean
   registerErrorReason: string
   registerSuccess: boolean
   isAuthenticated: boolean
+  isCodeUser: boolean
   expireSession?: Date
 }

@@ -16,9 +16,9 @@ var (
 type User struct {
 	ID       primitive.ObjectID `json:"id" form:"id" bson:"_id,omitempty"`
 	Username string             `json:"username" form:"username" bson:"username"`
-	Email    string             `json:"email" form:"email" bson:"email"`
+	Email    string             `json:"email" form:"email" bson:"email,omitempty"`
 	Password string             `json:"password,omitempty" form:"password" bson:"password"`
-	Code     string             `json:"code,omitempty" form:"code" bson:"code"`
+	Code     string             `json:"code,omitempty" form:"code" bson:"code,omitempty"`
 }
 
 // LimitedUser describes a User with none vulnerable information
