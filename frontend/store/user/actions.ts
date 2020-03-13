@@ -43,17 +43,18 @@ export const actions: ActionTree<State, RootState> = {
           commit('SET_AUTHENTICATE', {
             id: decoded.id,
             username: decoded.username,
-            expire: decoded.exp
+            expire: decoded.exp,
+            code: decoded.code
           })
         } else {
-          commit('snackbar/SET', 'Wrong username or password', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
         }
       })
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           commit('snackbar/SET', "Couldn't connect to network", { root: true })
         } else if (error.response && error.response.status === 401) {
-          commit('snackbar/SET', 'Wrong username or password', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
         }
       })
       .finally(() => {

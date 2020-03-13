@@ -54,7 +54,7 @@ describe('Index Page', () => {
       status: 401
     })
     cy.loginEnterForm(false)
-    cy.contains('Wrong username or password')
+    cy.contains('Wrong username, password or code')
   })
 
   it('signs in successfully', () => {
@@ -66,5 +66,26 @@ describe('Index Page', () => {
     })
     cy.loginEnterForm(true)
     cy.get('Sign In').should('not.exist')
+  })
+  it('signs in with code', () => {
+    cy.server()
+    cy.route({
+      method: 'POST',
+      url: 'http://localhost:3001/auth/authenticate',
+      response: { success: true }
+    })
+    cy.codeForm(true)
+    cy.get('Sign In').should('not.exist')
+  })
+  it('fails with wrong code', () => {
+    cy.server()
+    cy.route({
+      method: 'POST',
+      url: 'http://localhost:3001/auth/authenticate',
+      response: {},
+      status: 401
+    })
+    cy.codeForm(false)
+    cy.contains('Wrong username, password or code')
   })
 })

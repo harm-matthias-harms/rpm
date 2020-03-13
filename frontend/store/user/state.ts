@@ -5,12 +5,14 @@ export const state = (): State => ({
     id: undefined,
     username: '',
     email: '',
-    password: ''
+    password: '',
+    code: undefined
   },
   registerError: false,
   registerErrorReason: '',
   registerSuccess: false,
   isAuthenticated: false,
+  isCodeUser: false,
   expireSession: undefined
 })
 

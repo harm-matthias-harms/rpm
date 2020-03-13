@@ -7,7 +7,7 @@
       color="primary"
     >
       <v-app-bar-nav-icon
-        v-if="isAuthenticated"
+        v-if="isAuthenticated && !isCodeUser"
         @click="drawer = !drawer"
       />
       <v-toolbar-title>RPM</v-toolbar-title>
@@ -31,7 +31,7 @@
     </v-app-bar>
 
     <v-navigation-drawer
-      v-if="isAuthenticated"
+      v-if="isAuthenticated && !isCodeUser"
       v-model="drawer"
       temporary
       app
@@ -124,7 +124,8 @@ import Snackbar from '@/components/utils/Snackbar.vue'
     }),
     ...mapState('user', {
       user: 'user',
-      isAuthenticated: 'isAuthenticated'
+      isAuthenticated: 'isAuthenticated',
+      isCodeUser: 'isCodeUser'
     })
   },
   methods: {

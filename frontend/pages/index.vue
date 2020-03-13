@@ -22,13 +22,31 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row v-if="!isAuthenticated" justify="center">
       <v-col
         lg="4"
-        md="8"
+        md="5"
         sm="12"
+        cols="12"
       >
-        <SignIn v-if="!isAuthenticated" />
+        <SignIn />
+      </v-col>
+      <v-col
+        lg="1"
+        md="1"
+        sm="1"
+        cols="0"
+        class="text-center"
+      >
+        <v-divider vertical class="d-none d-md-inline-flex" />
+      </v-col>
+      <v-col
+        lg="4"
+        md="5"
+        sm="12"
+        cols="12"
+      >
+        <Code />
       </v-col>
     </v-row>
   </v-container>
@@ -38,9 +56,10 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapState } from 'vuex'
 import SignIn from '@/components/auth/SignIn.vue'
+import Code from '@/components/auth/Code.vue'
 
 @Component({
-  components: { SignIn },
+  components: { SignIn, Code },
   computed: {
     ...mapState('user', {
       isAuthenticated: 'isAuthenticated'
