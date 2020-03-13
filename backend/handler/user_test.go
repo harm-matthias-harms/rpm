@@ -18,10 +18,12 @@ func TestUser(t *testing.T) {
 	header := jsonHeader()
 
 	//models
-	userString := `{"username":"username","email":"user@mail.com","password":"abc123" }`
+	userString := `{"username":"username","email":"user@mail.com","password":"abc123","code":"code123"}`
 	triggerParseError := `{"user1name":"username","email1":"user@mail.com","password1":"abc123" }`
 	triggerBadRequest := `"username":"username","password":"abc123" }`
 	wrongPassword := `{"username":"username","email":"user@mail.com","password":"abc1234" }`
+	codeSignIn := `{"code":"code123"}`
+	codeSignInFail := `{"code":"code1234"}`
 
 	// tests
 	t.Run("register handler", func(t *testing.T) {
@@ -96,6 +98,25 @@ func TestUser(t *testing.T) {
 
 		// Don't authenticate wrong password
 		rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(wrongPassword), HandleAuthenticate, header, nil)
+		if assert.Error(t, err) {
+			err, ok := err.(*echo.HTTPError)
+			if ok {
+				assert.Equal(t, echo.ErrUnauthorized.Code, err.Code)
+				assert.Equal(t, echo.ErrUnauthorized.Message, err.Message)
+				assert.Equal(t, []*http.Cookie{}, rec.Result().Cookies())
+			}
+		}
+
+		// Authenticate code
+		rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(codeSignIn), HandleAuthenticate, header, nil)
+		if assert.NoError(t, err) {
+			assert.Equal(t, http.StatusOK, rec.Code)
+			assert.Equal(t, `{"success":true}`, strings.TrimSpace(rec.Body.String()))
+			assert.NotEqual(t, []*http.Cookie{}, rec.Result().Cookies())
+		}
+
+		// Wrong code
+		rec, err = testRequest(http.MethodPost, "/auth/authenticate", strings.NewReader(codeSignInFail), HandleAuthenticate, header, nil)
 		if assert.Error(t, err) {
 			err, ok := err.(*echo.HTTPError)
 			if ok {

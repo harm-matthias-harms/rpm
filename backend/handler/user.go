@@ -77,8 +77,10 @@ func authenticate(ctx context.Context, user *model.User) (result *model.User, er
 	if err != nil {
 		return nil, err
 	}
-	if err := result.Authenticate(user.Password); err != nil {
-		return nil, err
+	if user.Code == "" {
+		if err := result.Authenticate(user.Password); err != nil {
+			return nil, err
+		}
 	}
 	return
 }

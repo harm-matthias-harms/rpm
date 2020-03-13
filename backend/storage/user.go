@@ -14,11 +14,14 @@ import (
 // FindUser will find a user on a subset of a complete user model
 func FindUser(ctx context.Context, user *model.User) (result *model.User, err error) {
 	c := userCollection()
-	filter := bson.D{{Key: "$or", Value: bson.A{
-		bson.D{{Key: "_id", Value: user.ID}},
-		bson.D{{Key: "username", Value: user.Username}},
-		bson.D{{Key: "email", Value: user.Username}},
-	}}}
+	filter := bson.D{{Key: "code", Value: user.Code}}
+	if user.Code == "" {
+		filter = bson.D{{Key: "$or", Value: bson.A{
+			bson.D{{Key: "_id", Value: user.ID}},
+			bson.D{{Key: "username", Value: user.Username}},
+			bson.D{{Key: "email", Value: user.Username}},
+		}}}
+	}
 	result = new(model.User)
 	err = c.FindOne(ctx, filter).Decode(result)
 	if err != nil {
@@ -47,6 +50,10 @@ func createUserIndexes() {
 		},
 			{
 				Keys:    bsonx.Doc{{Key: "email", Value: bsonx.Int32(1)}},
+				Options: options.Index().SetUnique(true),
+			},
+			{
+				Keys:    bsonx.Doc{{Key: "code", Value: bsonx.Int32(1)}},
 				Options: options.Index().SetUnique(true),
 			},
 		})

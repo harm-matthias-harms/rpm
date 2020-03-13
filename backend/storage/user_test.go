@@ -13,7 +13,7 @@ func TestUser(t *testing.T) {
 	_ = SetMongoDatabase()
 
 	// model
-	user := &model.User{Username: "test", Email: "test1@mail.com", Password: "test"}
+	user := &model.User{Username: "test", Email: "test1@mail.com", Password: "test", Code: "testCode"}
 
 	// tests
 	t.Run("create user", func(t *testing.T) {
@@ -28,6 +28,7 @@ func TestUser(t *testing.T) {
 		// submodel setup
 		userWithUsername := &model.User{Username: "test"}
 		userWithEmail := &model.User{Username: "test1@mail.com"}
+		userWithCode := &model.User{Code: "testCode"}
 		userNotExist := &model.User{Username: "test1"}
 
 		// find base user
@@ -38,7 +39,7 @@ func TestUser(t *testing.T) {
 		userFound.Email = ""
 
 		// find different user
-		tests := []*model.User{userFound, userWithUsername, userWithEmail}
+		tests := []*model.User{userFound, userWithUsername, userWithEmail, userWithCode}
 		for _, tt := range tests {
 			userFound, err = FindUser(nil, tt)
 			assert.NoError(t, err)
