@@ -62,7 +62,6 @@ type MedicalCaseShort struct {
 	ID       primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Author   LimitedUser        `json:"author" bson:"author"`
 	Title    string             `json:"title" bson:"title"`
-	Number   int                `json="number" form="number" bson:"number"`
 	Approved bool               `json:"approved" bson:"approved"`
 	General  struct {
 		Discipline string   `json:"discipline" form:"discipline" bson:"discipline"`
