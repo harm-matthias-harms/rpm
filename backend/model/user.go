@@ -25,6 +25,7 @@ type User struct {
 type LimitedUser struct {
 	ID       primitive.ObjectID `json:"id" form:"id" bson:"_id" query:"id"`
 	Username string             `json:"username" form:"password" bson:"username" query:"username"`
+	Code     string             `json:"code,omitempty" form:"code" bson:"code,omitempty"`
 }
 
 // ToLimitedUser offers the possibility to store the user to other documents without vulnerable data

@@ -14,7 +14,7 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/klauspost/compress v1.10.3 // indirect
-	github.com/labstack/echo/v4 v4.1.15
+	github.com/labstack/echo/v4 v4.1.16
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/xdg/stringprep v1.0.0 // indirect
