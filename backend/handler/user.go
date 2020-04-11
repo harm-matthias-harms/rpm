@@ -5,14 +5,45 @@ import (
 	"errors"
 	"net/http"
 	"time"
-	"fmt"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/harm-matthias-harms/rpm/backend/model"
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/harm-matthias-harms/rpm/backend/utils"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+// HandleUserGet gives back a list of users
+func HandleUserGet(c echo.Context) (err error) {
+	params := new(model.UserQuery)
+	if err = c.Bind(params); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseParams)
+	}
+	filter := map[string]interface{}{}
+	if params.Username != "" {
+		filter["username"] = primitive.Regex{Pattern: params.Username}
+	}
+	if params.Email != "" {
+		filter["email"] = primitive.Regex{Pattern: params.Email}
+	}
+	users, err := storage.GetUser(c.Request().Context(), filter, params.Page, params.PageSize)
+	return c.JSON(http.StatusOK, users)
+}
+
+// HandleUserFind returns a user
+func HandleUserFind(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+	user := &model.User{ID: id}
+	user, err = storage.FindUser(c.Request().Context(), user)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+	return c.JSON(http.StatusOK, user)
+}
 
 // HandleRegister provides the registration endpoint for the api
 func HandleRegister(c echo.Context) (err error) {
@@ -75,10 +106,7 @@ func register(ctx context.Context, user *model.User) (err error) {
 }
 
 func authenticate(ctx context.Context, user *model.User) (result *model.User, err error) {
-	fmt.Println(user)
 	result, err = storage.FindUser(ctx, user)
-	fmt.Println(err)
-	fmt.Println(result)
 	if err != nil {
 		return nil, err
 	}

@@ -48,6 +48,9 @@ func Server() (*echo.Echo, error) {
 		SigningKey:  []byte(utils.GetEnv("JWT_SECRET", "secret")),
 		TokenLookup: "cookie:" + echo.HeaderAuthorization,
 	}))
+	//user
+	r.GET("/user", HandleUserGet)
+	r.GET("/user/:id", HandleUserFind)
 	// presets
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)

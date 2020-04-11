@@ -52,6 +52,26 @@ func TestUser(t *testing.T) {
 		assert.Error(t, err)
 	})
 
+	t.Run("get users", func(t * testing.T) {
+		result, err := GetUser(nil, nil, 1, 1)
+		if assert.NoError(t, err) {
+			assert.Equal(t, 1, len(result))
+		}
+
+		// test filter
+		filter := map[string]interface{}{"username": "test"}
+		result, err = GetUser(nil, filter, 1, 1)
+		if assert.NoError(t, err) {
+			assert.Equal(t, 1, len(result))
+		}
+
+		// load all
+		result, err = GetUser(nil, nil, 1, 0)
+		if assert.NoError(t, err) {
+			assert.GreaterOrEqual(t, len(result), 1)
+		}
+	})
+
 	// cleanup
 	resetUserDatabase(user)
 }
