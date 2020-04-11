@@ -46,6 +46,9 @@ export const mutations: MutationTree<State> = {
     state.isCodeUser = false
     state.expireSession = undefined
     Cookie.remove('Authorization')
+  },
+  SET_USER_LIST( state, userList) {
+    state.userList = userList
   }
 }
 

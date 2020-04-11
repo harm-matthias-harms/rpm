@@ -31,20 +31,6 @@ func HandleUserGet(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, users)
 }
 
-// HandleUserFind returns a user
-func HandleUserFind(c echo.Context) (err error) {
-	id, err := primitive.ObjectIDFromHex(c.Param("id"))
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
-	}
-	user := &model.User{ID: id}
-	user, err = storage.FindUser(c.Request().Context(), user)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
-	}
-	return c.JSON(http.StatusOK, user)
-}
-
 // HandleRegister provides the registration endpoint for the api
 func HandleRegister(c echo.Context) (err error) {
 	user := new(model.User)

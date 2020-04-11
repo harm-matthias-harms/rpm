@@ -16,10 +16,12 @@ export interface State {
         author: {
           id?: string
           username?: string
+          code?: string
         }
         editor: {
           id?: string
           username?: string
+          code?: string
         }
         createdAt?: Date
         updatedAt?: Date
@@ -30,17 +32,20 @@ export interface State {
       trainer: {
         id?: string
         username?: string
+        code?: string
       }
     }[]
     roleplayManager: {
       id?: string
       username?: string
+      code?: string
     }[]
     makeupCenter: {
       title: string
       account: {
         id?: string
         username?: string
+        code?: string
       }
     }[]
   }

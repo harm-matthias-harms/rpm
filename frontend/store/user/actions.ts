@@ -60,6 +60,24 @@ export const actions: ActionTree<State, RootState> = {
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
+  },
+  get_all ({ commit }, payload = { disableLoader: false }) {
+    if (!payload.disableLoader) {
+      commit('loader/SET', true, { root: true })
+    }
+    this.$axios
+      .$get('/api/user')
+      .then((response) => {
+        commit('SET_USER_LIST', response)
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't load users.", { root: true })
+      })
+      .finally(() => {
+        if (!payload.disableLoader) {
+          commit('loader/SET', false, { root: true })
+        }
+      })
   }
 }
 

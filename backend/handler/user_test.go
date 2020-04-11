@@ -11,7 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestUser(t *testing.T) {
@@ -133,28 +132,6 @@ func TestUser(t *testing.T) {
 				assert.Equal(t, echo.ErrUnauthorized.Message, err.Message)
 				assert.Equal(t, []*http.Cookie{}, rec.Result().Cookies())
 			}
-		}
-	})
-
-	t.Run("find", func(t *testing.T) {
-		user, err := storage.FindUser(nil, &model.User{Username: "username"})
-
-		// no id provided
-		_, err = testRequest(http.MethodGet, "/api/user/:id", nil, HandleUserFind, nil, map[string]string{"id": ""}, jwtCookie)
-		if assert.Error(t, err) {
-			assert.Equal(t, errorNoIDParam, err.(*echo.HTTPError).Message)
-		}
-		// false id
-		_, err = testRequest(http.MethodGet, "/api/user/:id", nil, HandleUserFind, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
-		if assert.Error(t, err) {
-			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
-		}
-		// good id
-		rec, err := testRequest(http.MethodGet, "/api/user/:id", nil, HandleUserFind, nil, map[string]string{"id": user.ID.Hex()}, jwtCookie)
-		if assert.NoError(t, err) {
-			response := &model.LimitedUser{}
-			parseResponse(rec, response)
-			assert.Equal(t, user.Username, response.Username)
 		}
 	})
 
