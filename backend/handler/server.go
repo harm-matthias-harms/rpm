@@ -71,11 +71,11 @@ func Server() (*echo.Echo, error) {
 	r.PUT("/teams/:id", HandleTeamEdit)
 	r.DELETE("/teams/:id", HandleTeamDelete)
 	// exercises
-	r.POST("/exercises", HandleTeamCreate)
-	r.GET("/exercises", HandleTeamsGet)
-	r.GET("/exercises/:id", HandleTeamFind)
-	r.PUT("/exercises/:id", HandleTeamEdit)
-	r.DELETE("/exercises/:id", HandleTeamDelete)
+	r.POST("/exercises", HandleExerciseCreate)
+	r.GET("/exercises", HandleExercisesGet)
+	r.GET("/exercises/:id", HandleExerciseFind)
+	r.PUT("/exercises/:id", HandleExerciseEdit)
+	r.DELETE("/exercises/:id", HandleExerciseDelete)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

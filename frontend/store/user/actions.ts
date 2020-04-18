@@ -65,7 +65,7 @@ export const actions: ActionTree<State, RootState> = {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
-    this.$axios
+    return this.$axios
       .$get('/api/user')
       .then((response) => {
         commit('SET_USER_LIST', response)

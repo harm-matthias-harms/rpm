@@ -5,6 +5,8 @@ import { State } from './type'
 export const actions: ActionTree<State, RootState> = {
   create ({ commit }, exercise) {
     commit('loader/SET', true, { root: true })
+    exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
+    exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
     this.$axios
       .$post('/api/exercises', exercise)
       .then((response) => {
@@ -20,6 +22,8 @@ export const actions: ActionTree<State, RootState> = {
   },
   update ({ commit }, exercise) {
     commit('loader/SET', true, { root: true })
+    exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
+    exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
     this.$axios
       .$put('/api/exercises/' + exercise.id, exercise)
       .then((response) => {
@@ -40,8 +44,11 @@ export const actions: ActionTree<State, RootState> = {
     return this.$axios
       .$get('/api/exercises/' + payload.id)
       .then((response) => {
-        commit('SET_EXERCISE', response)
-        return response
+        const exercise = response
+        exercise.startTime = exercise.startTime.slice(0, 10)
+        exercise.endTime = exercise.endTime.slice(0, 10)
+        commit('SET_EXERCISE', exercise)
+        return exercise
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't find exercise.", { root: true })
@@ -52,16 +59,14 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  delete ({ commit }, payload = { id: null, goBack: false }) {
+  delete ({ commit }, payload = { id: null }) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$delete('/api/exercises/' + payload.id)
       .then(() => {
         commit('UNSET_EXERCISE', payload.id)
         commit('snackbar/SET', 'Exercise was successfully deleted.', { root: true })
-        if (payload.goBack) {
-          this.$router.back()
-        }
+        this.$router.push('/')
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't delete exercise.", { root: true })

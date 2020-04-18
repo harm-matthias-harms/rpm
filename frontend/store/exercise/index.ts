@@ -8,7 +8,7 @@ import { state } from './state'
 
 const namespaced: boolean = true
 
-export const preset: Module<State, RootState> = {
+export const exercise: Module<State, RootState> = {
   namespaced,
   state,
   getters,
