@@ -13,7 +13,8 @@ export const state = (): State => ({
   registerSuccess: false,
   isAuthenticated: false,
   isCodeUser: false,
-  expireSession: undefined
+  expireSession: undefined,
+  userList: []
 })
 
 export default state

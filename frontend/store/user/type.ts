@@ -12,4 +12,10 @@ export interface State {
   isAuthenticated: boolean
   isCodeUser: boolean
   expireSession?: Date
+  userList: {
+    is?: string
+    username: string
+    email: string
+    code?: string
+  }[]
 }

@@ -7,6 +7,7 @@ import { user } from '@/store/user'
 import { preset } from '@/store/preset'
 import { medicalCase } from '@/store/medicalCase'
 import { team } from '@/store/team'
+import { exercise } from '@/store/exercise'
 Vue.use(Vuex)
 
 // mocking axios methods to prevent axios firing
@@ -19,6 +20,9 @@ medicalCase.actions.delete = () => {}
 team.actions.get_all = () => {}
 team.actions.find = () => {}
 team.actions.delete = () => {}
+exercise.actions.find = () => {}
+exercise.actions.delete = () => {}
+user.actions.get_all = () => {}
 
 export const store = new Vuex.Store({
   state: root.state,
@@ -31,6 +35,7 @@ export const store = new Vuex.Store({
     user,
     preset,
     medicalCase,
-    team
+    team,
+    exercise
   }
 })

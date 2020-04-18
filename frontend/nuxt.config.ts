@@ -63,7 +63,7 @@ const config: Configuration = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    https: true,
+    https: process.env.NODE_ENV === 'production',
     baseURL:
       process.env.NODE_ENV !== 'production' ? 'http://localhost:3001' : '/',
     // xsrfCookieName: 'csrf',

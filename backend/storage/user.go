@@ -11,6 +11,32 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// GetUser returns an array of users
+func GetUser(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.LimitedUser, err error) {
+	// setup & prevent null array
+	result = []model.LimitedUser{}
+	c := userCollection()
+
+	options := options.Find()
+	options.SetSort(bson.D{{Key: "_id", Value: -1}})
+	options.SetSkip(int64((page - 1) * pageSize))
+	options.SetLimit(int64(pageSize))
+
+	cursor, err := c.Find(ctx, params, options)
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(ctx)
+	for cursor.Next(ctx) {
+		var user model.LimitedUser
+		cursor.Decode(&user)
+		result = append(result, user)
+	}
+
+	return result, nil
+}
+
 // FindUser will find a user on a subset of a complete user model
 func FindUser(ctx context.Context, user *model.User) (result *model.User, err error) {
 	c := userCollection()

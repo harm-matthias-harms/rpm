@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -13,9 +14,10 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	// setup
+	// setup<
 	_ = storage.SetMongoDatabase()
 	header := jsonHeader()
+	jwtCookie := &http.Cookie{}
 
 	//models
 	userString := `{"username":"username","email":"user@mail.com","password":"abc123","code":"code123"}`
@@ -45,6 +47,12 @@ func TestUser(t *testing.T) {
 		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
 			assert.Equal(t, `{"success":true}`, strings.TrimSpace(rec.Body.String()))
+		}
+		cookies := rec.Result().Cookies()
+		for _, cookie := range cookies {
+			if cookie.Name == echo.HeaderAuthorization {
+				jwtCookie = cookie
+			}
 		}
 
 		// Doesn't create two times
@@ -124,6 +132,46 @@ func TestUser(t *testing.T) {
 				assert.Equal(t, echo.ErrUnauthorized.Message, err.Message)
 				assert.Equal(t, []*http.Cookie{}, rec.Result().Cookies())
 			}
+		}
+	})
+
+	t.Run("get", func(t *testing.T) {
+		user, _ := storage.FindUser(nil, &model.User{Username: "username"})
+
+		q := make(url.Values)
+		rec, err := testRequest(http.MethodGet, "/api/user?"+q.Encode(), nil, HandleUserGet, nil, nil, jwtCookie)
+		if assert.NoError(t, err) {
+			var response []model.LimitedUser
+			parseResponse(rec, &response)
+			assert.Greater(t, len(response), 0)
+		}
+		q.Add("username", user.Username)
+		rec, err = testRequest(http.MethodGet, "/api/user?"+q.Encode(), nil, HandleUserGet, nil, nil, jwtCookie)
+		if assert.NoError(t, err) {
+			var response []model.LimitedUser
+			parseResponse(rec, &response)
+			assert.Greater(t, len(response), 0)
+			assert.Equal(t, user.Username, response[0].Username)
+		}
+		q.Add("page", "1")
+		q.Add("limit", "1")
+		rec, err = testRequest(http.MethodGet, "/api/user?"+q.Encode(), nil, HandleUserGet, nil, nil, jwtCookie)
+		if assert.NoError(t, err) {
+			var response []model.LimitedUser
+			parseResponse(rec, &response)
+			assert.Equal(t, 1, len(response))
+			assert.Equal(t, user.Username, response[0].Username)
+		}
+		q.Del("page")
+		q.Del("limit")
+		q.Add("email", user.Email)
+		rec, err = testRequest(http.MethodGet, "/api/user?"+q.Encode(), nil, HandleUserGet, nil, nil, jwtCookie)
+		if assert.NoError(t, err) {
+			var response []model.LimitedUser
+			parseResponse(rec, &response)
+			assert.Greater(t, len(response), 0)
+			assert.Equal(t, user.Username, response[0].Username)
+			assert.Equal(t, user.Email, response[0].Email)
 		}
 	})
 

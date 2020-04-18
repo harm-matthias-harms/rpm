@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import DeleteButton from '@/components/preset/Delete.vue'
+import DeleteButton from '@/components/exercise/Delete.vue'
 import { store } from '../../utils/vuex-store'
 
 Vue.use(Vuetify)
@@ -15,8 +15,7 @@ describe('Delete Button', () => {
         RouterLink: RouterLinkStub
       },
       propsData: {
-        item: { id: '001' },
-        goBack: false
+        item: { id: '001' }
       },
       sync: false,
       store
@@ -24,7 +23,7 @@ describe('Delete Button', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
-    wrapper.vm.deletePreset({ id: '001' })
+    wrapper.vm.deleteExercise({ id: '001' })
     wrapper.vm.onCancel()
   })
 })

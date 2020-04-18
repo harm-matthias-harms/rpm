@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -85,7 +84,5 @@ func structToJSONString(v interface{}) string {
 }
 
 func parseResponse(rec *httptest.ResponseRecorder, v interface{}) {
-	defer rec.Result().Body.Close()
-	body, _ := ioutil.ReadAll(rec.Result().Body)
-	_ = json.Unmarshal(body, v)
+	_ = json.Unmarshal(rec.Body.Bytes(), v)
 }
