@@ -275,7 +275,7 @@ export default class Form extends Vue {
   autoGenerateTrainer (team) {
     if (Object.keys(team.trainer).length === 0) {
       const randomTrainer = {
-        username: team.team.title + ' - trainer',
+        username: this.getExercisePrefix() + " - " + team.team.title + ' - trainer',
         code: Math.random().toString(36).substring(2, 8).toUpperCase()
       }
       team.trainer = randomTrainer
@@ -286,7 +286,7 @@ export default class Form extends Vue {
   autoGenerateRoleplayManager (rolePlayManager, index) {
     if (Object.keys(rolePlayManager[index]).length === 0) {
       const user = {
-        username: 'role play manager ' + (index + 1),
+        username: this.getExercisePrefix() + ' - role play manager ' + (index + 1),
         code: Math.random().toString(36).substring(2, 8).toUpperCase()
       }
       rolePlayManager[index] = user
@@ -297,12 +297,16 @@ export default class Form extends Vue {
   autoGenerateMakeUpCenter (mc) {
     if (Object.keys(mc.account).length === 0) {
       const account = {
-        username: mc.title,
+        username: this.getExercisePrefix() + " - " + mc.title,
         code: Math.random().toString(36).substring(2, 8).toUpperCase()
       }
       mc.account = account
       this.makeupCenter.unshift(account)
     }
+  }
+
+  getExercisePrefix() {
+    return this.exercise.title.match(/\b(\w)/g).join('').toUpperCase()
   }
 
   mounted () {
