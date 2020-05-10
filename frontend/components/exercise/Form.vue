@@ -275,7 +275,7 @@ export default class Form extends Vue {
   autoGenerateTrainer (team) {
     if (Object.keys(team.trainer).length === 0) {
       const randomTrainer = {
-        username: this.getExercisePrefix() + " - " + team.team.title + ' - trainer',
+        username: this.getExercisePrefix() + ' - ' + team.team.title + ' - trainer',
         code: Math.random().toString(36).substring(2, 8).toUpperCase()
       }
       team.trainer = randomTrainer
@@ -297,7 +297,7 @@ export default class Form extends Vue {
   autoGenerateMakeUpCenter (mc) {
     if (Object.keys(mc.account).length === 0) {
       const account = {
-        username: this.getExercisePrefix() + " - " + mc.title,
+        username: this.getExercisePrefix() + ' - ' + mc.title,
         code: Math.random().toString(36).substring(2, 8).toUpperCase()
       }
       mc.account = account
@@ -305,7 +305,7 @@ export default class Form extends Vue {
     }
   }
 
-  getExercisePrefix() {
+  getExercisePrefix () {
     return this.exercise.title.match(/\b(\w)/g).join('').toUpperCase()
   }
 
