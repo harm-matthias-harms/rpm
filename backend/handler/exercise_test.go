@@ -22,7 +22,7 @@ func TestExercise(t *testing.T) {
 	jwtCookie := loginUser(t)
 
 	// model
-	exercise := model.Exercise{Title: "test", StartTime: time.Now(), EndTime: time.Now(), Teams: []model.ExerciseTeam{{Team: model.Team{}, Trainer: model.LimitedUser{}}}, RoleplayManager: []model.LimitedUser{{}}, MakeupCenter: []model.MakeupCenter{{}}}
+	exercise := model.Exercise{Title: "test", StartTime: time.Now(), EndTime: time.Now(), Teams: []model.ExerciseTeam{{Team: model.Team{}, Trainer: model.LimitedUser{Username: "test trainer", Code: "ACBDFE"}}}, RoleplayManager: []model.LimitedUser{{Username: "test role play manager", Code: "FJKEFJ"}}, MakeupCenter: []model.MakeupCenter{{Account: model.LimitedUser{Username: "test make-up centere", Code: "HJFTGE"}}}}
 	exerciseInvalid := model.Exercise{Title: "test"}
 	triggerBadRequest := `"title":"title"}`
 
@@ -68,7 +68,7 @@ func TestExercise(t *testing.T) {
 
 	t.Run("update", func(t *testing.T) {
 		// setup
-		exercise.EditedAt.AddDate(0,0,1)
+		exercise.EditedAt.AddDate(0, 0, 1)
 
 		invalidExercise := exercise
 		invalidExercise.CreatedAt = time.Time{}
@@ -119,7 +119,7 @@ func TestExercise(t *testing.T) {
 		// Could not update
 		_, err = testRequest(http.MethodPut, "/api/exercises/:id", strings.NewReader(structToJSONString(falseExercise)), HandleExerciseEdit, header, map[string]string{"id": id.Hex()}, jwtCookie)
 		if assert.Error(t, err) {
-			assert.Equal(t, errorUpdated, err.(*echo.HTTPError).Message)
+			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
 		}
 
 	})
@@ -153,7 +153,7 @@ func TestExercise(t *testing.T) {
 		// false id
 		_, err = testRequest(http.MethodDelete, "/api/exercises/:id", nil, HandleExerciseDelete, nil, map[string]string{"id": primitive.NewObjectID().Hex()}, jwtCookie)
 		if assert.Error(t, err) {
-			assert.Equal(t, errorDelete, err.(*echo.HTTPError).Message)
+			assert.Equal(t, errorFind, err.(*echo.HTTPError).Message)
 		}
 		// good id
 		_, err = testRequest(http.MethodDelete, "/api/exercises/:id", nil, HandleExerciseDelete, nil, map[string]string{"id": exercise.ID.Hex()}, jwtCookie)

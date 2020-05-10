@@ -10,6 +10,12 @@ import (
 
 var (
 	emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+	// TrainerRole is the role for a trainer
+	TrainerRole = "trainer"
+	// RolePlayManagerRole is the role for an role play manager
+	RolePlayManagerRole = "role play manager"
+	// MakeUpCenterRole is the role for a make up center
+	MakeUpCenterRole = "make-up center"
 )
 
 // User is the type of a user
@@ -19,6 +25,7 @@ type User struct {
 	Email    string             `json:"email" form:"email" bson:"email,omitempty"`
 	Password string             `json:"password,omitempty" form:"password" bson:"password"`
 	Code     string             `json:"code,omitempty" form:"code" bson:"code,omitempty"`
+	Roles    []UserRole         `json:"roles" form:"roles" bson:"roles"`
 }
 
 // LimitedUser describes a User with none vulnerable information
@@ -37,9 +44,16 @@ type UserQuery struct {
 	PageSize int    `query:"limit"`
 }
 
-// ToLimitedUser offers the possibility to store the user to other documents without vulnerable data
-func (user *User) ToLimitedUser() *LimitedUser {
-	return &LimitedUser{ID: user.ID, Username: user.Username}
+// Trainer describes a trainer role in an exercise
+type Trainer struct {
+	*UserRole
+	Team Team `json:"team" bson:"team"`
+}
+
+// UserRole describes a management role in an exercise
+type UserRole struct {
+	Role     string         `json:"role" bson:"role"`
+	Exercise *ExerciseShort `json:"exercise" bson:"exercise"`
 }
 
 // Authenticate checks if the user is matching to the given password.
