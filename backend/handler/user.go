@@ -31,6 +31,33 @@ func HandleUserGet(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, users)
 }
 
+// HandleUserFind lets a user load his data
+func HandleUserFind(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+	if id != objectID {
+		return echo.NewHTTPError(http.StatusForbidden, errorNotAuthorized)
+	}
+	user := &model.User{ID: id}
+	user, err = storage.FindUser(c.Request().Context(), user)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+	user.Password = ""
+	return c.JSON(http.StatusOK, user)
+}
+
 // HandleRegister provides the registration endpoint for the api
 func HandleRegister(c echo.Context) (err error) {
 	user := new(model.User)
