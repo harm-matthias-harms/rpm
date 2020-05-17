@@ -183,7 +183,7 @@ describe('Create medical case', () => {
       .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
-      .type(vitalSigns.data.oos)
+      .type(vitalSigns.data.oos, { force: true })
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'AVPU')
       .first('div[role="button"]')
@@ -279,7 +279,7 @@ describe('Create medical case', () => {
       .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
-      .type(child.data.oos)
+      .type(child.data.oos, { force: true })
     // currently not working because cypress is not finding the right document
     // cy.get(':nth-child(5) > .v-expansion-panel > .v-expansion-panel-content')
     //   .contains('div', 'AVPU')
