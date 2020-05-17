@@ -26,9 +26,29 @@ func HandleExerciseFind(c echo.Context) (err error) {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
 	}
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
 	exercise, err := storage.FindExercise(c.Request().Context(), id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+	if exercise.Author.ID != objectID {
+		for index := range exercise.Teams {
+			exercise.Teams[index].Trainer.Code = ""
+		}
+		for index := range exercise.RoleplayManager {
+			exercise.RoleplayManager[index].Code = ""
+		}
+		for index := range exercise.MakeupCenter {
+			exercise.MakeupCenter[index].Account.Code = ""
+		}
 	}
 	return c.JSON(http.StatusOK, exercise)
 }

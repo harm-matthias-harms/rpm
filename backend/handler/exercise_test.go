@@ -144,6 +144,22 @@ func TestExercise(t *testing.T) {
 		}
 	})
 
+	t.Run("find - removes user codes if exercise not owned", func(t *testing.T) {
+		notOwnedExercise := &model.Exercise{Title: "not owned", Teams: []model.ExerciseTeam{{Team: model.Team{}, Trainer: model.LimitedUser{Username: "test trainer", Code: "ACBDFE"}}}, RoleplayManager: []model.LimitedUser{{Username: "test role play manager", Code: "FJKEFJ"}}, MakeupCenter: []model.MakeupCenter{{Account: model.LimitedUser{Username: "test make-up centere", Code: "HJFTGE"}}}}
+		_ = storage.CreateExercise(nil, notOwnedExercise)
+		// good id
+		rec, err := testRequest(http.MethodGet, "/api/exercises/:id", nil, HandleExerciseFind, nil, map[string]string{"id": notOwnedExercise.ID.Hex()}, jwtCookie)
+		if assert.NoError(t, err) {
+			response := &model.Exercise{}
+			parseResponse(rec, response)
+			assert.Equal(t, notOwnedExercise.Title, response.Title)
+			assert.Equal(t, "", response.Teams[0].Trainer.Code)
+			assert.Equal(t, "", response.RoleplayManager[0].Code)
+			assert.Equal(t, "", response.MakeupCenter[0].Account.Code)
+		}
+		resetExercise(notOwnedExercise)
+	})
+
 	t.Run("delete", func(t *testing.T) {
 		// no id provided
 		_, err := testRequest(http.MethodDelete, "/api/exercises/:id", nil, HandleExerciseDelete, nil, map[string]string{"id": ""}, jwtCookie)
