@@ -32,7 +32,7 @@ describe('Medical case vital sign form', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     wrapper.vm.addChild()
     expect(wrapper.vm.vitalSign.childs.length).toBe(1)
     wrapper.vm.presetID = '001'

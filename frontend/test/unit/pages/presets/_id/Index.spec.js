@@ -25,7 +25,7 @@ describe('Show Presets', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
   test('open edit form', () => {
     wrapper.vm.editPreset({ id: '001' })

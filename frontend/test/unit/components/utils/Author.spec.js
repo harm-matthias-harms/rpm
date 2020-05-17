@@ -29,7 +29,7 @@ describe('Author', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     expect(wrapper.props().createdAt).toEqual('1970-01-01T00:00:00')
     expect(wrapper.props().author).toMatchObject({
       id: '001',
