@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -56,6 +57,10 @@ func HandleExerciseCreate(c echo.Context) (err error) {
 	if err = storage.CreateExercise(c.Request().Context(), exercise); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, errorCreated)
 	}
+
+	if err = addExercisePermissions(c.Request().Context(), exercise); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
+	}
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: exercise})
 }
 
@@ -94,8 +99,21 @@ func HandleExerciseEdit(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
+	oldExerciseVersion, err := storage.FindExercise(c.Request().Context(), exercise.ID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+
 	if err = storage.UpdateExercise(c.Request().Context(), exercise, objectID); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
+	}
+
+	if err = revokeExercisePermissions(c.Request().Context(), oldExerciseVersion); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
+	}
+
+	if err = addExercisePermissions(c.Request().Context(), exercise); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 
 	return c.JSON(http.StatusOK, exercise)
@@ -118,10 +136,116 @@ func HandleExerciseDelete(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
 
+	// needs to load exercise to revoke permissions
+	exercise, err := storage.FindExercise(c.Request().Context(), id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+
 	count, err := storage.DeleteExercise(c.Request().Context(), id, userID)
 	if err != nil || count == int64(0) {
 		return echo.NewHTTPError(http.StatusBadRequest, errorDelete)
 	}
 
+	err = revokeExercisePermissions(c.Request().Context(), exercise)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
+
 	return c.JSON(http.StatusOK, jsonStatus{Success: true})
+}
+
+func addExercisePermissions(ctx context.Context, exercise *model.Exercise) (err error) {
+	err = addExerciseToUser(ctx, exercise, exercise.Author, model.ExerciseAdminRole)
+	if err != nil {
+		return
+	}
+	for _, team := range exercise.Teams {
+		err = addExerciseToUser(ctx, exercise, team.Trainer, model.TrainerRole)
+		if err != nil {
+			return
+		}
+	}
+	for _, rpm := range exercise.RoleplayManager {
+		err = addExerciseToUser(ctx, exercise, rpm, model.RolePlayManagerRole)
+		if err != nil {
+			return
+		}
+	}
+	for _, mc := range exercise.MakeupCenter {
+		err = addExerciseToUser(ctx, exercise, mc.Account, model.MakeUpCenterRole)
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+func revokeExercisePermissions(ctx context.Context, exercise *model.Exercise) (err error) {
+	err = removeExerciseFromUser(ctx, exercise, exercise.Author, model.ExerciseAdminRole)
+	if err != nil {
+		return
+	}
+	for _, team := range exercise.Teams {
+		err = removeExerciseFromUser(ctx, exercise, team.Trainer, model.TrainerRole)
+		if err != nil {
+			return
+		}
+	}
+	for _, rpm := range exercise.RoleplayManager {
+		err = removeExerciseFromUser(ctx, exercise, rpm, model.RolePlayManagerRole)
+		if err != nil {
+			return
+		}
+	}
+	for _, mc := range exercise.MakeupCenter {
+		err = removeExerciseFromUser(ctx, exercise, mc.Account, model.MakeUpCenterRole)
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+// TODO delete user if no more Role exists?
+func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user model.LimitedUser, role string) (err error) {
+	dbUser := new(model.User)
+	utils.Convert(user, dbUser)
+	dbUser, err = storage.FindUser(ctx, dbUser)
+	if err != nil {
+		return
+	}
+	for i := 0; i < len(dbUser.Roles); i++ {
+		if dbUser.Roles[i].Exercise.ID == exercise.ID && dbUser.Roles[i].Role == role {
+			dbUser.Roles = append(dbUser.Roles[:i], dbUser.Roles[i+1:]...)
+			i--
+		}
+	}
+	err = storage.UpdateUser(ctx, dbUser)
+	if dbUser.Code != "" && len(dbUser.Roles) == 0 {
+		storage.DeleteUser(ctx, dbUser)
+	}
+	return
+}
+
+func addExerciseToUser(ctx context.Context, exercise *model.Exercise, user model.LimitedUser, role string) (err error) {
+	fullUser := new(model.User)
+	utils.Convert(user, fullUser)
+	if fullUser.ID.IsZero() {
+		err = storage.CreateUser(ctx, fullUser)
+		if err != nil {
+			return
+		}
+	}
+	fullUser, err = storage.FindUser(ctx, fullUser)
+	if err != nil {
+		return
+	}
+
+	shortExercise := new(model.ExerciseShort)
+	utils.Convert(exercise, shortExercise)
+	userRole := model.UserRole{Role: role, Exercise: shortExercise}
+	fullUser.Roles = append(fullUser.Roles, userRole)
+	err = storage.UpdateUser(ctx, fullUser)
+	return
 }

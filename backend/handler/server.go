@@ -50,6 +50,7 @@ func Server() (*echo.Echo, error) {
 	}))
 	//user
 	r.GET("/user", HandleUserGet)
+	r.GET("/user/:id", HandleUserFind)
 	// presets
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)

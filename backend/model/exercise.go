@@ -21,6 +21,14 @@ type Exercise struct {
 	MakeupCenter    []MakeupCenter     `json:"makeupCenter" bson:"makeupCenter"`
 }
 
+// ExerciseShort describes the short version of an exercise
+type ExerciseShort struct {
+	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Title     string             `json:"title" bson:"title"`
+	StartTime time.Time          `json:"startTime" bson:"startTime"`
+	EndTime   time.Time          `json:"endTime" bson:"endTime"`
+}
+
 // ExerciseTeam is the combination of team and trainer
 type ExerciseTeam struct {
 	Team    Team        `json:"team" bson:"team"`

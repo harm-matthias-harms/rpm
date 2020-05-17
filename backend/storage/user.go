@@ -2,8 +2,10 @@ package storage
 
 import (
 	"context"
+	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
 
@@ -59,7 +61,27 @@ func FindUser(ctx context.Context, user *model.User) (result *model.User, err er
 // CreateUser will create a user
 func CreateUser(ctx context.Context, user *model.User) (err error) {
 	c := userCollection()
-	_, err = c.InsertOne(ctx, user)
+	res, err := c.InsertOne(ctx, user)
+	if err == nil {
+		user.ID = res.InsertedID.(primitive.ObjectID)
+	}
+	return
+}
+
+// UpdateUser will create a user
+func UpdateUser(ctx context.Context, user *model.User) (err error) {
+	c := userCollection()
+	res, err := c.ReplaceOne(ctx, bson.M{"_id": user.ID}, user)
+	if err == nil && res.MatchedCount == 0 {
+		return errors.New("no document was found")
+	}
+	return
+}
+
+// DeleteUser deletes a user, this is currently used for obsolete code users
+func DeleteUser(ctx context.Context, user *model.User) (err error) {
+	c := userCollection()
+	_, err = c.DeleteOne(ctx, bson.D{{Key: "_id", Value: user.ID}})
 	return
 }
 
@@ -69,6 +91,7 @@ func userCollection() *mongo.Collection {
 
 func createUserIndexes() {
 	c := userCollection()
+	c.Indexes().DropAll(nil)
 	_, _ = c.Indexes().CreateMany(context.Background(),
 		[]mongo.IndexModel{{
 			Keys:    bsonx.Doc{{Key: "username", Value: bsonx.Int32(1)}},
@@ -76,11 +99,11 @@ func createUserIndexes() {
 		},
 			{
 				Keys:    bsonx.Doc{{Key: "email", Value: bsonx.Int32(1)}},
-				Options: options.Index().SetUnique(true),
+				Options: options.Index().SetUnique(true).SetPartialFilterExpression(bson.M{"email": bson.M{"$type": "string"}}),
 			},
 			{
 				Keys:    bsonx.Doc{{Key: "code", Value: bsonx.Int32(1)}},
-				Options: options.Index().SetUnique(true),
+				Options: options.Index().SetUnique(true).SetPartialFilterExpression(bson.M{"code": bson.M{"$type": "string"}}),
 			},
 		})
 }

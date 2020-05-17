@@ -24,10 +24,26 @@ func TestUser(t *testing.T) {
 		assert.Error(t, err)
 	})
 
+	t.Run("update user", func(t *testing.T) {
+		//additional model
+		notExist := &model.User{Username: "not found"}
+
+		// change preset
+		user.Email = "test2@mail.com"
+		err := UpdateUser(nil, user)
+		assert.NoError(t, err)
+
+		// don't update non existing
+		err = UpdateUser(nil, notExist)
+		if assert.Error(t, err) {
+			assert.Equal(t, "no document was found", err.Error())
+		}
+	})
+
 	t.Run("find user", func(t *testing.T) {
 		// submodel setup
 		userWithUsername := &model.User{Username: "test"}
-		userWithEmail := &model.User{Username: "test1@mail.com"}
+		userWithEmail := &model.User{Username: "test2@mail.com"}
 		userWithCode := &model.User{Code: "testCode"}
 		userNotExist := &model.User{Username: "test1"}
 
@@ -44,7 +60,7 @@ func TestUser(t *testing.T) {
 			userFound, err = FindUser(nil, tt)
 			assert.NoError(t, err)
 			assert.Equal(t, "test", userFound.Username)
-			assert.Equal(t, "test1@mail.com", userFound.Email)
+			assert.Equal(t, "test2@mail.com", userFound.Email)
 		}
 
 		// Dont't find not existing user
@@ -52,7 +68,7 @@ func TestUser(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("get users", func(t * testing.T) {
+	t.Run("get users", func(t *testing.T) {
 		result, err := GetUser(nil, nil, 1, 1)
 		if assert.NoError(t, err) {
 			assert.Equal(t, 1, len(result))
@@ -70,6 +86,14 @@ func TestUser(t *testing.T) {
 		if assert.NoError(t, err) {
 			assert.GreaterOrEqual(t, len(result), 1)
 		}
+	})
+
+	t.Run("deletes user", func(t *testing.T) {
+		err := DeleteUser(nil, user)
+		assert.NoError(t, err)
+
+		_, err = FindUser(nil, user)
+		assert.Error(t, err)
 	})
 
 	// cleanup

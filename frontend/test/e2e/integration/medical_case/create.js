@@ -167,7 +167,7 @@ describe('Create medical case', () => {
     // Vital Signs
 
     // add first vital sign
-    cy.contains('button', 'Vital Signs')
+    cy.contains('button', 'Vital signs')
       .find('.fa-plus')
       .first()
       .click()
@@ -264,7 +264,7 @@ describe('Create medical case', () => {
       .contains('Add Step')
       .click()
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('No title set')
+      .contains('No title')
       .click()
 
     cy.get(':nth-child(5) > .v-expansion-panel > .v-expansion-panel-content')

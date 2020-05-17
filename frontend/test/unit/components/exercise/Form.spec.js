@@ -17,7 +17,7 @@ describe('Exercise form', () => {
         RouterLink: RouterLinkStub
       },
       propsData: {
-        exercise: { teams: [], roleplayManager: [], makeupCenter: [] },
+        exercise: { title: 'some random title', teams: [], roleplayManager: [], makeupCenter: [] },
         atSubmit: () => {},
         isNew: false
       },
@@ -37,7 +37,7 @@ describe('Exercise form', () => {
     wrapper.vm.exercise.teams.push({ team: { title: 'Team 1' }, trainer: {} })
     wrapper.vm.autoGenerateTrainer(wrapper.vm.exercise.teams[0])
     expect(wrapper.vm.exercise.teams[0].trainer.username).toBe(
-      'Team 1 - trainer'
+      'SRT - Team 1 - trainer'
     )
     expect(wrapper.vm.exercise.teams[0].trainer.code).not.toBeUndefined()
     expect(wrapper.vm.exercise.teams[0].trainer.code.length).toBe(6)
@@ -50,7 +50,7 @@ describe('Exercise form', () => {
       0
     )
     expect(wrapper.vm.exercise.roleplayManager[0].username).toBe(
-      'role play manager 1'
+      'SRT - role play manager 1'
     )
     expect(wrapper.vm.exercise.roleplayManager[0].code).not.toBeUndefined()
     expect(wrapper.vm.exercise.roleplayManager[0].code.length).toBe(6)
@@ -59,9 +59,12 @@ describe('Exercise form', () => {
   test('autogenerate make-up center', () => {
     wrapper.vm.exercise.makeupCenter.push({ title: 'Test', account: {} })
     wrapper.vm.autoGenerateMakeUpCenter(wrapper.vm.exercise.makeupCenter[0])
-    expect(wrapper.vm.exercise.makeupCenter[0].account.username).toBe('Test')
+    expect(wrapper.vm.exercise.makeupCenter[0].account.username).toBe('SRT - Test')
     expect(wrapper.vm.exercise.makeupCenter[0].account.code).not.toBeUndefined()
     expect(wrapper.vm.exercise.makeupCenter[0].account.code.length).toBe(6)
     expect(wrapper.vm.makeupCenter.length).toBe(1)
+  })
+  test('get right exercise prefix', () => {
+    expect(wrapper.vm.getExercisePrefix()).toBe('SRT')
   })
 })
