@@ -64,7 +64,7 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$delete('/api/exercises/' + payload.id)
       .then(() => {
-        commit('UNSET_EXERCISE', payload.id)
+        commit('UNSET_EXERCISE')
         commit('snackbar/SET', 'Exercise was successfully deleted.', { root: true })
         this.$router.push('/')
       })

@@ -2,25 +2,9 @@
   <v-app>
     <v-app-bar app dark dense color="primary">
       <v-app-bar-nav-icon v-if="isAuthenticated && !isCodeUser" @click="drawer = !drawer" />
-      <v-toolbar-title>RPM</v-toolbar-title>
-      <v-spacer />
-      <v-select
-        v-if="isAuthenticated && !isCodeUser"
-        :items="[]"
-        label="Select an exercise"
-        outlined
-        dense
-        hide-details
-      >
-        <template v-slot:prepend-item>
-          <v-list-item ripple @click="$router.push('/exercises/new')">
-            <v-list-item-content>
-              <v-list-item-title>Create a new exercise</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider class="mt-2" />
-        </template>
-      </v-select>
+      <nuxt-link to="/" class="toolbar-title">
+        <v-toolbar-title>RPM</v-toolbar-title>
+      </nuxt-link>
       <v-spacer />
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn v-if="!isAuthenticated" text to="/">
@@ -177,3 +161,10 @@ export default class Default extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.toolbar-title {
+  color: inherit;
+  text-decoration: inherit;
+}
+</style>

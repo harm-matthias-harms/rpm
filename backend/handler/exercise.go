@@ -156,6 +156,10 @@ func HandleExerciseDelete(c echo.Context) (err error) {
 }
 
 func addExercisePermissions(ctx context.Context, exercise *model.Exercise) (err error) {
+	err = addExerciseToUser(ctx, exercise, exercise.Author, model.ExerciseAdminRole)
+	if err != nil {
+		return
+	}
 	for _, team := range exercise.Teams {
 		err = addExerciseToUser(ctx, exercise, team.Trainer, model.TrainerRole)
 		if err != nil {
@@ -178,20 +182,24 @@ func addExercisePermissions(ctx context.Context, exercise *model.Exercise) (err 
 }
 
 func revokeExercisePermissions(ctx context.Context, exercise *model.Exercise) (err error) {
+	err = removeExerciseFromUser(ctx, exercise, exercise.Author, model.ExerciseAdminRole)
+	if err != nil {
+		return
+	}
 	for _, team := range exercise.Teams {
-		err = removeExerciseFromUser(ctx, exercise, team.Trainer)
+		err = removeExerciseFromUser(ctx, exercise, team.Trainer, model.TrainerRole)
 		if err != nil {
 			return
 		}
 	}
 	for _, rpm := range exercise.RoleplayManager {
-		err = removeExerciseFromUser(ctx, exercise, rpm)
+		err = removeExerciseFromUser(ctx, exercise, rpm, model.RolePlayManagerRole)
 		if err != nil {
 			return
 		}
 	}
 	for _, mc := range exercise.MakeupCenter {
-		err = removeExerciseFromUser(ctx, exercise, mc.Account)
+		err = removeExerciseFromUser(ctx, exercise, mc.Account, model.MakeUpCenterRole)
 		if err != nil {
 			return
 		}
@@ -200,7 +208,7 @@ func revokeExercisePermissions(ctx context.Context, exercise *model.Exercise) (e
 }
 
 // TODO delete user if no more Role exists?
-func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user model.LimitedUser) (err error) {
+func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user model.LimitedUser, role string) (err error) {
 	dbUser := new(model.User)
 	utils.Convert(user, dbUser)
 	dbUser, err = storage.FindUser(ctx, dbUser)
@@ -208,7 +216,7 @@ func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user 
 		return
 	}
 	for i := 0; i < len(dbUser.Roles); i++ {
-		if dbUser.Roles[i].Exercise.ID == exercise.ID {
+		if dbUser.Roles[i].Exercise.ID == exercise.ID && dbUser.Roles[i].Role == role {
 			dbUser.Roles = append(dbUser.Roles[:i], dbUser.Roles[i+1:]...)
 			i--
 		}
@@ -229,6 +237,11 @@ func addExerciseToUser(ctx context.Context, exercise *model.Exercise, user model
 			return
 		}
 	}
+	fullUser, err = storage.FindUser(ctx, fullUser)
+	if err != nil {
+		return
+	}
+
 	shortExercise := new(model.ExerciseShort)
 	utils.Convert(exercise, shortExercise)
 	userRole := model.UserRole{Role: role, Exercise: shortExercise}

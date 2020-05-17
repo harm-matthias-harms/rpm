@@ -7,17 +7,21 @@ export default function (context) {
   const cookie = Cookie.get('Authorization')
   if (cookie) {
     const decoded = jwtDecode(cookie)
-    context.store.commit('user/SET_AUTHENTICATE', {
-      id: decoded.id,
-      username: decoded.username,
-      expire: decoded.exp,
-      code: decoded.code
-    })
     if (new Date(decoded.exp * 1000) < new Date()) {
       Cookie.remove('Authorization')
       context.store.commit('user/LOGOUT')
       context.store.commit('snackbar/SET', "You're session has expired")
       return context.redirect('/')
+    } else {
+      context.store.commit('user/SET_AUTHENTICATE', {
+        id: decoded.id,
+        username: decoded.username,
+        expire: decoded.exp,
+        code: decoded.code
+      })
+      if (!context.store.state.user.isLoaded) {
+        context.store.dispatch('user/load', { id: decoded.id })
+      }
     }
   }
   // Check if has AccessRights

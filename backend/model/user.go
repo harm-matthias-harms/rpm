@@ -10,6 +10,8 @@ import (
 
 var (
 	emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+	// ExerciseAdminRole is the role of the author of an exercise
+	ExerciseAdminRole = "admin"
 	// TrainerRole is the role for a trainer
 	TrainerRole = "trainer"
 	// RolePlayManagerRole is the role for an role play manager

@@ -92,7 +92,7 @@
       </v-expansion-panel>
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Vital Signs
+          Vital signs
           <template
             v-if="!medicalCase.vitalSigns || medicalCase.vitalSigns.length === 0"
             v-slot:actions

@@ -3,14 +3,8 @@ import Cookie from 'js-cookie'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
-  SET_USER_REGISTER (state, user) {
-    state.user = {
-      id: undefined,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      code: undefined
-    }
+  SET_USER (state, user) {
+    state.user = user
   },
   SET_ERROR_REGISTER (state, reason: string) {
     state.registerError = true
@@ -22,7 +16,8 @@ export const mutations: MutationTree<State> = {
       username: '',
       email: '',
       password: '',
-      code: undefined
+      code: undefined,
+      roles: []
     }
   },
   REGISTER_SUCCESS (state) {
@@ -39,10 +34,14 @@ export const mutations: MutationTree<State> = {
     }
     state.expireSession = expire
   },
+  SET_LOADED (state) {
+    state.isLoaded = true
+  },
   LOGOUT (state) {
     state.user.id = undefined
     state.user.username = ''
     state.isAuthenticated = false
+    state.isLoaded = false
     state.isCodeUser = false
     state.expireSession = undefined
     Cookie.remove('Authorization')

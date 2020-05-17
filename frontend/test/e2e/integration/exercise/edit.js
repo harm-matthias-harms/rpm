@@ -19,6 +19,18 @@ describe('Edit exercise', () => {
       status: 200,
       response: 'fixture:exercise/exercise.json'
     })
+    cy.route({
+      method: 'GET',
+      url: 'http://localhost:3001/api/teams',
+      status: 200,
+      response: 'fixture:team/list.json'
+    })
+    cy.route({
+      method: 'GET',
+      url: 'http://localhost:3001/api/user',
+      status: 200,
+      response: []
+    })
     cy.login()
   })
 

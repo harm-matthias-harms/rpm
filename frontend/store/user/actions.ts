@@ -7,7 +7,7 @@ import { State } from './type'
 export const actions: ActionTree<State, RootState> = {
   register ({ state, commit }, user) {
     commit('loader/SET', true, { root: true })
-    commit('SET_USER_REGISTER', user)
+    commit('SET_USER', user)
     this.$axios
       .$post('/auth/register', state.user)
       .then(() => {
@@ -32,7 +32,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  signin ({ commit }, user) {
+  signin ({ commit, dispatch, state }, user) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$post('/auth/authenticate', user)
@@ -46,6 +46,9 @@ export const actions: ActionTree<State, RootState> = {
             expire: decoded.exp,
             code: decoded.code
           })
+          if (!state.isLoaded) {
+            dispatch('load', { id: decoded.id })
+          }
         } else {
           commit('snackbar/SET', 'Wrong username, password or code', { root: true })
         }
@@ -78,6 +81,18 @@ export const actions: ActionTree<State, RootState> = {
           commit('loader/SET', false, { root: true })
         }
       })
+  },
+  load ({ commit }, payload = { id: null }) {
+    if (payload.id) {
+      this.$axios.get('/api/user/' + payload.id)
+        .then((response) => {
+          commit('SET_USER', response.data)
+          commit('SET_LOADED')
+        })
+        .catch(() => {
+          commit('snackbar/SET', "Couldn't load your information", { root: true })
+        })
+    }
   }
 }
 

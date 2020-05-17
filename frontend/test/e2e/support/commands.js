@@ -86,6 +86,12 @@ Cypress.Commands.add('login', () => {
     status: 200,
     response: { success: true }
   })
+  cy.route({
+    method: 'GET',
+    url: 'http://localhost:3001/api/user/001',
+    status: 200,
+    response: { id: '001', username: 'username' }
+  })
   cy.visit('/')
   // Sign in Button should be disabled
   cy.get('.v-form > .v-btn').should('be.disabled')

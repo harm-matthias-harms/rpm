@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col>
       <p class="headline mb-2 pl-4">
-        Vital Signs
+        Vital signs
       </p>
       <v-list dense class="body-1">
         <v-list-item v-if="vitalSigns.oos">
