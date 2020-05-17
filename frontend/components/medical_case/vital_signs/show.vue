@@ -1,11 +1,11 @@
 <template>
   <v-expansion-panels multiple :value="vitalSigns.map((k, i) => i)">
     <v-expansion-panel v-for="(vitalSign, i) in vitalSigns" :key="i">
-      <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : "no title set" }}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : "No title" }}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list dense>
           <p class="headline mb-2 pl-4">
-            Vital Signs
+            Vital signs
           </p>
           <v-list-item v-if="vitalSign.data.oos">
             <v-list-item-content>Onset of symptoms:</v-list-item-content>

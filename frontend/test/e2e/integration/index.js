@@ -15,14 +15,17 @@ describe('Index Page', () => {
     cy.login()
     cy.get('.v-app-bar__nav-icon').click()
     cy.get('.v-navigation-drawer')
-    cy.contains('John Doe')
+    cy.contains('username')
     cy.contains('Preset').click()
     cy.get('[href="/presets"] > .v-list-item__content')
     cy.get('[href="/presets/new"] > .v-list-item__content')
     cy.contains('Medical Case').click()
     cy.get('[href="/medical_cases"] > .v-list-item__content')
     cy.get('[href="/medical_cases/new"] > .v-list-item__content')
-    cy.contains('New')
+    cy.get('[href="/medical_cases/review"] > .v-list-item__content')
+    cy.contains('Team').click()
+    cy.get('[href="/teams"] > .v-list-item__content')
+    cy.get('[href="/teams/new"] > .v-list-item__content')
     cy.logout()
   })
 
@@ -54,7 +57,7 @@ describe('Index Page', () => {
       status: 401
     })
     cy.loginEnterForm(false)
-    cy.contains('Wrong username or password')
+    cy.contains('Wrong username, password or code')
   })
 
   it('signs in successfully', () => {
@@ -66,5 +69,26 @@ describe('Index Page', () => {
     })
     cy.loginEnterForm(true)
     cy.get('Sign In').should('not.exist')
+  })
+  it('signs in with code', () => {
+    cy.server()
+    cy.route({
+      method: 'POST',
+      url: 'http://localhost:3001/auth/authenticate',
+      response: { success: true }
+    })
+    cy.codeForm(true)
+    cy.get('Sign In').should('not.exist')
+  })
+  it('fails with wrong code', () => {
+    cy.server()
+    cy.route({
+      method: 'POST',
+      url: 'http://localhost:3001/auth/authenticate',
+      response: {},
+      status: 401
+    })
+    cy.codeForm(false)
+    cy.contains('Wrong username, password or code')
   })
 })

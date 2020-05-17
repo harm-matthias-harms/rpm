@@ -16,13 +16,6 @@ func TestUserHashPassword(t *testing.T) {
 	assert.NotEqual(t, password, user.Password)
 }
 
-func TestToLimitedUser(t *testing.T) {
-	user := User{Username: "testPerson", Email: "test@mail.com", Password: "123"}
-	limitedUser := user.ToLimitedUser()
-	assert.Equal(t, user.ID, limitedUser.ID)
-	assert.Equal(t, user.Username, limitedUser.Username)
-}
-
 func TestAuthenticate(t *testing.T) {
 	tests := []struct {
 		User     User
@@ -45,6 +38,8 @@ func TestAuthenticate(t *testing.T) {
 		err := tt.User.Authenticate(tt.Password)
 		if tt.Err {
 			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
 		}
 	}
 }
@@ -57,6 +52,10 @@ func TestUserValidation(t *testing.T) {
 	}{
 		{
 			User: User{Username: "test.person1", Email: "test@mail.com", Password: "123"},
+			Err:  false,
+		},
+		{
+			User: User{Username: "testperson", Code: "123"},
 			Err:  false,
 		},
 		{
@@ -93,6 +92,8 @@ func TestUserValidation(t *testing.T) {
 		err := tt.User.Validate()
 		if tt.Err {
 			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
 		}
 	}
 }

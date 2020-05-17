@@ -15,7 +15,7 @@ describe('Delete Button', () => {
         RouterLink: RouterLinkStub
       },
       propsData: {
-        item: { id: '001', vitalSigns: {} },
+        item: { id: '001' },
         goBack: false
       },
       sync: false,

@@ -1,0 +1,44 @@
+{
+    "id": "001",
+    "author": {
+        "id": "001",
+        "username": "John Doe"
+    },
+    "createdAt": "1970-01-01T00:00:00Z",
+    "editedAt": "0001-01-01T00:00:00Z",
+    "title": "Test exercise",
+    "startTime": "3999-01-01",
+    "endTime": "3999-01-04",
+    "teams": [
+        {
+            "team": {
+                "id": "001",
+                "title": "test team 1"
+            },
+            "trainer": {
+                "id": "000000000000000000000000",
+                "username": "Team 1 - trainer",
+                "email": "",
+                "code": "ABCDEF"
+            }
+        }
+    ],
+    "roleplayManager": [
+        {
+            "id": "000000000000000000000000",
+            "username": "role play manager 1",
+            "email": "rpm@rpm.com",
+            "code": "ABCDEF"
+        }
+    ],
+    "makeupCenter": [
+        {
+            "title": "MC 1",
+            "account": {
+                "id": "000000000000000000000000",
+                "username": "MC 1",
+                "code": "ABCDEF"
+            }
+        }
+    ]
+}

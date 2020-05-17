@@ -7,7 +7,7 @@ import { State } from './type'
 export const actions: ActionTree<State, RootState> = {
   register ({ state, commit }, user) {
     commit('loader/SET', true, { root: true })
-    commit('SET_USER_REGISTER', user)
+    commit('SET_USER', user)
     this.$axios
       .$post('/auth/register', state.user)
       .then(() => {
@@ -32,7 +32,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  signin ({ commit }, user) {
+  signin ({ commit, dispatch, state }, user) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$post('/auth/authenticate', user)
@@ -43,22 +43,56 @@ export const actions: ActionTree<State, RootState> = {
           commit('SET_AUTHENTICATE', {
             id: decoded.id,
             username: decoded.username,
-            expire: decoded.exp
+            expire: decoded.exp,
+            code: decoded.code
           })
+          if (!state.isLoaded) {
+            dispatch('load', { id: decoded.id })
+          }
         } else {
-          commit('snackbar/SET', 'Wrong username or password', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
         }
       })
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           commit('snackbar/SET', "Couldn't connect to network", { root: true })
         } else if (error.response && error.response.status === 401) {
-          commit('snackbar/SET', 'Wrong username or password', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
         }
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
+  },
+  get_all ({ commit }, payload = { disableLoader: false }) {
+    if (!payload.disableLoader) {
+      commit('loader/SET', true, { root: true })
+    }
+    return this.$axios
+      .$get('/api/user')
+      .then((response) => {
+        commit('SET_USER_LIST', response)
+      })
+      .catch(() => {
+        commit('snackbar/SET', "Couldn't load users.", { root: true })
+      })
+      .finally(() => {
+        if (!payload.disableLoader) {
+          commit('loader/SET', false, { root: true })
+        }
+      })
+  },
+  load ({ commit }, payload = { id: null }) {
+    if (payload.id) {
+      this.$axios.get('/api/user/' + payload.id)
+        .then((response) => {
+          commit('SET_USER', response.data)
+          commit('SET_LOADED')
+        })
+        .catch(() => {
+          commit('snackbar/SET', "Couldn't load your information", { root: true })
+        })
+    }
   }
 }
 

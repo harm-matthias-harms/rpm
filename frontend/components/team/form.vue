@@ -6,13 +6,14 @@
       :error-messages="errors.collect('title')"
       label="Title"
       required
-      data-vv-name="title"
+      name="title"
     />
     <v-select
       v-model="team.type"
       v-validate="'required'"
       :items="['AMP', 'AMPS', 'EMT 1', 'EMT 1 mobile', 'EMT 2', 'EMT 3', 'other']"
       label="Type"
+      name="type"
     />
     <v-checkbox v-model="team.medivac" label="Medivac" />
     <v-btn

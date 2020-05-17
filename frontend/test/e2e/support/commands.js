@@ -64,7 +64,19 @@ Cypress.Commands.add('loginEnterForm', (success) => {
     cy.setCookie('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZXhwaXJlIjo5OTk5OTk5OTk5fQ.3kI7MFEnpQ9lCWetnVJFCGtH--LsXndEy8cKq-a2poA')
   }
   // submit form
-  cy.get('form').submit()
+  cy.contains('form', 'Sign In').submit()
+})
+Cypress.Commands.add('codeForm', (success) => {
+  cy.visit('/')
+  // Sign in Button should be disabled
+  cy.get('.v-form > .v-btn').should('be.disabled')
+  // Enter username
+  cy.get('input[name=code]').type('test')
+  if (success) {
+    cy.setCookie('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwiZXhwaXJlIjo5OTk5OTk5OTk5LCJjb2RlIjoidGVzdCJ9.M92JpHo9mFPzY84gkwyW7QTEjw2gGqlDvCdyvUuVXLI')
+  }
+  // submit form
+  cy.contains('form', 'Use code').submit()
 })
 Cypress.Commands.add('login', () => {
   cy.server()
@@ -73,6 +85,12 @@ Cypress.Commands.add('login', () => {
     url: 'http://localhost:3001/auth/authenticate',
     status: 200,
     response: { success: true }
+  })
+  cy.route({
+    method: 'GET',
+    url: 'http://localhost:3001/api/user/001',
+    status: 200,
+    response: { id: '001', username: 'username' }
   })
   cy.visit('/')
   // Sign in Button should be disabled
@@ -87,7 +105,7 @@ Cypress.Commands.add('login', () => {
   cy.get('input[name=password]').type('456')
   // submit form
   cy.setCookie('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwMSIsInVzZXJuYW1lIjoiSm9obiBEb2UiLCJleHBpcmUiOjk5OTk5OTk5OTl9.zgNJyIg5UHkLGdbPTfMSXigJb1DyN97Xmf4M9o5O39k')
-  cy.get('form').submit()
+  cy.contains('form', 'Sign In').submit()
 })
 Cypress.Commands.add('logout', () => {
   cy.get('button').contains('sign out').click({ force: true })

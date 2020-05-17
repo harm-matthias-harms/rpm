@@ -11,7 +11,52 @@ import (
 	"github.com/harm-matthias-harms/rpm/backend/storage"
 	"github.com/harm-matthias-harms/rpm/backend/utils"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+// HandleUserGet gives back a list of users
+func HandleUserGet(c echo.Context) (err error) {
+	params := new(model.UserQuery)
+	if err = c.Bind(params); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorParseParams)
+	}
+	filter := map[string]interface{}{}
+	if params.Username != "" {
+		filter["username"] = primitive.Regex{Pattern: params.Username}
+	}
+	if params.Email != "" {
+		filter["email"] = primitive.Regex{Pattern: params.Email}
+	}
+	users, err := storage.GetUser(c.Request().Context(), filter, params.Page, params.PageSize)
+	return c.JSON(http.StatusOK, users)
+}
+
+// HandleUserFind lets a user load his data
+func HandleUserFind(c echo.Context) (err error) {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorNoIDParam)
+	}
+	cookie, _ := c.Cookie(echo.HeaderAuthorization)
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+		return []byte(utils.GetEnv("JWT_SECRET", "secret")), nil
+	})
+	claims := token.Claims.(jwt.MapClaims)
+	objectID, err := primitive.ObjectIDFromHex(claims["id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
+	}
+	if id != objectID {
+		return echo.NewHTTPError(http.StatusForbidden, errorNotAuthorized)
+	}
+	user := &model.User{ID: id}
+	user, err = storage.FindUser(c.Request().Context(), user)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
+	}
+	user.Password = ""
+	return c.JSON(http.StatusOK, user)
+}
 
 // HandleRegister provides the registration endpoint for the api
 func HandleRegister(c echo.Context) (err error) {
@@ -42,6 +87,7 @@ func HandleAuthenticate(c echo.Context) (err error) {
 	claims["username"] = result.Username
 	claims["id"] = result.ID
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 10).Unix()
+	claims["code"] = result.Code
 
 	t, err := token.SignedString([]byte(utils.GetEnv("JWT_SECRET", "secret")))
 	if err != nil {
@@ -77,8 +123,10 @@ func authenticate(ctx context.Context, user *model.User) (result *model.User, er
 	if err != nil {
 		return nil, err
 	}
-	if err := result.Authenticate(user.Password); err != nil {
-		return nil, err
+	if user.Code == "" {
+		if err := result.Authenticate(user.Password); err != nil {
+			return nil, err
+		}
 	}
 	return
 }

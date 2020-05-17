@@ -48,6 +48,9 @@ func Server() (*echo.Echo, error) {
 		SigningKey:  []byte(utils.GetEnv("JWT_SECRET", "secret")),
 		TokenLookup: "cookie:" + echo.HeaderAuthorization,
 	}))
+	//user
+	r.GET("/user", HandleUserGet)
+	r.GET("/user/:id", HandleUserFind)
 	// presets
 	r.POST("/presets", HandlePresetCreate)
 	r.GET("/presets", HandlePresetsGet)
@@ -68,6 +71,12 @@ func Server() (*echo.Echo, error) {
 	r.GET("/teams/:id", HandleTeamFind)
 	r.PUT("/teams/:id", HandleTeamEdit)
 	r.DELETE("/teams/:id", HandleTeamDelete)
+	// exercises
+	r.POST("/exercises", HandleExerciseCreate)
+	r.GET("/exercises", HandleExercisesGet)
+	r.GET("/exercises/:id", HandleExerciseFind)
+	r.PUT("/exercises/:id", HandleExerciseEdit)
+	r.DELETE("/exercises/:id", HandleExerciseDelete)
 
 	// Auth - NO JWT
 	a := e.Group("/auth")

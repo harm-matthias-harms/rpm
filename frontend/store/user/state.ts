@@ -5,13 +5,18 @@ export const state = (): State => ({
     id: undefined,
     username: '',
     email: '',
-    password: ''
+    password: '',
+    code: undefined,
+    roles: []
   },
   registerError: false,
   registerErrorReason: '',
   registerSuccess: false,
+  isLoaded: false,
   isAuthenticated: false,
-  expireSession: undefined
+  isCodeUser: false,
+  expireSession: undefined,
+  userList: []
 })
 
 export default state
