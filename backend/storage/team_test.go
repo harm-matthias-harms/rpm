@@ -26,7 +26,7 @@ func TestTeam(t *testing.T) {
 		//additional model
 		notExist := &model.Team{Title: "title"}
 
-		// change preset
+		// change team
 		team.Title = "team 2"
 		err := UpdateTeam(nil, team)
 		assert.NoError(t, err)
@@ -74,7 +74,7 @@ func TestTeam(t *testing.T) {
 	t.Run("count teams", func(t *testing.T) {
 		count, err := CountTeams(nil, nil)
 		if assert.NoError(t, err) {
-			assert.GreaterOrEqual(t, count, int64(0))
+			assert.GreaterOrEqual(t, count, int64(1))
 		}
 
 		filter := map[string]interface{}{"title": "team 2"}
