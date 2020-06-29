@@ -20,9 +20,8 @@ func CountInjects(ctx context.Context, params map[string]interface{}) (int64, er
 }
 
 // GetInjects returns an array of injects
-func GetInjects(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.Inject, err error) {
+func GetInjects(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.InjectShort, err error) {
 	// setup & prevent null array
-	result = []model.Inject{}
 	c := injectCollection()
 
 	options := options.Find()
@@ -37,7 +36,7 @@ func GetInjects(ctx context.Context, params map[string]interface{}, page int, pa
 
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
-		var inject model.Inject
+		var inject model.InjectShort
 		cursor.Decode(&inject)
 		result = append(result, inject)
 	}
