@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HandleTeamsGet gives back a number of teams
+// HandleTeamsGet gives back a list of teams
 func HandleTeamsGet(c echo.Context) (err error) {
 	params := new(model.TeamQuery)
 	if err = c.Bind(params); err != nil {
@@ -115,7 +115,7 @@ func HandleTeamEdit(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, team)
 }
 
-// HandleTeamDelete updates an team
+// HandleTeamDelete deletes an team
 func HandleTeamDelete(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
