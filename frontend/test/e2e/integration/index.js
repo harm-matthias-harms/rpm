@@ -32,8 +32,8 @@ describe('Index Page', () => {
   it('shows and closes cookie bar', () => {
     cy.clearLocalStorage()
     cy.contains('.v-snack__content', 'This site uses 🍪 for your security')
-    cy.get('.v-snack__content > .v-btn > .v-btn__content > .v-icon').click()
-    cy.get('.v-snack__content').should('not.exist')
+    cy.get('.v-snack--active > .v-snack__wrapper > .v-snack__content > .v-btn > .v-btn__content > .v-icon').click()
+    cy.get('.v-snack__content').should('not.be.visible')
   })
 
   it('no sign in if no connection', () => {
