@@ -30,6 +30,6 @@ describe('Team form', () => {
   })
   test('is a Vue instance', () => {
     wrapper.vm.submit()
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
 })

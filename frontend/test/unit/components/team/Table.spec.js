@@ -27,7 +27,7 @@ describe('Team table', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     expect(wrapper.props().loading).toBeFalsy()
     expect(wrapper.props().items).toMatchObject([])
   })

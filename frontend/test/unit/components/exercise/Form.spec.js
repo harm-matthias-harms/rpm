@@ -31,7 +31,7 @@ describe('Exercise form', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
   test('autogenerate trainer', () => {
     wrapper.vm.exercise.teams.push({ team: { title: 'Team 1' }, trainer: {} })

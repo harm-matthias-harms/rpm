@@ -21,7 +21,7 @@ describe('VitalSigns', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     expect(wrapper.props().vitalSigns).toMatchObject(vitalSign)
   })
 })

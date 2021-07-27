@@ -18,7 +18,7 @@ describe('Index', () => {
     global.localStorage = LocalStorageMock
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
   test('snackbar should be false by default', () => {
     expect(wrapper.snackbar).toBeFalsy()

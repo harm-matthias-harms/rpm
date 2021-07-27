@@ -33,7 +33,7 @@ describe('SignUp', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
   test('loads user on error', () => {
     const storeCopy = store
