@@ -85,7 +85,7 @@ func DeleteMedicalCase(ctx context.Context, id primitive.ObjectID, userID primit
 		return int64(0), err
 	}
 	// make sure only author could delete his medical case
-	if mc.Author.ID != userID {
+	if !mc.Author.ID.IsZero() && mc.Author.ID != userID {
 		return int64(0), errors.New("not authorized")
 	}
 	// make sure all files are clean uped
