@@ -38,7 +38,7 @@
                   <v-list-item v-if="medicalCase.general.discipline">
                     <v-list-item-content>Area/Discipline:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.general.discipline }}
+                      {{ medicalCase.general.discipline.join(', ') }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.context">

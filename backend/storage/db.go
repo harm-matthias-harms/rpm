@@ -28,5 +28,6 @@ func SetMongoDatabase() error {
 
 	//create indexes
 	createUserIndexes()
+	mcMigrations()
 	return nil
 }
