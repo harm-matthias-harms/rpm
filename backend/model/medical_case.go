@@ -64,7 +64,7 @@ type MedicalCaseShort struct {
 	Title    string             `json:"title" bson:"title"`
 	Approved bool               `json:"approved" bson:"approved"`
 	General  struct {
-		Discipline string   `json:"discipline" form:"discipline" bson:"discipline"`
+		Discipline []string `json:"discipline" form:"discipline" bson:"discipline"`
 		Context    []string `json:"context" form:"context" bson:"context"`
 		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
 	} `json:"general" form:"general" bson:"general"`

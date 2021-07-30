@@ -22,7 +22,7 @@
               {{ item.title }}
             </td>
             <td @click="openMedicalCase(item)">
-              {{ item.general.discipline }}
+              {{ item.general.discipline ? item.general.discipline.join(', ') : '' }}
             </td>
             <td
               @click="openMedicalCase(item)"
