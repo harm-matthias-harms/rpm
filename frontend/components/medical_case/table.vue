@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details />
+    <v-text-field
+      v-model="search"
+      append-icon="search"
+      label="Search"
+      single-line
+      hide-details
+    />
     <v-data-table
       :headers="headers"
       :items="items"
@@ -22,17 +28,19 @@
               {{ item.title }}
             </td>
             <td @click="openMedicalCase(item)">
-              {{ item.general.discipline }}
+              {{
+                item.general.discipline
+                  ? item.general.discipline.join(', ')
+                  : ''
+              }}
             </td>
-            <td
-              @click="openMedicalCase(item)"
-            >
+            <td @click="openMedicalCase(item)">
               {{ item.general.context ? item.general.context.join(', ') : '' }}
             </td>
-            <td
-              @click="openMedicalCase(item)"
-            >
-              {{ item.general.scenario ? item.general.scenario.join(', ') : '' }}
+            <td @click="openMedicalCase(item)">
+              {{
+                item.general.scenario ? item.general.scenario.join(', ') : ''
+              }}
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.author.username }}
@@ -42,7 +50,10 @@
                 edit
               </v-icon>
               <DeleteButton
-                v-if="!item.author.username || item.author.id == $store.state.user.user.id"
+                v-if="
+                  !item.author.username ||
+                    item.author.id == $store.state.user.user.id
+                "
                 :item="item"
                 :go-back="false"
               />
@@ -114,7 +125,7 @@ export default class Table extends Vue {
 
     function filterGeneral (item, search) {
       return (
-        item.general.discipline.toLowerCase().includes(search) ||
+        item.general.discipline.some(e => e.toLowerCase().includes(search)) ||
         item.general.context.some(e => e.toLowerCase().includes(search)) ||
         item.general.scenario.some(e => e.toLowerCase().includes(search))
       )

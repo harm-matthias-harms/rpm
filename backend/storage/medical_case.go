@@ -146,3 +146,12 @@ func fileBucket() (bucket *gridfs.Bucket, err error) {
 	bucket, err = gridfs.NewBucket(MongoSession, options.GridFSBucket().SetName("files"))
 	return
 }
+
+func mcMigrations() {
+	c := mcCollection()
+	// genral.discipline from string to array
+	c.UpdateMany(nil,
+		bson.D{{Key: "general.discipline", Value: bson.D{{Key: "$not", Value: bson.D{{Key: "$type", Value: "array"}}}}}},
+		[]bson.D{{{Key: "$set", Value: bson.D{{Key: "general.discipline", Value: []string{"$general.discipline"}}}}}},
+	)
+}

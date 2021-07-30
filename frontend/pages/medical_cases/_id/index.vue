@@ -6,27 +6,43 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
-              <v-icon v-if="!medicalCase.approved" color="green" @click="approve(medicalCase)">
+              <v-icon
+                v-if="!medicalCase.approved"
+                color="green"
+                @click="approve(medicalCase)"
+              >
                 check
               </v-icon>
               <v-icon color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
               <DeleteButton
-                v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id"
+                v-if="
+                  !medicalCase.author.username ||
+                    medicalCase.author.id == $store.state.user.user.id
+                "
                 :item="medicalCase"
                 :go-back="true"
               />
             </h4>
             <v-row>
-              <v-col v-if="medicalCase.author && medicalCase.author.username" class="col-auto">
-                <Author :author="medicalCase.author" :created-at="medicalCase.createdAt" />
+              <v-col
+                v-if="medicalCase.author && medicalCase.author.username"
+                class="col-auto"
+              >
+                <Author
+                  :author="medicalCase.author"
+                  :created-at="medicalCase.createdAt"
+                />
               </v-col>
               <v-col
                 v-if="medicalCase.editor && medicalCase.editor.username"
                 class="col-auto mr-auto"
               >
-                <Editor :editor="medicalCase.editor" :updated-at="medicalCase.editedAt" />
+                <Editor
+                  :editor="medicalCase.editor"
+                  :updated-at="medicalCase.editedAt"
+                />
               </v-col>
             </v-row>
           </v-card-text>
@@ -38,30 +54,34 @@
                   <v-list-item v-if="medicalCase.general.discipline">
                     <v-list-item-content>Area/Discipline:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.general.discipline }}
+                      {{
+                        medicalCase.general.discipline.join(', ')
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.context">
                     <v-list-item-content>Context:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.general.context.join(', ') }}
+                    <v-list-item-content class="align-end">
+                      {{
+                        medicalCase.general.context.join(', ')
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.scenario">
                     <v-list-item-content>Scenario:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.general.scenario.join(', ') }}
+                    <v-list-item-content class="align-end">
+                      {{
+                        medicalCase.general.scenario.join(', ')
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-header>Patient's characteristics</v-expansion-panel-header>
+              <v-expansion-panel-header>
+                Patient's characteristics
+              </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.patient.type">
@@ -92,43 +112,65 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-header>Medical assessment</v-expansion-panel-header>
+              <v-expansion-panel-header>
+                Medical assessment
+              </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.medical.signs">
-                    <v-list-item-content>S - Signs/Symptoms:</v-list-item-content>
+                    <v-list-item-content>
+                      S - Signs/Symptoms:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.signs }}
+                      {{
+                        medicalCase.medical.signs
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.allergies">
                     <v-list-item-content>A - Allergies:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.allergies }}
+                      {{
+                        medicalCase.medical.allergies
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.medication">
                     <v-list-item-content>M - Medications:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.medication }}
+                      {{
+                        medicalCase.medical.medication
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.past">
-                    <v-list-item-content>P - Past pertinent medical history:</v-list-item-content>
+                    <v-list-item-content>
+                      P - Past pertinent medical history:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.past }}
+                      {{
+                        medicalCase.medical.past
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.loi">
-                    <v-list-item-content>L - Last oral intake:</v-list-item-content>
+                    <v-list-item-content>
+                      L - Last oral intake:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.loi }}
+                      {{
+                        medicalCase.medical.loi
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.events">
-                    <v-list-item-content>E - Events leading up to present illness/injury:</v-list-item-content>
+                    <v-list-item-content>
+                      E - Events leading up to present illness/injury:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.medical.events }}
+                      {{
+                        medicalCase.medical.events
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -141,21 +183,29 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-header>Make-up and attributes</v-expansion-panel-header>
+              <v-expansion-panel-header>
+                Make-up and attributes
+              </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-list dense>
                   <v-list-item v-if="medicalCase.makeup.makeup">
-                    <v-list-item-content>Make-up instructions:</v-list-item-content>
+                    <v-list-item-content>
+                      Make-up instructions:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ medicalCase.makeup.makeup }}
+                      {{
+                        medicalCase.makeup.makeup
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.makeup.acting">
-                    <v-list-item-content>Acting instructions:</v-list-item-content>
-                    <v-list-item-content
-                      class="align-end"
-                    >
-                      {{ medicalCase.makeup.acting }}
+                    <v-list-item-content>
+                      Acting instructions:
+                    </v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{
+                        medicalCase.makeup.acting
+                      }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -163,12 +213,26 @@
             </v-expansion-panel>
           </v-expansion-panels>
           <v-row class="px-4">
-            <v-col v-for="(file, i) in medicalCase.files" :key="i" sm="12" md="4" lg="3">
+            <v-col
+              v-for="(file, i) in medicalCase.files"
+              :key="i"
+              sm="12"
+              md="4"
+              lg="3"
+            >
               <v-card>
                 <v-icon>attach_file</v-icon>
                 <v-card-title class="body-2">
                   <a
-                    :href="($axios.defaults.baseURL === '/' ? '' : $axios.defaults.baseURL) + '/api/medical_cases/' + medicalCase.id + '/documents/' + file.id"
+                    :href="
+                      ($axios.defaults.baseURL === '/'
+                        ? ''
+                        : $axios.defaults.baseURL) +
+                        '/api/medical_cases/' +
+                        medicalCase.id +
+                        '/documents/' +
+                        file.id
+                    "
                   >
                     {{ file.name }}
                     <br>
@@ -176,15 +240,22 @@
                   </a>
                 </v-card-title>
                 <v-card-actions
-                  v-if="!medicalCase.author.username || medicalCase.author.id == $store.state.user.user.id"
+                  v-if="
+                    !medicalCase.author.username ||
+                      medicalCase.author.id == $store.state.user.user.id
+                  "
                 >
-                  <v-btn text color="red" @click="$set(deleteFileDialog, i, true)">
+                  <v-btn
+                    text
+                    color="red"
+                    @click="$set(deleteFileDialog, i, true)"
+                  >
                     Delete
                   </v-btn>
                   <Confirm
                     text="Are you sure you want to delete this file?"
                     :dialog.sync="deleteFileDialog[i]"
-                    :item="{mcID: medicalCase.id, id: file.id}"
+                    :item="{ mcID: medicalCase.id, id: file.id }"
                     :at-submit="deleteFile"
                     :at-cancel="onCancel"
                   />

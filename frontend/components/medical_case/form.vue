@@ -20,6 +20,7 @@
             v-model="medicalCase.general.discipline"
             :items="['Internal med', 'Surgery', 'Gyn/Obs', 'Infectious diseases', 'Trauma', 'Public health']"
             label="Area/Discipline"
+            multiple
           />
           <v-select
             v-model="medicalCase.general.context"
