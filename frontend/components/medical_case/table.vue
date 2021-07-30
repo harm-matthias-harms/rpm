@@ -52,7 +52,7 @@
               <DeleteButton
                 v-if="
                   !item.author.username ||
-                  item.author.id == $store.state.user.user.id
+                    item.author.id == $store.state.user.user.id
                 "
                 :item="item"
                 :go-back="false"
@@ -70,8 +70,8 @@ import { Prop, Component, Vue } from 'vue-property-decorator'
 import DeleteButton from '@/components/medical_case/Delete.vue'
 @Component({
   components: {
-    DeleteButton,
-  },
+    DeleteButton
+  }
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
@@ -83,28 +83,28 @@ export default class Table extends Vue {
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
     { text: 'Author', sortable: true, value: 'author.username' },
-    { text: 'Actions', sortable: false, value: 'action' },
+    { text: 'Actions', sortable: false, value: 'action' }
   ]
 
   search: string = ''
 
-  openMedicalCase(medicalCase) {
+  openMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id)
   }
 
-  editMedicalCase(medicalCase) {
+  editMedicalCase (medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
 
-  filterMedicalCases(value, search, item) {
+  filterMedicalCases (value, search, item) {
     // Split search into an array
     const needleArry = search
       .toString()
       .toLowerCase()
       .split(' ')
-      .filter((x) => x.trim().length > 0)
+      .filter(x => x.trim().length > 0)
 
-    function filterAll(item, search) {
+    function filterAll (item, search) {
       return (
         filterTitle(item, search) ||
         filterAuthor(item, search) ||
@@ -112,27 +112,27 @@ export default class Table extends Vue {
       )
     }
 
-    function filterTitle(item, search) {
+    function filterTitle (item, search) {
       return item.title && item.title.toLowerCase().includes(search)
     }
 
-    function filterAuthor(item, search) {
+    function filterAuthor (item, search) {
       return (
         item.author.username &&
         item.author.username.toLowerCase().includes(search)
       )
     }
 
-    function filterGeneral(item, search) {
+    function filterGeneral (item, search) {
       return (
-        item.general.discipline.some((e) => e.toLowerCase().includes(search)) ||
-        item.general.context.some((e) => e.toLowerCase().includes(search)) ||
-        item.general.scenario.some((e) => e.toLowerCase().includes(search))
+        item.general.discipline.some(e => e.toLowerCase().includes(search)) ||
+        item.general.context.some(e => e.toLowerCase().includes(search)) ||
+        item.general.scenario.some(e => e.toLowerCase().includes(search))
       )
     }
 
     return (
-      value && search && needleArry.every((needle) => filterAll(item, needle))
+      value && search && needleArry.every(needle => filterAll(item, needle))
     )
   }
 }
