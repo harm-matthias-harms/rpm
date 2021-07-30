@@ -16,14 +16,14 @@ describe('Medical case table', () => {
     wrapper = shallowMount(Table, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       propsData: {
         loading: false,
-        items: [],
+        items: []
       },
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {
@@ -45,9 +45,9 @@ describe('Medical case table', () => {
       general: {
         discipline: 'disc',
         context: ['context'],
-        scenario: ['scenario'],
+        scenario: ['scenario']
       },
-      patient: { triage: 'Red' },
+      patient: { triage: 'Red' }
     }
     expect(wrapper.vm.filterMedicalCases('test', 'disc', mc)).toBeTruthy()
     expect(wrapper.vm.filterMedicalCases('test', 'context', mc)).toBeTruthy()
@@ -70,7 +70,7 @@ describe('Medical case table', () => {
     )
     expect(
       wrapper.vm.getTriageColor({
-        patient: { triage: 'Deceased/Unsalvageable' },
+        patient: { triage: 'Deceased/Unsalvageable' }
       })
     ).toEqual('black')
   })
