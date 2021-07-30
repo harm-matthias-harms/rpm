@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details />
+    <v-text-field
+      v-model="search"
+      append-icon="search"
+      label="Search"
+      single-line
+      hide-details
+    />
     <v-data-table
       :headers="headers"
       :items="items"
@@ -19,20 +25,20 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td @click="openMedicalCase(item)">
-              {{ item.title }}
+              <v-badge dot inline left :color="getTriageColor(item)">
+                {{ item.title }}
+              </v-badge>
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.general.discipline }}
             </td>
-            <td
-              @click="openMedicalCase(item)"
-            >
+            <td @click="openMedicalCase(item)">
               {{ item.general.context ? item.general.context.join(', ') : '' }}
             </td>
-            <td
-              @click="openMedicalCase(item)"
-            >
-              {{ item.general.scenario ? item.general.scenario.join(', ') : '' }}
+            <td @click="openMedicalCase(item)">
+              {{
+                item.general.scenario ? item.general.scenario.join(', ') : ''
+              }}
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.author.username }}
@@ -42,7 +48,10 @@
                 edit
               </v-icon>
               <DeleteButton
-                v-if="!item.author.username || item.author.id == $store.state.user.user.id"
+                v-if="
+                  !item.author.username ||
+                    item.author.id == $store.state.user.user.id
+                "
                 :item="item"
                 :go-back="false"
               />
@@ -85,6 +94,14 @@ export default class Table extends Vue {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
 
+  getTriageColor (item) {
+    if (!item.patient.triage) { return 'grey' }
+    if (item.patient.triage === 'Red') { return 'error' }
+    if (item.patient.triage === 'Yellow') { return 'warning' }
+    if (item.patient.triage === 'Green') { return 'success' }
+    if (item.patient.triage === 'Deceased/Unsalvageable') { return 'black' }
+  }
+
   filterMedicalCases (value, search, item) {
     // Split search into an array
     const needleArry = search
@@ -97,7 +114,8 @@ export default class Table extends Vue {
       return (
         filterTitle(item, search) ||
         filterAuthor(item, search) ||
-        filterGeneral(item, search)
+        filterGeneral(item, search) ||
+        filterPatient(item, search)
       )
     }
 
@@ -117,6 +135,13 @@ export default class Table extends Vue {
         item.general.discipline.toLowerCase().includes(search) ||
         item.general.context.some(e => e.toLowerCase().includes(search)) ||
         item.general.scenario.some(e => e.toLowerCase().includes(search))
+      )
+    }
+
+    function filterPatient (item, search) {
+      return (
+        item.patient.triage &&
+        item.patient.triage.toLowerCase().includes(search)
       )
     }
 
