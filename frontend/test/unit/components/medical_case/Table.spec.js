@@ -40,7 +40,7 @@ describe('Medical case table', () => {
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
   })
   test('filter table', () => {
-    const mc = { author: {}, general: { discipline: 'disc', context: ['context'], scenario: ['scenario'] } }
+    const mc = { author: {}, general: { discipline: ['disc'], context: ['context'], scenario: ['scenario'] } }
     expect(
       wrapper.vm.filterMedicalCases('test', 'disc', mc)
     ).toBeTruthy()
