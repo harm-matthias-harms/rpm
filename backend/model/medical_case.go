@@ -68,6 +68,9 @@ type MedicalCaseShort struct {
 		Context    []string `json:"context" form:"context" bson:"context"`
 		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
 	} `json:"general" form:"general" bson:"general"`
+	Patient struct {
+		Triage string `json:"triage" form:"triage" bson:"triage"`
+	} `json:"patient" form:"patient" bson:"patient"`
 }
 
 // MedicalCaseQuery is the query fields for the getter

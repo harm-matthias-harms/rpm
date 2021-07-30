@@ -22,6 +22,9 @@
                     "Conflict",
                     "Outbreak"
                 ]
+            },
+            "patient": {
+                "triage": "Red"
             }
         },
         {
@@ -45,6 +48,9 @@
                     "Conflict",
                     "Outbreak"
                 ]
+            },
+            "patient": {
+                "triage": "Red"
             }
         },
         {
@@ -67,6 +73,9 @@
                     "Conflict",
                     "Outbreak"
                 ]
+            },
+            "patient": {
+                "triage": "Red"
             }
         }
     ]
