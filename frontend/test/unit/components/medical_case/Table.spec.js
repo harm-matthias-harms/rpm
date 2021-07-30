@@ -43,7 +43,7 @@ describe('Medical case table', () => {
     const mc = {
       author: {},
       general: {
-        discipline: 'disc',
+        discipline: ['disc'],
         context: ['context'],
         scenario: ['scenario']
       },

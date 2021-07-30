@@ -30,7 +30,11 @@
               </v-badge>
             </td>
             <td @click="openMedicalCase(item)">
-              {{ item.general.discipline }}
+              {{
+                item.general.discipline
+                  ? item.general.discipline.join(', ')
+                  : ''
+              }}
             </td>
             <td @click="openMedicalCase(item)">
               {{ item.general.context ? item.general.context.join(', ') : '' }}
@@ -132,7 +136,7 @@ export default class Table extends Vue {
 
     function filterGeneral (item, search) {
       return (
-        item.general.discipline.toLowerCase().includes(search) ||
+        item.general.discipline.some(e => e.toLowerCase().includes(search)) ||
         item.general.context.some(e => e.toLowerCase().includes(search)) ||
         item.general.scenario.some(e => e.toLowerCase().includes(search))
       )
