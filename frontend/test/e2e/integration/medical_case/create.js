@@ -23,31 +23,31 @@ describe('Create medical case', () => {
       method: 'POST',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/create.json'
+      response: 'fixture:medical_case/create.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases',
       status: 200,
-      response: 'fixture:medical_case/list.json'
+      response: 'fixture:medical_case/list.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets',
       status: 200,
-      response: 'fixture:preset/list.json'
+      response: 'fixture:preset/list.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/presets/001',
       status: 200,
-      response: 'fixture:preset/preset.json'
+      response: 'fixture:preset/preset.json',
     })
     cy.route({
       method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
-      response: 'fixture:medical_case/medicalCase.json'
+      response: 'fixture:medical_case/medicalCase.json',
     })
     cy.login()
   })
@@ -60,67 +60,50 @@ describe('Create medical case', () => {
     cy.visit('/medical_cases/new')
     cy.contains('New Medical Case')
     // general Information
-    cy.contains('div', 'Title')
-      .find('input')
-      .first()
-      .type(medicalCase.title)
+    cy.contains('div', 'Title').find('input').first().type(medicalCase.title)
 
     // general
     cy.contains('div', 'Area/Discipline')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', general.discipline)
-      .last('div[role="option"]')
-      .click()
+    general.discipline.forEach((e) => {
+      cy.contains('div', e).last('div[role="option"]').click()
+    })
 
     cy.contains('div', 'Context')
       .first('div[role="button"]')
       .click({ force: true })
     general.context.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
     cy.contains('div', 'Scenario')
       .first('div[role="button"]')
       .click({ force: true })
     general.scenario.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
     // patient
     cy.contains('div', 'Patient type')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', patient.type)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', patient.type).last('div[role="option"]').click()
 
     cy.contains('div', 'Triage')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', patient.triage)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', patient.triage).last('div[role="option"]').click()
 
     cy.contains('div', 'Gender')
       .first('div[role="button"]')
       .click({ force: true })
     patient.gender.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
-    cy.contains('div', 'Age')
-      .first('div[role="button"]')
-      .click({ force: true })
-    cy.contains('div', patient.age)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', 'Age').first('div[role="button"]').click({ force: true })
+    cy.contains('div', patient.age).last('div[role="option"]').click()
 
     // medical
     cy.contains('div', 'S – Signs/Symptoms')
@@ -167,18 +150,13 @@ describe('Create medical case', () => {
     // Vital Signs
 
     // add first vital sign
-    cy.contains('button', 'Vital signs')
-      .find('.fa-plus')
-      .first()
-      .click()
+    cy.contains('button', 'Vital signs').find('.fa-plus').first().click()
 
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Title')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', vitalSigns.title)
-      .first('div[role="option"]')
-      .click()
+    cy.contains('div', vitalSigns.title).first('div[role="option"]').click()
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Onset of symptoms')
       .find('input')
@@ -188,9 +166,7 @@ describe('Create medical case', () => {
       .contains('div', 'AVPU')
       .first('div[role="button"]')
       .click()
-    cy.contains('div', vitalSigns.data.avpu)
-      .first('div[role="option"]')
-      .click()
+    cy.contains('div', vitalSigns.data.avpu).first('div[role="option"]').click()
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Mobility')
       .first('div[role="button"]')
