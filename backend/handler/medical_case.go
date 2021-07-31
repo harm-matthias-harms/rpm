@@ -221,7 +221,7 @@ func HandleMedicalCaseFileDelete(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, errorAuthParse)
 	}
-	if mc.Author.ID != userID {
+	if !mc.Author.ID.IsZero() && mc.Author.ID != userID {
 		return echo.NewHTTPError(http.StatusBadRequest, errorNotAuthorized)
 	}
 	for i, file := range mc.Files {

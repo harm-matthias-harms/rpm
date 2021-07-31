@@ -60,67 +60,50 @@ describe('Create medical case', () => {
     cy.visit('/medical_cases/new')
     cy.contains('New Medical Case')
     // general Information
-    cy.contains('div', 'Title')
-      .find('input')
-      .first()
-      .type(medicalCase.title)
+    cy.contains('div', 'Title').find('input').first().type(medicalCase.title)
 
     // general
     cy.contains('div', 'Area/Discipline')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', general.discipline)
-      .last('div[role="option"]')
-      .click()
+    general.discipline.forEach((e) => {
+      cy.contains('div', e).last('div[role="option"]').click()
+    })
 
     cy.contains('div', 'Context')
       .first('div[role="button"]')
       .click({ force: true })
     general.context.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
     cy.contains('div', 'Scenario')
       .first('div[role="button"]')
       .click({ force: true })
     general.scenario.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
     // patient
     cy.contains('div', 'Patient type')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', patient.type)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', patient.type).last('div[role="option"]').click()
 
     cy.contains('div', 'Triage')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', patient.triage)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', patient.triage).last('div[role="option"]').click()
 
     cy.contains('div', 'Gender')
       .first('div[role="button"]')
       .click({ force: true })
     patient.gender.forEach((e) => {
-      cy.contains('div', e)
-        .last('div[role="option"]')
-        .click()
+      cy.contains('div', e).last('div[role="option"]').click()
     })
 
-    cy.contains('div', 'Age')
-      .first('div[role="button"]')
-      .click({ force: true })
-    cy.contains('div', patient.age)
-      .last('div[role="option"]')
-      .click()
+    cy.contains('div', 'Age').first('div[role="button"]').click({ force: true })
+    cy.contains('div', patient.age).last('div[role="option"]').click()
 
     // medical
     cy.contains('div', 'S – Signs/Symptoms')
@@ -167,30 +150,23 @@ describe('Create medical case', () => {
     // Vital Signs
 
     // add first vital sign
-    cy.contains('button', 'Vital signs')
-      .find('.fa-plus')
-      .first()
-      .click()
+    cy.contains('button', 'Vital signs').find('.fa-plus').first().click()
 
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Title')
       .first('div[role="button"]')
       .click({ force: true })
-    cy.contains('div', vitalSigns.title)
-      .first('div[role="option"]')
-      .click()
+    cy.contains('div', vitalSigns.title).first('div[role="option"]').click()
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
-      .type(vitalSigns.data.oos)
+      .type(vitalSigns.data.oos, { force: true })
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'AVPU')
       .first('div[role="button"]')
       .click()
-    cy.contains('div', vitalSigns.data.avpu)
-      .first('div[role="option"]')
-      .click()
+    cy.contains('div', vitalSigns.data.avpu).first('div[role="option"]').click()
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Mobility')
       .first('div[role="button"]')
@@ -279,7 +255,7 @@ describe('Create medical case', () => {
       .contains('div', 'Onset of symptoms')
       .find('input')
       .first()
-      .type(child.data.oos)
+      .type(child.data.oos, { force: true })
     // currently not working because cypress is not finding the right document
     // cy.get(':nth-child(5) > .v-expansion-panel > .v-expansion-panel-content')
     //   .contains('div', 'AVPU')

@@ -31,7 +31,7 @@ describe('Editor', () => {
     // inject('moment', moment)
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     expect(wrapper.props().updatedAt).toEqual('1970-01-01T00:00:00')
     expect(wrapper.props().editor).toMatchObject({
       id: '001',

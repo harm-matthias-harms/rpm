@@ -2,8 +2,8 @@ version: '3.3'
 services:
   mongo:
     container_name: "rpm_mongo"
-    image: mongo:4.1.1
-    volumes: 
+    image: mongo:4.2
+    volumes:
       - ./mongo_data:/data/db
     environment:
           MONGO_DATA_DIR: /data/db

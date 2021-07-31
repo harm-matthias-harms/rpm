@@ -15,12 +15,12 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	// setup<
+	// setup
 	_ = storage.SetMongoDatabase()
 	header := jsonHeader()
 	jwtCookie := &http.Cookie{}
 
-	//models
+	// models
 	userString := `{"username":"username","email":"user@mail.com","password":"abc123","code":"code123"}`
 	triggerParseError := `{"user1name":"username","email1":"user@mail.com","password1":"abc123" }`
 	triggerBadRequest := `"username":"username","password":"abc123" }`

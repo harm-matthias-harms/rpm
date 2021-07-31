@@ -28,7 +28,7 @@ describe('Vitalsigns form', () => {
     })
   })
   test('is a Vue instance', (done) => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     wrapper.find('input[name="oos"]').setValue('test')
 
     wrapper.vm

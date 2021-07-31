@@ -23,7 +23,7 @@ describe('Delete Button', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
     wrapper.vm.deleteTeam({ id: '001' })
     wrapper.vm.onCancel()
   })

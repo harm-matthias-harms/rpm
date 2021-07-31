@@ -20,7 +20,7 @@ describe('Index', () => {
     })
   })
   test('is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper).toBeTruthy()
   })
   test('snackbar has empty default state', () => {
     expect(wrapper.vm.show).toBeFalsy()

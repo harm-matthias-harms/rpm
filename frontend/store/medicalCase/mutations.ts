@@ -19,7 +19,8 @@ export const mutations: MutationTree<State> = {
       },
       title: medicalCase.title,
       approved: medicalCase.approved,
-      general: medicalCase.general
+      general: medicalCase.general,
+      patient: medicalCase.patient
     })
   },
   DELETE_FROM_LIST (state, id) {
@@ -42,7 +43,7 @@ export const mutations: MutationTree<State> = {
       title: '',
       approved: false,
       general: {
-        discipline: undefined,
+        discipline: [],
         context: [],
         scenario: []
       },

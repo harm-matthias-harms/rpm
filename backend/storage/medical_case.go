@@ -85,7 +85,7 @@ func DeleteMedicalCase(ctx context.Context, id primitive.ObjectID, userID primit
 		return int64(0), err
 	}
 	// make sure only author could delete his medical case
-	if mc.Author.ID != userID {
+	if !mc.Author.ID.IsZero() && mc.Author.ID != userID {
 		return int64(0), errors.New("not authorized")
 	}
 	// make sure all files are clean uped
@@ -145,4 +145,13 @@ func mcCollection() *mongo.Collection {
 func fileBucket() (bucket *gridfs.Bucket, err error) {
 	bucket, err = gridfs.NewBucket(MongoSession, options.GridFSBucket().SetName("files"))
 	return
+}
+
+func mcMigrations() {
+	c := mcCollection()
+	// genral.discipline from string to array
+	c.UpdateMany(nil,
+		bson.D{{Key: "general.discipline", Value: bson.D{{Key: "$not", Value: bson.D{{Key: "$type", Value: "array"}}}}}},
+		[]bson.D{{{Key: "$set", Value: bson.D{{Key: "general.discipline", Value: []string{"$general.discipline"}}}}}},
+	)
 }

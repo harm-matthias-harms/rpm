@@ -49,7 +49,7 @@ export interface State {
     title: string
     approved: boolean
     general: {
-      discipline?: string
+      discipline: string[]
       context: string[]
       scenario: string[]
     }
@@ -88,6 +88,9 @@ export interface State {
         discipline?: string
         context: string[]
         scenario: string[]
+      }
+      patient: {
+        triage?: string
       }
     }[]
   }
