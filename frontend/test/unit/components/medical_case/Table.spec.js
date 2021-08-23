@@ -40,18 +40,38 @@ describe('Medical case table', () => {
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001/edit')
   })
   test('filter table', () => {
-    const mc = { author: {}, general: { discipline: 'disc', context: ['context'], scenario: ['scenario'] } }
+    const mc = {
+      author: {},
+      general: {
+        discipline: ['disc'],
+        context: ['context'],
+        scenario: ['scenario']
+      },
+      patient: { triage: 'Red' }
+    }
+    expect(wrapper.vm.filterMedicalCases('test', 'disc', mc)).toBeTruthy()
+    expect(wrapper.vm.filterMedicalCases('test', 'context', mc)).toBeTruthy()
+    expect(wrapper.vm.filterMedicalCases('test', 'something', mc)).toBeFalsy()
+    expect(wrapper.vm.filterMedicalCases('test', 'scenario', mc)).toBeTruthy()
+    expect(wrapper.vm.filterMedicalCases('test', 'red', mc)).toBeTruthy()
+  })
+  test('triage color', () => {
+    expect(wrapper.vm.getTriageColor({ patient: { triage: '' } })).toEqual(
+      'grey'
+    )
+    expect(wrapper.vm.getTriageColor({ patient: { triage: 'Red' } })).toEqual(
+      'error'
+    )
     expect(
-      wrapper.vm.filterMedicalCases('test', 'disc', mc)
-    ).toBeTruthy()
+      wrapper.vm.getTriageColor({ patient: { triage: 'Yellow' } })
+    ).toEqual('warning')
+    expect(wrapper.vm.getTriageColor({ patient: { triage: 'Green' } })).toEqual(
+      'success'
+    )
     expect(
-      wrapper.vm.filterMedicalCases('test', 'context', mc)
-    ).toBeTruthy()
-    expect(
-      wrapper.vm.filterMedicalCases('test', 'something', mc)
-    ).toBeFalsy()
-    expect(
-      wrapper.vm.filterMedicalCases('test', 'scenario', mc)
-    ).toBeTruthy()
+      wrapper.vm.getTriageColor({
+        patient: { triage: 'Deceased/Unsalvageable' }
+      })
+    ).toEqual('black')
   })
 })

@@ -16,7 +16,7 @@ export const state = (): State => ({
     title: '',
     approved: false,
     general: {
-      discipline: undefined,
+      discipline: [],
       context: [],
       scenario: []
     },
