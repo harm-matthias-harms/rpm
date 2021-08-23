@@ -76,7 +76,7 @@ func UpdateInject(ctx context.Context, inject *model.Inject) (err error) {
 // DeleteInject deletes an inject by a given id
 func DeleteInject(ctx context.Context, id primitive.ObjectID, userID primitive.ObjectID) (count int64, err error) {
 	c := injectCollection()
-	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}, {Key: "author._id", Value: userID}})
+	result, err := c.DeleteOne(ctx, bson.D{{Key: "_id", Value: id}})
 	return result.DeletedCount, err
 }
 
