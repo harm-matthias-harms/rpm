@@ -2,26 +2,26 @@ import { MutationTree } from 'vuex'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
-  SET_EXERCISE (state, exercise) {
+  SET_EXERCISE(state, exercise) {
     state.exercise = exercise
   },
-  UNSET_EXERCISE (state) {
+  UNSET_EXERCISE(state) {
     state.exercise = {
       id: undefined,
       author: {
         id: undefined,
-        username: undefined
+        username: undefined,
       },
       createdAt: undefined,
-      updatedAt: undefined,
+      editedAt: undefined,
       title: '',
       startTime: undefined,
       endTime: undefined,
       teams: [],
       roleplayManager: [],
-      makeupCenter: []
+      makeupCenter: [],
     }
-  }
+  },
 }
 
 export default mutations

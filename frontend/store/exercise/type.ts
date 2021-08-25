@@ -1,53 +1,23 @@
+import { Team } from '../team/type'
+import { Author, ShortUser } from '../user/type'
+
 export interface State {
   exercise: {
     id?: string
-    author: {
-      id?: string
-      username?: string
-    }
+    author: Author
     createdAt?: Date
-    updatedAt?: Date
+    editedAt?: Date
     title: string
     startTime?: Date
     endTime?: Date
     teams: {
-      team: {
-        id?: string
-        author: {
-          id?: string
-          username?: string
-        }
-        editor: {
-          id?: string
-          username?: string
-        }
-        createdAt?: Date
-        updatedAt?: Date
-        title: string
-        type?: string
-        medivac?: boolean
-      }
-      trainer: {
-        id?: string
-        username?: string
-        email?: string
-        code?: string
-      }
+      team: Team
+      trainer: ShortUser
     }[]
-    roleplayManager: {
-      id?: string
-      username?: string
-      email?: string
-      code?: string
-    }[]
+    roleplayManager: ShortUser[]
     makeupCenter: {
       title: string
-      account: {
-        id?: string
-        username?: string
-        email?: string
-        code?: string
-      }
+      account: ShortUser
     }[]
   }
 }

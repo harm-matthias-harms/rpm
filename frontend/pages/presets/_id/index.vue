@@ -1,19 +1,12 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        lg="8"
-        md="10"
-        sm="12"
-      >
+      <v-col lg="8" md="10" sm="12">
         <v-card>
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ preset.title }}
-              <v-icon
-                color="primary"
-                @click="editPreset(preset)"
-              >
+              <v-icon color="primary" @click="editPreset(preset)">
                 edit
               </v-icon>
               <DeleteButton
@@ -37,17 +30,11 @@
                 v-if="preset.editor && preset.editor.username"
                 class="col-auto mr-auto"
               >
-                <Editor
-                  :editor="preset.editor"
-                  :updated-at="preset.editedAt"
-                />
+                <Editor :editor="preset.editor" :edited-at="preset.editedAt" />
               </v-col>
             </v-row>
           </v-card-text>
-          <VitalSigns
-            class="black--text"
-            :vital-signs="preset.vitalSigns"
-          />
+          <VitalSigns class="black--text" :vital-signs="preset.vitalSigns" />
         </v-card>
       </v-col>
     </v-row>
@@ -66,31 +53,31 @@ import DeleteButton from '@/components/preset/Delete.vue'
     Author,
     Editor,
     VitalSigns,
-    DeleteButton
+    DeleteButton,
   },
   computed: {
     ...mapState('preset', {
-      preset: 'preset'
-    })
+      preset: 'preset',
+    }),
   },
   methods: {
     ...mapActions('preset', {
-      find: 'find'
-    })
-  }
+      find: 'find',
+    }),
+  },
 })
 export default class ShowPreset extends Vue {
   find!: (id) => void
   preset!: any
 
-  mounted () {
+  mounted() {
     const id = this.$route.params.id
     if (this.preset.id !== id) {
       this.find({ id })
     }
   }
 
-  editPreset (preset) {
+  editPreset(preset) {
     this.$router.push('/presets/' + preset.id + '/edit')
   }
 }

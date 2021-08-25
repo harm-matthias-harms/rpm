@@ -1,51 +1,48 @@
-import { State } from './type'
+import { author } from '../user/state'
+import { MedicalCase, State } from './type'
+
+export const medicalCase: MedicalCase = {
+  id: undefined,
+  author: author,
+  editor: author,
+  createdAt: undefined,
+  editedAt: undefined,
+  title: '',
+  approved: false,
+  general: {
+    discipline: [],
+    context: [],
+    scenario: [],
+  },
+  patient: {
+    type: undefined,
+    triage: undefined,
+    gender: [],
+    age: undefined,
+  },
+  medical: {
+    signs: undefined,
+    allergies: undefined,
+    medication: undefined,
+    past: undefined,
+    loi: undefined,
+    events: undefined,
+  },
+  makeup: {
+    makeup: undefined,
+    acting: undefined,
+  },
+  vitalSigns: [],
+  files: [],
+}
 
 export const state = (): State => ({
-  medicalCase: {
-    id: undefined,
-    author: {
-      id: undefined,
-      username: undefined
-    },
-    editor: {
-      id: undefined,
-      username: undefined
-    },
-    createdAt: undefined,
-    updatedAt: undefined,
-    title: '',
-    approved: false,
-    general: {
-      discipline: [],
-      context: [],
-      scenario: []
-    },
-    patient: {
-      type: undefined,
-      triage: undefined,
-      gender: [],
-      age: undefined
-    },
-    medical: {
-      signs: undefined,
-      allergies: undefined,
-      medication: undefined,
-      past: undefined,
-      loi: undefined,
-      events: undefined
-    },
-    makeup: {
-      makeup: undefined,
-      acting: undefined
-    },
-    vitalSigns: [],
-    files: []
-  },
+  medicalCase: medicalCase,
   medicalCasesList: {
     count: 0,
-    medicalCases: []
+    medicalCases: [],
   },
-  medicalCasesLoaded: false
+  medicalCasesLoaded: false,
 })
 
 export default state

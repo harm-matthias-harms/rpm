@@ -6,10 +6,7 @@
           <v-card-text>
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ team.title }}
-              <v-icon
-                color="primary"
-                @click="editTeam(team)"
-              >
+              <v-icon color="primary" @click="editTeam(team)">
                 edit
               </v-icon>
               <DeleteButton
@@ -20,11 +17,17 @@
             </h4>
 
             <v-row>
-              <v-col v-if="team.author && team.author.username" class="col-auto">
+              <v-col
+                v-if="team.author && team.author.username"
+                class="col-auto"
+              >
                 <Author :author="team.author" :created-at="team.createdAt" />
               </v-col>
-              <v-col v-if="team.editor && team.editor.username" class="col-auto mr-auto">
-                <Editor :editor="team.editor" :updated-at="team.editedAt" />
+              <v-col
+                v-if="team.editor && team.editor.username"
+                class="col-auto mr-auto"
+              >
+                <Editor :editor="team.editor" :edited-at="team.editedAt" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -61,31 +64,31 @@ import DeleteButton from '@/components/team/Delete.vue'
   components: {
     Author,
     Editor,
-    DeleteButton
+    DeleteButton,
   },
   computed: {
     ...mapState('team', {
-      team: 'team'
-    })
+      team: 'team',
+    }),
   },
   methods: {
     ...mapActions('team', {
-      find: 'find'
-    })
-  }
+      find: 'find',
+    }),
+  },
 })
 export default class ShowTeam extends Vue {
   find!: (id) => void
   team!: any
 
-  mounted () {
+  mounted() {
     const id = this.$route.params.id
     if (this.team.id !== id) {
       this.find({ id })
     }
   }
 
-  editTeam (team) {
+  editTeam(team) {
     this.$router.push('/teams/' + team.id + '/edit')
   }
 }

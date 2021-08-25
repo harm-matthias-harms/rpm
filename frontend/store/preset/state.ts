@@ -1,18 +1,13 @@
+import { author } from '../user/state'
 import { State } from './type'
 
 export const state = (): State => ({
   preset: {
     id: undefined,
-    author: {
-      id: undefined,
-      username: undefined
-    },
-    editor: {
-      id: undefined,
-      username: undefined
-    },
+    author: author,
+    editor: author,
     createdAt: undefined,
-    updatedAt: undefined,
+    editedAt: undefined,
     title: '',
     vitalSigns: {
       oos: undefined,
@@ -27,15 +22,15 @@ export const state = (): State => ({
       oxygenSaturation: undefined,
       expectations: {
         foe: undefined,
-        treatmentExpected: undefined
-      }
-    }
+        treatmentExpected: undefined,
+      },
+    },
   },
   presetList: {
     count: 0,
-    presets: []
+    presets: [],
   },
-  presetsLoaded: false
+  presetsLoaded: false,
 })
 
 export default state

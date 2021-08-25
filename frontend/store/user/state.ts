@@ -1,4 +1,9 @@
-import { State } from './type'
+import { Author, State } from './type'
+
+export const author: Author = {
+  id: undefined,
+  username: undefined,
+}
 
 export const state = (): State => ({
   user: {
@@ -7,7 +12,7 @@ export const state = (): State => ({
     email: '',
     password: '',
     code: undefined,
-    roles: []
+    roles: [],
   },
   registerError: false,
   registerErrorReason: '',
@@ -16,7 +21,7 @@ export const state = (): State => ({
   isAuthenticated: false,
   isCodeUser: false,
   expireSession: undefined,
-  userList: []
+  userList: [],
 })
 
 export default state

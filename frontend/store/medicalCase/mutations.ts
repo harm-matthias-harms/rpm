@@ -2,56 +2,58 @@ import { MutationTree } from 'vuex'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
-  SET_MEDICAL_CASE (state, medicalCase) {
+  SET_MEDICAL_CASE(state, medicalCase) {
     state.medicalCase = medicalCase
   },
-  SET_MEDICAL_CASE_LIST (state, list) {
+  SET_MEDICAL_CASE_LIST(state, list) {
     state.medicalCasesList = list
     state.medicalCasesLoaded = true
   },
-  SET_MEDICAL_CASE_TO_LIST (state, medicalCase) {
+  SET_MEDICAL_CASE_TO_LIST(state, medicalCase) {
     state.medicalCasesList.count += 1
     state.medicalCasesList.medicalCases.unshift({
       id: medicalCase.id,
       author: {
         id: medicalCase.author.id,
-        username: medicalCase.author.username
+        username: medicalCase.author.username,
       },
       title: medicalCase.title,
       approved: medicalCase.approved,
       general: medicalCase.general,
-      patient: medicalCase.patient
+      patient: medicalCase.patient,
     })
   },
-  DELETE_FROM_LIST (state, id) {
-    state.medicalCasesList.medicalCases = state.medicalCasesList.medicalCases.filter(item => item.id !== id)
+  DELETE_FROM_LIST(state, id) {
+    state.medicalCasesList.medicalCases = state.medicalCasesList.medicalCases.filter(
+      (item) => item.id !== id
+    )
     state.medicalCasesList.count--
   },
-  UNSET_MEDICAL_CASE (state) {
+  UNSET_MEDICAL_CASE(state) {
     state.medicalCase = {
       id: undefined,
       author: {
         id: undefined,
-        username: undefined
+        username: undefined,
       },
       editor: {
         id: undefined,
-        username: undefined
+        username: undefined,
       },
       createdAt: undefined,
-      updatedAt: undefined,
+      editedAt: undefined,
       title: '',
       approved: false,
       general: {
         discipline: [],
         context: [],
-        scenario: []
+        scenario: [],
       },
       patient: {
         type: undefined,
         triage: undefined,
         gender: [],
-        age: undefined
+        age: undefined,
       },
       medical: {
         signs: undefined,
@@ -59,16 +61,16 @@ export const mutations: MutationTree<State> = {
         medication: undefined,
         past: undefined,
         loi: undefined,
-        events: undefined
+        events: undefined,
       },
       makeup: {
         makeup: undefined,
-        acting: undefined
+        acting: undefined,
       },
       vitalSigns: [],
-      files: []
+      files: [],
     }
-  }
+  },
 }
 
 export default mutations

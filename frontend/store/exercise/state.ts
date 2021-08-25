@@ -1,21 +1,19 @@
+import { author } from '../user/state'
 import { State } from './type'
 
 export const state = (): State => ({
   exercise: {
     id: undefined,
-    author: {
-      id: undefined,
-      username: undefined
-    },
+    author: author,
     createdAt: undefined,
-    updatedAt: undefined,
+    editedAt: undefined,
     title: '',
     startTime: undefined,
     endTime: undefined,
     teams: [],
     roleplayManager: [],
-    makeupCenter: []
-  }
+    makeupCenter: [],
+  },
 })
 
 export default state
