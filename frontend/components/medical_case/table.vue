@@ -10,9 +10,9 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      :items-per-page="25"
+      :items-per-page="100"
       :footer-props="{
-        itemsPerPageOptions: [10, 25, 50],
+        itemsPerPageOptions: [25, 50, 100, 250],
       }"
       :search="search"
       :custom-filter="filterMedicalCases"

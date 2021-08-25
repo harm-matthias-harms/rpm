@@ -1,12 +1,18 @@
 <template>
   <div>
-    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details />
+    <v-text-field
+      v-model="search"
+      append-icon="search"
+      label="Search"
+      single-line
+      hide-details
+    />
     <v-data-table
       :headers="headers"
       :items="items"
-      :items-per-page="25"
+      :items-per-page="50"
       :footer-props="{
-        itemsPerPageOptions: [10, 25, 50],
+        itemsPerPageOptions: [25, 50, 100],
       }"
       :search="search"
       :custom-filter="filterPresets"
