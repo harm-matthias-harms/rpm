@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-app-bar app dark dense color="primary">
-      <v-app-bar-nav-icon v-if="isAuthenticated && !isCodeUser" @click="drawer = !drawer" />
+      <v-app-bar-nav-icon
+        v-if="isAuthenticated && !isCodeUser"
+        @click="drawer = !drawer"
+      />
       <nuxt-link to="/" class="toolbar-title">
         <v-toolbar-title>RPM</v-toolbar-title>
       </nuxt-link>
@@ -16,7 +19,12 @@
       </v-toolbar-items>
     </v-app-bar>
 
-    <v-navigation-drawer v-if="isAuthenticated && !isCodeUser" v-model="drawer" temporary app>
+    <v-navigation-drawer
+      v-if="isAuthenticated && !isCodeUser"
+      v-model="drawer"
+      temporary
+      app
+    >
       <v-list nav class="px-0">
         <v-list-item>
           <v-list-item-avatar>
@@ -29,14 +37,23 @@
       </v-list>
       <v-divider />
       <v-list dense nav>
-        <v-list-group v-for="item in items" :key="item.name" :prepend-icon="item.icon" no-action>
+        <v-list-group
+          v-for="item in items"
+          :key="item.name"
+          :prepend-icon="item.icon"
+          no-action
+        >
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title v-text="item.name" />
             </v-list-item-content>
           </template>
 
-          <v-list-item v-for="subItem in item.items" :key="subItem.name" :to="subItem.url">
+          <v-list-item
+            v-for="subItem in item.items"
+            :key="subItem.name"
+            :to="subItem.url"
+          >
             <v-list-item-icon>
               <v-icon>{{ subItem.icon }}</v-icon>
             </v-list-item-icon>
@@ -51,12 +68,12 @@
     <CookieHint />
     <Snackbar />
 
-    <v-content>
+    <v-main>
       <Nuxt v-if="!isLoading" />
       <v-overlay :value="isLoading">
         <v-progress-circular indeterminate size="64" />
       </v-overlay>
-    </v-content>
+    </v-main>
 
     <v-footer app>
       <v-spacer />
