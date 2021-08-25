@@ -99,11 +99,21 @@ export default class Table extends Vue {
   }
 
   getTriageColor (item) {
-    if (!item.patient.triage) { return 'grey' }
-    if (item.patient.triage === 'Red') { return 'error' }
-    if (item.patient.triage === 'Yellow') { return 'warning' }
-    if (item.patient.triage === 'Green') { return 'success' }
-    if (item.patient.triage === 'Deceased/Unsalvageable') { return 'black' }
+    if (!item.patient.triage) {
+      return 'grey'
+    }
+    if (item.patient.triage === 'Red') {
+      return 'error'
+    }
+    if (item.patient.triage === 'Yellow') {
+      return 'warning'
+    }
+    if (item.patient.triage === 'Green') {
+      return 'success'
+    }
+    if (item.patient.triage === 'Deceased/Unsalvageable') {
+      return 'black'
+    }
   }
 
   filterMedicalCases (value, search, item) {
@@ -136,9 +146,11 @@ export default class Table extends Vue {
 
     function filterGeneral (item, search) {
       return (
-        item.general.discipline.some(e => e.toLowerCase().includes(search)) ||
-        item.general.context.some(e => e.toLowerCase().includes(search)) ||
-        item.general.scenario.some(e => e.toLowerCase().includes(search))
+        item.general.discipline?.some(e =>
+          e.toLowerCase().includes(search)
+        ) ||
+        item.general.context?.some(e => e.toLowerCase().includes(search)) ||
+        item.general.scenario?.some(e => e.toLowerCase().includes(search))
       )
     }
 
