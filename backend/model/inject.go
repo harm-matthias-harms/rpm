@@ -15,6 +15,7 @@ type Inject struct {
 	CreatedAt         time.Time          `json:"createdAt" bson:"createdAt"`
 	EditedAt          time.Time          `json:"editedAt" bson:"editedAt"`
 	ExerciseID        primitive.ObjectID `json:"exerciseID" bson:"exerciseID"`
+	Status            string             `json:"status" bson:"status"`
 	MakeupCenterTitle string             `json:"makeupCenterTitle" bson:"makeupCenterTitle"`
 	Team              Team               `json:"team" bson:"team"`
 	Roleplayer        struct {
@@ -34,6 +35,7 @@ type InjectShort struct {
 	CreatedAt         time.Time          `json:"createdAt" bson:"createdAt"`
 	EditedAt          time.Time          `json:"editedAt" bson:"editedAt"`
 	ExerciseID        primitive.ObjectID `json:"exerciseID" bson:"exerciseID"`
+	Status            string             `json:"status" bson:"status"`
 	MakeupCenterTitle string             `json:"makeupCenterTitle" bson:"makeupCenterTitle"`
 	Team              Team               `json:"team" bson:"team"`
 	Roleplayer        Roleplayer         `json:"roleplayer" bson:"roleplayer"`
@@ -54,6 +56,7 @@ type InjectQuery struct {
 	Author            string             `query:"author"`
 	Team              Team               `query:"team"`
 	MakeupCenterTitle string             `query:"makeupCenterTitle"`
+	Status            string             `query:"status"`
 	Page              int                `query:"page"`
 	PageSize          int                `query:"limit"`
 }

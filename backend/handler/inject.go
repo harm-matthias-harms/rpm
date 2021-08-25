@@ -57,6 +57,9 @@ func HandleInjectsGet(c echo.Context) (err error) {
 	if params.Author != "" {
 		filter["author.username"] = primitive.Regex{Pattern: params.Author}
 	}
+	if params.Status != "" {
+		filter["status"] = params.Status
+	}
 	injects, err := storage.GetInjects(c.Request().Context(), filter, params.Page, params.PageSize)
 	count, err := storage.CountInjects(c.Request().Context(), filter)
 	response := model.InjectList{Count: count, Injects: injects}
