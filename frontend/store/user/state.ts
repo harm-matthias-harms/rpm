@@ -2,18 +2,20 @@ import { Author, State } from './type'
 
 export const author: Author = {
   id: undefined,
-  username: undefined,
+  username: undefined
+}
+
+export const defaultUser = {
+  id: undefined,
+  username: '',
+  email: '',
+  password: '',
+  code: undefined,
+  roles: []
 }
 
 export const state = (): State => ({
-  user: {
-    id: undefined,
-    username: '',
-    email: '',
-    password: '',
-    code: undefined,
-    roles: [],
-  },
+  user: defaultUser,
   registerError: false,
   registerErrorReason: '',
   registerSuccess: false,
@@ -21,7 +23,7 @@ export const state = (): State => ({
   isAuthenticated: false,
   isCodeUser: false,
   expireSession: undefined,
-  userList: [],
+  userList: []
 })
 
 export default state

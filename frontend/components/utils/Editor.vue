@@ -8,10 +8,10 @@
     <v-col class="px-2 col-auto">
       <h5 class="subtitle-1 black--text">
         {{ editor.username }}
-        <br />
-        <span class="body-2"
-          >edited {{ $moment(editedAt).format("MMM DD'YY") }}</span
-        >
+        <br>
+        <span
+          class="body-2"
+        >edited {{ $moment(editedAt).format("MMM DD'YY") }}</span>
       </h5>
     </v-col>
   </v-row>

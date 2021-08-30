@@ -3,7 +3,7 @@ import { State as RootState } from '@/store/root'
 import { State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
-  create({ commit }, preset) {
+  create ({ commit }, preset) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$post('/api/presets', preset)
@@ -18,7 +18,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  update({ commit }, preset) {
+  update ({ commit }, preset) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$put('/api/presets/' + preset.id, preset)
@@ -33,7 +33,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  get_all({ commit }, payload = { disableLoader: false }) {
+  get_all ({ commit }, payload = { disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
@@ -51,7 +51,7 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  find({ commit }, payload = { id: null, disableLoader: false }) {
+  find ({ commit }, payload = { id: null, disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
@@ -70,14 +70,14 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  delete({ commit }, payload = { id: null, goBack: false }) {
+  delete ({ commit }, payload = { id: null, goBack: false }) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$delete('/api/presets/' + payload.id)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
         commit('snackbar/SET', 'Preset  was successfully deleted.', {
-          root: true,
+          root: true
         })
         if (payload.goBack) {
           this.$router.back()
@@ -89,7 +89,7 @@ export const actions: ActionTree<State, RootState> = {
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
-  },
+  }
 }
 
 export default actions

@@ -13,5 +13,5 @@ export const inject: Module<State, RootState> = {
   state,
   getters,
   // actions,
-  mutations,
+  mutations
 }

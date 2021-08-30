@@ -1,24 +1,24 @@
 import { author } from '../user/state'
 import { State, Team } from './type'
 
-export const team: Team = {
+export const defaultTeam: Team = {
   id: undefined,
-  author: author,
+  author,
   editor: author,
   createdAt: undefined,
   editedAt: undefined,
   title: '',
   type: undefined,
-  medivac: undefined,
+  medivac: undefined
 }
 
 export const state = (): State => ({
-  team: team,
+  team: defaultTeam,
   teamList: {
     count: 0,
-    teams: [],
+    teams: []
   },
-  teamsLoaded: false,
+  teamsLoaded: false
 })
 
 export default state

@@ -64,31 +64,31 @@ import DeleteButton from '@/components/team/Delete.vue'
   components: {
     Author,
     Editor,
-    DeleteButton,
+    DeleteButton
   },
   computed: {
     ...mapState('team', {
-      team: 'team',
-    }),
+      team: 'team'
+    })
   },
   methods: {
     ...mapActions('team', {
-      find: 'find',
-    }),
-  },
+      find: 'find'
+    })
+  }
 })
 export default class ShowTeam extends Vue {
   find!: (id) => void
   team!: any
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
     if (this.team.id !== id) {
       this.find({ id })
     }
   }
 
-  editTeam(team) {
+  editTeam (team) {
     this.$router.push('/teams/' + team.id + '/edit')
   }
 }

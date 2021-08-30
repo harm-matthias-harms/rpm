@@ -53,31 +53,31 @@ import DeleteButton from '@/components/preset/Delete.vue'
     Author,
     Editor,
     VitalSigns,
-    DeleteButton,
+    DeleteButton
   },
   computed: {
     ...mapState('preset', {
-      preset: 'preset',
-    }),
+      preset: 'preset'
+    })
   },
   methods: {
     ...mapActions('preset', {
-      find: 'find',
-    }),
-  },
+      find: 'find'
+    })
+  }
 })
 export default class ShowPreset extends Vue {
   find!: (id) => void
   preset!: any
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
     if (this.preset.id !== id) {
       this.find({ id })
     }
   }
 
-  editPreset(preset) {
+  editPreset (preset) {
     this.$router.push('/presets/' + preset.id + '/edit')
   }
 }

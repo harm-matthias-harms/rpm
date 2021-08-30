@@ -1,9 +1,9 @@
 import { author } from '../user/state'
 import { MedicalCase, State } from './type'
 
-export const medicalCase: MedicalCase = {
+export const defaultMedicalCase: MedicalCase = {
   id: undefined,
-  author: author,
+  author,
   editor: author,
   createdAt: undefined,
   editedAt: undefined,
@@ -12,13 +12,13 @@ export const medicalCase: MedicalCase = {
   general: {
     discipline: [],
     context: [],
-    scenario: [],
+    scenario: []
   },
   patient: {
     type: undefined,
     triage: undefined,
     gender: [],
-    age: undefined,
+    age: undefined
   },
   medical: {
     signs: undefined,
@@ -26,23 +26,23 @@ export const medicalCase: MedicalCase = {
     medication: undefined,
     past: undefined,
     loi: undefined,
-    events: undefined,
+    events: undefined
   },
   makeup: {
     makeup: undefined,
-    acting: undefined,
+    acting: undefined
   },
   vitalSigns: [],
-  files: [],
+  files: []
 }
 
 export const state = (): State => ({
-  medicalCase: medicalCase,
+  medicalCase: defaultMedicalCase,
   medicalCasesList: {
     count: 0,
-    medicalCases: [],
+    medicalCases: []
   },
-  medicalCasesLoaded: false,
+  medicalCasesLoaded: false
 })
 
 export default state

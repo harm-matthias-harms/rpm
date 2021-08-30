@@ -1,29 +1,29 @@
-import { medicalCase } from '../medicalCase/state'
-import { team } from '../team/state'
+import { defaultMedicalCase } from '../medicalCase/state'
+import { defaultTeam } from '../team/state'
 import { author } from '../user/state'
 import { State } from './type'
 
 export const defaultInject = {
   id: undefined,
-  author: author,
+  author,
   editor: author,
   createdAt: undefined,
   editedAt: undefined,
   exerciseID: undefined,
   status: undefined,
   makeupCenterTitle: undefined,
-  team: team,
+  team: defaultTeam,
   roleplayer: {},
-  medicalCase: medicalCase,
+  medicalCase: defaultMedicalCase
 }
 
 export const state = (): State => ({
   inject: defaultInject,
   injectList: {
     count: 0,
-    injects: [],
+    injects: []
   },
-  injectsLoaded: false,
+  injectsLoaded: false
 })
 
 export default state
