@@ -3,28 +3,28 @@ import { State as RootState } from '@/store/root'
 import { State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
-  create({ commit }, preset) {
+  create({ commit }, payload) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$post('/api/presets', preset)
+      .$post(`/exercises/${payload.exerciseID}/injects`, payload.injects)
       .then((response) => {
-        commit('SET_PRESET_TO_LIST', response.data)
-        this.$router.push('/presets/' + response.data.id)
+        commit('SET_INJECTS_TO_LIST', response.data)
+        this.$router.push(`/exercise/${payload.exerciseID}/injects`)
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't create preset.", { root: true })
+        commit('snackbar/SET', "Couldn't create injects.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })
       })
   },
-  update({ commit }, preset) {
+  update({ commit }, inject) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$put('/api/presets/' + preset.id, preset)
+      .$put(`/exercises/${inject.exerciseID}/injects/${inject.id}`, inject)
       .then((response) => {
         commit('SET_PRESET', response)
-        this.$router.push('/presets/' + preset.id)
+        this.$router.push(`/exercise/${inject.exerciseID}/injects/${inject.id}`)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't edit preset.", { root: true })
@@ -33,17 +33,17 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  get_all({ commit }, payload = { disableLoader: false }) {
+  get_all({ commit }, payload = { exerciseID: null, disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
     this.$axios
-      .$get('/api/presets')
+      .$get(`/exercises/${payload.exerciseID}/injects`)
       .then((response) => {
-        commit('SET_PRESET_LIST', response)
+        commit('SET_INJECT_LIST', response)
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't load presets.", { root: true })
+        commit('snackbar/SET', "Couldn't load injects.", { root: true })
       })
       .finally(() => {
         if (!payload.disableLoader) {
@@ -51,18 +51,21 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  find({ commit }, payload = { id: null, disableLoader: false }) {
+  find(
+    { commit },
+    payload = { id: null, exerciseID: null, disableLoader: false }
+  ) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
     return this.$axios
-      .$get('/api/presets/' + payload.id)
+      .$get(`/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then((response) => {
-        commit('SET_PRESET', response)
+        commit('SET_INJECT', response)
         return response
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't find preset.", { root: true })
+        commit('snackbar/SET', "Couldn't find inject.", { root: true })
       })
       .finally(() => {
         if (!payload.disableLoader) {
@@ -70,13 +73,13 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  delete({ commit }, payload = { id: null, goBack: false }) {
+  delete({ commit }, payload = { id: null, exerciseID: null, goBack: false }) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$delete('/api/presets/' + payload.id)
+      .$delete(`/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
-        commit('snackbar/SET', 'Preset  was successfully deleted.', {
+        commit('snackbar/SET', 'Inject  was successfully deleted.', {
           root: true,
         })
         if (payload.goBack) {
@@ -84,7 +87,7 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't delete preset.", { root: true })
+        commit('snackbar/SET', "Couldn't delete inject.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })
