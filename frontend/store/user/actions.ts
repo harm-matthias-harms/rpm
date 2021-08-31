@@ -50,14 +50,18 @@ export const actions: ActionTree<State, RootState> = {
             dispatch('load', { id: decoded.id })
           }
         } else {
-          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', {
+            root: true
+          })
         }
       })
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           commit('snackbar/SET', "Couldn't connect to network", { root: true })
         } else if (error.response && error.response.status === 401) {
-          commit('snackbar/SET', 'Wrong username, password or code', { root: true })
+          commit('snackbar/SET', 'Wrong username, password or code', {
+            root: true
+          })
         }
       })
       .finally(() => {
@@ -82,15 +86,18 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  load ({ commit }, payload = { id: null }) {
+  load ({ commit, state }, payload = { id: state.user.id }) {
     if (payload.id) {
-      this.$axios.get('/api/user/' + payload.id)
+      this.$axios
+        .get('/api/user/' + payload.id)
         .then((response) => {
           commit('SET_USER', response.data)
           commit('SET_LOADED')
         })
         .catch(() => {
-          commit('snackbar/SET', "Couldn't load your information", { root: true })
+          commit('snackbar/SET', "Couldn't load your information", {
+            root: true
+          })
         })
     }
   }
