@@ -11,6 +11,7 @@ export const defaultInject = {
   editedAt: undefined,
   exerciseID: undefined,
   status: undefined,
+  startTime: undefined,
   makeupCenterTitle: undefined,
   team: defaultTeam,
   roleplayer: {},

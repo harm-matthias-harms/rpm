@@ -26,6 +26,7 @@ export interface State {
       editedAt?: Date
       exerciseID?: string
       status?: string
+      startTime?: Date
       makeupCenterTitle?: string
       team: Team
       roleplayer: Roleplayer
