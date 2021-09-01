@@ -2,13 +2,13 @@ import Vue from 'vue'
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import ShowExercise from '@/pages/exercises/_id/index.vue'
-import { store } from '../../../utils/vuex-store'
+import Injects from '@/pages/exercises/_id/injects/index.vue'
+import { store } from '../../../../utils/vuex-store'
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 
-describe('Show Exercise', () => {
+describe('List injects', () => {
   let wrapper
   let router
   store.state.exercise.exercise = {
@@ -22,7 +22,7 @@ describe('Show Exercise', () => {
   }
   beforeEach(() => {
     router = new VueRouter()
-    wrapper = shallowMount(ShowExercise, {
+    wrapper = shallowMount(Injects, {
       stubs: {
         NuxtLink: RouterLinkStub,
         RouterLink: RouterLinkStub,
@@ -33,14 +33,5 @@ describe('Show Exercise', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper).toBeTruthy()
-  })
-  test('open edit form', () => {
-    wrapper.vm.editExercise({ id: '001' })
-    expect(wrapper.vm.$route.path).toEqual('/exercises/001/edit')
-  })
-
-  test('open inject', () => {
-    wrapper.vm.openInjects({ id: '001' })
-    expect(wrapper.vm.$route.path).toEqual('/exercises/001/injects')
   })
 })
