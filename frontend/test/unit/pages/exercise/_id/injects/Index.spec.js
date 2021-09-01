@@ -18,17 +18,17 @@ describe('List injects', () => {
     endTime: '2001-01-01',
     teams: [],
     roleplayManager: [],
-    makeupCenter: [],
+    makeupCenter: []
   }
   beforeEach(() => {
     router = new VueRouter()
     wrapper = shallowMount(Injects, {
       stubs: {
         NuxtLink: RouterLinkStub,
-        RouterLink: RouterLinkStub,
+        RouterLink: RouterLinkStub
       },
       store,
-      router,
+      router
     })
   })
   test('is a Vue instance', () => {

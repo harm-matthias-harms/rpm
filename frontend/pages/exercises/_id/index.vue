@@ -69,7 +69,7 @@
                       </h3>
                       <p>
                         {{ team.trainer.username }}
-                        <br />
+                        <br>
                         {{
                           team.trainer.email
                             ? team.trainer.email
@@ -92,7 +92,7 @@
                     <v-col>
                       <h3 class="font-weight-light black--text">
                         {{ rpm.username }}
-                        <br />
+                        <br>
                         {{ rpm.email ? rpm.email : 'Code: ' + rpm.code }}
                       </h3>
                     </v-col>
@@ -119,7 +119,7 @@
                       </h3>
                       <p>
                         {{ mc.account.username }}
-                        <br />
+                        <br>
                         {{
                           mc.account.email
                             ? mc.account.email
@@ -146,41 +146,41 @@ import DeleteButton from '@/components/exercise/Delete.vue'
 @Component({
   components: {
     Author,
-    DeleteButton,
+    DeleteButton
   },
   computed: {
     ...mapState('exercise', {
-      exercise: 'exercise',
-    }),
+      exercise: 'exercise'
+    })
   },
   methods: {
     ...mapActions('exercise', {
-      find: 'find',
-    }),
-  },
+      find: 'find'
+    })
+  }
 })
 export default class ShowExercise extends Vue {
   find!: (id) => void
   exercise!: any
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
     if (this.exercise.id !== id) {
       this.find({ id })
     }
     if (
       this.exercise.id &&
-      this.exercise.author.id != this.$store.state.user.user.id
+      this.exercise.author.id !== this.$store.state.user.user.id
     ) {
       this.openInjects(this.exercise)
     }
   }
 
-  editExercise(exercise) {
+  editExercise (exercise) {
     this.$router.push('/exercises/' + exercise.id + '/edit')
   }
 
-  openInjects(exercise) {
+  openInjects (exercise) {
     this.$router.push(`/exercises/${exercise.id}/injects`)
   }
 }
