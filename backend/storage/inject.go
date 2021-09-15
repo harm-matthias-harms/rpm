@@ -23,6 +23,7 @@ func CountInjects(ctx context.Context, params map[string]interface{}) (int64, er
 func GetInjects(ctx context.Context, params map[string]interface{}, page int, pageSize int) (result []model.InjectShort, err error) {
 	// setup & prevent null array
 	c := injectCollection()
+	result = []model.InjectShort{}
 
 	options := options.Find()
 	options.SetSort(bson.D{{Key: "_id", Value: -1}})

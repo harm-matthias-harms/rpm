@@ -11,14 +11,9 @@ Vue.use(VueRouter)
 describe('List injects', () => {
   let wrapper
   let router
-  store.state.exercise.exercise = {
-    id: '002',
-    author: { id: '001' },
-    startTime: '2001-01-01',
-    endTime: '2001-01-01',
-    teams: [],
-    roleplayManager: [],
-    makeupCenter: []
+  store.state.inject.injectList = {
+    injects: [],
+    count: 0
   }
   beforeEach(() => {
     router = new VueRouter()

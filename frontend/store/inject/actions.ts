@@ -6,7 +6,7 @@ export const actions: ActionTree<State, RootState> = {
   create ({ commit }, payload) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$post(`/exercises/${payload.exerciseID}/injects`, payload.injects)
+      .$post(`/api/exercises/${payload.exerciseID}/injects`, payload.injects)
       .then((response) => {
         commit('SET_INJECTS_TO_LIST', response.data)
         this.$router.push(`/exercise/${payload.exerciseID}/injects`)
@@ -21,7 +21,7 @@ export const actions: ActionTree<State, RootState> = {
   update ({ commit }, inject) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$put(`/exercises/${inject.exerciseID}/injects/${inject.id}`, inject)
+      .$put(`/api/exercises/${inject.exerciseID}/injects/${inject.id}`, inject)
       .then((response) => {
         commit('SET_PRESET', response)
         this.$router.push(`/exercise/${inject.exerciseID}/injects/${inject.id}`)
@@ -38,7 +38,7 @@ export const actions: ActionTree<State, RootState> = {
       commit('loader/SET', true, { root: true })
     }
     this.$axios
-      .$get(`/exercises/${payload.exerciseID}/injects`)
+      .$get(`/api/exercises/${payload.exerciseID}/injects`)
       .then((response) => {
         commit('SET_INJECT_LIST', response)
       })
@@ -59,7 +59,7 @@ export const actions: ActionTree<State, RootState> = {
       commit('loader/SET', true, { root: true })
     }
     return this.$axios
-      .$get(`/exercises/${payload.exerciseID}/injects/${payload.id}`)
+      .$get(`/api/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then((response) => {
         commit('SET_INJECT', response)
         return response
@@ -76,7 +76,7 @@ export const actions: ActionTree<State, RootState> = {
   delete ({ commit }, payload = { id: null, exerciseID: null, goBack: false }) {
     commit('loader/SET', true, { root: true })
     this.$axios
-      .$delete(`/exercises/${payload.exerciseID}/injects/${payload.id}`)
+      .$delete(`/api/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
         commit('snackbar/SET', 'Inject  was successfully deleted.', {
