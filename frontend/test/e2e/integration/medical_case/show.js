@@ -99,5 +99,7 @@ describe('Show a medical case', () => {
     cy.contains('36.3 °C')
     cy.contains('foe')
     cy.contains('expected treatment')
+    // contains default exams
+    cy.contains('Normal exams')
   })
 })
