@@ -54,25 +54,19 @@
                   <v-list-item v-if="medicalCase.general.discipline">
                     <v-list-item-content>Area/Discipline:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.general.discipline.join(', ')
-                      }}
+                      {{ medicalCase.general.discipline.join(', ') }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.context">
                     <v-list-item-content>Context:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.general.context.join(', ')
-                      }}
+                      {{ medicalCase.general.context.join(', ') }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.general.scenario">
                     <v-list-item-content>Scenario:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.general.scenario.join(', ')
-                      }}
+                      {{ medicalCase.general.scenario.join(', ') }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -122,25 +116,19 @@
                       S - Signs/Symptoms:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.signs
-                      }}
+                      {{ medicalCase.medical.signs }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.allergies">
                     <v-list-item-content>A - Allergies:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.allergies
-                      }}
+                      {{ medicalCase.medical.allergies }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.medication">
                     <v-list-item-content>M - Medications:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.medication
-                      }}
+                      {{ medicalCase.medical.medication }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.past">
@@ -148,9 +136,7 @@
                       P - Past pertinent medical history:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.past
-                      }}
+                      {{ medicalCase.medical.past }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.loi">
@@ -158,9 +144,7 @@
                       L - Last oral intake:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.loi
-                      }}
+                      {{ medicalCase.medical.loi }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.medical.events">
@@ -168,9 +152,7 @@
                       E - Events leading up to present illness/injury:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.medical.events
-                      }}
+                      {{ medicalCase.medical.events }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -193,9 +175,7 @@
                       Make-up instructions:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.makeup.makeup
-                      }}
+                      {{ medicalCase.makeup.makeup }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item v-if="medicalCase.makeup.acting">
@@ -203,16 +183,14 @@
                       Acting instructions:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{
-                        medicalCase.makeup.acting
-                      }}
+                      {{ medicalCase.makeup.acting }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-          <v-row class="px-4">
+          <v-row class="ma-4">
             <v-col
               v-for="(file, i) in medicalCase.files"
               :key="i"
@@ -263,6 +241,7 @@
               </v-card>
             </v-col>
           </v-row>
+          <Exams />
         </v-card>
       </v-col>
     </v-row>
@@ -275,6 +254,7 @@ import { mapState, mapActions } from 'vuex'
 import Author from '@/components/utils/Author.vue'
 import Editor from '@/components/utils/Editor.vue'
 import VitalSigns from '@/components/medical_case/vital_signs/show.vue'
+import Exams from '@/components/medical_case/Exams.vue'
 import DeleteButton from '@/components/medical_case/Delete.vue'
 import Confirm from '@/components/utils/Confirm.vue'
 
@@ -283,6 +263,7 @@ import Confirm from '@/components/utils/Confirm.vue'
     Author,
     Editor,
     VitalSigns,
+    Exams,
     DeleteButton,
     Confirm
   },
