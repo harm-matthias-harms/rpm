@@ -21,7 +21,7 @@ describe('Editor', () => {
           id: '001',
           username: 'username'
         },
-        updatedAt: '1970-01-01T00:00:00'
+        editedAt: '1970-01-01T00:00:00'
       },
       mocks: {
         $moment
@@ -32,7 +32,7 @@ describe('Editor', () => {
   })
   test('is a Vue instance', () => {
     expect(wrapper).toBeTruthy()
-    expect(wrapper.props().updatedAt).toEqual('1970-01-01T00:00:00')
+    expect(wrapper.props().editedAt).toEqual('1970-01-01T00:00:00')
     expect(wrapper.props().editor).toMatchObject({
       id: '001',
       username: 'username'

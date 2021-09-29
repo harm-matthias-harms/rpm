@@ -38,4 +38,9 @@ describe('Show Exercise', () => {
     wrapper.vm.editExercise({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/exercises/001/edit')
   })
+
+  test('open inject', () => {
+    wrapper.vm.openInjects({ id: '001' })
+    expect(wrapper.vm.$route.path).toEqual('/exercises/001/injects')
+  })
 })

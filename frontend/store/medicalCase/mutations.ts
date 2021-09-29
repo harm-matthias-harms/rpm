@@ -1,4 +1,5 @@
 import { MutationTree } from 'vuex'
+import { defaultMedicalCase } from './state'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
@@ -13,10 +14,7 @@ export const mutations: MutationTree<State> = {
     state.medicalCasesList.count += 1
     state.medicalCasesList.medicalCases.unshift({
       id: medicalCase.id,
-      author: {
-        id: medicalCase.author.id,
-        username: medicalCase.author.username
-      },
+      author: medicalCase.author,
       title: medicalCase.title,
       approved: medicalCase.approved,
       general: medicalCase.general,
@@ -24,50 +22,13 @@ export const mutations: MutationTree<State> = {
     })
   },
   DELETE_FROM_LIST (state, id) {
-    state.medicalCasesList.medicalCases = state.medicalCasesList.medicalCases.filter(item => item.id !== id)
+    state.medicalCasesList.medicalCases = state.medicalCasesList.medicalCases.filter(
+      item => item.id !== id
+    )
     state.medicalCasesList.count--
   },
   UNSET_MEDICAL_CASE (state) {
-    state.medicalCase = {
-      id: undefined,
-      author: {
-        id: undefined,
-        username: undefined
-      },
-      editor: {
-        id: undefined,
-        username: undefined
-      },
-      createdAt: undefined,
-      updatedAt: undefined,
-      title: '',
-      approved: false,
-      general: {
-        discipline: [],
-        context: [],
-        scenario: []
-      },
-      patient: {
-        type: undefined,
-        triage: undefined,
-        gender: [],
-        age: undefined
-      },
-      medical: {
-        signs: undefined,
-        allergies: undefined,
-        medication: undefined,
-        past: undefined,
-        loi: undefined,
-        events: undefined
-      },
-      makeup: {
-        makeup: undefined,
-        acting: undefined
-      },
-      vitalSigns: [],
-      files: []
-    }
+    state.medicalCase = defaultMedicalCase
   }
 }
 

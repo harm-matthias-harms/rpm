@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex'
 import Cookie from 'js-cookie'
 import { State } from './type'
+import { defaultUser } from './state'
 
 export const mutations: MutationTree<State> = {
   SET_USER (state, user) {
@@ -11,14 +12,7 @@ export const mutations: MutationTree<State> = {
     state.registerErrorReason = reason
   },
   UNSET_USER (state) {
-    state.user = {
-      id: undefined,
-      username: '',
-      email: '',
-      password: '',
-      code: undefined,
-      roles: []
-    }
+    state.user = defaultUser
   },
   REGISTER_SUCCESS (state) {
     state.registerSuccess = true

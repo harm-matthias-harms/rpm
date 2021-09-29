@@ -81,7 +81,7 @@ export default class Table extends Vue {
 
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
-    { text: 'Area', sortable: true, value: 'general.area' },
+    { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
     { text: 'Author', sortable: true, value: 'author.username' },

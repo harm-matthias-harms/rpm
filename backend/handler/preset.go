@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// HandlePresetsGet gives back a number of presets
+// HandlePresetsGet gives back a list of presets
 func HandlePresetsGet(c echo.Context) (err error) {
 	params := new(model.PresetQuery)
 	if err = c.Bind(params); err != nil {
@@ -115,7 +115,7 @@ func HandlePresetEdit(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, preset)
 }
 
-// HandlePresetDelete updates an preset
+// HandlePresetDelete deletes an preset
 func HandlePresetDelete(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {

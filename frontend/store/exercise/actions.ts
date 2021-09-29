@@ -3,7 +3,7 @@ import { State as RootState } from '@/store/root'
 import { State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
-  create ({ commit }, exercise) {
+  create ({ commit, dispatch }, exercise) {
     commit('loader/SET', true, { root: true })
     exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
     exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
@@ -11,6 +11,7 @@ export const actions: ActionTree<State, RootState> = {
       .$post('/api/exercises', exercise)
       .then((response) => {
         commit('SET_EXERCISE', response.data)
+        dispatch('user/load', undefined, { root: true })
         this.$router.push('/exercises/' + response.data.id)
       })
       .catch(() => {
@@ -20,7 +21,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  update ({ commit }, exercise) {
+  update ({ commit, dispatch }, exercise) {
     commit('loader/SET', true, { root: true })
     exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
     exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
@@ -28,6 +29,7 @@ export const actions: ActionTree<State, RootState> = {
       .$put('/api/exercises/' + exercise.id, exercise)
       .then((response) => {
         commit('SET_EXERCISE', response)
+        dispatch('user/load', undefined, { root: true })
         this.$router.push('/exercises/' + exercise.id)
       })
       .catch(() => {
@@ -59,13 +61,16 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  delete ({ commit }, payload = { id: null }) {
+  delete ({ commit, dispatch }, payload = { id: null }) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$delete('/api/exercises/' + payload.id)
       .then(() => {
         commit('UNSET_EXERCISE')
-        commit('snackbar/SET', 'Exercise was successfully deleted.', { root: true })
+        commit('snackbar/SET', 'Exercise was successfully deleted.', {
+          root: true
+        })
+        dispatch('user/load', undefined, { root: true })
         this.$router.push('/')
       })
       .catch(() => {

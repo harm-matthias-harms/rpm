@@ -22,10 +22,17 @@ export interface State {
   isLoaded: boolean
   isCodeUser: boolean
   expireSession?: Date
-  userList: {
-    is?: string
-    username: string
-    email: string
-    code?: string
-  }[]
+  userList: ShortUser[]
+}
+
+export interface ShortUser {
+  id?: string
+  username: string
+  email: string
+  code?: string
+}
+
+export interface Author {
+  id?: string
+  username?: string
 }

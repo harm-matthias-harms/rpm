@@ -1,53 +1,27 @@
+import { Team } from '../team/type'
+import { Author, ShortUser } from '../user/type'
+
+export interface MakeupCenter {
+  title: string
+  account: ShortUser
+}
+
+export interface Exercise {
+  id?: string
+  author: Author
+  createdAt?: Date
+  editedAt?: Date
+  title: string
+  startTime?: string
+  endTime?: string
+  teams: {
+    team: Team
+    trainer: ShortUser
+  }[]
+  roleplayManager: ShortUser[]
+  makeupCenter: MakeupCenter[]
+}
+
 export interface State {
-  exercise: {
-    id?: string
-    author: {
-      id?: string
-      username?: string
-    }
-    createdAt?: Date
-    updatedAt?: Date
-    title: string
-    startTime?: Date
-    endTime?: Date
-    teams: {
-      team: {
-        id?: string
-        author: {
-          id?: string
-          username?: string
-        }
-        editor: {
-          id?: string
-          username?: string
-        }
-        createdAt?: Date
-        updatedAt?: Date
-        title: string
-        type?: string
-        medivac?: boolean
-      }
-      trainer: {
-        id?: string
-        username?: string
-        email?: string
-        code?: string
-      }
-    }[]
-    roleplayManager: {
-      id?: string
-      username?: string
-      email?: string
-      code?: string
-    }[]
-    makeupCenter: {
-      title: string
-      account: {
-        id?: string
-        username?: string
-        email?: string
-        code?: string
-      }
-    }[]
-  }
+  exercise: Exercise
 }
