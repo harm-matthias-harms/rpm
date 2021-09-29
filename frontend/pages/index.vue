@@ -13,33 +13,39 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <div v-if="user.roles">
-        <v-col
-          v-for="(role, index) in user.roles"
-          :key="index"
-          cols="12"
-          lg="3"
-          md="4"
-          sm="6"
-        >
-          <nuxt-link :to="'/exercises/' + role.exercise.id">
-            <v-card>
-              <v-card-text>
-                <p class="title mb-0 text--primary">
-                  {{ role.exercise.title }}
-                </p>
-                <p>{{ role.exercise.startTime.slice(0,10) }} - {{ role.exercise.endTime.slice(0,10) }}</p>
-                <p class="mb-0">
-                  {{ role.role.charAt(0).toUpperCase() + role.role.slice(1) }}
-                </p>
-              </v-card-text>
-            </v-card>
-          </nuxt-link>
-        </v-col>
-      </div>
+      <v-col
+        v-for="(role, index) in user.roles"
+        v-show="user.roles"
+        :key="index"
+        cols="12"
+        lg="3"
+        md="4"
+        sm="6"
+      >
+        <nuxt-link :to="'/exercises/' + role.exercise.id">
+          <v-card>
+            <v-card-text>
+              <p class="title mb-0 text--primary">
+                {{ role.exercise.title }}
+              </p>
+              <p>
+                {{ role.exercise.startTime.slice(0, 10) }} -
+                {{ role.exercise.endTime.slice(0, 10) }}
+              </p>
+              <p class="mb-0">
+                {{ role.role.charAt(0).toUpperCase() + role.role.slice(1) }}
+              </p>
+            </v-card-text>
+          </v-card>
+        </nuxt-link>
+      </v-col>
     </v-row>
 
-    <v-row v-if="!isAuthenticated" justify="center" style="margin-top: auto; margin-bottom: auto;">
+    <v-row
+      v-if="!isAuthenticated"
+      justify="center"
+      style="margin-top: auto; margin-bottom: auto;"
+    >
       <v-col cols="12" class="text-center">
         <v-icon color="primary" size="120">
           fas fa-file-medical

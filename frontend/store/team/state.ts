@@ -1,22 +1,19 @@
-import { State } from './type'
+import { author } from '../user/state'
+import { State, Team } from './type'
+
+export const defaultTeam: Team = {
+  id: undefined,
+  author,
+  editor: author,
+  createdAt: undefined,
+  editedAt: undefined,
+  title: '',
+  type: undefined,
+  medivac: undefined
+}
 
 export const state = (): State => ({
-  team: {
-    id: undefined,
-    author: {
-      id: undefined,
-      username: undefined
-    },
-    editor: {
-      id: undefined,
-      username: undefined
-    },
-    createdAt: undefined,
-    updatedAt: undefined,
-    title: '',
-    type: undefined,
-    medivac: undefined
-  },
+  team: defaultTeam,
   teamList: {
     count: 0,
     teams: []

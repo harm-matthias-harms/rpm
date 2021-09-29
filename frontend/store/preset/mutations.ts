@@ -1,4 +1,5 @@
 import { MutationTree } from 'vuex'
+import { defaultPreset } from './state'
 import { State } from './type'
 
 export const mutations: MutationTree<State> = {
@@ -13,45 +14,18 @@ export const mutations: MutationTree<State> = {
     state.presetList.count += 1
     state.presetList.presets.unshift({
       id: preset.id,
-      author: { id: preset.author.id, username: preset.author.username },
+      author: preset.author,
       title: preset.title
     })
   },
   DELETE_FROM_LIST (state, id) {
-    state.presetList.presets = state.presetList.presets.filter(item => item.id !== id)
+    state.presetList.presets = state.presetList.presets.filter(
+      item => item.id !== id
+    )
     state.presetList.count--
   },
   UNSET_PRESET (state) {
-    state.preset = {
-      id: undefined,
-      author: {
-        id: undefined,
-        username: undefined
-      },
-      editor: {
-        id: undefined,
-        username: undefined
-      },
-      createdAt: undefined,
-      updatedAt: undefined,
-      title: '',
-      vitalSigns: {
-        oos: undefined,
-        avpu: undefined,
-        mobility: undefined,
-        respiratoryRate: undefined,
-        pulse: undefined,
-        temperature: undefined,
-        capillaryRefill: undefined,
-        bloodPressureSystolic: undefined,
-        bloodPressureDiastolic: undefined,
-        oxygenSaturation: undefined,
-        expectations: {
-          foe: undefined,
-          treatmentExpected: undefined
-        }
-      }
-    }
+    state.preset = defaultPreset
   }
 }
 

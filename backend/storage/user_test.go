@@ -28,7 +28,7 @@ func TestUser(t *testing.T) {
 		//additional model
 		notExist := &model.User{Username: "not found"}
 
-		// change preset
+		// change user
 		user.Email = "test2@mail.com"
 		err := UpdateUser(nil, user)
 		assert.NoError(t, err)

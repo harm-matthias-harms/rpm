@@ -1,10 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col
-      lg="6"
-      md="10"
-      sm="12"
-    >
+    <v-col lg="6" md="10" sm="12">
       <v-card>
         <v-card-title primary-title>
           New Medical Case

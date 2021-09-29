@@ -41,7 +41,7 @@
               >
                 <Editor
                   :editor="medicalCase.editor"
-                  :updated-at="medicalCase.editedAt"
+                  :edited-at="medicalCase.editedAt"
                 />
               </v-col>
             </v-row>

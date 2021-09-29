@@ -76,7 +76,9 @@ export const actions: ActionTree<State, RootState> = {
       .$delete('/api/presets/' + payload.id)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
-        commit('snackbar/SET', 'Preset  was successfully deleted.', { root: true })
+        commit('snackbar/SET', 'Preset  was successfully deleted.', {
+          root: true
+        })
         if (payload.goBack) {
           this.$router.back()
         }

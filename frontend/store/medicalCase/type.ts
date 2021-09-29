@@ -1,3 +1,5 @@
+import { Author } from '../user/type'
+
 interface nestedVitalSign {
   title?: string
   data?: {
@@ -30,69 +32,64 @@ interface file {
 }
 
 interface fileArray {
-    [index: number]: file
+  [index: number]: file
+}
+
+export interface MedicalCase {
+  id?: string
+  author: Author
+  editor: Author
+  createdAt?: Date
+  editedAt?: Date
+  title: string
+  approved: boolean
+  general: {
+    discipline: string[]
+    context: string[]
+    scenario: string[]
+  }
+  patient: {
+    type?: string
+    triage?: string
+    gender: string[]
+    age?: string
+  }
+  medical: {
+    signs?: string
+    allergies?: string
+    medication?: string
+    past?: string
+    loi?: string
+    events?: string
+  }
+  makeup: {
+    makeup?: string
+    acting?: string
+  }
+  vitalSigns: nestedVitalSignArray
+  files: fileArray
+}
+
+export interface MedicalCaseShort {
+  id: string
+  author: Author
+  title: string
+  approved: boolean
+  general: {
+    discipline?: string
+    context: string[]
+    scenario: string[]
+  }
+  patient: {
+    triage?: string
+  }
 }
 
 export interface State {
-  medicalCase: {
-    id?: string
-    author: {
-      id?: string
-      username?: string
-    }
-    editor: {
-      id?: string
-      username?: string
-    }
-    createdAt?: Date
-    updatedAt?: Date
-    title: string
-    approved: boolean
-    general: {
-      discipline: string[]
-      context: string[]
-      scenario: string[]
-    }
-    patient: {
-      type?: string
-      triage?: string
-      gender: string[]
-      age?: string
-    }
-    medical: {
-      signs?: string
-      allergies?: string
-      medication?: string
-      past?: string
-      loi?: string
-      events?: string
-    }
-    makeup: {
-      makeup?: string
-      acting?: string
-    }
-    vitalSigns: nestedVitalSignArray
-    files: fileArray
-  }
+  medicalCase: MedicalCase
   medicalCasesList: {
     count: number
-    medicalCases: {
-      id: string
-      author: {
-        id: string
-        username: string
-      }
-      title: string
-      approved: boolean
-      general: {
-        discipline?: string
-        context: string[]
-        scenario: string[]
-      }
-      patient: {
-        triage?: string
-      }
-    }[]
+    medicalCases: MedicalCaseShort[]
   }
   medicalCasesLoaded: boolean
 }
