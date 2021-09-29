@@ -63,7 +63,7 @@ export const actions: ActionTree<State, RootState> = {
   },
   find ({ commit }, id) {
     commit('loader/SET', true, { root: true })
-    this.$axios
+    return this.$axios
       .$get('/api/medical_cases/' + id)
       .then((response) => {
         commit('SET_MEDICAL_CASE', response)

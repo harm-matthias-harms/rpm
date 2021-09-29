@@ -9,7 +9,7 @@ export const actions: ActionTree<State, RootState> = {
       .$post(`/api/exercises/${payload.exerciseID}/injects`, payload.injects)
       .then((response) => {
         commit('SET_INJECTS_TO_LIST', response.data)
-        this.$router.push(`/exercise/${payload.exerciseID}/injects`)
+        this.$router.push(`/exercises/${payload.exerciseID}/injects`)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't create injects.", { root: true })
@@ -24,7 +24,7 @@ export const actions: ActionTree<State, RootState> = {
       .$put(`/api/exercises/${inject.exerciseID}/injects/${inject.id}`, inject)
       .then((response) => {
         commit('SET_PRESET', response)
-        this.$router.push(`/exercise/${inject.exerciseID}/injects/${inject.id}`)
+        this.$router.push(`/exercises/${inject.exerciseID}/injects/${inject.id}`)
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't edit preset.", { root: true })

@@ -21,47 +21,24 @@
       loading-text="Loading... Please wait"
       multi-sort
     >
-      <template v-slot:body="{ items }">
-        <tbody>
-          <tr v-for="item in items" :key="item.id">
-            <!-- <td @click="openInject(item)">
-              <v-badge dot inline left :color="getTriageColor(item)">
-                {{ item.title }}
-              </v-badge>
-            </td>
-            <td @click="openInject(item)">
-              {{
-                item.general.discipline
-                  ? item.general.discipline.join(', ')
-                  : ''
-              }}
-            </td>
-            <td @click="openInject(item)">
-              {{ item.general.context ? item.general.context.join(', ') : '' }}
-            </td>
-            <td @click="openInject(item)">
-              {{
-                item.general.scenario ? item.general.scenario.join(', ') : ''
-              }}
-            </td>
-            <td @click="openInject(item)">
-              {{ item.author.username }}
-            </td> -->
-            <td class="px-0">
-              <v-icon @click="editInject(item)">
-                edit
-              </v-icon>
-              <!-- <DeleteButton
-                v-if="
-                  !item.author.username ||
-                    item.author.id == $store.state.user.user.id
-                "
-                :item="item"
-                :go-back="false"
-              /> -->
-            </td>
-          </tr>
-        </tbody>
+      <template v-slot:[`item.status`]="{ item }">
+        <v-badge dot inline left color="primary">
+          {{ item.status }}
+        </v-badge>
+      </template>
+      <template v-slot:[`item.medicalCase.title`]="{ item }">
+        <v-badge dot inline left :color="getTriageColor(item.medicalCase)">
+          {{ item.medicalCase.title }}
+        </v-badge>
+      </template>
+      <template v-slot:[`item.startTime`]="{ item }">
+        {{
+          item.startTime
+            ? new Date(item.startTime).toLocaleString([], {
+                timeZone: 'UTC',
+              })
+            : '-'
+        }}
       </template>
     </v-data-table>
   </div>
@@ -70,6 +47,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
 import { Inject } from '~/store/inject/type'
+import { MedicalCase } from '~/store/medicalCase/type'
 // import DeleteButton from '@/components/medical_case/Delete.vue'
 @Component({
   // components: {
@@ -81,38 +59,56 @@ export default class Table extends Vue {
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
 
   headers = [
-    { text: 'State', sortable: true, value: 'roleplayer.fullName' },
+    { text: 'State', sortable: true, value: 'status' },
     { text: 'Roleplayer', sortable: true, value: 'roleplayer.fullName' },
     { text: 'Medical case', sortable: true, value: 'medicalCase.title' },
     { text: 'Team', sortable: true, value: 'team.title' },
     { text: 'Make-up center', sortable: true, value: 'makeupCenterTitle' },
     { text: 'Start time', sortable: true, value: 'startTime' },
-    { text: 'Actions', sortable: false, value: 'action' }
+    { text: 'Actions', sortable: false, value: 'action' },
   ]
 
   search: string = ''
 
-  openInject (inject) {
+  openInject(inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}`
     )
   }
 
-  editInject (inject) {
+  editInject(inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}/edit`
     )
   }
 
-  filterInjects (value, search, item: Inject) {
+  getTriageColor(medicalCase: MedicalCase) {
+    if (!medicalCase.patient.triage) {
+      return 'grey'
+    }
+    if (medicalCase.patient.triage === 'Red') {
+      return 'error'
+    }
+    if (medicalCase.patient.triage === 'Yellow') {
+      return 'warning'
+    }
+    if (medicalCase.patient.triage === 'Green') {
+      return 'success'
+    }
+    if (medicalCase.patient.triage === 'Deceased/Unsalvageable') {
+      return 'black'
+    }
+  }
+
+  filterInjects(value, search, item: Inject) {
     // Split search into an array
     const needleArry = search
       .toString()
       .toLowerCase()
       .split(' ')
-      .filter(x => x.trim().length > 0)
+      .filter((x) => x.trim().length > 0)
 
-    function filterAll (item: Inject, search: string) {
+    function filterAll(item: Inject, search: string) {
       return (
         filterStatus(item, search) ||
         filterRoleplayer(item, search) ||
@@ -123,32 +119,32 @@ export default class Table extends Vue {
       )
     }
 
-    function filterStatus (item: Inject, search: string) {
+    function filterStatus(item: Inject, search: string) {
       return item.status?.toLowerCase().includes(search)
     }
 
-    function filterRoleplayer (item: Inject, search: string) {
+    function filterRoleplayer(item: Inject, search: string) {
       return item.roleplayer.fullName?.toLowerCase().includes(search)
     }
 
-    function filterMedicalCase (item: Inject, search: string) {
+    function filterMedicalCase(item: Inject, search: string) {
       return item.medicalCase.title?.toLowerCase().includes(search)
     }
 
-    function filterTeam (item: Inject, search: string) {
-      return item.team.title?.toLowerCase().includes(search)
+    function filterTeam(item: Inject, search: string) {
+      return item.team?.title?.toLowerCase().includes(search)
     }
 
-    function filterMakeupCenter (item: Inject, search: string) {
+    function filterMakeupCenter(item: Inject, search: string) {
       return item.makeupCenterTitle?.toLowerCase().includes(search)
     }
 
-    function filterStartTime (item: Inject, search: string) {
+    function filterStartTime(item: Inject, search: string) {
       return item.startTime?.toString().toLowerCase().includes(search)
     }
 
     return (
-      value && search && needleArry.every(needle => filterAll(item, needle))
+      value && search && needleArry.every((needle) => filterAll(item, needle))
     )
   }
 }

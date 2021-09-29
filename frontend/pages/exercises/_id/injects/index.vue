@@ -10,7 +10,12 @@
         </h3>
       </v-col>
       <v-col md="5" sm="6" class="justify-end d-flex">
-        <v-btn small color="primary" class="mr-2" to="/medical_cases/new">
+        <v-btn
+          small
+          color="primary"
+          class="mr-2"
+          :to="`/exercises/${$route.params.id}/injects/new`"
+        >
           <v-icon small>
             fas fa-plus
           </v-icon>
@@ -40,19 +45,19 @@ import { mapState, mapActions } from 'vuex'
 import Table from '~/components/inject/Table.vue'
 @Component({
   components: {
-    Table
+    Table,
   },
   computed: {
     ...mapState('inject', {
       injectList: 'injectList',
-      injectsLoaded: 'injectsLoaded'
-    })
+      injectsLoaded: 'injectsLoaded',
+    }),
   },
   methods: {
     ...mapActions('inject', {
-      getInjects: 'get_all'
-    })
-  }
+      getInjects: 'get_all',
+    }),
+  },
 })
 export default class MedicalCases extends Vue {
   getInjects!: (payload) => void
@@ -61,13 +66,13 @@ export default class MedicalCases extends Vue {
 
   loading = false
 
-  loadInjects () {
+  loadInjects() {
     this.loading = true
     this.getInjects({ exerciseID: this.$route.params.id })
     this.loading = false
   }
 
-  mounted () {
+  mounted() {
     if (!this.injectsLoaded) {
       this.loadInjects()
     }

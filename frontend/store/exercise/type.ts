@@ -1,23 +1,25 @@
 import { Team } from '../team/type'
 import { Author, ShortUser } from '../user/type'
 
+export interface MakeupCenter {
+  title: string
+  account: ShortUser
+}
+
 export interface Exercise {
   id?: string
   author: Author
   createdAt?: Date
   editedAt?: Date
   title: string
-  startTime?: Date
-  endTime?: Date
+  startTime?: string
+  endTime?: string
   teams: {
     team: Team
     trainer: ShortUser
   }[]
   roleplayManager: ShortUser[]
-  makeupCenter: {
-    title: string
-    account: ShortUser
-  }[]
+  makeupCenter: MakeupCenter[]
 }
 
 export interface State {

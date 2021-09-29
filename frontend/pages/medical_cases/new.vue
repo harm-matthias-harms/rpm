@@ -1,10 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col
-      lg="6"
-      md="10"
-      sm="12"
-    >
+    <v-col lg="6" md="10" sm="12">
       <v-card>
         <v-card-title primary-title>
           New Medical Case
@@ -28,13 +24,13 @@ import Form from '@/components/medical_case/form.vue'
 
 @Component({
   components: {
-    Form
+    Form,
   },
   methods: {
     ...mapActions('medicalCase', {
-      create: 'create'
-    })
-  }
+      create: 'create',
+    }),
+  },
 })
 export default class NewMedicalCase extends Vue {
   medicalCase = {
@@ -43,7 +39,7 @@ export default class NewMedicalCase extends Vue {
     medical: {},
     makeup: {},
     vitalSigns: [],
-    files: []
+    files: [],
   }
 
   create!: (medicalCase, files) => void

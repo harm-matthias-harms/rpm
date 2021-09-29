@@ -8,92 +8,80 @@
       hide-details
     />
     <v-data-table
+      v-model="medicalCases"
+      show-select
       :headers="headers"
-      :items="items"
+      :items="options"
       :items-per-page="25"
       :footer-props="{
         itemsPerPageOptions: [10, 25, 50],
       }"
       :search="search"
       :custom-filter="filterMedicalCases"
-      class="elevation-1"
-      :loading="loading"
-      loading-text="Loading... Please wait"
       multi-sort
     >
-      <template v-slot:body="{ items }">
-        <tbody>
-          <tr v-for="item in items" :key="item.id">
-            <td @click="openMedicalCase(item)">
-              <v-badge dot inline left :color="getTriageColor(item)">
-                {{ item.title }}
-              </v-badge>
-            </td>
-            <td @click="openMedicalCase(item)">
-              {{
-                item.general.discipline
-                  ? item.general.discipline.join(', ')
-                  : ''
-              }}
-            </td>
-            <td @click="openMedicalCase(item)">
-              {{ item.general.context ? item.general.context.join(', ') : '' }}
-            </td>
-            <td @click="openMedicalCase(item)">
-              {{
-                item.general.scenario ? item.general.scenario.join(', ') : ''
-              }}
-            </td>
-            <td @click="openMedicalCase(item)">
-              {{ item.author.username }}
-            </td>
-            <td class="px-0">
-              <v-icon @click="editMedicalCase(item)"> edit </v-icon>
-              <DeleteButton
-                v-if="
-                  !item.author.username ||
-                  item.author.id == $store.state.user.user.id
-                "
-                :item="item"
-                :go-back="false"
-              />
-            </td>
-          </tr>
-        </tbody>
+      <template v-slot:[`item.title`]="{ item }">
+        <v-badge dot inline left :color="getTriageColor(item)">
+          {{ item.title }}
+        </v-badge>
+      </template>
+      <template v-slot:[`item.general.discipline`]="{ item }">
+        {{ item.general.discipline ? item.general.discipline.join(', ') : '' }}
+      </template>
+      <template v-slot:[`item.general.context`]="{ item }">
+        {{ item.general.context ? item.general.context.join(', ') : '' }}
+      </template>
+      <template v-slot:[`item.general.scenario`]="{ item }">
+        {{ item.general.scenario ? item.general.scenario.join(', ') : '' }}
       </template>
     </v-data-table>
   </div>
 </template>
 
+
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
-import DeleteButton from '@/components/medical_case/Delete.vue'
+import { mapActions } from 'vuex'
+import { MedicalCaseShort } from '~/store/medicalCase/type'
+
 @Component({
-  components: {
-    DeleteButton,
+  methods: {
+    ...mapActions('medicalCase', {
+      getMedicalCases: 'get_all',
+    }),
   },
 })
-export default class Table extends Vue {
-  @Prop({ type: Boolean, required: true }) readonly loading!: boolean
-  @Prop({ type: Array, required: true }) readonly items!: Array<object>
+export default class MedicalCaseSelector extends Vue {
+  @Prop({ type: Array }) readonly value!: MedicalCaseShort[]
 
+  getMedicalCases!: () => Promise<void>
+
+  get medicalCases(): MedicalCaseShort[] {
+    return this.value
+  }
+
+  set medicalCases(medicalCases: MedicalCaseShort[]) {
+    this.$emit('input', medicalCases)
+  }
+
+  options: MedicalCaseShort[] = []
   headers = [
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
     { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
-    { text: 'Author', sortable: true, value: 'author.username' },
-    { text: 'Actions', sortable: false, value: 'action' },
   ]
-
   search: string = ''
 
-  openMedicalCase(medicalCase) {
-    this.$router.push('/medical_cases/' + medicalCase.id)
-  }
-
-  editMedicalCase(medicalCase) {
-    this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  mounted() {
+    if (this.$store.state.medicalCase.medicalCasesLoaded) {
+      this.options = this.$store.state.medicalCase.medicalCasesList.medicalCases
+    } else {
+      this.getMedicalCases().then(() => {
+        this.options =
+          this.$store.state.medicalCase.medicalCasesList.medicalCases
+      })
+    }
   }
 
   getTriageColor(item) {

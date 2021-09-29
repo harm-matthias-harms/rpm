@@ -1,7 +1,14 @@
 import { defaultMedicalCase } from '../medicalCase/state'
 import { defaultTeam } from '../team/state'
 import { author } from '../user/state'
-import { State } from './type'
+import { Roleplayer, State } from './type'
+
+export const defaultRoleplayer: Roleplayer = {
+  gender: undefined,
+  fullName: undefined,
+  age: undefined,
+  nationality: undefined
+}
 
 export const defaultInject = {
   id: undefined,

@@ -37,6 +37,7 @@ type InjectShort struct {
 	EditedAt          time.Time          `json:"editedAt" bson:"editedAt"`
 	ExerciseID        primitive.ObjectID `json:"exerciseID" bson:"exerciseID"`
 	Status            string             `json:"status" bson:"status"`
+	StartTime         time.Time          `json:"startTime" bson:"startTime"`
 	MakeupCenterTitle string             `json:"makeupCenterTitle" bson:"makeupCenterTitle"`
 	Team              Team               `json:"team" bson:"team"`
 	Roleplayer        Roleplayer         `json:"roleplayer" bson:"roleplayer"`

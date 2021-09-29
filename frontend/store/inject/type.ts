@@ -4,15 +4,15 @@ import { Author } from '../user/type'
 
 export interface Inject {
   id?: string
-  author: Author
-  editor: Author
+  author: Author | null
+  editor: Author | null
   createdAt?: Date
   editedAt?: Date
   exerciseID?: string
   status?: string
-  startTime?: Date
-  makeupCenterTitle?: string
-  team: Team
+  startTime?: Date | null
+  makeupCenterTitle?: string | null
+  team: Team | null
   roleplayer: Roleplayer
   medicalCase: MedicalCase
 }
@@ -39,7 +39,7 @@ export interface State {
   injectsLoaded: boolean
 }
 
-interface Roleplayer {
+export interface Roleplayer {
   fullName?: string
   gender?: string
   age?: number
