@@ -5,8 +5,7 @@
       :items="options"
       item-text="title"
       return-object
-    >
-    </v-autocomplete>
+    />
   </div>
 </template>
 
@@ -18,26 +17,26 @@ import { Team } from '~/store/team/type'
 @Component({
   methods: {
     ...mapActions('team', {
-      getTeams: 'get_all',
-    }),
-  },
+      getTeams: 'get_all'
+    })
+  }
 })
 export default class TeamSelector extends Vue {
   @Prop({ type: Object }) readonly value!: Team | undefined
 
   getTeams!: () => Promise<void>
 
-  get team(): Team | undefined {
+  get team (): Team | undefined {
     return this.value
   }
 
-  set team(team: Team | undefined) {
+  set team (team: Team | undefined) {
     this.$emit('input', team)
   }
 
   options: Team[] = []
 
-  mounted() {
+  mounted () {
     if (this.$store.state.team.teamsLoaded) {
       this.options = this.$store.state.team.teamList.teams
     } else {

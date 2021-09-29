@@ -6,7 +6,7 @@
           {{ medicalCase.title }}
         </v-card-title>
         <v-card-text>
-          <RoleplayerForm v-model="roleplayer[index]"></RoleplayerForm>
+          <RoleplayerForm v-model="roleplayer[index]" />
         </v-card-text>
       </v-card>
     </div>
@@ -15,30 +15,29 @@
 
 <script lang="ts">
 import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
+import RoleplayerForm from './RoleplayerForm.vue'
 import { Roleplayer } from '~/store/inject/type'
 import { MedicalCaseShort } from '~/store/medicalCase/type'
-import RoleplayerForm from './RoleplayerForm.vue'
 
 @Component({
   components: {
-    RoleplayerForm,
-  },
+    RoleplayerForm
+  }
 })
 export default class RoleplayerCreator extends Vue {
   @Prop({ type: Array }) readonly value!: Roleplayer[]
   @Prop({ type: Array }) readonly medicalCases!: MedicalCaseShort[]
 
-  get roleplayer(): Roleplayer[] {
+  get roleplayer (): Roleplayer[] {
     return this.value
   }
 
-  set roleplayer(roleplayer: Roleplayer[]) {
-    console.log(roleplayer)
+  set roleplayer (roleplayer: Roleplayer[]) {
     this.$emit('input', roleplayer)
   }
 
   @Watch('medicalCases', { deep: true })
-  onMedicalCasesChanged(val: MedicalCaseShort, oldVal: MedicalCaseShort) {
+  onMedicalCasesChanged () {
     while (this.roleplayer.length < this.medicalCases.length) {
       this.roleplayer.push({})
     }

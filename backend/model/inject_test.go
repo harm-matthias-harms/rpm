@@ -11,7 +11,7 @@ import (
 func TestInjectValidate(t *testing.T) {
 	inject := &Inject{}
 	team := Team{Title: "Team 1", Author: LimitedUser{ID: primitive.NewObjectID(), Username: "teamauthor"}, CreatedAt: time.Now()}
-	
+
 	err := inject.Validate()
 	assert.EqualError(t, err, "author not set")
 

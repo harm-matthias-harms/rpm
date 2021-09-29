@@ -38,7 +38,6 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
 import { mapActions } from 'vuex'
@@ -47,20 +46,20 @@ import { MedicalCaseShort } from '~/store/medicalCase/type'
 @Component({
   methods: {
     ...mapActions('medicalCase', {
-      getMedicalCases: 'get_all',
-    }),
-  },
+      getMedicalCases: 'get_all'
+    })
+  }
 })
 export default class MedicalCaseSelector extends Vue {
   @Prop({ type: Array }) readonly value!: MedicalCaseShort[]
 
   getMedicalCases!: () => Promise<void>
 
-  get medicalCases(): MedicalCaseShort[] {
+  get medicalCases (): MedicalCaseShort[] {
     return this.value
   }
 
-  set medicalCases(medicalCases: MedicalCaseShort[]) {
+  set medicalCases (medicalCases: MedicalCaseShort[]) {
     this.$emit('input', medicalCases)
   }
 
@@ -69,11 +68,12 @@ export default class MedicalCaseSelector extends Vue {
     { text: 'Title', align: 'left', sortable: true, value: 'title' },
     { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
-    { text: 'Scenario', sortable: true, value: 'general.scenario' },
+    { text: 'Scenario', sortable: true, value: 'general.scenario' }
   ]
+
   search: string = ''
 
-  mounted() {
+  mounted () {
     if (this.$store.state.medicalCase.medicalCasesLoaded) {
       this.options = this.$store.state.medicalCase.medicalCasesList.medicalCases
     } else {
@@ -84,7 +84,7 @@ export default class MedicalCaseSelector extends Vue {
     }
   }
 
-  getTriageColor(item) {
+  getTriageColor (item) {
     if (!item.patient.triage) {
       return 'grey'
     }
@@ -102,15 +102,15 @@ export default class MedicalCaseSelector extends Vue {
     }
   }
 
-  filterMedicalCases(value, search, item) {
+  filterMedicalCases (value, search, item) {
     // Split search into an array
     const needleArry = search
       .toString()
       .toLowerCase()
       .split(' ')
-      .filter((x) => x.trim().length > 0)
+      .filter(x => x.trim().length > 0)
 
-    function filterAll(item, search) {
+    function filterAll (item, search) {
       return (
         filterTitle(item, search) ||
         filterAuthor(item, search) ||
@@ -119,26 +119,26 @@ export default class MedicalCaseSelector extends Vue {
       )
     }
 
-    function filterTitle(item, search) {
+    function filterTitle (item, search) {
       return item.title && item.title.toLowerCase().includes(search)
     }
 
-    function filterAuthor(item, search) {
+    function filterAuthor (item, search) {
       return (
         item.author.username &&
         item.author.username.toLowerCase().includes(search)
       )
     }
 
-    function filterGeneral(item, search) {
+    function filterGeneral (item, search) {
       return (
-        item.general.discipline.some((e) => e.toLowerCase().includes(search)) ||
-        item.general.context.some((e) => e.toLowerCase().includes(search)) ||
-        item.general.scenario.some((e) => e.toLowerCase().includes(search))
+        item.general.discipline.some(e => e.toLowerCase().includes(search)) ||
+        item.general.context.some(e => e.toLowerCase().includes(search)) ||
+        item.general.scenario.some(e => e.toLowerCase().includes(search))
       )
     }
 
-    function filterPatient(item, search) {
+    function filterPatient (item, search) {
       return (
         item.patient.triage &&
         item.patient.triage.toLowerCase().includes(search)
@@ -146,7 +146,7 @@ export default class MedicalCaseSelector extends Vue {
     }
 
     return (
-      value && search && needleArry.every((needle) => filterAll(item, needle))
+      value && search && needleArry.every(needle => filterAll(item, needle))
     )
   }
 }

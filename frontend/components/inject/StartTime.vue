@@ -5,8 +5,7 @@
       :items="options"
       item-text="text"
       item-value="value"
-    >
-    </v-autocomplete>
+    />
   </div>
 </template>
 
@@ -22,28 +21,28 @@ interface DateOption {
 @Component({
   methods: {
     ...mapActions('exercise', {
-      findExercise: 'find',
-    }),
-  },
+      findExercise: 'find'
+    })
+  }
 })
 export default class StartTime extends Vue {
   @Prop({ type: Date }) readonly value!: Date | undefined
 
   findExercise!: (id) => Promise<void>
 
-  get startTime(): Date | undefined {
+  get startTime (): Date | undefined {
     return this.value
   }
 
-  set startTime(time: Date | undefined) {
+  set startTime (time: Date | undefined) {
     this.$emit('input', time)
   }
 
   options: DateOption[] = []
 
-  mounted() {
+  mounted () {
     const id = this.$route.params.id
-    if (this.$store.state.exercise.exercise.id == id) {
+    if (this.$store.state.exercise.exercise.id === id) {
       this.options = this.generateTimes()
     } else {
       this.findExercise({ id }).then(() => {
@@ -52,12 +51,12 @@ export default class StartTime extends Vue {
     }
   }
 
-  generateTimes(): DateOption[] {
+  generateTimes (): DateOption[] {
     const startTime = new Date(
       Math.max(
         ...[
           new Date().getTime(),
-          new Date(this.$store.state.exercise.exercise.startTime).getTime(),
+          new Date(this.$store.state.exercise.exercise.startTime).getTime()
         ]
       )
     ).toISOString()
@@ -67,9 +66,9 @@ export default class StartTime extends Vue {
     )
   }
 
-  makeTimeArray(startTime, endTime): DateOption[] {
+  makeTimeArray (startTime, endTime): DateOption[] {
     const times: DateOption[] = []
-    var hours = [
+    const hours = [
       '00:00 - 03:00',
       '03:00 - 06:00',
       '06:00 - 09:00',
@@ -77,7 +76,7 @@ export default class StartTime extends Vue {
       '12:00 - 15:00',
       '15:00 - 18:00',
       '18:00 - 21:00',
-      '21:00 - 00:00',
+      '21:00 - 00:00'
     ]
     const hoursLength = hours.length
     const j = this.getCurrentTimeIndex(startTime, hours)
@@ -86,12 +85,12 @@ export default class StartTime extends Vue {
       d <= new Date(endTime);
       d.setDate(d.getDate() + 1)
     ) {
-      if (d == new Date(startTime)) {
+      if (d === new Date(startTime)) {
         for (let i = j; i < hoursLength; i++) {
           const date = new Date(d)
           times.push({
             value: date,
-            text: date.toISOString().slice(0, 10) + ' ' + hours[i],
+            text: date.toISOString().slice(0, 10) + ' ' + hours[i]
           })
         }
       } else {
@@ -99,7 +98,7 @@ export default class StartTime extends Vue {
           const date = new Date(d)
           times.push({
             value: date,
-            text: date.toISOString().slice(0, 10) + ' ' + hours[i],
+            text: date.toISOString().slice(0, 10) + ' ' + hours[i]
           })
         }
       }
@@ -107,7 +106,7 @@ export default class StartTime extends Vue {
     return times
   }
 
-  getCurrentTimeIndex(startTime, hours): number {
+  getCurrentTimeIndex (startTime, hours): number {
     const startTimeHour = parseInt(startTime.slice(11, 13))
     for (let i = 0; i < hours.length; i++) {
       const arr = hours[i].split(' - ')

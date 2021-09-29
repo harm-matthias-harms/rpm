@@ -4,22 +4,22 @@
       v-model="roleplayer.gender"
       label="Gender"
       :items="gender"
-    ></v-select>
+    />
     <v-text-field
       v-model="roleplayer.fullName"
       label="Full name"
-    ></v-text-field>
+    />
     <v-text-field
       v-model="roleplayer.age"
       label="Age"
       type="number"
       min="0"
-    ></v-text-field>
+    />
     <v-autocomplete
       v-model="roleplayer.nationality"
       label="Nationality"
       :items="nationalities"
-    ></v-autocomplete>
+    />
   </div>
 </template>
 
@@ -31,11 +31,11 @@ import { Roleplayer } from '~/store/inject/type'
 export default class RoleplayerForm extends Vue {
   @Prop({ type: Object }) readonly value!: Roleplayer
 
-  get roleplayer(): Roleplayer {
+  get roleplayer (): Roleplayer {
     return this.value
   }
 
-  set roleplayer(roleplayer: Roleplayer) {
+  set roleplayer (roleplayer: Roleplayer) {
     this.$emit('input', roleplayer)
   }
 
@@ -265,7 +265,7 @@ export default class RoleplayerForm extends Vue {
     'Welsh',
     'Yemeni',
     'Zambian',
-    'Zimbabwean',
+    'Zimbabwean'
   ]
 }
 </script>

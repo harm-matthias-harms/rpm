@@ -35,8 +35,8 @@
         {{
           item.startTime
             ? new Date(item.startTime).toLocaleString([], {
-                timeZone: 'UTC',
-              })
+              timeZone: 'UTC',
+            })
             : '-'
         }}
       </template>
@@ -65,24 +65,24 @@ export default class Table extends Vue {
     { text: 'Team', sortable: true, value: 'team.title' },
     { text: 'Make-up center', sortable: true, value: 'makeupCenterTitle' },
     { text: 'Start time', sortable: true, value: 'startTime' },
-    { text: 'Actions', sortable: false, value: 'action' },
+    { text: 'Actions', sortable: false, value: 'action' }
   ]
 
   search: string = ''
 
-  openInject(inject) {
+  openInject (inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}`
     )
   }
 
-  editInject(inject) {
+  editInject (inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}/edit`
     )
   }
 
-  getTriageColor(medicalCase: MedicalCase) {
+  getTriageColor (medicalCase: MedicalCase) {
     if (!medicalCase.patient.triage) {
       return 'grey'
     }
@@ -100,15 +100,15 @@ export default class Table extends Vue {
     }
   }
 
-  filterInjects(value, search, item: Inject) {
+  filterInjects (value, search, item: Inject) {
     // Split search into an array
     const needleArry = search
       .toString()
       .toLowerCase()
       .split(' ')
-      .filter((x) => x.trim().length > 0)
+      .filter(x => x.trim().length > 0)
 
-    function filterAll(item: Inject, search: string) {
+    function filterAll (item: Inject, search: string) {
       return (
         filterStatus(item, search) ||
         filterRoleplayer(item, search) ||
@@ -119,32 +119,32 @@ export default class Table extends Vue {
       )
     }
 
-    function filterStatus(item: Inject, search: string) {
+    function filterStatus (item: Inject, search: string) {
       return item.status?.toLowerCase().includes(search)
     }
 
-    function filterRoleplayer(item: Inject, search: string) {
+    function filterRoleplayer (item: Inject, search: string) {
       return item.roleplayer.fullName?.toLowerCase().includes(search)
     }
 
-    function filterMedicalCase(item: Inject, search: string) {
+    function filterMedicalCase (item: Inject, search: string) {
       return item.medicalCase.title?.toLowerCase().includes(search)
     }
 
-    function filterTeam(item: Inject, search: string) {
+    function filterTeam (item: Inject, search: string) {
       return item.team?.title?.toLowerCase().includes(search)
     }
 
-    function filterMakeupCenter(item: Inject, search: string) {
+    function filterMakeupCenter (item: Inject, search: string) {
       return item.makeupCenterTitle?.toLowerCase().includes(search)
     }
 
-    function filterStartTime(item: Inject, search: string) {
+    function filterStartTime (item: Inject, search: string) {
       return item.startTime?.toString().toLowerCase().includes(search)
     }
 
     return (
-      value && search && needleArry.every((needle) => filterAll(item, needle))
+      value && search && needleArry.every(needle => filterAll(item, needle))
     )
   }
 }

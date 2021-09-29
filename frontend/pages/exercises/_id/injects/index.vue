@@ -45,19 +45,19 @@ import { mapState, mapActions } from 'vuex'
 import Table from '~/components/inject/Table.vue'
 @Component({
   components: {
-    Table,
+    Table
   },
   computed: {
     ...mapState('inject', {
       injectList: 'injectList',
-      injectsLoaded: 'injectsLoaded',
-    }),
+      injectsLoaded: 'injectsLoaded'
+    })
   },
   methods: {
     ...mapActions('inject', {
-      getInjects: 'get_all',
-    }),
-  },
+      getInjects: 'get_all'
+    })
+  }
 })
 export default class MedicalCases extends Vue {
   getInjects!: (payload) => void
@@ -66,13 +66,13 @@ export default class MedicalCases extends Vue {
 
   loading = false
 
-  loadInjects() {
+  loadInjects () {
     this.loading = true
     this.getInjects({ exerciseID: this.$route.params.id })
     this.loading = false
   }
 
-  mounted() {
+  mounted () {
     if (!this.injectsLoaded) {
       this.loadInjects()
     }
