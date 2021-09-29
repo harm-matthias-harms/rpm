@@ -40,19 +40,26 @@
             : '-'
         }}
       </template>
+      <template v-slot:[`item.action`]="{ item }">
+        <DeleteButton
+          :item="item"
+          :go-back="false"
+          :exercise-id="$route.params.id"
+        />
+      </template>
     </v-data-table>
   </div>
 </template>
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
+import DeleteButton from './Delete.vue'
 import { Inject } from '~/store/inject/type'
 import { MedicalCase } from '~/store/medicalCase/type'
-// import DeleteButton from '@/components/medical_case/Delete.vue'
 @Component({
-  // components: {
-  //   DeleteButton
-  // }
+  components: {
+    DeleteButton
+  }
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
