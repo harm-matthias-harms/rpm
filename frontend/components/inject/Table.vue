@@ -57,6 +57,9 @@
         }}
       </template>
       <template v-slot:[`item.action`]="{ item }">
+        <v-icon @click="openMedicalCase(item)">
+          fas fa-external-link-alt
+        </v-icon>
         <DeleteButton
           v-if="item.status === states[0]"
           :item="item"
@@ -128,6 +131,10 @@ export default class Table extends Vue {
     )
   }
 
+  openMedicalCase (inject: InjectShort) {
+    this.$router.push('/medical_cases/' + inject.medicalCase.id)
+  }
+
   async updateStatus () {
     const injects = this.selectedInjects.filter(
       inject => inject.status !== this.states[this.states.length - 1]
@@ -154,7 +161,9 @@ export default class Table extends Vue {
       Playing: 'success',
       Finished: 'black'
     }
-    if (status in colors) { return colors[status] }
+    if (status in colors) {
+      return colors[status]
+    }
     return 'gray'
   }
 
