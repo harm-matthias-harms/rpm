@@ -1,16 +1,9 @@
 <template>
   <div v-if="roleplayer">
-    <v-select
-      v-model="roleplayer.gender"
-      label="Gender"
-      :items="gender"
-    />
+    <v-select v-model="roleplayer.gender" label="Gender" :items="gender" />
+    <v-text-field v-model="roleplayer.fullName" label="Full name" />
     <v-text-field
-      v-model="roleplayer.fullName"
-      label="Full name"
-    />
-    <v-text-field
-      v-model="roleplayer.age"
+      v-model.number="roleplayer.age"
       label="Age"
       type="number"
       min="0"
