@@ -18,13 +18,20 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  update ({ commit }, inject) {
+  update ({ commit }, payload = { inject: null, showInject: false }) {
     commit('loader/SET', true, { root: true })
-    this.$axios
-      .$put(`/api/exercises/${inject.exerciseID}/injects/${inject.id}`, inject)
+    return this.$axios
+      .$put(
+        `/api/exercises/${payload.inject.exerciseID}/injects/${payload.inject.id}`,
+        payload.inject
+      )
       .then((response) => {
-        commit('SET_PRESET', response)
-        this.$router.push(`/exercises/${inject.exerciseID}/injects/${inject.id}`)
+        commit('SET_INJECT', response)
+        if (payload.showInject) {
+          this.$router.push(
+            `/exercises/${response.exerciseID}/injects/${response.id}`
+          )
+        }
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't edit preset.", { root: true })

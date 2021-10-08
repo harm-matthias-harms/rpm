@@ -17,24 +17,26 @@ export interface Inject {
   medicalCase: MedicalCase
 }
 
+export interface InjectShort {
+  id?: string
+  author: Author
+  editor: Author
+  createdAt?: Date
+  editedAt?: Date
+  exerciseID?: string
+  status?: string
+  startTime?: Date
+  makeupCenterTitle?: string
+  team: Team
+  roleplayer: Roleplayer
+  medicalCase: MedicalCaseShort
+}
+
 export interface State {
   inject: Inject
   injectList: {
     count: number
-    injects: {
-      id?: string
-      author: Author
-      editor: Author
-      createdAt?: Date
-      editedAt?: Date
-      exerciseID?: string
-      status?: string
-      startTime?: Date
-      makeupCenterTitle?: string
-      team: Team
-      roleplayer: Roleplayer
-      medicalCase: MedicalCaseShort
-    }[]
+    injects: InjectShort[]
   }
   injectsLoaded: boolean
 }
