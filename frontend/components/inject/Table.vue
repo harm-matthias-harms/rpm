@@ -1,28 +1,13 @@
 <template>
   <div>
-    <v-row dense>
-      <v-col>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-        />
-      </v-col>
-      <v-col cols="auto">
-        <v-btn
-          color="primary"
-          :disabled="!selectedInjects.length"
-          @click="updateStatus"
-        >
-          Update status
-          {{ selectedInjects.length ? `(${selectedInjects.length})` : null }}
-        </v-btn>
-      </v-col>
-    </v-row>
+    <v-text-field
+      v-model="search"
+      append-icon="search"
+      label="Search"
+      single-line
+      hide-details
+    />
     <v-data-table
-      v-model="selectedInjects"
       :headers="headers"
       :items="items"
       :items-per-page="50"
@@ -34,11 +19,10 @@
       class="elevation-1"
       :loading="loading"
       loading-text="Loading... Please wait"
-      show-select
       multi-sort
     >
       <template v-slot:[`item.status`]="{ item }">
-        <v-badge dot inline left :color="getStatusColor(item.status)">
+        <v-badge dot inline left color="primary">
           {{ item.status }}
         </v-badge>
       </template>
@@ -56,47 +40,23 @@
             : '-'
         }}
       </template>
-      <template v-slot:[`item.action`]="{ item }">
-        <v-icon @click="openMedicalCase(item)">
-          fas fa-external-link-alt
-        </v-icon>
-        <DeleteButton
-          v-if="item.status === states[0]"
-          :item="item"
-          :go-back="false"
-          :exercise-id="$route.params.id"
-        />
-      </template>
     </v-data-table>
   </div>
 </template>
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
-import { mapActions } from 'vuex'
-import DeleteButton from './Delete.vue'
-import { Inject, InjectShort } from '~/store/inject/type'
+import { Inject } from '~/store/inject/type'
 import { MedicalCase } from '~/store/medicalCase/type'
+// import DeleteButton from '@/components/medical_case/Delete.vue'
 @Component({
-  components: {
-    DeleteButton
-  },
-  methods: {
-    ...mapActions('inject', {
-      findInject: 'find',
-      updateInject: 'update'
-    })
-  }
+  // components: {
+  //   DeleteButton
+  // }
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
-  @Prop({ type: Function, required: true }) readonly refreshTable!: ({
-    exerciseID
-  }) => void
-
-  findInject!: ({ id, exerciseID, disableLoader }) => void
-  updateInject!: ({ inject, showInject }) => void
 
   headers = [
     { text: 'State', sortable: true, value: 'status' },
@@ -109,15 +69,6 @@ export default class Table extends Vue {
   ]
 
   search: string = ''
-  states: string[] = [
-    'Waiting for makeup',
-    'In makeup',
-    'Ready to play',
-    'Playing',
-    'Finished'
-  ]
-
-  selectedInjects: InjectShort[] = []
 
   openInject (inject) {
     this.$router.push(
@@ -131,43 +82,10 @@ export default class Table extends Vue {
     )
   }
 
-  openMedicalCase (inject: InjectShort) {
-    this.$router.push('/medical_cases/' + inject.medicalCase.id)
-  }
-
-  async updateStatus () {
-    const injects = this.selectedInjects.filter(
-      inject => inject.status !== this.states[this.states.length - 1]
-    )
-    for (const inject of injects) {
-      const nextState = this.states[this.states.indexOf(inject.status!) + 1]
-      await this.findInject({
-        id: inject.id,
-        exerciseID: this.$route.params.id,
-        disableLoader: true
-      })
-      const updatedInject: Inject = { ...this.$store.state.inject.inject }
-      updatedInject.status = nextState
-      await this.updateInject({ inject: updatedInject, showInject: false })
+  getTriageColor (medicalCase: MedicalCase) {
+    if (!medicalCase.patient.triage) {
+      return 'grey'
     }
-    this.refreshTable({ exerciseID: this.$route.params.id })
-  }
-
-  getStatusColor (status: string): string {
-    const colors = {
-      'Waiting for makeup': 'error',
-      'In makeup': 'primary',
-      'Ready to play': 'warning',
-      Playing: 'success',
-      Finished: 'black'
-    }
-    if (status in colors) {
-      return colors[status]
-    }
-    return 'gray'
-  }
-
-  getTriageColor (medicalCase: MedicalCase): String {
     if (medicalCase.patient.triage === 'Red') {
       return 'error'
     }
@@ -180,7 +98,6 @@ export default class Table extends Vue {
     if (medicalCase.patient.triage === 'Deceased/Unsalvageable') {
       return 'black'
     }
-    return 'grey'
   }
 
   filterInjects (value, search, item: Inject) {

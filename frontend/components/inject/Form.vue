@@ -121,7 +121,7 @@ export default class Form extends Vue {
       await this.findMedicalCase(medicalCase.id)
       injects.push({
         exerciseID: this.$route.params.id,
-        status: 'Waiting for makeup',
+        status: 'Waiting for Makeup',
         startTime: this.startTime,
         makeupCenterTitle: this.makeupCenter,
         team: this.team,

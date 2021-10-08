@@ -33,11 +33,7 @@
     </v-row>
     <v-row justify="center">
       <v-col md="10" sm="12">
-        <Table
-          :items="injectList.injects"
-          :loading="loading"
-          :refresh-table="getInjects"
-        />
+        <Table :items="injectList.injects" :loading="loading" />
       </v-col>
     </v-row>
   </v-container>

@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <p class="title mx-4">
+    <v-title class="mx-4">
       Normal exams
-    </p>
+    </v-title>
     <v-row class="ma-4">
       <v-col
         v-for="(file, i) in files"
