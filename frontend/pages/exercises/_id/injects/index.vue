@@ -16,18 +16,14 @@
           class="mr-2"
           :to="`/exercises/${$route.params.id}/injects/new`"
         >
-          <v-icon small>
-            fas fa-plus
-          </v-icon>
+          <v-icon small> fas fa-plus </v-icon>
         </v-btn>
         <v-btn
           small
           color="primary"
           @click="getInjects({ exerciseID: $route.params.id })"
         >
-          <v-icon small>
-            fas fa-redo
-          </v-icon>
+          <v-icon small> fas fa-redo </v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -49,34 +45,34 @@ import { mapState, mapActions } from 'vuex'
 import Table from '~/components/inject/Table.vue'
 @Component({
   components: {
-    Table
+    Table,
   },
   computed: {
     ...mapState('inject', {
       injectList: 'injectList',
-      injectsLoaded: 'injectsLoaded'
-    })
+      injectsLoaded: 'injectsLoaded',
+    }),
   },
   methods: {
     ...mapActions('inject', {
-      getInjects: 'get_all'
-    })
-  }
+      getInjects: 'get_all',
+    }),
+  },
 })
-export default class MedicalCases extends Vue {
+export default class Injects extends Vue {
   getInjects!: (payload) => void
   injectsLoaded!: boolean
   injectList!: object
 
   loading = false
 
-  loadInjects () {
+  loadInjects() {
     this.loading = true
     this.getInjects({ exerciseID: this.$route.params.id })
     this.loading = false
   }
 
-  mounted () {
+  mounted() {
     if (!this.injectsLoaded) {
       this.loadInjects()
     }
