@@ -11,6 +11,37 @@
         />
       </v-col>
       <v-col cols="auto">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              :disabled="!selectedInjects.length"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Print
+              {{
+                selectedInjects.length ? `(${selectedInjects.length})` : null
+              }}
+              <v-icon small right>fas fa-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              :to="{
+                path: `/exercises/${$route.params.id}/injects/print/vital_signs`,
+                query: {
+                  injects: selectedInjects.map((inject) => inject.id),
+                },
+              }"
+              target="_blank"
+            >
+              <v-list-item-title> Vital signs </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+      <v-col cols="auto">
         <v-btn
           color="primary"
           :disabled="!selectedInjects.length"
@@ -51,8 +82,8 @@
         {{
           item.startTime
             ? new Date(item.startTime).toLocaleString([], {
-              timeZone: 'UTC',
-            })
+                timeZone: 'UTC',
+              })
             : '-'
         }}
       </template>
@@ -79,20 +110,20 @@ import { Inject, InjectShort } from '~/store/inject/type'
 import { MedicalCase } from '~/store/medicalCase/type'
 @Component({
   components: {
-    DeleteButton
+    DeleteButton,
   },
   methods: {
     ...mapActions('inject', {
       findInject: 'find',
-      updateInject: 'update'
-    })
-  }
+      updateInject: 'update',
+    }),
+  },
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
   @Prop({ type: Function, required: true }) readonly refreshTable!: ({
-    exerciseID
+    exerciseID,
   }) => void
 
   findInject!: ({ id, exerciseID, disableLoader }) => void
@@ -105,7 +136,7 @@ export default class Table extends Vue {
     { text: 'Team', sortable: true, value: 'team.title' },
     { text: 'Make-up center', sortable: true, value: 'makeupCenterTitle' },
     { text: 'Start time', sortable: true, value: 'startTime' },
-    { text: 'Actions', sortable: false, value: 'action' }
+    { text: 'Actions', sortable: false, value: 'action' },
   ]
 
   search: string = ''
@@ -114,37 +145,37 @@ export default class Table extends Vue {
     'In makeup',
     'Ready to play',
     'Playing',
-    'Finished'
+    'Finished',
   ]
 
   selectedInjects: InjectShort[] = []
 
-  openInject (inject) {
+  openInject(inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}`
     )
   }
 
-  editInject (inject) {
+  editInject(inject) {
     this.$router.push(
       `/exercises/${this.$route.params.id}/injects/${inject.id}/edit`
     )
   }
 
-  openMedicalCase (inject: InjectShort) {
+  openMedicalCase(inject: InjectShort) {
     this.$router.push('/medical_cases/' + inject.medicalCase.id)
   }
 
-  async updateStatus () {
+  async updateStatus() {
     const injects = this.selectedInjects.filter(
-      inject => inject.status !== this.states[this.states.length - 1]
+      (inject) => inject.status !== this.states[this.states.length - 1]
     )
     for (const inject of injects) {
       const nextState = this.states[this.states.indexOf(inject.status!) + 1]
       await this.findInject({
         id: inject.id,
         exerciseID: this.$route.params.id,
-        disableLoader: true
+        disableLoader: true,
       })
       const updatedInject: Inject = { ...this.$store.state.inject.inject }
       updatedInject.status = nextState
@@ -153,13 +184,13 @@ export default class Table extends Vue {
     this.refreshTable({ exerciseID: this.$route.params.id })
   }
 
-  getStatusColor (status: string): string {
+  getStatusColor(status: string): string {
     const colors = {
       'Waiting for makeup': 'error',
       'In makeup': 'primary',
       'Ready to play': 'warning',
       Playing: 'success',
-      Finished: 'black'
+      Finished: 'black',
     }
     if (status in colors) {
       return colors[status]
@@ -167,7 +198,7 @@ export default class Table extends Vue {
     return 'gray'
   }
 
-  getTriageColor (medicalCase: MedicalCase): String {
+  getTriageColor(medicalCase: MedicalCase): String {
     if (medicalCase.patient.triage === 'Red') {
       return 'error'
     }
@@ -183,15 +214,15 @@ export default class Table extends Vue {
     return 'grey'
   }
 
-  filterInjects (value, search, item: Inject) {
+  filterInjects(value, search, item: Inject) {
     // Split search into an array
     const needleArry = search
       .toString()
       .toLowerCase()
       .split(' ')
-      .filter(x => x.trim().length > 0)
+      .filter((x) => x.trim().length > 0)
 
-    function filterAll (item: Inject, search: string) {
+    function filterAll(item: Inject, search: string) {
       return (
         filterStatus(item, search) ||
         filterRoleplayer(item, search) ||
@@ -202,32 +233,32 @@ export default class Table extends Vue {
       )
     }
 
-    function filterStatus (item: Inject, search: string) {
+    function filterStatus(item: Inject, search: string) {
       return item.status?.toLowerCase().includes(search)
     }
 
-    function filterRoleplayer (item: Inject, search: string) {
+    function filterRoleplayer(item: Inject, search: string) {
       return item.roleplayer.fullName?.toLowerCase().includes(search)
     }
 
-    function filterMedicalCase (item: Inject, search: string) {
+    function filterMedicalCase(item: Inject, search: string) {
       return item.medicalCase.title?.toLowerCase().includes(search)
     }
 
-    function filterTeam (item: Inject, search: string) {
+    function filterTeam(item: Inject, search: string) {
       return item.team?.title?.toLowerCase().includes(search)
     }
 
-    function filterMakeupCenter (item: Inject, search: string) {
+    function filterMakeupCenter(item: Inject, search: string) {
       return item.makeupCenterTitle?.toLowerCase().includes(search)
     }
 
-    function filterStartTime (item: Inject, search: string) {
+    function filterStartTime(item: Inject, search: string) {
       return item.startTime?.toString().toLowerCase().includes(search)
     }
 
     return (
-      value && search && needleArry.every(needle => filterAll(item, needle))
+      value && search && needleArry.every((needle) => filterAll(item, needle))
     )
   }
 }
