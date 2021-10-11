@@ -59,7 +59,7 @@ export default class PrintVitalSigns extends Vue {
   }
 
   mounted() {
-    // window.print()
+    window.print()
   }
 
   get _() {
