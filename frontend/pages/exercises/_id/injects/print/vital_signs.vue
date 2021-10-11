@@ -58,14 +58,12 @@ export default class PrintVitalSigns extends Vue {
   injects: Inject[] = []
 
   async created() {
-    console.log(this.$route.query.injects)
     const ids: string | (string | null)[] =
       typeof this.$route.query.injects === 'string'
         ? [this.$route.query.injects]
         : this.$route.query.injects
 
     for (const id of ids) {
-      console.log(id)
       const inject: Inject = await this.$axios.$get(
         `/api/exercises/${this.$route.params.id}/injects/${id}`
       )
@@ -157,7 +155,6 @@ body {
   overflow: hidden;
   padding: 0.8in 0.8in;
   page-break-before: always;
-  border: 1px solid black;
 }
 
 .page.landscape {
@@ -177,7 +174,7 @@ body {
 }
 
 .is-half-page:first-child {
-  border-bottom: 1px dotted red;
+  border-bottom: 1px dotted black;
   padding-bottom: 0.5in;
 }
 

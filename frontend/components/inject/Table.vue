@@ -38,6 +38,17 @@
             >
               <v-list-item-title> Vital signs </v-list-item-title>
             </v-list-item>
+            <v-list-item
+              :to="{
+                path: `/exercises/${$route.params.id}/injects/print/makeup`,
+                query: {
+                  injects: selectedInjects.map((inject) => inject.id),
+                },
+              }"
+              target="_blank"
+            >
+              <v-list-item-title> Makeup</v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-col>
