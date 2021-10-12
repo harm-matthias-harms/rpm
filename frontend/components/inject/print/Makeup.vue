@@ -3,8 +3,12 @@
     <p class="title text-center">Makeup Instruction Card</p>
 
     <v-row justify="center">
-      <v-col cols="auto"> Casualty: {{ inject.roleplayer.fullName }} </v-col>
-      <v-col cols="auto">
+      <v-col cols="6">
+        <b>Casualty</b>
+        <br />
+        {{ inject.roleplayer.fullName }}
+      </v-col>
+      <v-col cols="6">
         <p>
           Gender: {{ inject.roleplayer.gender }}
           <br />
@@ -14,24 +18,25 @@
     </v-row>
     <v-row>
       <v-col>
-        <p>Symptoms description</p>
+        <p><b>Symptoms description</b></p>
         <p>{{ inject.medicalCase.medical.signs }}</p>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <p>Makeup description</p>
+        <p><b>Makeup description</b></p>
         <p>{{ inject.medicalCase.makeup.makeup }}</p>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <p>Acting description</p>
+        <p><b>Acting description</b></p>
         <p>{{ inject.medicalCase.makeup.acting }}</p>
       </v-col>
     </v-row>
     <v-row justify="center" class="mt-4">
       <v-col cols="auto">
+        <p class="caption">Case title: {{ inject.medicalCase.title }}</p>
         <p class="caption">Case id: {{ inject.id }}</p>
       </v-col>
     </v-row>

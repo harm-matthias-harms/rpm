@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="(chunk1, idx) in _.chunk(_.chunk(injects, 2), 3)"
+      v-for="(chunk1, idx) in _.chunk(_.chunk(injects, 2), 2)"
       :key="idx"
       class="page portrait"
     >
@@ -107,7 +107,7 @@ body {
 }
 
 .is-third-page {
-  height: 3.3633in;
+  height: 5.045in;
 }
 
 .is-third-page:not(:last-child) {
