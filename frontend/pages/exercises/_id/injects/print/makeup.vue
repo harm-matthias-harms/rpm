@@ -56,10 +56,11 @@ export default class PrintVitalSigns extends Vue {
       )
       this.injects.push(inject)
     }
-  }
-
-  mounted() {
-    window.print()
+    this.$nextTick(() => {
+      this.$nextTick(() => {
+        window.print()
+      })
+    })
   }
 
   get _() {
