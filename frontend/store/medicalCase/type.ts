@@ -1,6 +1,6 @@
 import { Author } from '../user/type'
 
-interface nestedVitalSign {
+export interface nestedVitalSign {
   title?: string
   data?: {
     oos?: string
@@ -18,11 +18,7 @@ interface nestedVitalSign {
       treatmentExpected?: string
     }
   }
-  childs?: nestedVitalSignArray
-}
-
-interface nestedVitalSignArray {
-  [index: number]: nestedVitalSign
+  childs?: nestedVitalSign[]
 }
 
 interface file {
@@ -66,7 +62,7 @@ export interface MedicalCase {
     makeup?: string
     acting?: string
   }
-  vitalSigns: nestedVitalSignArray
+  vitalSigns: nestedVitalSign[]
   files: fileArray
 }
 

@@ -7,7 +7,7 @@ export const defaultRoleplayer: Roleplayer = {
   gender: undefined,
   fullName: undefined,
   age: undefined,
-  nationality: undefined
+  nationality: undefined,
 }
 
 export const defaultInject = {
@@ -22,16 +22,17 @@ export const defaultInject = {
   makeupCenterTitle: undefined,
   team: defaultTeam,
   roleplayer: {},
-  medicalCase: defaultMedicalCase
+  medicalCase: defaultMedicalCase,
 }
 
 export const state = (): State => ({
   inject: defaultInject,
+  exerciseID: undefined,
   injectList: {
     count: 0,
-    injects: []
+    injects: [],
   },
-  injectsLoaded: false
+  injectsLoaded: false,
 })
 
 export default state
