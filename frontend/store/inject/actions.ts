@@ -47,7 +47,10 @@ export const actions: ActionTree<State, RootState> = {
     this.$axios
       .$get(`/api/exercises/${payload.exerciseID}/injects`)
       .then((response) => {
-        commit('SET_INJECT_LIST', response)
+        commit('SET_INJECT_LIST', {
+          list: response,
+          exerciseID: payload.exerciseID,
+        })
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't load injects.", { root: true })

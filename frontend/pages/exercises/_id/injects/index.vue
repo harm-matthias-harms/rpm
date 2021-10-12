@@ -51,6 +51,7 @@ import Table from '~/components/inject/Table.vue'
     ...mapState('inject', {
       injectList: 'injectList',
       injectsLoaded: 'injectsLoaded',
+      exerciseID: 'exerciseID',
     }),
   },
   methods: {
@@ -63,6 +64,7 @@ export default class Injects extends Vue {
   getInjects!: (payload) => void
   injectsLoaded!: boolean
   injectList!: object
+  exerciseID!: string
 
   loading = false
 
@@ -73,7 +75,7 @@ export default class Injects extends Vue {
   }
 
   mounted() {
-    if (!this.injectsLoaded) {
+    if (!this.injectsLoaded || this.exerciseID !== this.$route.params.id) {
       this.loadInjects()
     }
   }
