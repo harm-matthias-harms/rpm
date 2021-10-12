@@ -34,6 +34,7 @@ export interface InjectShort {
 
 export interface State {
   inject: Inject
+  exerciseID?: string
   injectList: {
     count: number
     injects: InjectShort[]
