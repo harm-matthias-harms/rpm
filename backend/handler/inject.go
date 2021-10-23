@@ -45,8 +45,8 @@ func HandleInjectsGet(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, errorParseParams)
 	}
 	filter := map[string]interface{}{}
-	if !params.ExerciseID.IsZero() {
-		filter["exerciseId"] = params.ExerciseID
+	if !exerciseID.IsZero() {
+		filter["exerciseID"] = exerciseID
 	}
 	if !params.Team.ID.IsZero() {
 		filter["team._id"] = params.Team.ID

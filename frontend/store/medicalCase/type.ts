@@ -78,6 +78,8 @@ export interface MedicalCaseShort {
   }
   patient: {
     triage?: string
+    gender: string[]
+    age?: string
   }
 }
 

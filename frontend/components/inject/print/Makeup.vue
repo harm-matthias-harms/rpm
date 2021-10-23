@@ -36,7 +36,7 @@
     </v-row>
     <v-row justify="center" class="mt-4">
       <v-col cols="auto">
-        <p class="caption">Case title: {{ inject.medicalCase.title }}</p>
+        <!-- <p class="caption">Case title: {{ inject.medicalCase.title }}</p> -->
         <p class="caption">Case id: {{ inject.id }}</p>
       </v-col>
     </v-row>

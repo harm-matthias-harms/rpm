@@ -91,7 +91,6 @@ body {
   overflow: hidden;
   padding: 0.8in 0.8in;
   page-break-before: always;
-  border: 1px solid black;
 }
 
 .page.landscape {
