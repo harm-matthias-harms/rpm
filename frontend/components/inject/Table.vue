@@ -99,6 +99,7 @@
         }}
       </template>
       <template v-slot:[`item.action`]="{ item }">
+        <v-icon @click="openPrint(item)" class="mr-2"> fas fa-file-pdf </v-icon>
         <v-icon @click="openMedicalCase(item)">
           fas fa-external-link-alt
         </v-icon>
@@ -160,6 +161,13 @@ export default class Table extends Vue {
   ]
 
   selectedInjects: InjectShort[] = []
+
+  openPrint(inject) {
+    window.open(
+      `/exercises/${this.$route.params.id}/injects/${inject.id}/print`,
+      '_blank'
+    )
+  }
 
   openInject(inject) {
     this.$router.push(

@@ -69,7 +69,9 @@ type MedicalCaseShort struct {
 		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
 	} `json:"general" form:"general" bson:"general"`
 	Patient struct {
-		Triage string `json:"triage" form:"triage" bson:"triage"`
+		Triage string   `json:"triage" form:"triage" bson:"triage"`
+		Gender []string `json:"gender" form:"gender" bson:"gender"`
+		Age    string   `json:"age" form:"age" bson:"age"`
 	} `json:"patient" form:"patient" bson:"patient"`
 }
 
