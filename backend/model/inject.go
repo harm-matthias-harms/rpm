@@ -54,7 +54,7 @@ type Roleplayer struct {
 
 // InjectQuery is the query fields for the getter
 type InjectQuery struct {
-	ExerciseID        primitive.ObjectID `query:"title"`
+	ExerciseID        primitive.ObjectID `query:"exerciseId"`
 	Author            string             `query:"author"`
 	Team              Team               `query:"team"`
 	MakeupCenterTitle string             `query:"makeupCenterTitle"`
