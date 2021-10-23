@@ -19,17 +19,41 @@
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
 import { Roleplayer } from '~/store/inject/type'
+import { name } from 'faker/locale/en_GB'
+import { sample, range } from 'lodash'
+import { MedicalCaseShort } from '~/store/medicalCase/type'
 
 @Component
 export default class RoleplayerForm extends Vue {
   @Prop({ type: Object }) readonly value!: Roleplayer
+  @Prop({ type: Object }) readonly medicalCase!: MedicalCaseShort
 
-  get roleplayer (): Roleplayer {
+  get roleplayer(): Roleplayer {
     return this.value
   }
 
-  set roleplayer (roleplayer: Roleplayer) {
+  set roleplayer(roleplayer: Roleplayer) {
     this.$emit('input', roleplayer)
+  }
+
+  created() {
+    const gender = sample(this.medicalCase.patient.gender)
+    const ages = {
+      undefined: [],
+      Neonate: [0],
+      Infant: range(0, 12),
+      Adolescent: range(10, 19),
+      Adult: range(19, 60),
+      Elderly: range(60, 90),
+    }
+
+    this.roleplayer = {
+      fullName: `${name.firstName(gender?.toLowerCase())} ${name.lastName(
+        gender?.toLowerCase()
+      )}`,
+      gender: gender,
+      age: sample(ages[this.medicalCase.patient.age || 'undefined']),
+    }
   }
 
   gender: string[] = ['Male', 'Female', 'Undefined']
@@ -258,7 +282,7 @@ export default class RoleplayerForm extends Vue {
     'Welsh',
     'Yemeni',
     'Zambian',
-    'Zimbabwean'
+    'Zimbabwean',
   ]
 }
 </script>
