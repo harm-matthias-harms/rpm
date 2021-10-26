@@ -8,17 +8,20 @@
       required
       data-vv-name="title"
     />
-    <v-expansion-panels
-      v-model="expansionPanel"
-      multiple
-      class="mb-4"
-    >
+    <v-expansion-panels v-model="expansionPanel" multiple class="mb-4">
       <v-expansion-panel>
         <v-expansion-panel-header>General</v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-select
             v-model="medicalCase.general.discipline"
-            :items="['Internal med', 'Surgery', 'Gyn/Obs', 'Infectious diseases', 'Trauma', 'Public health']"
+            :items="[
+              'Internal med',
+              'Surgery',
+              'Gyn/Obs',
+              'Infectious diseases',
+              'Trauma',
+              'Public health',
+            ]"
             label="Area/Discipline"
             multiple
           />
@@ -31,13 +34,26 @@
           <v-select
             v-model="medicalCase.general.scenario"
             :multiple="true"
-            :items="['Conflict', 'Natural disaster', 'Man-made disaster', 'Mass-Casualty-Incident', 'Outbreak', 'People displacement/Refugees']"
+            :items="[
+              'Conflict',
+              'Natural disaster',
+              'Man-made disaster',
+              'Mass-Casualty-Incident',
+              'Outbreak',
+              'People displacement/Refugees',
+            ]"
             label="Scenario"
+          />
+          <v-checkbox
+            v-model="medicalCase.general.preHospital"
+            label="Prehospital playable"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>Patient's characteristics</v-expansion-panel-header>
+        <v-expansion-panel-header
+          >Patient's characteristics</v-expansion-panel-header
+        >
         <v-expansion-panel-content>
           <v-select
             v-model="medicalCase.patient.type"
@@ -95,12 +111,12 @@
         <v-expansion-panel-header>
           Vital signs
           <template
-            v-if="!medicalCase.vitalSigns || medicalCase.vitalSigns.length === 0"
+            v-if="
+              !medicalCase.vitalSigns || medicalCase.vitalSigns.length === 0
+            "
             v-slot:actions
           >
-            <v-icon @click="addVitalSign">
-              fas fa-plus
-            </v-icon>
+            <v-icon @click="addVitalSign"> fas fa-plus </v-icon>
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -119,7 +135,9 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header>Make-up and attributes</v-expansion-panel-header>
+        <v-expansion-panel-header
+          >Make-up and attributes</v-expansion-panel-header
+        >
         <v-expansion-panel-content>
           <v-textarea
             v-model="medicalCase.makeup.makeup"
@@ -132,24 +150,16 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-file-input
-      v-model="files"
-      chips
-      multiple
-      show-size
-      label="Files"
-    />
+    <v-file-input v-model="files" chips multiple show-size label="Files" />
     <v-btn
       :disabled="!medicalCase.title || errors.any()"
       class="mr-4"
       type="submit"
       color="primary"
     >
-      {{ isNew ? "create" : "edit" }}
+      {{ isNew ? 'create' : 'edit' }}
     </v-btn>
-    <v-btn @click="$router.back()">
-      cancel
-    </v-btn>
+    <v-btn @click="$router.back()"> cancel </v-btn>
   </v-form>
 </template>
 
@@ -158,12 +168,14 @@ import { Prop, Component, Vue } from 'vue-property-decorator'
 import VitalSign from './vital_signs/form.vue'
 @Component({
   components: {
-    VitalSign
-  }
+    VitalSign,
+  },
 })
 export default class Form extends Vue {
   @Prop({ type: Object, required: true }) readonly medicalCase!: any
-  @Prop({ type: Function, required: true }) readonly atSubmit!: (payload) => void
+  @Prop({ type: Function, required: true }) readonly atSubmit!: (
+    payload
+  ) => void
   @Prop({ type: Boolean, required: true }) readonly isNew!: boolean
 
   files: Array<any> = []
@@ -183,17 +195,17 @@ export default class Form extends Vue {
       oxygenSaturation: undefined,
       expectations: {
         foe: undefined,
-        treatmentExpected: undefined
-      }
+        treatmentExpected: undefined,
+      },
     },
-    childs: []
+    childs: [],
   }
 
-  mounted () {
+  mounted() {
     this.setExpansionPanel()
   }
 
-  setExpansionPanel () {
+  setExpansionPanel() {
     if (this.medicalCase) {
       if (this.anyFieldPresent(this.medicalCase.general)) {
         if (!this.expansionPanel.includes(0)) {
@@ -227,7 +239,7 @@ export default class Form extends Vue {
     }
   }
 
-  anyFieldPresent (obj: Object) {
+  anyFieldPresent(obj: Object) {
     const exist = (elem) => {
       if (elem) {
         return true
@@ -236,7 +248,7 @@ export default class Form extends Vue {
     return Object.values(obj).some(exist)
   }
 
-  addVitalSign () {
+  addVitalSign() {
     if (
       !this.medicalCase.vitalSigns ||
       this.medicalCase.vitalSigns.length === 0
@@ -245,7 +257,7 @@ export default class Form extends Vue {
     }
   }
 
-  vitalSignsEmptyStringFix (vs) {
+  vitalSignsEmptyStringFix(vs) {
     const keys = Object.keys(vs.data)
     keys.forEach((k) => {
       if (vs.data[k] === '') {
@@ -262,7 +274,7 @@ export default class Form extends Vue {
     })
   }
 
-  submit () {
+  submit() {
     this.medicalCase.vitalSigns.forEach((vs) => {
       this.vitalSignsEmptyStringFix(vs)
     })

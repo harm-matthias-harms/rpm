@@ -17,9 +17,10 @@ type MedicalCase struct {
 	Approved  bool               `json:"approved" form:"approved" bson:"approved"`
 	Title     string             `json:"title" form:"title" bson:"title"`
 	General   struct {
-		Discipline []string `json:"discipline" form:"discipline" bson:"discipline"`
-		Context    []string `json:"context" form:"context" bson:"context"`
-		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
+		Discipline  []string `json:"discipline" form:"discipline" bson:"discipline"`
+		Context     []string `json:"context" form:"context" bson:"context"`
+		Scenario    []string `json:"scenario" form:"scenario" bson:"scenario"`
+		PreHospital bool     `json:"preHospital" form:"preHospital" bson:"preHospital"`
 	} `json:"general" form:"general" bson:"general"`
 	Patient struct {
 		Type   string   `json:"type" form:"type" bson:"type"`
@@ -64,9 +65,10 @@ type MedicalCaseShort struct {
 	Title    string             `json:"title" bson:"title"`
 	Approved bool               `json:"approved" bson:"approved"`
 	General  struct {
-		Discipline []string `json:"discipline" form:"discipline" bson:"discipline"`
-		Context    []string `json:"context" form:"context" bson:"context"`
-		Scenario   []string `json:"scenario" form:"scenario" bson:"scenario"`
+		Discipline  []string `json:"discipline" form:"discipline" bson:"discipline"`
+		Context     []string `json:"context" form:"context" bson:"context"`
+		Scenario    []string `json:"scenario" form:"scenario" bson:"scenario"`
+		PreHospital bool     `json:"preHospital" form:"preHospital" bson:"preHospital"`
 	} `json:"general" form:"general" bson:"general"`
 	Patient struct {
 		Triage string   `json:"triage" form:"triage" bson:"triage"`
