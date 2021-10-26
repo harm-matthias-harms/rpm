@@ -12,13 +12,14 @@ export const defaultMedicalCase: MedicalCase = {
   general: {
     discipline: [],
     context: [],
-    scenario: []
+    scenario: [],
+    preHospital: undefined,
   },
   patient: {
     type: undefined,
     triage: undefined,
     gender: [],
-    age: undefined
+    age: undefined,
   },
   medical: {
     signs: undefined,
@@ -26,23 +27,23 @@ export const defaultMedicalCase: MedicalCase = {
     medication: undefined,
     past: undefined,
     loi: undefined,
-    events: undefined
+    events: undefined,
   },
   makeup: {
     makeup: undefined,
-    acting: undefined
+    acting: undefined,
   },
   vitalSigns: [],
-  files: []
+  files: [],
 }
 
 export const state = (): State => ({
   medicalCase: defaultMedicalCase,
   medicalCasesList: {
     count: 0,
-    medicalCases: []
+    medicalCases: [],
   },
-  medicalCasesLoaded: false
+  medicalCasesLoaded: false,
 })
 
 export default state

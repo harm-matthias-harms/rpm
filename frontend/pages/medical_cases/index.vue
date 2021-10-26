@@ -1,55 +1,25 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        md="5"
-        sm="6"
-      >
+      <v-col md="5" sm="6">
         <h3 class="headline">
-          <v-chip
-            small
-            label
-            color="primary"
-          >
-            {{ medicalCasesList.count }}
-          </v-chip>Medical Cases
+          <v-chip small label color="primary">
+            {{ medicalCasesList.count }} </v-chip
+          >Medical Cases
         </h3>
       </v-col>
-      <v-col
-        md="5"
-        sm="6"
-        class="justify-end d-flex"
-      >
-        <v-btn
-          small
-          color="primary"
-          class="mr-2"
-          to="/medical_cases/new"
-        >
-          <v-icon small>
-            fas fa-plus
-          </v-icon>
+      <v-col md="5" sm="6" class="justify-end d-flex">
+        <v-btn small color="primary" class="mr-2" to="/medical_cases/new">
+          <v-icon small> fas fa-plus </v-icon>
         </v-btn>
-        <v-btn
-          small
-          color="primary"
-          @click="getMedicalCases()"
-        >
-          <v-icon small>
-            fas fa-redo
-          </v-icon>
+        <v-btn small color="primary" @click="getMedicalCases()">
+          <v-icon small> fas fa-redo </v-icon>
         </v-btn>
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-col
-        md="10"
-        sm="12"
-      >
-        <Table
-          :items="medicalCasesList.medicalCases"
-          :loading="loading"
-        />
+      <v-col>
+        <Table :items="medicalCasesList.medicalCases" :loading="loading" />
       </v-col>
     </v-row>
   </v-container>
@@ -61,19 +31,19 @@ import { mapState, mapActions } from 'vuex'
 import Table from '@/components/medical_case/table.vue'
 @Component({
   components: {
-    Table
+    Table,
   },
   computed: {
     ...mapState('medicalCase', {
       medicalCasesList: 'medicalCasesList',
-      medicalCasesLoaded: 'medicalCasesLoaded'
-    })
+      medicalCasesLoaded: 'medicalCasesLoaded',
+    }),
   },
   methods: {
     ...mapActions('medicalCase', {
-      getMedicalCases: 'get_all'
-    })
-  }
+      getMedicalCases: 'get_all',
+    }),
+  },
 })
 export default class MedicalCases extends Vue {
   getMedicalCases!: () => void
@@ -82,13 +52,13 @@ export default class MedicalCases extends Vue {
 
   loading = false
 
-  loadMedicalCases () {
+  loadMedicalCases() {
     this.loading = true
     this.getMedicalCases()
     this.loading = false
   }
 
-  mounted () {
+  mounted() {
     if (!this.medicalCasesLoaded) {
       this.loadMedicalCases()
     }
