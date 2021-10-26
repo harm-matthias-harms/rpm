@@ -43,6 +43,7 @@ export interface MedicalCase {
     discipline: string[]
     context: string[]
     scenario: string[]
+    preHospital?: boolean
   }
   patient: {
     type?: string
@@ -75,6 +76,7 @@ export interface MedicalCaseShort {
     discipline?: string
     context: string[]
     scenario: string[]
+    preHospital?: boolean
   }
   patient: {
     triage?: string

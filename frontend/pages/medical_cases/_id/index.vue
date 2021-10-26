@@ -38,12 +38,18 @@
               </v-col>
               <v-col
                 v-if="medicalCase.editor && medicalCase.editor.username"
-                class="col-auto mr-auto"
+                class="col-auto"
               >
                 <Editor
                   :editor="medicalCase.editor"
                   :edited-at="medicalCase.editedAt"
                 />
+              </v-col>
+              <v-col
+                v-if="medicalCase.general.preHospital"
+                class="col-auto mr-auto"
+              >
+                <v-chip color="primary"> Prehospital </v-chip>
               </v-col>
             </v-row>
           </v-card-text>
@@ -207,21 +213,21 @@
                       ($axios.defaults.baseURL === '/'
                         ? ''
                         : $axios.defaults.baseURL) +
-                        '/api/medical_cases/' +
-                        medicalCase.id +
-                        '/documents/' +
-                        file.id
+                      '/api/medical_cases/' +
+                      medicalCase.id +
+                      '/documents/' +
+                      file.id
                     "
                   >
                     {{ file.name }}
-                    <br>
+                    <br />
                     ({{ bytesToSize(file.size) }})
                   </a>
                 </v-card-title>
                 <v-card-actions
                   v-if="
                     !medicalCase.author.username ||
-                      medicalCase.author.id == $store.state.user.user.id
+                    medicalCase.author.id == $store.state.user.user.id
                   "
                 >
                   <v-btn
@@ -266,7 +272,7 @@ import Confirm from '@/components/utils/Confirm.vue'
     VitalSigns,
     Exams,
     DeleteButton,
-    Confirm
+    Confirm,
   },
   computed: {
     ...mapState('medicalCase', {
@@ -280,9 +286,9 @@ import Confirm from '@/components/utils/Confirm.vue'
     ...mapActions('medicalCase', {
       find: 'find',
       approve: 'approve',
-      deleteFile: 'deleteFile'
-    })
-  }
+      deleteFile: 'deleteFile',
+    }),
+  },
 })
 export default class ShowMedicalCase extends Vue {
   find!: (id) => void
@@ -292,7 +298,7 @@ export default class ShowMedicalCase extends Vue {
   isCodeUser!: boolean
   expansionPanel: Array<number> = []
 
-  mounted () {
+  mounted() {
     const id = this.$route.params.id
     if (this.medicalCase.id !== id) {
       this.find(id)
@@ -300,15 +306,15 @@ export default class ShowMedicalCase extends Vue {
     this.setExpansionPanel()
   }
 
-  editMedicalCase (medicalCase) {
+  editMedicalCase(medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
   }
 
-  onCancel () {
+  onCancel() {
     this.deleteFileDialog = new Array(100).fill(false)
   }
 
-  setExpansionPanel () {
+  setExpansionPanel() {
     if (this.medicalCase) {
       if (this.anyFieldPresent(this.medicalCase.general)) {
         this.expansionPanel.push(0)
@@ -332,7 +338,7 @@ export default class ShowMedicalCase extends Vue {
     }
   }
 
-  anyFieldPresent (object: Object) {
+  anyFieldPresent(object: Object) {
     const exist = (elem) => {
       if (elem) {
         return true
@@ -341,7 +347,7 @@ export default class ShowMedicalCase extends Vue {
     return Object.values(object).some(exist)
   }
 
-  bytesToSize (bytes) {
+  bytesToSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     if (bytes === 0) {
       return 'n/a'
