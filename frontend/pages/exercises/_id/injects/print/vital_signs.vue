@@ -161,7 +161,6 @@ body {
   overflow: hidden;
   padding: 0.8in 0.8in;
   page-break-before: always;
-  border: 1px solid black;
 }
 
 .page.landscape {
@@ -178,7 +177,6 @@ body {
 
 .is-half-page {
   height: 5.045in;
-  border: 1px solid red;
 }
 
 .is-half-page:first-child {
