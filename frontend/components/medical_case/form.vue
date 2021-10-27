@@ -129,6 +129,7 @@
               v-for="(vs, i) in medicalCase.vitalSigns"
               :key="i"
               :vital-sign.sync="medicalCase.vitalSigns[i]"
+              :level="0"
             />
           </v-expansion-panels>
         </v-expansion-panel-content>

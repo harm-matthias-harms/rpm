@@ -32,6 +32,7 @@ interface vitalSign {
 
 interface vitalSignData {
   title?: string
+  priorStatus: string | null
   respiratoryRate?: number
   pulse?: number
   temperature?: number
@@ -108,7 +109,10 @@ export default class PrintVitalSigns extends Vue {
     return result
   }
 
-  vitalSignData(vitalSign: nestedVitalSign): vitalSignData[] {
+  vitalSignData(
+    vitalSign: nestedVitalSign,
+    priorStatus: string | null = null
+  ): vitalSignData[] {
     const results: vitalSignData[] = []
     if (
       vitalSign.data?.respiratoryRate ||
@@ -120,12 +124,13 @@ export default class PrintVitalSigns extends Vue {
     ) {
       results.push({
         title: vitalSign.title,
+        priorStatus: priorStatus,
         ...vitalSign.data,
       })
     }
     if (vitalSign.childs) {
       vitalSign.childs.forEach((c) => {
-        const res = this.vitalSignData(c)
+        const res = this.vitalSignData(c, vitalSign.title)
         res.forEach((r) => results.push(r))
       })
     }
@@ -156,6 +161,7 @@ body {
   overflow: hidden;
   padding: 0.8in 0.8in;
   page-break-before: always;
+  border: 1px solid black;
 }
 
 .page.landscape {
@@ -172,6 +178,7 @@ body {
 
 .is-half-page {
   height: 5.045in;
+  border: 1px solid red;
 }
 
 .is-half-page:first-child {
@@ -179,7 +186,7 @@ body {
   padding-bottom: 0.5in;
 }
 
-.is-half-page:last-child {
+.is-half-page:not(:first-child):last-child {
   padding-top: 0.5in;
 }
 </style>

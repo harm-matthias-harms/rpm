@@ -102,6 +102,11 @@
     </v-row>
     <v-row justify="center" class="mt-4">
       <v-col cols="auto">
+        <p class="caption">
+          Prior status: {{ vitalSign.data.priorStatus || '-' }}
+        </p>
+      </v-col>
+      <v-col cols="auto">
         <p class="caption">Case id: {{ vitalSign.id }}</p>
       </v-col>
     </v-row>
