@@ -1,42 +1,39 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{ vitalSign.title ? vitalSign.title : 'No title' }}</v-expansion-panel-header>
+    <v-expansion-panel-header>{{
+      vitalSign.title ? vitalSign.title : 'No title'
+    }}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <v-select
         v-model="vitalSign.title"
-        :items="['T0 - Start', 'T1 - Improvement', 'T2 - Deterioration']"
+        :items="titleOptions()"
         label="Title"
       />
       <v-autocomplete
         v-model="presetID"
         :items="presets.presets"
         :loading="loading"
-        :item-text="item => item.title + ' - ' + item.author.username"
+        :item-text="(item) => item.title + ' - ' + item.author.username"
         item-value="id"
         label="Select a preset"
       >
         <template v-slot:item="data">
           <v-list-item-content>
             <v-list-item-title>{{ data.item.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ data.item.author.username }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{
+              data.item.author.username
+            }}</v-list-item-subtitle>
           </v-list-item-content>
         </template>
       </v-autocomplete>
       <Form :vital-signs.sync="vitalSign.data" />
-      <v-btn
-        class="mb-4"
-        @click="addChild"
-      >
-        Add Step
-      </v-btn>
-      <v-expansion-panels
-        multiple
-        class="mb-4"
-      >
+      <v-btn class="mb-4" @click="addChild"> Add Step </v-btn>
+      <v-expansion-panels multiple class="mb-4">
         <VitalSign
           v-for="(vs, i) in vitalSign.childs"
           :key="i"
           :vital-sign.sync="vitalSign.childs[i]"
+          :level="level + 1"
         />
       </v-expansion-panels>
     </v-expansion-panel-content>
@@ -54,25 +51,26 @@ import Form from '@/components/vital_signs/form.vue'
     ...mapState('preset', {
       presetsLoaded: 'presetsLoaded',
       presets: 'presetList',
-      preset: 'preset'
-    })
+      preset: 'preset',
+    }),
   },
   methods: {
     ...mapActions('preset', {
       getPresets: 'get_all',
-      findPreset: 'find'
-    })
-  }
+      findPreset: 'find',
+    }),
+  },
 })
 export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSign!: any
+  @Prop({ type: Number, required: true }) readonly level!: Number
   @Watch('vitalSign', { immediate: true, deep: true })
-  updateVitalSignChanged (val: any) {
+  updateVitalSignChanged(val: any) {
     this.$emit('update:vitalSign', val)
   }
 
   @Watch('presetID')
-  presetIDChanged (val: string) {
+  presetIDChanged(val: string) {
     if (val) {
       this.findPreset({ id: val, disableLoader: true }).then((res) => {
         this.vitalSign.data = res.vitalSigns
@@ -103,23 +101,31 @@ export default class VitalSign extends Vue {
       oxygenSaturation: undefined,
       expectations: {
         foe: undefined,
-        treatmentExpected: undefined
-      }
+        treatmentExpected: undefined,
+      },
     },
-    childs: []
+    childs: [],
   }
 
-  addChild () {
+  addChild() {
+    if (this.vitalSign.childs && this.vitalSign.childs.length >= 2) return
+
     this.vitalSign.childs.push(Object.assign({}, this.emptyVitalSign))
   }
 
-  loadPresets () {
+  titleOptions() {
+    if (this.level === 0) return ['T0 - Start']
+
+    return [`T${this.level} - Improvement`, `T${this.level} - Deterioration`]
+  }
+
+  loadPresets() {
     this.loading = true
     this.getPresets({ disableLoader: true })
     this.loading = false
   }
 
-  mounted () {
+  mounted() {
     if (!this.presetsLoaded) {
       this.loadPresets()
     }
