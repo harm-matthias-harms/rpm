@@ -114,9 +114,10 @@ export default class VitalSign extends Vue {
   }
 
   titleOptions() {
-    if (this.level === 0) return ['T0 - Start']
+    if (this.level === 0) return ['T0 - Pre']
 
-    return [`T${this.level} - Improvement`, `T${this.level} - Deterioration`]
+    // return [`T${this.level} - Improvement`, `T${this.level} - Deterioration`]
+    return ['A Pre', 'B Pre', 'T1 - A', 'T2 - A', 'T1 - B', 'T2 - B']
   }
 
   loadPresets() {
