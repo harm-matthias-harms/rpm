@@ -1,8 +1,11 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{
-      vitalSign.title ? vitalSign.title : 'No title'
-    }}</v-expansion-panel-header>
+    <v-expansion-panel-header>
+      <div>
+        <v-chip :color="levelColor()" class="mr-2">{{ level }}</v-chip>
+        {{ vitalSign.title ? vitalSign.title : 'No title' }}
+      </div>
+    </v-expansion-panel-header>
     <v-expansion-panel-content>
       <v-select
         v-model="vitalSign.title"
@@ -63,7 +66,7 @@ import Form from '@/components/vital_signs/form.vue'
 })
 export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSign!: any
-  @Prop({ type: Number, required: true }) readonly level!: Number
+  @Prop({ type: Number, required: true }) readonly level!: number
   @Watch('vitalSign', { immediate: true, deep: true })
   updateVitalSignChanged(val: any) {
     this.$emit('update:vitalSign', val)
@@ -118,6 +121,12 @@ export default class VitalSign extends Vue {
 
     // return [`T${this.level} - Improvement`, `T${this.level} - Deterioration`]
     return ['A Pre', 'B Pre', 'T1 - A', 'T2 - A', 'T1 - B', 'T2 - B']
+  }
+
+  levelColor() {
+    const colors = ['primary', 'success', 'warning', 'error']
+
+    return colors[this.level % 4]
   }
 
   loadPresets() {
