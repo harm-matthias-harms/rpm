@@ -81,6 +81,11 @@ func HandleExerciseCreate(c echo.Context) (err error) {
 	if err = addExercisePermissions(c.Request().Context(), exercise); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
+
+	if err = storage.UpdateExercise(c.Request().Context(), exercise, objectID); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
+	}
+
 	return c.JSON(http.StatusCreated, jsonStatus{Success: true, Data: exercise})
 }
 
@@ -124,16 +129,16 @@ func HandleExerciseEdit(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, errorFind)
 	}
 
-	if err = storage.UpdateExercise(c.Request().Context(), exercise, objectID); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
-	}
-
 	if err = revokeExercisePermissions(c.Request().Context(), oldExerciseVersion); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
 	}
 
 	if err = addExercisePermissions(c.Request().Context(), exercise); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, errorParseRequest)
+	}
+
+	if err = storage.UpdateExercise(c.Request().Context(), exercise, objectID); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errorUpdated)
 	}
 
 	return c.JSON(http.StatusOK, exercise)
@@ -176,24 +181,24 @@ func HandleExerciseDelete(c echo.Context) (err error) {
 }
 
 func addExercisePermissions(ctx context.Context, exercise *model.Exercise) (err error) {
-	err = addExerciseToUser(ctx, exercise, exercise.Author, model.ExerciseAdminRole)
+	err = addExerciseToUser(ctx, exercise, &exercise.Author, model.ExerciseAdminRole)
 	if err != nil {
 		return
 	}
-	for _, team := range exercise.Teams {
-		err = addExerciseToUser(ctx, exercise, team.Trainer, model.TrainerRole)
+	for idx := range exercise.Teams {
+		err = addExerciseToUser(ctx, exercise, &exercise.Teams[idx].Trainer, model.TrainerRole)
 		if err != nil {
 			return
 		}
 	}
-	for _, rpm := range exercise.RoleplayManager {
-		err = addExerciseToUser(ctx, exercise, rpm, model.RolePlayManagerRole)
+	for idx := range exercise.RoleplayManager {
+		err = addExerciseToUser(ctx, exercise, &exercise.RoleplayManager[idx], model.RolePlayManagerRole)
 		if err != nil {
 			return
 		}
 	}
-	for _, mc := range exercise.MakeupCenter {
-		err = addExerciseToUser(ctx, exercise, mc.Account, model.MakeUpCenterRole)
+	for idx := range exercise.MakeupCenter {
+		err = addExerciseToUser(ctx, exercise, &exercise.MakeupCenter[idx].Account, model.MakeUpCenterRole)
 		if err != nil {
 			return
 		}
@@ -248,7 +253,7 @@ func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user 
 	return
 }
 
-func addExerciseToUser(ctx context.Context, exercise *model.Exercise, user model.LimitedUser, role string) (err error) {
+func addExerciseToUser(ctx context.Context, exercise *model.Exercise, user *model.LimitedUser, role string) (err error) {
 	fullUser := new(model.User)
 	utils.Convert(user, fullUser)
 	if fullUser.ID.IsZero() {
@@ -267,5 +272,7 @@ func addExerciseToUser(ctx context.Context, exercise *model.Exercise, user model
 	userRole := model.UserRole{Role: role, Exercise: shortExercise}
 	fullUser.Roles = append(fullUser.Roles, userRole)
 	err = storage.UpdateUser(ctx, fullUser)
+
+	utils.Convert(fullUser, user)
 	return
 }

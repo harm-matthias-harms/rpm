@@ -2,7 +2,9 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
 export const types = {}
 
-export interface State {}
+export interface State {
+  [x: string]: any
+}
 
 export interface RootState {}
 
