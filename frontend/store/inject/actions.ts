@@ -40,12 +40,16 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  get_all({ commit }, payload = { exerciseID: null, disableLoader: false }) {
+  async get_all({ commit, dispatch, rootState }, payload = { exerciseID: null, disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
+    if (payload.exerciseID !== rootState.exercise.exercise.id) {
+      await dispatch('exercise/find', {id: payload.exerciseID, disableLoader: true}, { root: true })
+    }
+    const params = filterOptions(rootState, payload.exerciseID)
     this.$axios
-      .$get(`/api/exercises/${payload.exerciseID}/injects`)
+      .$get(`/api/exercises/${payload.exerciseID}/injects`, { params })
       .then((response) => {
         commit('SET_INJECT_LIST', {
           list: response,
@@ -102,6 +106,22 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
+}
+
+function filterOptions(rootState: RootState, exerciseID: string): object {
+  const userID = rootState.user.user.id
+  const roles = rootState.user.user.roles.filter((role) => role.exercise.id === exerciseID)
+  if (roles.some((role) => role.role === 'admin' || role.role === 'role play manager')) return {}
+  if (roles.some((role) => role.role === 'make-up center')) {
+    const makeupcenter = rootState.exercise.exercise.makeupCenter.filter((center) => center.account.id === userID)[0]
+    return { makeupCenterTitle: makeupcenter.title }
+  }
+  if (roles.some((role) => role.role === 'trainer')) {
+    console.log(rootState.exercise.exercise.teams)
+    const team = rootState.exercise.exercise.teams.filter((team) => team.trainer.id === userID)[0]
+    return { teamId: team.team.id }
+  }
+  return {}
 }
 
 export default actions
