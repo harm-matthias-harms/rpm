@@ -48,8 +48,9 @@ func HandleInjectsGet(c echo.Context) (err error) {
 	if !exerciseID.IsZero() {
 		filter["exerciseID"] = exerciseID
 	}
-	if !params.Team.ID.IsZero() {
-		filter["team._id"] = params.Team.ID
+	teamID, err := primitive.ObjectIDFromHex(params.TeamID)
+	if !teamID.IsZero() {
+		filter["team._id"] = teamID
 	}
 	if params.MakeupCenterTitle != "" {
 		filter["makeupCenterTitle"] = params.MakeupCenterTitle

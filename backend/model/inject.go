@@ -56,7 +56,7 @@ type Roleplayer struct {
 type InjectQuery struct {
 	ExerciseID        primitive.ObjectID `query:"exerciseId"`
 	Author            string             `query:"author"`
-	Team              Team               `query:"team"`
+	TeamID            string             `query:"teamId"`
 	MakeupCenterTitle string             `query:"makeupCenterTitle"`
 	Status            string             `query:"status"`
 	Page              int                `query:"page"`
