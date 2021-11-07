@@ -10,6 +10,30 @@
           hide-details
         />
       </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.status"
+          :items="states"
+          clearable
+          label="State"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.team"
+          :items="selectableTeams"
+          clearable
+          label="Team"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.makeupCenter"
+          :items="selectableMakeupCenter"
+          clearable
+          label="Make-up center"
+        />
+      </v-col>
       <v-col cols="auto">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -66,7 +90,7 @@
     <v-data-table
       v-model="selectedInjects"
       :headers="headers"
-      :items="items"
+      :items="itemsForRole"
       :items-per-page="50"
       :footer-props="{
         itemsPerPageOptions: [10, 25, 50, 100],
@@ -133,7 +157,8 @@ import { MedicalCase } from '~/store/medicalCase/type'
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
-  @Prop({ type: Array, required: true }) readonly items!: Array<object>
+  @Prop({ type: String, required: true }) readonly exerciseID!: string
+  @Prop({ type: Array, required: true }) readonly items!: InjectShort[]
   @Prop({ type: Function, required: true }) readonly refreshTable!: ({
     exerciseID,
   }) => void
@@ -152,6 +177,11 @@ export default class Table extends Vue {
   ]
 
   search: string = ''
+  filters = {
+    status: '',
+    team: '',
+    makeupCenter: '',
+  }
   states: string[] = [
     'Waiting for makeup',
     'In makeup',
@@ -161,6 +191,52 @@ export default class Table extends Vue {
   ]
 
   selectedInjects: InjectShort[] = []
+
+  get itemsForRole(): InjectShort[] {
+    const exerciseRoles = this.$store.state.user.user.roles.filter(
+      (role) => role.exercise.id === this.exerciseID
+    )
+    const isMakeupCenter =
+      exerciseRoles.some((role) => role.role === 'make-up center') &&
+      !exerciseRoles.some((role) =>
+        ['admin', 'role play manager', 'trainer'].includes(role.role)
+      )
+
+    let filteredItems = this.items
+    if (this.filters.status) {
+      filteredItems = filteredItems.filter(
+        (item) => item.status === this.filters.status
+      )
+    }
+    if (this.filters.team) {
+      filteredItems = filteredItems.filter(
+        (item) => item.team.title === this.filters.team
+      )
+    }
+    if (this.filters.makeupCenter) {
+      filteredItems = filteredItems.filter(
+        (item) => item.makeupCenterTitle === this.filters.makeupCenter
+      )
+    }
+
+    if (isMakeupCenter) {
+      return filteredItems.filter((item) =>
+        ['Waiting for makeup', 'In makeup', 'Ready to play'].includes(
+          item.status!
+        )
+      )
+    }
+
+    return filteredItems
+  }
+
+  get selectableTeams() {
+    return [...new Set(this.items.map((item) => item.team.title))]
+  }
+
+  get selectableMakeupCenter() {
+    return [...new Set(this.items.map((item) => item.makeupCenterTitle))]
+  }
 
   openPrint(inject) {
     window.open(
@@ -200,7 +276,17 @@ export default class Table extends Vue {
       updatedInject.status = nextState
       await this.updateInject({ inject: updatedInject, showInject: false })
     }
-    this.refreshTable({ exerciseID: this.$route.params.id })
+    await this.refreshTable({ exerciseID: this.$route.params.id })
+    this.updateSelected()
+  }
+
+  updateSelected() {
+    this.selectedInjects = this.selectedInjects
+      ?.map(
+        (inject) =>
+          this.itemsForRole?.find((item: InjectShort) => item.id === inject.id)!
+      )
+      .filter((e) => e)!
   }
 
   getStatusColor(status: string): string {
@@ -233,7 +319,7 @@ export default class Table extends Vue {
     return 'grey'
   }
 
-  filterInjects(value, search, item: Inject) {
+  filterInjects(value, search, item: InjectShort) {
     // Split search into an array
     const needleArry = search
       .toString()
@@ -241,7 +327,7 @@ export default class Table extends Vue {
       .split(' ')
       .filter((x) => x.trim().length > 0)
 
-    function filterAll(item: Inject, search: string) {
+    function filterAll(item: InjectShort, search: string) {
       return (
         filterStatus(item, search) ||
         filterRoleplayer(item, search) ||
@@ -252,27 +338,27 @@ export default class Table extends Vue {
       )
     }
 
-    function filterStatus(item: Inject, search: string) {
+    function filterStatus(item: InjectShort, search: string) {
       return item.status?.toLowerCase().includes(search)
     }
 
-    function filterRoleplayer(item: Inject, search: string) {
+    function filterRoleplayer(item: InjectShort, search: string) {
       return item.roleplayer.fullName?.toLowerCase().includes(search)
     }
 
-    function filterMedicalCase(item: Inject, search: string) {
+    function filterMedicalCase(item: InjectShort, search: string) {
       return item.medicalCase.title?.toLowerCase().includes(search)
     }
 
-    function filterTeam(item: Inject, search: string) {
+    function filterTeam(item: InjectShort, search: string) {
       return item.team?.title?.toLowerCase().includes(search)
     }
 
-    function filterMakeupCenter(item: Inject, search: string) {
+    function filterMakeupCenter(item: InjectShort, search: string) {
       return item.makeupCenterTitle?.toLowerCase().includes(search)
     }
 
-    function filterStartTime(item: Inject, search: string) {
+    function filterStartTime(item: InjectShort, search: string) {
       return item.startTime?.toString().toLowerCase().includes(search)
     }
 

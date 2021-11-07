@@ -5,7 +5,7 @@ import { State } from './type'
 export const actions: ActionTree<State, RootState> = {
   create({ commit }, payload) {
     commit('loader/SET', true, { root: true })
-    this.$axios
+    return this.$axios
       .$post(`/api/exercises/${payload.exerciseID}/injects`, payload.injects)
       .then((response) => {
         commit('SET_INJECTS_TO_LIST', response.data)
@@ -19,7 +19,6 @@ export const actions: ActionTree<State, RootState> = {
       })
   },
   update({ commit }, payload = { inject: null, showInject: false }) {
-    commit('loader/SET', true, { root: true })
     return this.$axios
       .$put(
         `/api/exercises/${payload.inject.exerciseID}/injects/${payload.inject.id}`,
@@ -36,19 +35,13 @@ export const actions: ActionTree<State, RootState> = {
       .catch(() => {
         commit('snackbar/SET', "Couldn't edit preset.", { root: true })
       })
-      .finally(() => {
-        commit('loader/SET', false, { root: true })
-      })
   },
-  async get_all({ commit, dispatch, rootState }, payload = { exerciseID: null, disableLoader: false }) {
-    if (!payload.disableLoader) {
-      commit('loader/SET', true, { root: true })
-    }
+  async get_all({ commit, dispatch, rootState }, payload = { exerciseID: null }) {
     if (payload.exerciseID !== rootState.exercise.exercise.id) {
       await dispatch('exercise/find', {id: payload.exerciseID, disableLoader: true}, { root: true })
     }
     const params = filterOptions(rootState, payload.exerciseID)
-    this.$axios
+    return this.$axios
       .$get(`/api/exercises/${payload.exerciseID}/injects`, { params })
       .then((response) => {
         commit('SET_INJECT_LIST', {
@@ -59,19 +52,11 @@ export const actions: ActionTree<State, RootState> = {
       .catch(() => {
         commit('snackbar/SET', "Couldn't load injects.", { root: true })
       })
-      .finally(() => {
-        if (!payload.disableLoader) {
-          commit('loader/SET', false, { root: true })
-        }
-      })
   },
   find(
     { commit },
-    payload = { id: null, exerciseID: null, disableLoader: false }
+    payload = { id: null, exerciseID: null }
   ) {
-    if (!payload.disableLoader) {
-      commit('loader/SET', true, { root: true })
-    }
     return this.$axios
       .$get(`/api/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then((response) => {
@@ -80,15 +65,9 @@ export const actions: ActionTree<State, RootState> = {
       .catch(() => {
         commit('snackbar/SET', "Couldn't find inject.", { root: true })
       })
-      .finally(() => {
-        if (!payload.disableLoader) {
-          commit('loader/SET', false, { root: true })
-        }
-      })
   },
   delete({ commit }, payload = { id: null, exerciseID: null, goBack: false }) {
-    commit('loader/SET', true, { root: true })
-    this.$axios
+    return this.$axios
       .$delete(`/api/exercises/${payload.exerciseID}/injects/${payload.id}`)
       .then(() => {
         commit('DELETE_FROM_LIST', payload.id)
@@ -101,9 +80,6 @@ export const actions: ActionTree<State, RootState> = {
       })
       .catch(() => {
         commit('snackbar/SET', "Couldn't delete inject.", { root: true })
-      })
-      .finally(() => {
-        commit('loader/SET', false, { root: true })
       })
   },
 }
