@@ -182,7 +182,7 @@ export default class Table extends Vue {
   }
 
   openMedicalCase(inject: InjectShort) {
-    this.$router.push('/medical_cases/' + inject.medicalCase.id)
+    window.open('/medical_cases/' + inject.medicalCase.id, '_blank')
   }
 
   async updateStatus() {
