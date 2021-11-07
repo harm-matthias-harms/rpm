@@ -133,7 +133,7 @@ import { MedicalCase } from '~/store/medicalCase/type'
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
-  @Prop({ type: Array, required: true }) readonly items!: Array<object>
+  @Prop({ type: Array, required: true }) readonly items!: InjectShort[]
   @Prop({ type: Function, required: true }) readonly refreshTable!: ({
     exerciseID,
   }) => void
@@ -200,7 +200,15 @@ export default class Table extends Vue {
       updatedInject.status = nextState
       await this.updateInject({ inject: updatedInject, showInject: false })
     }
-    this.refreshTable({ exerciseID: this.$route.params.id })
+    await this.refreshTable({ exerciseID: this.$route.params.id })
+    this.updateSelected()
+  }
+
+  updateSelected() {
+    this.selectedInjects = this.selectedInjects?.map(
+      (inject) =>
+        this.items?.find((item: InjectShort) => item.id === inject.id)!
+    )
   }
 
   getStatusColor(status: string): string {
