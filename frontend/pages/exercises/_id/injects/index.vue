@@ -31,6 +31,7 @@
       <v-col md="10" sm="12">
         <Table
           :items="injectList.injects"
+          :exerciseID="this.$route.params.id"
           :loading="loading"
           :refresh-table="getInjects"
         />

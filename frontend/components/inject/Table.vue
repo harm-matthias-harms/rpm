@@ -66,7 +66,7 @@
     <v-data-table
       v-model="selectedInjects"
       :headers="headers"
-      :items="items"
+      :items="itemsForRole"
       :items-per-page="50"
       :footer-props="{
         itemsPerPageOptions: [10, 25, 50, 100],
@@ -133,6 +133,7 @@ import { MedicalCase } from '~/store/medicalCase/type'
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
+  @Prop({ type: String, required: true }) readonly exerciseID!: string
   @Prop({ type: Array, required: true }) readonly items!: InjectShort[]
   @Prop({ type: Function, required: true }) readonly refreshTable!: ({
     exerciseID,
@@ -161,6 +162,27 @@ export default class Table extends Vue {
   ]
 
   selectedInjects: InjectShort[] = []
+
+  get itemsForRole(): InjectShort[] {
+    const exerciseRoles = this.$store.state.user.user.roles.filter(
+      (role) => role.exercise.id === this.exerciseID
+    )
+    const isMakeupCenter =
+      exerciseRoles.some((role) => role.role === 'make-up center') &&
+      !exerciseRoles.some((role) =>
+        ['admin', 'role play manager', 'trainer'].includes(role.role)
+      )
+
+    if (isMakeupCenter) {
+      return this.items.filter((item) =>
+        ['Waiting for makeup', 'In makeup', 'Ready to play'].includes(
+          item.status!
+        )
+      )
+    }
+
+    return this.items
+  }
 
   openPrint(inject) {
     window.open(
@@ -241,7 +263,7 @@ export default class Table extends Vue {
     return 'grey'
   }
 
-  filterInjects(value, search, item: Inject) {
+  filterInjects(value, search, item: InjectShort) {
     // Split search into an array
     const needleArry = search
       .toString()
@@ -249,7 +271,7 @@ export default class Table extends Vue {
       .split(' ')
       .filter((x) => x.trim().length > 0)
 
-    function filterAll(item: Inject, search: string) {
+    function filterAll(item: InjectShort, search: string) {
       return (
         filterStatus(item, search) ||
         filterRoleplayer(item, search) ||
@@ -260,27 +282,27 @@ export default class Table extends Vue {
       )
     }
 
-    function filterStatus(item: Inject, search: string) {
+    function filterStatus(item: InjectShort, search: string) {
       return item.status?.toLowerCase().includes(search)
     }
 
-    function filterRoleplayer(item: Inject, search: string) {
+    function filterRoleplayer(item: InjectShort, search: string) {
       return item.roleplayer.fullName?.toLowerCase().includes(search)
     }
 
-    function filterMedicalCase(item: Inject, search: string) {
+    function filterMedicalCase(item: InjectShort, search: string) {
       return item.medicalCase.title?.toLowerCase().includes(search)
     }
 
-    function filterTeam(item: Inject, search: string) {
+    function filterTeam(item: InjectShort, search: string) {
       return item.team?.title?.toLowerCase().includes(search)
     }
 
-    function filterMakeupCenter(item: Inject, search: string) {
+    function filterMakeupCenter(item: InjectShort, search: string) {
       return item.makeupCenterTitle?.toLowerCase().includes(search)
     }
 
-    function filterStartTime(item: Inject, search: string) {
+    function filterStartTime(item: InjectShort, search: string) {
       return item.startTime?.toString().toLowerCase().includes(search)
     }
 
