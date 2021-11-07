@@ -10,6 +10,30 @@
           hide-details
         />
       </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.status"
+          :items="states"
+          clearable
+          label="State"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.team"
+          :items="selectableTeams"
+          clearable
+          label="Team"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          v-model="filters.makeupCenter"
+          :items="selectableMakeupCenter"
+          clearable
+          label="Make-up center"
+        />
+      </v-col>
       <v-col cols="auto">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -153,6 +177,11 @@ export default class Table extends Vue {
   ]
 
   search: string = ''
+  filters = {
+    status: '',
+    team: '',
+    makeupCenter: '',
+  }
   states: string[] = [
     'Waiting for makeup',
     'In makeup',
@@ -173,15 +202,40 @@ export default class Table extends Vue {
         ['admin', 'role play manager', 'trainer'].includes(role.role)
       )
 
+    let filteredItems = this.items
+    if (this.filters.status) {
+      filteredItems = filteredItems.filter(
+        (item) => item.status === this.filters.status
+      )
+    }
+    if (this.filters.team) {
+      filteredItems = filteredItems.filter(
+        (item) => item.team.title === this.filters.team
+      )
+    }
+    if (this.filters.makeupCenter) {
+      filteredItems = filteredItems.filter(
+        (item) => item.makeupCenterTitle === this.filters.makeupCenter
+      )
+    }
+
     if (isMakeupCenter) {
-      return this.items.filter((item) =>
+      return filteredItems.filter((item) =>
         ['Waiting for makeup', 'In makeup', 'Ready to play'].includes(
           item.status!
         )
       )
     }
 
-    return this.items
+    return filteredItems
+  }
+
+  get selectableTeams() {
+    return [...new Set(this.items.map((item) => item.team.title))]
+  }
+
+  get selectableMakeupCenter() {
+    return [...new Set(this.items.map((item) => item.makeupCenterTitle))]
   }
 
   openPrint(inject) {
@@ -227,10 +281,12 @@ export default class Table extends Vue {
   }
 
   updateSelected() {
-    this.selectedInjects = this.selectedInjects?.map(
-      (inject) =>
-        this.items?.find((item: InjectShort) => item.id === inject.id)!
-    )
+    this.selectedInjects = this.selectedInjects
+      ?.map(
+        (inject) =>
+          this.itemsForRole?.find((item: InjectShort) => item.id === inject.id)!
+      )
+      .filter((e) => e)!
   }
 
   getStatusColor(status: string): string {
