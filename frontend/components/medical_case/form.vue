@@ -254,7 +254,9 @@ export default class Form extends Vue {
       !this.medicalCase.vitalSigns ||
       this.medicalCase.vitalSigns.length === 0
     ) {
-      this.medicalCase.vitalSigns = [Object.assign({}, this.emptyVitalSign)]
+      this.medicalCase.vitalSigns = [
+        JSON.parse(JSON.stringify(this.emptyVitalSign)),
+      ]
     }
   }
 

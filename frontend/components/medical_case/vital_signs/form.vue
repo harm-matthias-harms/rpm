@@ -112,8 +112,7 @@ export default class VitalSign extends Vue {
 
   addChild() {
     if (this.vitalSign.childs && this.vitalSign.childs.length >= 2) return
-
-    this.vitalSign.childs.push(Object.assign({}, this.emptyVitalSign))
+    this.vitalSign.childs.push(JSON.parse(JSON.stringify(this.emptyVitalSign)))
   }
 
   titleOptions() {
