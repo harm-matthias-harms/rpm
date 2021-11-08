@@ -247,9 +247,9 @@ func removeExerciseFromUser(ctx context.Context, exercise *model.Exercise, user 
 		}
 	}
 	err = storage.UpdateUser(ctx, dbUser)
-	if dbUser.Code != "" && len(dbUser.Roles) == 0 {
-		storage.DeleteUser(ctx, dbUser)
-	}
+	// if dbUser.Code != "" && len(dbUser.Roles) == 0 {
+	// 	storage.DeleteUser(ctx, dbUser)
+	// }
 	return
 }
 
