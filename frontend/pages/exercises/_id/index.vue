@@ -161,10 +161,10 @@ export default class ShowExercise extends Vue {
       await this.find({ id })
     }
     if (
-      this.exercise.id &&
+      this.exercise.id === id &&
       this.exercise.author.id !== this.$store.state.user.user.id
     ) {
-      this.openInjects(this.exercise)
+      this.openInjects(id)
     }
   }
 
@@ -172,8 +172,8 @@ export default class ShowExercise extends Vue {
     this.$router.push('/exercises/' + exercise.id + '/edit')
   }
 
-  openInjects(exercise) {
-    this.$router.push(`/exercises/${exercise.id}/injects`)
+  openInjects(id) {
+    this.$router.push(`/exercises/${id}/injects`)
   }
 }
 </script>
