@@ -29,13 +29,18 @@
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-col md="10" sm="12">
+      <v-col xl="10" cols="12">
         <Table
           :items="injectList.injects"
           :exerciseID="this.$route.params.id"
           :loading="loading"
           :refresh-table="getInjects"
         />
+      </v-col>
+    </v-row>
+    <v-row justify="center" class="mt-16">
+      <v-col md="8" cols="12">
+        <Statistics :items="injectList.injects" />
       </v-col>
     </v-row>
   </v-container>
@@ -45,9 +50,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { mapState, mapActions } from 'vuex'
 import Table from '~/components/inject/Table.vue'
+import Statistics from '~/components/inject/Statistics.vue'
 @Component({
   components: {
     Table,
+    Statistics,
   },
   computed: {
     ...mapState('inject', {
