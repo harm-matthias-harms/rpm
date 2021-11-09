@@ -47,9 +47,7 @@
             <div v-if="exercise.author.id == $store.state.user.user.id">
               <v-card class="mb-2">
                 <v-card-text>
-                  <h2 class="font-weight-light black--text">
-                    Teams
-                  </h2>
+                  <h2 class="font-weight-light black--text">Teams</h2>
                   <v-row
                     v-for="(team, index) in exercise.teams"
                     :key="'team' + index"
@@ -64,12 +62,10 @@
                       </p>
                     </v-col>
                     <v-col>
-                      <h3 class="font-weight-light black--text">
-                        Trainer
-                      </h3>
+                      <h3 class="font-weight-light black--text">Trainer</h3>
                       <p>
                         {{ team.trainer.username }}
-                        <br>
+                        <br />
                         {{
                           team.trainer.email
                             ? team.trainer.email
@@ -92,7 +88,7 @@
                     <v-col>
                       <h3 class="font-weight-light black--text">
                         {{ rpm.username }}
-                        <br>
+                        <br />
                         {{ rpm.email ? rpm.email : 'Code: ' + rpm.code }}
                       </h3>
                     </v-col>
@@ -101,9 +97,7 @@
               </v-card>
               <v-card class="mb-2">
                 <v-card-text>
-                  <h2 class="font-weight-light black--text">
-                    Make-Up Center
-                  </h2>
+                  <h2 class="font-weight-light black--text">Make-Up Center</h2>
                   <v-row
                     v-for="(mc, index) in exercise.makeupCenter"
                     :key="'team' + index"
@@ -114,12 +108,10 @@
                       </h3>
                     </v-col>
                     <v-col>
-                      <h3 class="font-weight-light black--text">
-                        Account
-                      </h3>
+                      <h3 class="font-weight-light black--text">Account</h3>
                       <p>
                         {{ mc.account.username }}
-                        <br>
+                        <br />
                         {{
                           mc.account.email
                             ? mc.account.email
@@ -146,27 +138,27 @@ import DeleteButton from '@/components/exercise/Delete.vue'
 @Component({
   components: {
     Author,
-    DeleteButton
+    DeleteButton,
   },
   computed: {
     ...mapState('exercise', {
-      exercise: 'exercise'
-    })
+      exercise: 'exercise',
+    }),
   },
   methods: {
     ...mapActions('exercise', {
-      find: 'find'
-    })
-  }
+      find: 'find',
+    }),
+  },
 })
 export default class ShowExercise extends Vue {
   find!: (id) => void
   exercise!: any
 
-  mounted () {
+  async mounted() {
     const id = this.$route.params.id
     if (this.exercise.id !== id) {
-      this.find({ id })
+      await this.find({ id })
     }
     if (
       this.exercise.id &&
@@ -176,11 +168,11 @@ export default class ShowExercise extends Vue {
     }
   }
 
-  editExercise (exercise) {
+  editExercise(exercise) {
     this.$router.push('/exercises/' + exercise.id + '/edit')
   }
 
-  openInjects (exercise) {
+  openInjects(exercise) {
     this.$router.push(`/exercises/${exercise.id}/injects`)
   }
 }
