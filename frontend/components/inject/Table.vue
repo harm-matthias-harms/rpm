@@ -138,7 +138,7 @@
           fas fa-external-link-alt
         </v-icon>
         <DeleteButton
-          v-if="item.status === states[0]"
+          v-if="isAdminOrRpm && item.status === states[0]"
           :item="item"
           :go-back="false"
           :exercise-id="$route.params.id"
@@ -202,13 +202,16 @@ export default class Table extends Vue {
 
   selectedInjects: InjectShort[] = []
 
-  get itemsForRole(): InjectShort[] {
-    const exerciseRoles = this.$store.state.user.user.roles.filter(
+  get exerciseRoles() {
+    return this.$store.state.user.user.roles.filter(
       (role) => role.exercise.id === this.exerciseID
     )
+  }
+
+  get itemsForRole(): InjectShort[] {
     const isMakeupCenter =
-      exerciseRoles.some((role) => role.role === 'make-up center') &&
-      !exerciseRoles.some((role) =>
+      this.exerciseRoles.some((role) => role.role === 'make-up center') &&
+      !this.exerciseRoles.some((role) =>
         ['admin', 'role play manager', 'trainer'].includes(role.role)
       )
 
@@ -246,6 +249,12 @@ export default class Table extends Vue {
 
   get selectableMakeupCenter() {
     return [...new Set(this.items.map((item) => item.makeupCenterTitle))]
+  }
+
+  get isAdminOrRpm() {
+    return this.exerciseRoles.some((role) =>
+      ['admin', 'role play manager'].includes(role.role)
+    )
   }
 
   openMedicalCase(inject: InjectShort) {
