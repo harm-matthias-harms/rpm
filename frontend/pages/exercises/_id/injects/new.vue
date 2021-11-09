@@ -2,7 +2,10 @@
   <v-row justify="center">
     <v-col lg="8" md="10" sm="12">
       <v-card>
-        <v-card-title primary-title> New Case </v-card-title>
+        <v-card-title primary-title class="justify-space-between">
+          New Case
+          <v-btn @click="$router.back()" color="primary"> Cancel </v-btn>
+        </v-card-title>
         <v-card-text>
           <Form :at-submit="create" />
         </v-card-text>
