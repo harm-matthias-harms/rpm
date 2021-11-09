@@ -45,11 +45,7 @@ export default class PrintVitalSigns extends Vue {
       )
       this.injects.push(inject)
     }
-    this.$nextTick(() => {
-      this.$nextTick(() => {
-        window.print()
-      })
-    })
+    setTimeout(window.print, 500)
   }
 
   get _() {
