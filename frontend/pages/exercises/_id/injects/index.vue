@@ -11,6 +11,7 @@
       </v-col>
       <v-col md="5" sm="6" class="justify-end d-flex">
         <v-btn
+          v-if="isAdminOrRpm"
           small
           color="primary"
           class="mr-2"
@@ -79,6 +80,18 @@ export default class Injects extends Vue {
     if (!this.injectsLoaded || this.exerciseID !== this.$route.params.id) {
       this.loadInjects()
     }
+  }
+
+  get exerciseRoles() {
+    return this.$store.state.user.user.roles.filter(
+      (role) => role.exercise.id === this.exerciseID
+    )
+  }
+
+  get isAdminOrRpm() {
+    return this.exerciseRoles.some((role) =>
+      ['admin', 'role play manager'].includes(role.role)
+    )
   }
 }
 </script>
