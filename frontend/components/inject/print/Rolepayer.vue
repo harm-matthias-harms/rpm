@@ -3,7 +3,7 @@
     <div class="page portrait">
       <v-row>
         <v-col>
-          <h3>Roleplayer</h3>
+          <h3>Patient</h3>
           <v-list dense>
             <v-list-item>
               <v-list-item-content>Fullname:</v-list-item-content>
@@ -239,27 +239,43 @@
           <Makeup :inject="inject"></Makeup>
         </v-col>
       </v-row>
-      <v-row class="is-dotted-bottom">
-        <v-col>
+      <v-row>
+        <v-col
+          v-if="
+            inject.medicalCase.vitalSigns.length &&
+            inject.medicalCase.vitalSigns[0].childs.length
+          "
+        >
           <p class="title text-center">Clinical status transitions</p>
           <v-treeview
             open-all
             :items="[vitalSignFlow(inject.medicalCase.vitalSigns[0])]"
           ></v-treeview>
+          <p class="caption text-center mt-5">Case id: {{ inject.id }}</p>
+        </v-col>
+        <v-col v-else-if="extractVitalSigns(inject).length">
+          <VitalSign :vitalSign="extractVitalSigns(inject)[0]"></VitalSign>
         </v-col>
       </v-row>
     </div>
     <div
-      v-for="(chunk, idx) in _.chunk(extractVitalSigns(inject), 2)"
-      :key="idx"
-      class="page portrait"
+      v-if="
+        inject.medicalCase.vitalSigns.length &&
+        inject.medicalCase.vitalSigns[0].childs.length
+      "
     >
-      <VitalSign
-        class="is-half-page"
-        v-for="(vs, idx) in chunk"
+      <div
+        v-for="(chunk, idx) in _.chunk(extractVitalSigns(inject), 2)"
         :key="idx"
-        :vitalSign="vs"
-      ></VitalSign>
+        class="page portrait"
+      >
+        <VitalSign
+          class="is-half-page"
+          v-for="(vs, idx) in chunk"
+          :key="idx"
+          :vitalSign="vs"
+        ></VitalSign>
+      </div>
     </div>
   </div>
 </template>
