@@ -1,5 +1,5 @@
 <template>
-  <div v-if="inject">
+  <div>
     <div class="page portrait">
       <v-row>
         <v-col>
@@ -239,20 +239,33 @@
           <Makeup :inject="inject"></Makeup>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="is-dotted-bottom">
         <v-col>
-          <VitalSign
-            :vitalSign="extractVitalSigns(inject)[0]"
-            v-if="extractVitalSigns(inject).length"
-          ></VitalSign>
+          <p class="title text-center">Clinical status transitions</p>
+          <v-treeview
+            open-all
+            :items="[vitalSignFlow(inject.medicalCase.vitalSigns[0])]"
+          ></v-treeview>
         </v-col>
       </v-row>
+    </div>
+    <div
+      v-for="(chunk, idx) in _.chunk(extractVitalSigns(inject), 2)"
+      :key="idx"
+      class="page portrait"
+    >
+      <VitalSign
+        class="is-half-page"
+        v-for="(vs, idx) in chunk"
+        :key="idx"
+        :vitalSign="vs"
+      ></VitalSign>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Prop, Component, Vue } from 'nuxt-property-decorator'
 
 import { Inject } from '~/store/inject/type'
 import Makeup from '@/components/inject/print/Makeup.vue'
@@ -278,6 +291,11 @@ interface vitalSignData {
   oxygenSaturation?: number
 }
 
+interface vitalSignFlow {
+  name: string | undefined
+  children: vitalSignFlow[] | undefined
+}
+
 @Component({
   layout: 'print',
   components: {
@@ -285,24 +303,9 @@ interface vitalSignData {
     VitalSign,
   },
 })
-export default class PrintVitalSigns extends Vue {
-  inject: Inject | null = null
+export default class PrintRoleplayer extends Vue {
+  @Prop({ type: Object, required: true }) readonly inject!: Inject
   tZero: nestedVitalSign | null = null
-
-  async created() {
-    const inject: Inject = await this.$axios.$get(
-      `/api/exercises/${this.$route.params.id}/injects/${this.$route.params.inject_id}`
-    )
-    this.inject = inject
-    if (inject.medicalCase.vitalSigns) {
-      this.tZero = inject.medicalCase.vitalSigns[0]
-    }
-    this.$nextTick(() => {
-      this.$nextTick(() => {
-        window.print()
-      })
-    })
-  }
 
   get _() {
     return _
@@ -310,6 +313,13 @@ export default class PrintVitalSigns extends Vue {
 
   valueToString(value: number, unit: string) {
     return value + (unit ? ' ' + unit : '')
+  }
+
+  vitalSignFlow(vitalSign: nestedVitalSign): vitalSignFlow {
+    return {
+      name: vitalSign.title,
+      children: vitalSign.childs?.map((child) => this.vitalSignFlow(child)),
+    }
   }
 
   extractVitalSigns(inject: Inject): vitalSign[] | null {
@@ -403,6 +413,19 @@ body {
 }
 
 .is-third-page:not(:first-child) {
+  padding-top: 0.5in;
+}
+
+.is-half-page {
+  height: 5.045in;
+}
+
+.is-half-page:first-child {
+  border-bottom: 1px dotted black;
+  padding-bottom: 0.5in;
+}
+
+.is-half-page:not(:first-child):last-child {
   padding-top: 0.5in;
 }
 
