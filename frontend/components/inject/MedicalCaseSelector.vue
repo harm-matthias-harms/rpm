@@ -1,17 +1,67 @@
 <template>
   <div>
-    <v-text-field
-      v-model="search"
-      append-icon="search"
-      label="Search"
-      single-line
-      hide-details
-    />
+    <v-row dense>
+      <v-col>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          clearable
+          label="Triage"
+          v-model="filters.triage"
+          :items="['Deceased/Unsalvageable', 'Red', 'Yellow', 'Green']"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          clearable
+          label="Area / Discipline"
+          v-model="filters.area"
+          :items="[
+            'Internal med',
+            'Surgery',
+            'Gyn/Obs',
+            'Infectious diseases',
+            'Trauma',
+            'Public health',
+          ]"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          clearable
+          label="Scenario"
+          v-model="filters.scenario"
+          :items="[
+            'Conflict',
+            'Natural disaster',
+            'Man-made disaster',
+            'Mass-Casualty-Incident',
+            'Outbreak',
+            'People displacement/Refugees',
+          ]"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
+          clearable
+          label="Pre hospital"
+          v-model="filters.preHospital"
+          :items="[true, false]"
+        />
+      </v-col>
+    </v-row>
     <v-data-table
       v-model="medicalCases"
       show-select
       :headers="headers"
-      :items="options"
+      :items="filteredItems"
       :items-per-page="25"
       :footer-props="{
         itemsPerPageOptions: [10, 25, 50],
@@ -74,10 +124,17 @@ export default class MedicalCaseSelector extends Vue {
     { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
-    { text: 'PreHospital', sortable: true, value: 'general.preHospital' },
+    { text: 'Pre Hospital', sortable: true, value: 'general.preHospital' },
   ]
 
   search: string = ''
+
+  filters = {
+    triage: '',
+    area: '',
+    scenario: '',
+    preHospital: undefined,
+  }
 
   mounted() {
     if (this.$store.state.medicalCase.medicalCasesLoaded) {
@@ -88,6 +145,36 @@ export default class MedicalCaseSelector extends Vue {
           this.$store.state.medicalCase.medicalCasesList.medicalCases
       })
     }
+  }
+
+  get filteredItems(): MedicalCaseShort[] {
+    let items = this.options
+
+    if (this.filters.triage) {
+      items = items.filter((item) => {
+        return item.patient.triage === this.filters.triage
+      })
+    }
+
+    if (this.filters.area) {
+      items = items.filter((item) => {
+        return item.general.discipline?.includes(this.filters.area)
+      })
+    }
+
+    if (this.filters.scenario) {
+      items = items.filter((item) => {
+        return item.general.scenario?.includes(this.filters.scenario)
+      })
+    }
+
+    if ([true, false].includes(this.filters.preHospital!)) {
+      items = items.filter((item) => {
+        return item.general.preHospital === this.filters.preHospital
+      })
+    }
+
+    return items
   }
 
   getTriageColor(item) {
