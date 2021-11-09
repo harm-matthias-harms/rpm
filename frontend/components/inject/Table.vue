@@ -73,6 +73,17 @@
             >
               <v-list-item-title> Makeup</v-list-item-title>
             </v-list-item>
+            <v-list-item
+              :to="{
+                path: `/exercises/${this.$route.params.id}/injects/print/roleplayer`,
+                query: {
+                  injects: selectedInjects.map((inject) => inject.id),
+                },
+              }"
+              target="_blank"
+            >
+              <v-list-item-title>Roleplayer</v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-col>
@@ -123,7 +134,6 @@
         }}
       </template>
       <template v-slot:[`item.action`]="{ item }">
-        <v-icon @click="openPrint(item)" class="mr-2"> fas fa-file-pdf </v-icon>
         <v-icon @click="openMedicalCase(item)">
           fas fa-external-link-alt
         </v-icon>
@@ -236,25 +246,6 @@ export default class Table extends Vue {
 
   get selectableMakeupCenter() {
     return [...new Set(this.items.map((item) => item.makeupCenterTitle))]
-  }
-
-  openPrint(inject) {
-    window.open(
-      `/exercises/${this.$route.params.id}/injects/${inject.id}/print`,
-      '_blank'
-    )
-  }
-
-  openInject(inject) {
-    this.$router.push(
-      `/exercises/${this.$route.params.id}/injects/${inject.id}`
-    )
-  }
-
-  editInject(inject) {
-    this.$router.push(
-      `/exercises/${this.$route.params.id}/injects/${inject.id}/edit`
-    )
   }
 
   openMedicalCase(inject: InjectShort) {
