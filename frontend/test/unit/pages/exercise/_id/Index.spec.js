@@ -40,7 +40,7 @@ describe('Show Exercise', () => {
   })
 
   test('open inject', () => {
-    wrapper.vm.openInjects({ id: '001' })
+    wrapper.vm.openInjects('001')
     expect(wrapper.vm.$route.path).toEqual('/exercises/001/injects')
   })
 })

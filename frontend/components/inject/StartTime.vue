@@ -80,9 +80,11 @@ export default class StartTime extends Vue {
     ]
     const hoursLength = hours.length
     const j = this.getCurrentTimeIndex(startTime, hours)
+    const endDate = new Date(endTime)
+    endDate.setDate(endDate.getDate() + 1)
     for (
       let d = new Date(startTime);
-      d <= new Date(endTime);
+      d <= endDate;
       d.setDate(d.getDate() + 1)
     ) {
       if (d === new Date(startTime)) {

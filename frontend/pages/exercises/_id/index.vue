@@ -20,7 +20,7 @@
               <v-btn
                 class="float-right"
                 color="primary"
-                @click="openInjects(exercise)"
+                @click="openInjects($route.params.id)"
               >
                 Enter
               </v-btn>
