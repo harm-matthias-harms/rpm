@@ -56,6 +56,14 @@
           :items="[true, false]"
         />
       </v-col>
+      <v-col cols="2">
+        <v-select
+          clearable
+          label="MEDEVAC"
+          v-model="filters.medevac"
+          :items="[true, false]"
+        />
+      </v-col>
     </v-row>
     <v-data-table
       v-model="medicalCases"
@@ -87,6 +95,11 @@
       <template v-slot:[`item.general.preHospital`]="{ item }">
         <v-icon :color="item.general.preHospital ? 'success' : 'error'">
           {{ item.general.preHospital ? 'fa-check-circle' : 'fa-times-circle' }}
+        </v-icon>
+      </template>
+      <template v-slot:[`item.general.medevac`]="{ item }">
+        <v-icon :color="item.general.medevac ? 'success' : 'error'">
+          {{ item.general.medevac ? 'fa-check-circle' : 'fa-times-circle' }}
         </v-icon>
       </template>
     </v-data-table>
@@ -125,6 +138,7 @@ export default class MedicalCaseSelector extends Vue {
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
     { text: 'Pre Hospital', sortable: true, value: 'general.preHospital' },
+    { text: 'Medevac', sortable: true, value: 'general.medevac' },
   ]
 
   search: string = ''
@@ -134,6 +148,7 @@ export default class MedicalCaseSelector extends Vue {
     area: '',
     scenario: '',
     preHospital: undefined,
+    medevac: undefined,
   }
 
   mounted() {
@@ -171,6 +186,12 @@ export default class MedicalCaseSelector extends Vue {
     if ([true, false].includes(this.filters.preHospital!)) {
       items = items.filter((item) => {
         return item.general.preHospital === this.filters.preHospital
+      })
+    }
+
+    if ([true, false].includes(this.filters.medevac!)) {
+      items = items.filter((item) => {
+        return item.general.medevac === this.filters.medevac
       })
     }
 
@@ -230,7 +251,8 @@ export default class MedicalCaseSelector extends Vue {
         ) ||
         item.general.context?.some((e) => e.toLowerCase().includes(search)) ||
         item.general.scenario?.some((e) => e.toLowerCase().includes(search)) ||
-        ('prehospital'.includes(search) && item.general.preHospital)
+        ('prehospital'.includes(search) && item.general.preHospital) ||
+        ('medevac'.includes(search) && item.general.medevac)
       )
     }
 

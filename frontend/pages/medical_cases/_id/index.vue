@@ -45,11 +45,13 @@
                   :edited-at="medicalCase.editedAt"
                 />
               </v-col>
-              <v-col
-                v-if="medicalCase.general.preHospital"
-                class="col-auto mr-auto"
-              >
-                <v-chip color="primary"> Prehospital </v-chip>
+              <v-col class="col-auto mr-auto">
+                <v-chip color="primary" v-if="medicalCase.general.preHospital">
+                  Prehospital
+                </v-chip>
+                <v-chip color="primary" v-if="medicalCase.general.medevac">
+                  MEDEVAC
+                </v-chip>
               </v-col>
             </v-row>
           </v-card-text>

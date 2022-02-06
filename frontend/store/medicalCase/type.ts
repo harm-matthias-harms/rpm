@@ -44,6 +44,7 @@ export interface MedicalCase {
     context: string[]
     scenario: string[]
     preHospital?: boolean
+    medevac?: boolean
   }
   patient: {
     type?: string
@@ -77,6 +78,7 @@ export interface MedicalCaseShort {
     context: string[]
     scenario: string[]
     preHospital?: boolean
+    medevac?: boolean
   }
   patient: {
     triage?: string

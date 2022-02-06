@@ -31,16 +31,6 @@ describe('Medical case table', () => {
     expect(wrapper.props().loading).toBeFalsy()
     expect(wrapper.props().items).toMatchObject([])
   })
-  test('open inject', () => {
-    wrapper.vm.openInject({ id: '001' })
-    expect(wrapper.vm.$route.path).toEqual('/exercises/undefined/injects/001')
-  })
-  test('open edit inject', () => {
-    wrapper.vm.editInject({ id: '001' })
-    expect(wrapper.vm.$route.path).toEqual(
-      '/exercises/undefined/injects/001/edit'
-    )
-  })
   test('filter table', () => {
     const inject = {
       status: 'status',
