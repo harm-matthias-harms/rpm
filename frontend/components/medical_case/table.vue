@@ -54,6 +54,13 @@
               </v-icon>
             </td>
             <td @click="openMedicalCase(item)">
+              <v-icon :color="item.general.medevac ? 'success' : 'error'">
+                {{
+                  item.general.medevac ? 'fa-check-circle' : 'fa-times-circle'
+                }}
+              </v-icon>
+            </td>
+            <td @click="openMedicalCase(item)">
               {{ item.author.username }}
             </td>
             <td class="px-0">
@@ -92,6 +99,7 @@ export default class Table extends Vue {
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
     { text: 'PreHospital', sortable: true, value: 'general.preHospital' },
+    { text: 'MEDEVAC', sortable: true, value: 'general.medevac'},
     { text: 'Author', sortable: true, value: 'author.username' },
     { text: 'Actions', sortable: false, value: 'action' },
   ]
@@ -159,7 +167,8 @@ export default class Table extends Vue {
         ) ||
         item.general.context?.some((e) => e.toLowerCase().includes(search)) ||
         item.general.scenario?.some((e) => e.toLowerCase().includes(search)) ||
-        ('prehospital'.includes(search) && item.general.preHospital)
+        ('prehospital'.includes(search) && item.general.preHospital) ||
+        ('medevac'.includes(search) && item.general.medevac)
       )
     }
 
