@@ -14,6 +14,7 @@ export const defaultMedicalCase: MedicalCase = {
     context: [],
     scenario: [],
     preHospital: undefined,
+    medevac: undefined
   },
   patient: {
     type: undefined,

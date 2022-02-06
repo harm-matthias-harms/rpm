@@ -21,6 +21,7 @@ type MedicalCase struct {
 		Context     []string `json:"context" form:"context" bson:"context"`
 		Scenario    []string `json:"scenario" form:"scenario" bson:"scenario"`
 		PreHospital bool     `json:"preHospital" form:"preHospital" bson:"preHospital"`
+		Medevac     bool     `json:"medevac" form:"medevac" bson:"medevac"`
 	} `json:"general" form:"general" bson:"general"`
 	Patient struct {
 		Type   string   `json:"type" form:"type" bson:"type"`
@@ -69,6 +70,7 @@ type MedicalCaseShort struct {
 		Context     []string `json:"context" form:"context" bson:"context"`
 		Scenario    []string `json:"scenario" form:"scenario" bson:"scenario"`
 		PreHospital bool     `json:"preHospital" form:"preHospital" bson:"preHospital"`
+		Medevac     bool     `json:"medevac" form:"medevac" bson:"medevac"`
 	} `json:"general" form:"general" bson:"general"`
 	Patient struct {
 		Triage string   `json:"triage" form:"triage" bson:"triage"`
