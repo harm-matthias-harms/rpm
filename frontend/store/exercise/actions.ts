@@ -1,9 +1,9 @@
 import { ActionTree } from 'vuex/types'
 import { State as RootState } from '@/store/root'
-import { State } from './type'
+import { Exercise, State } from './type'
 
 export const actions: ActionTree<State, RootState> = {
-  create ({ commit, dispatch }, exercise) {
+  create({ commit, dispatch }, exercise: Exercise) {
     commit('loader/SET', true, { root: true })
     exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
     exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
@@ -21,7 +21,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  update ({ commit, dispatch }, exercise) {
+  update({ commit, dispatch }, exercise: Exercise) {
     commit('loader/SET', true, { root: true })
     exercise.startTime = exercise.startTime.slice(0, 10) + 'T00:00:00.000Z'
     exercise.endTime = exercise.endTime.slice(0, 10) + 'T23:59:59.000Z'
@@ -39,7 +39,7 @@ export const actions: ActionTree<State, RootState> = {
         commit('loader/SET', false, { root: true })
       })
   },
-  find ({ commit }, payload = { id: null, disableLoader: false }) {
+  find({ commit }, payload = { id: null, disableLoader: false }) {
     if (!payload.disableLoader) {
       commit('loader/SET', true, { root: true })
     }
@@ -61,7 +61,7 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
   },
-  delete ({ commit, dispatch }, payload = { id: null }) {
+  delete({ commit, dispatch }, payload = { id: null }) {
     commit('loader/SET', true, { root: true })
     this.$axios
       .$delete('/api/exercises/' + payload.id)

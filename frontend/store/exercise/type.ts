@@ -7,13 +7,13 @@ export interface MakeupCenter {
 }
 
 export interface Exercise {
-  id?: string
+  id: string
   author: Author
-  createdAt?: Date
-  editedAt?: Date
+  createdAt: Date | null
+  editedAt: Date | null
   title: string
-  startTime?: string
-  endTime?: string
+  startTime: string
+  endTime: string
   teams: {
     team: Team
     trainer: ShortUser

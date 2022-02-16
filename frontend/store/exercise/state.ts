@@ -1,14 +1,16 @@
-import { author } from '../user/state'
-import { State } from './type'
+import { cloneDeep } from 'lodash'
 
-export const defaultExercise = {
-  id: undefined,
-  author,
-  createdAt: undefined,
-  editedAt: undefined,
+import { author } from '../user/state'
+import { Exercise, State } from './type'
+
+export const defaultExercise: Exercise = {
+  id: '',
+  author: cloneDeep(author),
+  createdAt: null,
+  editedAt: null,
   title: '',
-  startTime: undefined,
-  endTime: undefined,
+  startTime: '',
+  endTime: '',
   teams: [],
   roleplayManager: [],
   makeupCenter: []

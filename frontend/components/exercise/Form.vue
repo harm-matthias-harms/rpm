@@ -30,7 +30,7 @@
           </template>
           <v-date-picker
             v-model="exercise.startTime"
-            :min="new Date().toISOString().slice(0,10)"
+            :min="new Date().toISOString().slice(0, 10)"
             @input="startDateMenu = false"
           />
         </v-menu>
@@ -56,7 +56,7 @@
           </template>
           <v-date-picker
             v-model="exercise.endTime"
-            :min="new Date().toISOString().slice(0,10)"
+            :min="new Date().toISOString().slice(0, 10)"
             @input="endDateMenu = false"
           />
         </v-menu>
@@ -64,15 +64,15 @@
     </v-row>
     <v-row>
       <v-col>
-        <p class="subtitle-1">
-          Teams
-        </p>
+        <p class="subtitle-1">Teams</p>
       </v-col>
       <v-col class="justify-end d-flex">
-        <v-btn small color="primary" @click="exercise.teams.push(Object.assign({}, emptyTeam))">
-          <v-icon small>
-            fas fa-plus
-          </v-icon>
+        <v-btn
+          small
+          color="primary"
+          @click="exercise.teams.push(cloneDeep(emptyTeam))"
+        >
+          <v-icon small> fas fa-plus </v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -113,26 +113,23 @@
         </v-autocomplete>
       </v-col>
       <v-col class="d-flex" cols="1" @click="exercise.teams.splice(index, 1)">
-        <v-icon color="red">
-          delete
-        </v-icon>
+        <v-icon color="red"> delete </v-icon>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <p class="subtitle-1">
-          Role play manager
-        </p>
+        <p class="subtitle-1">Role play manager</p>
       </v-col>
       <v-col class="justify-end d-flex">
         <v-btn small color="primary" @click="exercise.roleplayManager.push({})">
-          <v-icon small>
-            fas fa-plus
-          </v-icon>
+          <v-icon small> fas fa-plus </v-icon>
         </v-btn>
       </v-col>
     </v-row>
-    <v-row v-for="(rpm, index) in exercise.roleplayManager" :key="'rpm' + index">
+    <v-row
+      v-for="(rpm, index) in exercise.roleplayManager"
+      :key="'rpm' + index"
+    >
       <v-col>
         <v-autocomplete
           v-model="exercise.roleplayManager[index]"
@@ -145,7 +142,9 @@
           <template v-slot:prepend-item>
             <v-list-item
               ripple
-              @click="autoGenerateRoleplayManager(exercise.roleplayManager, index)"
+              @click="
+                autoGenerateRoleplayManager(exercise.roleplayManager, index)
+              "
             >
               <v-list-item-content>
                 <v-list-item-title>Autogenerate account</v-list-item-title>
@@ -161,33 +160,35 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col class="d-flex" cols="1" @click="exercise.roleplayManager.splice(index, 1)">
-        <v-icon color="red">
-          delete
-        </v-icon>
+      <v-col
+        class="d-flex"
+        cols="1"
+        @click="exercise.roleplayManager.splice(index, 1)"
+      >
+        <v-icon color="red"> delete </v-icon>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <p class="subtitle-1">
-          Make-up center
-        </p>
+        <p class="subtitle-1">Make-up center</p>
       </v-col>
       <v-col class="justify-end d-flex">
         <v-btn
           small
           color="primary"
-          @click="exercise.makeupCenter.push(Object.assign({}, emptyMakeUpCenter))"
+          @click="exercise.makeupCenter.push(cloneDeep(emptyMakeUpCenter))"
         >
-          <v-icon small>
-            fas fa-plus
-          </v-icon>
+          <v-icon small> fas fa-plus </v-icon>
         </v-btn>
       </v-col>
     </v-row>
     <v-row v-for="(mc, index) in exercise.makeupCenter" :key="'mc' + index">
       <v-col>
-        <v-text-field v-model="mc.title" label="Name of make-up center" required />
+        <v-text-field
+          v-model="mc.title"
+          label="Name of make-up center"
+          required
+        />
       </v-col>
       <v-col>
         <v-autocomplete
@@ -199,7 +200,7 @@
           required
         >
           <template v-slot:prepend-item>
-            <v-list-item ripple @click="autoGenerateMakeUpCenter(mc, index)">
+            <v-list-item ripple @click="autoGenerateMakeUpCenter(mc)">
               <v-list-item-content>
                 <v-list-item-title>Autogenerate account</v-list-item-title>
               </v-list-item-content>
@@ -214,10 +215,12 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col class="d-flex" cols="1" @click="exercise.makeupCenter.splice(index, 1)">
-        <v-icon color="red">
-          delete
-        </v-icon>
+      <v-col
+        class="d-flex"
+        cols="1"
+        @click="exercise.makeupCenter.splice(index, 1)"
+      >
+        <v-icon color="red"> delete </v-icon>
       </v-col>
     </v-row>
     <v-btn
@@ -226,36 +229,37 @@
       type="submit"
       color="primary"
     >
-      {{ isNew ? "create" : "edit" }}
+      {{ isNew ? 'create' : 'edit' }}
     </v-btn>
-    <v-btn @click="$router.back()">
-      cancel
-    </v-btn>
+    <v-btn @click="$router.back()"> cancel </v-btn>
   </v-form>
 </template>
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
 import { mapActions, mapState } from 'vuex'
+import { cloneDeep } from 'lodash'
+import { Exercise, MakeupCenter } from '~/store/exercise/type'
+import { ShortUser } from '~/store/user/type'
 @Component({
   methods: {
     ...mapActions('team', {
-      getTeams: 'get_all'
+      getTeams: 'get_all',
     }),
     ...mapActions('user', {
-      getUser: 'get_all'
-    })
+      getUser: 'get_all',
+    }),
   },
   computed: {
     ...mapState('team', {
-      teamList: 'teamList'
+      teamList: 'teamList',
     }),
     ...mapState('user', {
-      userList: 'userList'
-    })
-  }
+      userList: 'userList',
+    }),
+  },
 })
 export default class Form extends Vue {
-  @Prop({ type: Object, required: true }) readonly exercise!: any
+  @Prop({ type: Object, required: true }) readonly exercise!: Exercise
   @Prop({ type: Function, required: true }) readonly atSubmit!: (
     payload
   ) => void
@@ -272,44 +276,57 @@ export default class Form extends Vue {
   emptyTeam: object = { team: {}, trainer: {} }
   emptyMakeUpCenter: object = { title: '', account: {} }
 
-  autoGenerateTrainer (team) {
+  autoGenerateTrainer(team) {
     if (Object.keys(team.trainer).length === 0) {
       const randomTrainer = {
-        username: this.getExercisePrefix() + ' - ' + team.team.title + ' - trainer',
-        code: Math.random().toString(36).substring(2, 8).toUpperCase()
+        username:
+          this.getExercisePrefix() + ' - ' + team.team.title + ' - trainer',
+        code: this.randomCode(),
       }
       team.trainer = randomTrainer
       this.trainer.unshift(randomTrainer)
     }
   }
 
-  autoGenerateRoleplayManager (rolePlayManager, index) {
+  autoGenerateRoleplayManager(rolePlayManager, index) {
     if (Object.keys(rolePlayManager[index]).length === 0) {
       const user = {
-        username: this.getExercisePrefix() + ' - role play manager ' + (index + 1),
-        code: Math.random().toString(36).substring(2, 8).toUpperCase()
+        username:
+          this.getExercisePrefix() + ' - role play manager ' + (index + 1),
+        code: this.randomCode(),
       }
       rolePlayManager[index] = user
       this.roleplayManager.unshift(user)
     }
   }
 
-  autoGenerateMakeUpCenter (mc) {
+  autoGenerateMakeUpCenter(mc: MakeupCenter) {
     if (Object.keys(mc.account).length === 0) {
-      const account = {
+      const account: ShortUser = {
         username: this.getExercisePrefix() + ' - ' + mc.title,
-        code: Math.random().toString(36).substring(2, 8).toUpperCase()
+        code: this.randomCode(),
       }
       mc.account = account
       this.makeupCenter.unshift(account)
     }
   }
 
-  getExercisePrefix () {
-    return this.exercise.title.match(/\b(\w)/g).join('').toUpperCase()
+  randomCode() {
+    return Math.random().toString(36).substring(2, 8).toUpperCase()
   }
 
-  mounted () {
+  getExercisePrefix() {
+    return this.exercise.title
+      .match(/\b(\w)/g)
+      ?.join('')
+      .toUpperCase()
+  }
+
+  get cloneDeep() {
+    return cloneDeep
+  }
+
+  mounted() {
     this.getTeams({ disableLoader: true })
     this.getUser({ disableLoader: true }).then(() => {
       this.trainer = [...this.userList]
