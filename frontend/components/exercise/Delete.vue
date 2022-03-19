@@ -1,11 +1,6 @@
 <template>
-  <div style="display: inline;">
-    <v-icon
-      color="red"
-      @click="dialog = true"
-    >
-      delete
-    </v-icon>
+  <div style="display: inline">
+    <v-icon color="red" @click="dialog = true"> delete </v-icon>
     <Confirm
       text="Are you sure you want to delete this exercise?"
       :dialog.sync="dialog"
@@ -20,26 +15,27 @@
 import { Prop, Component, Vue } from 'vue-property-decorator'
 import { mapActions } from 'vuex'
 import Confirm from '@/components/utils/Confirm.vue'
+import { Exercise } from '~/store/exercise/type'
 @Component({
   components: { Confirm },
   methods: {
     ...mapActions('exercise', {
-      delete: 'delete'
-    })
-  }
+      delete: 'delete',
+    }),
+  },
 })
 export default class DeleteButton extends Vue {
-  @Prop({ type: Object, required: true }) readonly item!: object
+  @Prop({ type: Object, required: true }) readonly item!: Exercise
 
   dialog: boolean = false
   delete!: ({ id: string }) => void
 
-  deleteExercise (exercise) {
+  deleteExercise(exercise: Exercise) {
     this.delete({ id: exercise.id })
     this.dialog = false
   }
 
-  onCancel () {
+  onCancel() {
     this.dialog = false
   }
 }
