@@ -98,8 +98,8 @@ export default class Table extends Vue {
     { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
-    { text: 'PreHospital', sortable: true, value: 'general.preHospital' },
-    { text: 'MEDEVAC', sortable: true, value: 'general.medevac'},
+    { text: 'Pre-hospital', sortable: true, value: 'general.preHospital' },
+    { text: 'MEDEVAC', sortable: true, value: 'general.medevac' },
     { text: 'Author', sortable: true, value: 'author.username' },
     { text: 'Actions', sortable: false, value: 'action' },
   ]
