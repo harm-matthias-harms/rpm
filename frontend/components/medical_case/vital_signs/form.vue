@@ -37,6 +37,7 @@
           :key="i"
           :vital-sign.sync="vitalSign.childs[i]"
           :level="level + 1"
+          :isPrehospital="isPrehospital"
         />
       </v-expansion-panels>
     </v-expansion-panel-content>
@@ -67,6 +68,7 @@ import Form from '@/components/vital_signs/form.vue'
 export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSign!: any
   @Prop({ type: Number, required: true }) readonly level!: number
+  @Prop({ type: Boolean, required: true }) readonly isPrehospital!: Boolean
   @Watch('vitalSign', { immediate: true, deep: true })
   updateVitalSignChanged(val: any) {
     this.$emit('update:vitalSign', val)
@@ -116,10 +118,20 @@ export default class VitalSign extends Vue {
   }
 
   titleOptions() {
-    if (this.level === 0) return ['T0 - Pre']
+    if (this.level === 0) return ['T0']
 
-    // return [`T${this.level} - Improvement`, `T${this.level} - Deterioration`]
-    return ['A Pre', 'B Pre', 'T1 - A', 'T2 - A', 'T1 - B', 'T2 - B']
+    if (this.isPrehospital && this.level === 1) {
+      return ['A Pre', 'B Pre']
+    }
+
+    return this.generateTitleForLevel()
+  }
+
+  generateTitleForLevel() {
+    if (this.isPrehospital) {
+      return [`T${this.level - 1} - A`, `T${this.level - 1} - B`]
+    }
+    return [`T${this.level} - A`, `T${this.level} - B`]
   }
 
   levelColor() {
