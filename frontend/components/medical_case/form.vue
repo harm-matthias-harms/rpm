@@ -46,7 +46,7 @@
           />
           <v-checkbox
             v-model="medicalCase.general.preHospital"
-            label="Prehospital playable"
+            label="Pre-hospital"
           />
           <v-checkbox v-model="medicalCase.general.medevac" label="MEDEVAC" />
         </v-expansion-panel-content>
