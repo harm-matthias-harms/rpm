@@ -226,7 +226,7 @@ func HandleMedicalCaseFileDelete(c echo.Context) error {
 	}
 	for i, file := range mc.Files {
 		if file.ID == fileID {
-			if err = storage.DeleteMedicalCaseFile(fileID); err != nil {
+			if err = storage.DeleteMedicalCaseFile(fileID); err.Error() != "file with given parameters not found" {
 				return echo.NewHTTPError(http.StatusInternalServerError, errorDelete)
 			}
 			mc.Files = append(mc.Files[:i], mc.Files[i+1:]...)
