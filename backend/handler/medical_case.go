@@ -145,7 +145,7 @@ func HandleMedicalCaseEdit(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, mc)
 }
 
-// HandleMedicalCaseDelete updates an preset
+// HandleMedicalCaseDelete updates a medical case
 func HandleMedicalCaseDelete(c echo.Context) (err error) {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
