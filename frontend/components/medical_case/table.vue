@@ -65,6 +65,7 @@
             </td>
             <td class="px-0">
               <v-icon @click="editMedicalCase(item)"> edit </v-icon>
+              <v-icon @click="cloneMedicalCase(item)"> copy_all </v-icon>
               <DeleteButton
                 v-if="
                   !item.author.username ||
@@ -112,6 +113,13 @@ export default class Table extends Vue {
 
   editMedicalCase(medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  cloneMedicalCase(medicalCase) {
+    this.$router.push({
+      path: '/medical_cases/new',
+      query: { cloneId: medicalCase.id },
+    })
   }
 
   getTriageColor(item) {
