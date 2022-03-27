@@ -19,12 +19,6 @@ describe('Edit Medical Case', () => {
       status: 200,
       response: 'fixture:medical_case/medicalCase.json'
     })
-    cy.route({
-      method: 'GET',
-      url: 'http://localhost:3001/api/presets',
-      status: 200,
-      response: 'fixture:preset/list.json'
-    })
     cy.login()
   })
 

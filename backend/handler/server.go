@@ -51,12 +51,6 @@ func Server() (*echo.Echo, error) {
 	//user
 	r.GET("/user", HandleUserGet)
 	r.GET("/user/:id", HandleUserFind)
-	// presets
-	r.POST("/presets", HandlePresetCreate)
-	r.GET("/presets", HandlePresetsGet)
-	r.GET("/presets/:id", HandlePresetFind)
-	r.PUT("/presets/:id", HandlePresetEdit)
-	r.DELETE("/presets/:id", HandlePresetDelete)
 	// medical cases
 	r.POST("/medical_cases", HandleMedicalCaseCreate)
 	r.GET("/medical_cases", HandleMedicalCaseGet)
