@@ -31,7 +31,7 @@ describe('Medical case table', () => {
     expect(wrapper.props().loading).toBeFalsy()
     expect(wrapper.props().items).toMatchObject([])
   })
-  test('open preset', () => {
+  test('open medical case', () => {
     wrapper.vm.openMedicalCase({ id: '001' })
     expect(wrapper.vm.$route.path).toEqual('/medical_cases/001')
   })

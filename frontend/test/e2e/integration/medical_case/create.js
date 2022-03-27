@@ -33,18 +33,6 @@ describe('Create medical case', () => {
     })
     cy.route({
       method: 'GET',
-      url: 'http://localhost:3001/api/presets',
-      status: 200,
-      response: 'fixture:preset/list.json'
-    })
-    cy.route({
-      method: 'GET',
-      url: 'http://localhost:3001/api/presets/001',
-      status: 200,
-      response: 'fixture:preset/preset.json'
-    })
-    cy.route({
-      method: 'GET',
       url: 'http://localhost:3001/api/medical_cases/001',
       status: 200,
       response: 'fixture:medical_case/medicalCase.json'
@@ -219,15 +207,6 @@ describe('Create medical case', () => {
       .find('textarea')
       .first()
       .type(vitalSigns.data.expectations.treatmentExpected)
-
-    // select predefined preset
-    cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
-      .contains('div', 'Select a preset')
-      .find('input')
-      .first()
-      .type('test preset 1')
-
-    cy.contains('div', 'test preset 1').click()
 
     cy.get(':nth-child(1) > .v-expansion-panel > .v-expansion-panel-content')
       .contains('div', 'Body temperature')

@@ -2,7 +2,7 @@ import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 export default function (context) {
   // const
-  const blockUnAuthorized = ['presets', 'medical_cases', 'teams']
+  const blockUnAuthorized = ['medical_cases', 'teams']
   // checl for cookie
   const cookie = Cookie.get('Authorization')
   if (cookie) {
