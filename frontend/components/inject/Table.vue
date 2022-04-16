@@ -87,16 +87,6 @@
           </v-list>
         </v-menu>
       </v-col>
-      <v-col cols="auto">
-        <v-btn
-          color="primary"
-          :disabled="!selectedInjects.length"
-          @click="updateStatus"
-        >
-          Update status
-          {{ selectedInjects.length ? `(${selectedInjects.length})` : null }}
-        </v-btn>
-      </v-col>
     </v-row>
     <v-data-table
       v-model="selectedInjects"
@@ -115,9 +105,27 @@
       multi-sort
     >
       <template v-slot:[`item.status`]="{ item }">
-        <v-badge dot inline left :color="getStatusColor(item.status)">
-          {{ item.status }}
-        </v-badge>
+        <v-select
+          dense
+          :items="states"
+          :value="item.status"
+          @change="
+            (selected) => {
+              updateStatus(selected, item)
+            }
+          "
+        >
+          <template v-slot:selection="{ item }">
+            <v-badge dot inline left :color="getStatusColor(item)">
+              {{ item }}
+            </v-badge>
+          </template>
+          <template v-slot:item="{ item }">
+            <v-badge dot inline left :color="getStatusColor(item)">
+              {{ item }}
+            </v-badge>
+          </template>
+        </v-select>
       </template>
       <template v-slot:[`item.medicalCase.title`]="{ item }">
         <v-badge dot inline left :color="getTriageColor(item.medicalCase)">
@@ -177,7 +185,7 @@ export default class Table extends Vue {
   updateInject!: ({ inject, showInject }) => void
 
   headers = [
-    { text: 'State', sortable: true, value: 'status' },
+    { text: 'State', sortable: true, value: 'status', width: '220px' },
     { text: 'Roleplayer', sortable: true, value: 'roleplayer.fullName' },
     { text: 'Medical case', sortable: true, value: 'medicalCase.title' },
     { text: 'Team', sortable: true, value: 'team.title' },
@@ -261,21 +269,20 @@ export default class Table extends Vue {
     window.open('/medical_cases/' + inject.medicalCase.id, '_blank')
   }
 
-  async updateStatus() {
-    const injects = this.selectedInjects.filter(
-      (inject) => inject.status !== this.states[this.states.length - 1]
+  async updateStatus(newStatus: string, inject: InjectShort) {
+    await this.findInject({
+      id: inject.id,
+      exerciseID: this.$route.params.id,
+      disableLoader: true,
+    })
+
+    const updatedInject: Inject = Object.assign(
+      {},
+      this.$store.state.inject.inject
     )
-    for (const inject of injects) {
-      const nextState = this.states[this.states.indexOf(inject.status!) + 1]
-      await this.findInject({
-        id: inject.id,
-        exerciseID: this.$route.params.id,
-        disableLoader: true,
-      })
-      const updatedInject: Inject = { ...this.$store.state.inject.inject }
-      updatedInject.status = nextState
-      await this.updateInject({ inject: updatedInject, showInject: false })
-    }
+    updatedInject.status = newStatus
+
+    await this.updateInject({ inject: updatedInject, showInject: false })
     await this.refreshTable({ exerciseID: this.$route.params.id })
     this.updateSelected()
   }
