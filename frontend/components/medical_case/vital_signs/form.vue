@@ -4,7 +4,12 @@
       <div>
         <v-chip :color="levelColor()" class="mr-2">{{ level }}</v-chip>
         {{ vitalSign.title ? vitalSign.title : 'No title' }}
-        <v-btn class="float-end mr-5" color="error" @click="$emit('remove')">
+        <v-btn
+          small
+          class="float-end mr-5"
+          color="error"
+          @click="$emit('remove')"
+        >
           delete
         </v-btn>
       </div>
