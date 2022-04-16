@@ -132,6 +132,7 @@
               :vital-sign.sync="medicalCase.vitalSigns[i]"
               :level="0"
               :isPrehospital="medicalCase.general.preHospital"
+              @remove="medicalCase.vitalSigns.splice(i, 1)"
             />
           </v-expansion-panels>
         </v-expansion-panel-content>
