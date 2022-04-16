@@ -5,7 +5,7 @@
         <v-chip :color="levelColor()" class="mr-2">{{ level }}</v-chip>
         {{ vitalSign.title ? vitalSign.title : 'No title' }}
         <v-btn class="float-end mr-5" color="error" @click="$emit('remove')">
-          Remove
+          delete
         </v-btn>
       </div>
     </v-expansion-panel-header>
