@@ -4,6 +4,9 @@
       <div>
         <v-chip :color="levelColor()" class="mr-2">{{ level }}</v-chip>
         {{ vitalSign.title ? vitalSign.title : 'No title' }}
+        <v-btn class="float-end mr-5" color="error" @click="$emit('remove')">
+          Remove
+        </v-btn>
       </div>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
@@ -21,6 +24,7 @@
           :vital-sign.sync="vitalSign.childs[i]"
           :level="level + 1"
           :isPrehospital="isPrehospital"
+          @remove="vitalSign.childs.splice(i, 1)"
         />
       </v-expansion-panels>
     </v-expansion-panel-content>
