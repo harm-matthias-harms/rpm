@@ -133,13 +133,14 @@
         </v-badge>
       </template>
       <template v-slot:[`item.startTime`]="{ item }">
-        {{
-          item.startTime
-            ? new Date(item.startTime).toLocaleString([], {
-                timeZone: 'UTC',
-              })
-            : '-'
-        }}
+        <StartTime
+          :value="new Date(item.startTime)"
+          @input="
+            (newStartTime) => {
+              updateStartTime(newStartTime, item)
+            }
+          "
+        ></StartTime>
       </template>
       <template v-slot:[`item.action`]="{ item }">
         <v-icon @click="openMedicalCase(item)">
@@ -162,9 +163,11 @@ import { mapActions } from 'vuex'
 import DeleteButton from './Delete.vue'
 import { Inject, InjectShort } from '~/store/inject/type'
 import { MedicalCase } from '~/store/medicalCase/type'
+import StartTime from './StartTime.vue'
 @Component({
   components: {
     DeleteButton,
+    StartTime,
   },
   methods: {
     ...mapActions('inject', {
@@ -190,7 +193,7 @@ export default class Table extends Vue {
     { text: 'Medical case', sortable: true, value: 'medicalCase.title' },
     { text: 'Team', sortable: true, value: 'team.title' },
     { text: 'Make-up center', sortable: true, value: 'makeupCenterTitle' },
-    { text: 'Start time', sortable: true, value: 'startTime' },
+    { text: 'Start time', sortable: true, value: 'startTime', width: '250px' },
     { text: 'Actions', sortable: false, value: 'action' },
   ]
 
@@ -270,19 +273,31 @@ export default class Table extends Vue {
   }
 
   async updateStatus(newStatus: string, inject: InjectShort) {
+    const updatedInject = await this.getInjectForUpdate(inject)
+    updatedInject.status = newStatus
+
+    await this.updateInjectAndRefresh(updatedInject)
+  }
+
+  async updateStartTime(newStartTime: Date, inject: InjectShort) {
+    const updatedInject = await this.getInjectForUpdate(inject)
+    updatedInject.startTime = newStartTime
+
+    await this.updateInjectAndRefresh(updatedInject)
+  }
+
+  async getInjectForUpdate(inject: InjectShort): Promise<Inject> {
     await this.findInject({
       id: inject.id,
       exerciseID: this.$route.params.id,
       disableLoader: true,
     })
 
-    const updatedInject: Inject = Object.assign(
-      {},
-      this.$store.state.inject.inject
-    )
-    updatedInject.status = newStatus
+    return Object.assign({}, this.$store.state.inject.inject)
+  }
 
-    await this.updateInject({ inject: updatedInject, showInject: false })
+  async updateInjectAndRefresh(inject: Inject) {
+    await this.updateInject({ inject: inject, showInject: false })
     await this.refreshTable({ exerciseID: this.$route.params.id })
     this.updateSelected()
   }
