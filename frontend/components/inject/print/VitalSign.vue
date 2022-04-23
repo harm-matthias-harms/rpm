@@ -107,7 +107,10 @@
         </p>
       </v-col>
       <v-col cols="auto">
-        <p class="caption">Case id: {{ vitalSign.id }}</p>
+        <p class="caption">
+          MC: {{ vitalSign.mcId }} | Case:
+          {{ vitalSign.id }}
+        </p>
       </v-col>
     </v-row>
   </div>

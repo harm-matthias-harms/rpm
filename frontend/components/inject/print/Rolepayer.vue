@@ -127,7 +127,10 @@
       </v-row>
       <v-row justify="center" class="mt-auto">
         <v-col cols="auto">
-          <p class="caption">Case id: {{ inject.id }}</p>
+          <p class="caption">
+            MC: {{ getMedicalCaseId(inject.medicalCase) }} | Case:
+            {{ inject.id }}
+          </p>
         </v-col>
       </v-row>
     </div>
@@ -229,7 +232,10 @@
       </v-row>
       <v-row justify="center" class="mt-auto">
         <v-col cols="auto">
-          <p class="caption">Case id: {{ inject.id }}</p>
+          <p class="caption">
+            MC: {{ getMedicalCaseId(inject.medicalCase) }} | Case:
+            {{ inject.id }}
+          </p>
         </v-col>
       </v-row>
     </div>
@@ -251,7 +257,10 @@
             open-all
             :items="[vitalSignFlow(inject.medicalCase.vitalSigns[0])]"
           ></v-treeview>
-          <p class="caption text-center mt-5">Case id: {{ inject.id }}</p>
+          <p class="caption text-center mt-5">
+            MC: {{ getMedicalCaseId(inject.medicalCase) }} | Case:
+            {{ inject.id }}
+          </p>
         </v-col>
         <v-col v-else-if="extractVitalSigns(inject).length">
           <VitalSign :vitalSign="extractVitalSigns(inject)[0]"></VitalSign>
@@ -288,10 +297,11 @@ import Makeup from '@/components/inject/print/Makeup.vue'
 import VitalSign from '@/components/inject/print/VitalSign.vue'
 
 import _ from 'lodash'
-import { nestedVitalSign } from '~/store/medicalCase/type'
+import { MedicalCase, nestedVitalSign } from '~/store/medicalCase/type'
 
 interface vitalSign {
   id: string | undefined
+  mcId: string
   fullname?: string
   data: vitalSignData
 }
@@ -327,6 +337,14 @@ export default class PrintRoleplayer extends Vue {
     return _
   }
 
+  getMedicalCaseId(medicalCase: MedicalCase) {
+    const regex = /(P[0-9]+)/i
+    const match = medicalCase.title.match(regex)?.[1]
+
+    if (match) return match
+    return 'ø'
+  }
+
   valueToString(value: number, unit: string) {
     return value + (unit ? ' ' + unit : '')
   }
@@ -347,6 +365,7 @@ export default class PrintRoleplayer extends Vue {
           res.forEach((r) => {
             result.push({
               id: inject.id,
+              mcId: this.getMedicalCaseId(inject.medicalCase),
               fullname: inject.roleplayer.fullName,
               data: r,
             })

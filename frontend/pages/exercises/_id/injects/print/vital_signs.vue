@@ -21,11 +21,12 @@ import { mapActions } from 'vuex'
 
 import VitalSign from '@/components/inject/print/VitalSign.vue'
 import { Inject } from '~/store/inject/type'
-import { nestedVitalSign } from '~/store/medicalCase/type'
+import { MedicalCase, nestedVitalSign } from '~/store/medicalCase/type'
 import _ from 'lodash'
 
 interface vitalSign {
   id: string | undefined
+  mcId: string
   fullname?: string
   data: vitalSignData
 }
@@ -86,6 +87,14 @@ export default class PrintVitalSigns extends Vue {
     return _
   }
 
+  getMedicalCaseId(medicalCase: MedicalCase) {
+    const regex = /(P[0-9]+)/i
+    const match = medicalCase.title.match(regex)?.[1]
+
+    if (match) return match
+    return 'ø'
+  }
+
   extractVitalSigns(inject: Inject): vitalSign[] | null {
     const result: vitalSign[] = []
     if (inject.medicalCase.vitalSigns) {
@@ -95,6 +104,7 @@ export default class PrintVitalSigns extends Vue {
           res.forEach((r) => {
             result.push({
               id: inject.id,
+              mcId: this.getMedicalCaseId(inject.medicalCase),
               fullname: inject.roleplayer.fullName,
               data: r,
             })

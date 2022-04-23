@@ -36,8 +36,10 @@
     </v-row>
     <v-row justify="center" class="mt-4">
       <v-col cols="auto">
-        <!-- <p class="caption">Case title: {{ inject.medicalCase.title }}</p> -->
-        <p class="caption">Case id: {{ inject.id }}</p>
+        <p class="caption">
+          MC: {{ getMedicalCaseId(inject.medicalCase) }} | Case:
+          {{ inject.id }}
+        </p>
       </v-col>
     </v-row>
   </div>
@@ -45,10 +47,19 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'vue-property-decorator'
+import { MedicalCase } from '~/store/medicalCase/type'
 
 @Component
 export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly inject!: Object
+
+  getMedicalCaseId(medicalCase: MedicalCase) {
+    const regex = /(P[0-9]+)/i
+    const match = medicalCase.title.match(regex)?.[1]
+
+    if (match) return match
+    return 'ø'
+  }
 }
 </script>
 
