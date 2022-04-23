@@ -135,6 +135,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { mapState, mapActions } from 'vuex'
 import Author from '@/components/utils/Author.vue'
 import DeleteButton from '@/components/exercise/Delete.vue'
+import { Exercise } from '~/store/exercise/type'
 @Component({
   components: {
     Author,
@@ -153,7 +154,7 @@ import DeleteButton from '@/components/exercise/Delete.vue'
 })
 export default class ShowExercise extends Vue {
   find!: (id) => void
-  exercise!: any
+  exercise!: Exercise
 
   async mounted() {
     const id = this.$route.params.id
@@ -168,7 +169,7 @@ export default class ShowExercise extends Vue {
     }
   }
 
-  editExercise(exercise) {
+  editExercise(exercise: Exercise) {
     this.$router.push('/exercises/' + exercise.id + '/edit')
   }
 

@@ -89,7 +89,7 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't delete preset.", { root: true })
+        commit('snackbar/SET', "Couldn't delete medical case.", { root: true })
       })
       .finally(() => {
         commit('loader/SET', false, { root: true })

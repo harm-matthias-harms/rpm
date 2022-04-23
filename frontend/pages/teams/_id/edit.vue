@@ -1,20 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-col
-      lg="6"
-      md="10"
-      sm="12"
-    >
+    <v-col lg="6" md="10" sm="12">
       <v-card>
         <v-card-title primary-title>
           Edit team
         </v-card-title>
         <v-card-text>
-          <TeamForm
-            :team="team"
-            :at-submit="update"
-            :is-new="false"
-          />
+          <TeamForm :team="team" :at-submit="update" :is-new="false" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -27,21 +19,21 @@ import { mapActions } from 'vuex'
 import TeamForm from '@/components/team/form.vue'
 @Component({
   components: {
-    TeamForm
+    TeamForm,
   },
   methods: {
     ...mapActions('team', {
       find: 'find',
-      update: 'update'
-    })
-  }
+      update: 'update',
+    }),
+  },
 })
 export default class Edit extends Vue {
   find!: (id) => Promise<any>
-  update!: (preset) => void
+  update!: (team) => void
   team: any = JSON.parse(JSON.stringify(this.$store.state.team.team))
 
-  mounted () {
+  mounted() {
     const id = this.$route.params.id
     if (this.team.id !== id) {
       this.find({ id }).then(() => {

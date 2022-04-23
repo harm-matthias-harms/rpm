@@ -65,6 +65,7 @@
             </td>
             <td class="px-0">
               <v-icon @click="editMedicalCase(item)"> edit </v-icon>
+              <v-icon @click="cloneMedicalCase(item)"> copy_all </v-icon>
               <DeleteButton
                 v-if="
                   !item.author.username ||
@@ -98,8 +99,8 @@ export default class Table extends Vue {
     { text: 'Area', sortable: true, value: 'general.discipline' },
     { text: 'Context', sortable: true, value: 'general.context' },
     { text: 'Scenario', sortable: true, value: 'general.scenario' },
-    { text: 'PreHospital', sortable: true, value: 'general.preHospital' },
-    { text: 'MEDEVAC', sortable: true, value: 'general.medevac'},
+    { text: 'Pre-hospital', sortable: true, value: 'general.preHospital' },
+    { text: 'MEDEVAC', sortable: true, value: 'general.medevac' },
     { text: 'Author', sortable: true, value: 'author.username' },
     { text: 'Actions', sortable: false, value: 'action' },
   ]
@@ -112,6 +113,13 @@ export default class Table extends Vue {
 
   editMedicalCase(medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  cloneMedicalCase(medicalCase) {
+    this.$router.push({
+      path: '/medical_cases/new',
+      query: { cloneId: medicalCase.id },
+    })
   }
 
   getTriageColor(item) {

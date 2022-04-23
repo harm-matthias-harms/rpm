@@ -46,7 +46,7 @@
           />
           <v-checkbox
             v-model="medicalCase.general.preHospital"
-            label="Prehospital playable"
+            label="Pre-hospital"
           />
           <v-checkbox v-model="medicalCase.general.medevac" label="MEDEVAC" />
         </v-expansion-panel-content>
@@ -132,6 +132,7 @@
               :vital-sign.sync="medicalCase.vitalSigns[i]"
               :level="0"
               :isPrehospital="medicalCase.general.preHospital"
+              @remove="medicalCase.vitalSigns.splice(i, 1)"
             />
           </v-expansion-panels>
         </v-expansion-panel-content>

@@ -4,6 +4,14 @@
       <div>
         <v-chip :color="levelColor()" class="mr-2">{{ level }}</v-chip>
         {{ vitalSign.title ? vitalSign.title : 'No title' }}
+        <v-btn
+          small
+          class="float-end mr-5"
+          color="error"
+          @click="$emit('remove')"
+        >
+          delete
+        </v-btn>
       </div>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
@@ -12,23 +20,6 @@
         :items="titleOptions()"
         label="Title"
       />
-      <v-autocomplete
-        v-model="presetID"
-        :items="presets.presets"
-        :loading="loading"
-        :item-text="(item) => item.title + ' - ' + item.author.username"
-        item-value="id"
-        label="Select a preset"
-      >
-        <template v-slot:item="data">
-          <v-list-item-content>
-            <v-list-item-title>{{ data.item.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              data.item.author.username
-            }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </template>
-      </v-autocomplete>
       <Form :vital-signs.sync="vitalSign.data" />
       <v-btn class="mb-4" @click="addChild"> Add Step </v-btn>
       <v-expansion-panels multiple class="mb-4">
@@ -38,6 +29,7 @@
           :vital-sign.sync="vitalSign.childs[i]"
           :level="level + 1"
           :isPrehospital="isPrehospital"
+          @remove="vitalSign.childs.splice(i, 1)"
         />
       </v-expansion-panels>
     </v-expansion-panel-content>
@@ -46,24 +38,10 @@
 
 <script lang="ts">
 import { Prop, Watch, Component, Vue } from 'vue-property-decorator'
-import { mapState, mapActions } from 'vuex'
 import Form from '@/components/vital_signs/form.vue'
 @Component({
   name: 'VitalSign',
   components: { Form },
-  computed: {
-    ...mapState('preset', {
-      presetsLoaded: 'presetsLoaded',
-      presets: 'presetList',
-      preset: 'preset',
-    }),
-  },
-  methods: {
-    ...mapActions('preset', {
-      getPresets: 'get_all',
-      findPreset: 'find',
-    }),
-  },
 })
 export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly vitalSign!: any
@@ -73,23 +51,6 @@ export default class VitalSign extends Vue {
   updateVitalSignChanged(val: any) {
     this.$emit('update:vitalSign', val)
   }
-
-  @Watch('presetID')
-  presetIDChanged(val: string) {
-    if (val) {
-      this.findPreset({ id: val, disableLoader: true }).then((res) => {
-        this.vitalSign.data = res.vitalSigns
-      })
-    }
-  }
-
-  presetsLoaded!: boolean
-  getPresets!: (payload) => void
-  findPreset!: (payload) => Promise<any>
-  presets!: []
-  preset: any
-  loading = false
-  presetID: string = ''
 
   emptyVitalSign: object = {
     title: undefined,
@@ -138,18 +99,6 @@ export default class VitalSign extends Vue {
     const colors = ['primary', 'success', 'warning', 'error']
 
     return colors[this.level % 4]
-  }
-
-  loadPresets() {
-    this.loading = true
-    this.getPresets({ disableLoader: true })
-    this.loading = false
-  }
-
-  mounted() {
-    if (!this.presetsLoaded) {
-      this.loadPresets()
-    }
   }
 }
 </script>

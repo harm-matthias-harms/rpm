@@ -5,7 +5,13 @@
       :items="options"
       item-text="text"
       item-value="value"
-    />
+    >
+      <template v-slot:item="{ item }">
+        <div :class="item.isFuture ? null : 'text-decoration-line-through'">
+          {{ item.text }}
+        </div>
+      </template>
+    </v-autocomplete>
   </div>
 </template>
 
@@ -16,6 +22,7 @@ import { mapActions } from 'vuex'
 interface DateOption {
   value: Date
   text: string
+  isFuture: boolean
 }
 
 @Component({
@@ -52,22 +59,15 @@ export default class StartTime extends Vue {
   }
 
   generateTimes(): DateOption[] {
-    const startTime = new Date(
-      Math.max(
-        ...[
-          new Date().getTime(),
-          new Date(this.$store.state.exercise.exercise.startTime).getTime(),
-        ]
-      )
-    ).toISOString()
     return this.makeTimeArray(
-      startTime,
+      this.$store.state.exercise.exercise.startTime,
       this.$store.state.exercise.exercise.endTime
     )
   }
 
   makeTimeArray(startTime, endTime): DateOption[] {
     const times: DateOption[] = []
+
     const hours = [
       '00:00 - 03:00',
       '03:00 - 06:00',
@@ -79,50 +79,51 @@ export default class StartTime extends Vue {
       '21:00 - 00:00',
     ]
     const hoursLength = hours.length
-    const j = this.getCurrentTimeIndex(startTime, hours)
     const endDate = new Date(endTime)
     endDate.setDate(endDate.getDate() + 1)
+
     for (
       let d = new Date(startTime);
       d <= endDate;
       d.setDate(d.getDate() + 1)
     ) {
-      if (d === new Date(startTime)) {
-        for (let i = j; i < hoursLength; i++) {
-          const date = new Date(d)
-          times.push({
-            value: new Date(
-              date.toISOString().slice(0, 10) + ' ' + hours[i].slice(0, 4)
-            ),
-            text: date.toISOString().slice(0, 10) + ' ' + hours[i],
-          })
-        }
-      } else {
-        for (let i = 0; i < hoursLength; i++) {
-          const date = new Date(d)
-          times.push({
-            value: new Date(
-              date.toISOString().slice(0, 10) + ' ' + hours[i].slice(0, 4)
-            ),
-            text: date.toISOString().slice(0, 10) + ' ' + hours[i],
-          })
-        }
+      for (let i = 0; i < hoursLength; i++) {
+        const date = new Date(d)
+        const value = new Date(
+          date.toISOString().slice(0, 10) + ' ' + hours[i].slice(0, 4)
+        )
+
+        times.push({
+          value: value,
+          text: date.toISOString().slice(0, 10) + ' ' + hours[i],
+          isFuture: value.getTime() >= Date.now(),
+        })
       }
     }
+
+    if (
+      this.value &&
+      !times.some((a: DateOption) => {
+        return a.value == this.value!
+      })
+    ) {
+      times.push({
+        value: this.value!,
+        text: this.value.toLocaleString('sv-SE', { timeZone: 'UTC' }),
+        isFuture: this.value.getTime() >= Date.now(),
+      })
+    }
+
+    times.sort(this.sortByIsFutureAndTime)
+
     return times
   }
 
-  getCurrentTimeIndex(startTime, hours): number {
-    const startTimeHour = parseInt(startTime.slice(11, 13))
-    for (let i = 0; i < hours.length; i++) {
-      const arr = hours[i].split(' - ')
-      const min = parseInt(arr[0].slice(0, 2))
-      const max = parseInt(arr[1].slice(0, 2))
-      if (min <= startTimeHour && startTimeHour <= max) {
-        return i
-      }
+  sortByIsFutureAndTime(a: DateOption, b: DateOption) {
+    if (a.isFuture == b.isFuture) {
+      return a.value.getTime() - b.value.getTime()
     }
-    return 0
+    return a.isFuture > b.isFuture ? -1 : 1
   }
 }
 </script>

@@ -16,6 +16,7 @@
               <v-icon color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
+              <v-icon @click="cloneMedicalCase(medicalCase)"> copy_all </v-icon>
               <DeleteButton
                 v-if="
                   !medicalCase.author.username ||
@@ -305,6 +306,13 @@ export default class ShowMedicalCase extends Vue {
 
   editMedicalCase(medicalCase) {
     this.$router.push('/medical_cases/' + medicalCase.id + '/edit')
+  }
+
+  cloneMedicalCase(medicalCase) {
+    this.$router.push({
+      path: '/medical_cases/new',
+      query: { cloneId: medicalCase.id },
+    })
   }
 
   onCancel() {

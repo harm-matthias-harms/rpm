@@ -33,7 +33,7 @@ export const actions: ActionTree<State, RootState> = {
         }
       })
       .catch(() => {
-        commit('snackbar/SET', "Couldn't edit preset.", { root: true })
+        commit('snackbar/SET', "Couldn't edit inject.", { root: true })
       })
   },
   async get_all({ commit, dispatch, rootState }, payload = { exerciseID: null }) {
