@@ -85,14 +85,8 @@ export default class VitalSign extends Vue {
       return ['A Pre', 'B Pre']
     }
 
-    return this.generateTitleForLevel()
-  }
-
-  generateTitleForLevel() {
-    if (this.isPrehospital) {
-      return [`T${this.level - 1} - A`, `T${this.level - 1} - B`]
-    }
-    return [`T${this.level} - A`, `T${this.level} - B`]
+    if (this.isPrehospital) return ['T1 A', 'T2 A', 'T1 B', 'T2 B']
+    return ['T1', 'T2']
   }
 
   levelColor() {
