@@ -21,6 +21,15 @@
       </v-col>
       <v-col cols="2">
         <v-select
+          v-model="filters.startTimes"
+          :items="selectableStartTimes"
+          clearable
+          multiple
+          label="Start time"
+        />
+      </v-col>
+      <v-col cols="2">
+        <v-select
           v-model="filters.teams"
           :items="selectableTeams"
           clearable
@@ -170,6 +179,7 @@ import StartTime from './StartTime.vue'
 
 interface Filters {
   statuses: string[]
+  startTimes: Date[]
   teams: string[]
   makeupCenter: string[]
 }
@@ -210,6 +220,7 @@ export default class Table extends Vue {
   search: string = ''
   filters: Filters = {
     statuses: [],
+    startTimes: [],
     teams: [],
     makeupCenter: [],
   }
@@ -243,11 +254,19 @@ export default class Table extends Vue {
         this.filters.statuses.includes(item.status!)
       )
     }
+
+    if (!!this.filters.startTimes.length) {
+      filteredItems = filteredItems.filter((item) =>
+        this.filters.startTimes.includes(item.startTime!)
+      )
+    }
+
     if (!!this.filters.teams.length) {
       filteredItems = filteredItems.filter((item) =>
         this.filters.teams.includes(item.team.title)
       )
     }
+
     if (!!this.filters.makeupCenter.length) {
       filteredItems = filteredItems.filter((item) =>
         this.filters.makeupCenter.includes(item.makeupCenterTitle!)
@@ -263,6 +282,19 @@ export default class Table extends Vue {
     }
 
     return filteredItems
+  }
+
+  get selectableStartTimes() {
+    return [
+      ...new Set(
+        this.items.map((item) => {
+          return {
+            value: item.startTime,
+            text: new Date(item.startTime!).toLocaleString('sv-SE'),
+          }
+        })
+      ),
+    ]
   }
 
   get selectableTeams() {

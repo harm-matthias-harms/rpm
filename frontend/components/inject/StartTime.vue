@@ -109,7 +109,7 @@ export default class StartTime extends Vue {
     ) {
       times.push({
         value: this.value!,
-        text: this.value.toLocaleString('sv-SE', { timeZone: 'UTC' }),
+        text: this.value.toLocaleString('sv-SE'),
         isFuture: this.value.getTime() >= Date.now(),
       })
     }
