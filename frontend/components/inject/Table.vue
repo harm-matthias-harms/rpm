@@ -12,17 +12,19 @@
       </v-col>
       <v-col cols="2">
         <v-select
-          v-model="filters.status"
+          v-model="filters.statuses"
           :items="states"
           clearable
+          multiple
           label="State"
         />
       </v-col>
       <v-col cols="2">
         <v-select
-          v-model="filters.team"
+          v-model="filters.teams"
           :items="selectableTeams"
           clearable
+          multiple
           label="Team"
         />
       </v-col>
@@ -31,6 +33,7 @@
           v-model="filters.makeupCenter"
           :items="selectableMakeupCenter"
           clearable
+          multiple
           label="Make-up center"
         />
       </v-col>
@@ -164,6 +167,13 @@ import DeleteButton from './Delete.vue'
 import { Inject, InjectShort } from '~/store/inject/type'
 import { MedicalCase } from '~/store/medicalCase/type'
 import StartTime from './StartTime.vue'
+
+interface Filters {
+  statuses: string[]
+  teams: string[]
+  makeupCenter: string[]
+}
+
 @Component({
   components: {
     DeleteButton,
@@ -198,10 +208,10 @@ export default class Table extends Vue {
   ]
 
   search: string = ''
-  filters = {
-    status: '',
-    team: '',
-    makeupCenter: '',
+  filters: Filters = {
+    statuses: [],
+    teams: [],
+    makeupCenter: [],
   }
   states: string[] = [
     'Waiting for makeup',
@@ -227,19 +237,20 @@ export default class Table extends Vue {
       )
 
     let filteredItems = this.items
-    if (this.filters.status) {
-      filteredItems = filteredItems.filter(
-        (item) => item.status === this.filters.status
+
+    if (!!this.filters.statuses.length) {
+      filteredItems = filteredItems.filter((item) =>
+        this.filters.statuses.includes(item.status!)
       )
     }
-    if (this.filters.team) {
-      filteredItems = filteredItems.filter(
-        (item) => item.team.title === this.filters.team
+    if (!!this.filters.teams.length) {
+      filteredItems = filteredItems.filter((item) =>
+        this.filters.teams.includes(item.team.title)
       )
     }
-    if (this.filters.makeupCenter) {
-      filteredItems = filteredItems.filter(
-        (item) => item.makeupCenterTitle === this.filters.makeupCenter
+    if (!!this.filters.makeupCenter.length) {
+      filteredItems = filteredItems.filter((item) =>
+        this.filters.makeupCenter.includes(item.makeupCenterTitle!)
       )
     }
 
