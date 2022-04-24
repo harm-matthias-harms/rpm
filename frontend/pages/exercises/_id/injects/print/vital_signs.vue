@@ -88,7 +88,7 @@ export default class PrintVitalSigns extends Vue {
   }
 
   getMedicalCaseId(medicalCase: MedicalCase) {
-    const regex = /(P[0-9]+)/i
+    const regex = /(PT[0-9]+)/i
     const match = medicalCase.title.match(regex)?.[1]
 
     if (match) return match

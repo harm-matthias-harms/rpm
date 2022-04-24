@@ -54,7 +54,7 @@ export default class VitalSign extends Vue {
   @Prop({ type: Object, required: true }) readonly inject!: Object
 
   getMedicalCaseId(medicalCase: MedicalCase) {
-    const regex = /(P[0-9]+)/i
+    const regex = /(PT[0-9]+)/i
     const match = medicalCase.title.match(regex)?.[1]
 
     if (match) return match
