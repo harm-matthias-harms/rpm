@@ -99,7 +99,7 @@
         }}
       </template>
       <template v-slot:[`item.action`]="{ item }">
-        <v-icon @click="openMedicalCase(item)">
+        <v-icon @click="openMedicalCase(item)" v-if="!isCodeUser">
           fas fa-external-link-alt
         </v-icon>
         <DeleteButton
@@ -132,6 +132,7 @@ import { MedicalCase } from '~/store/medicalCase/type'
 })
 export default class Table extends Vue {
   @Prop({ type: Boolean, required: true }) readonly loading!: boolean
+  @Prop({ type: Boolean, required: true }) readonly isCodeUser!: boolean
   @Prop({ type: Array, required: true }) readonly items!: Array<object>
   @Prop({ type: Function, required: true }) readonly refreshTable!: ({
     exerciseID,
