@@ -2,7 +2,7 @@
   <div>
     <v-autocomplete
       v-model="team"
-      :items="options"
+      :items="filteredTeams"
       item-text="title"
       return-object
     />
@@ -35,6 +35,16 @@ export default class TeamSelector extends Vue {
   }
 
   options: Team[] = []
+
+  get filteredTeams(): Team[] {
+    return this.options.filter((team) => {
+      for(const exerciseTeam of this.$store.state.exercise.exercise.teams) {
+        if (exerciseTeam.team.id == team.id) return true
+      };
+
+      return false
+    })
+  }
 
   mounted () {
     if (this.$store.state.team.teamsLoaded) {
