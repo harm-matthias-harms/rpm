@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  mongo:
+    container_name: "rpm_mongo"
+    image: mongo:4.2
+    restart: always
+    ports:
+      - 27017:27017
+    logging:
+      options:
+        max-size: "20k"
+        max-file: "10"
