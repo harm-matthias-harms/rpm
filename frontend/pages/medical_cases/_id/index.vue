@@ -7,19 +7,20 @@
             <h4 class="display-1 font-weight-light mb-2 black--text">
               {{ medicalCase.title }}
               <v-icon
-                v-if="!medicalCase.approved"
+                v-if="!medicalCase.approved && !isCodeUser"
                 color="green"
                 @click="approve(medicalCase)"
               >
                 check
               </v-icon>
-              <v-icon color="primary" @click="editMedicalCase(medicalCase)">
+              <v-icon v-if="!isCodeUser" color="primary" @click="editMedicalCase(medicalCase)">
                 edit
               </v-icon>
               <DeleteButton
                 v-if="
-                  !medicalCase.author.username ||
-                    medicalCase.author.id == $store.state.user.user.id
+                  (!medicalCase.author.username ||
+                    medicalCase.author.id == $store.state.user.user.id) && 
+                    !isCodeUser
                 "
                 :item="medicalCase"
                 :go-back="true"
@@ -270,6 +271,9 @@ import Confirm from '@/components/utils/Confirm.vue'
   computed: {
     ...mapState('medicalCase', {
       medicalCase: 'medicalCase'
+    }),
+    ...mapState('user', {
+      isCodeUser: 'isCodeUser'
     })
   },
   methods: {
@@ -285,6 +289,7 @@ export default class ShowMedicalCase extends Vue {
   deleteFile!: ({ mcID, id }) => void
   deleteFileDialog: any = new Array(100).fill(false)
   medicalCase!: any
+  isCodeUser!: boolean
   expansionPanel: Array<number> = []
 
   mounted () {

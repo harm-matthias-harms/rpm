@@ -1,8 +1,7 @@
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 export default function (context) {
-  // const
-  const blockUnAuthorized = ['presets', 'medical_cases', 'teams']
+  const blockUnAuthorized = ['presets', /medical_cases-id-.+/, 'teams']
   // checl for cookie
   const cookie = Cookie.get('Authorization')
   if (cookie) {
@@ -26,7 +25,7 @@ export default function (context) {
   }
   // Check if has AccessRights
   if (!context.store.state.user.isAuthenticated || context.store.state.user.isCodeUser) {
-    if (blockUnAuthorized.some(value => context.route.name.includes(value))) {
+    if (blockUnAuthorized.some(value => context.route.name.match(value))) {
       context.store.commit(
         'snackbar/SET',
         'You are unauthorized to enter this area, please log in first'

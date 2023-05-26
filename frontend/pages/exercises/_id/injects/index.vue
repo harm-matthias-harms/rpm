@@ -31,7 +31,6 @@
       <v-col md="10" sm="12">
         <Table
           :items="injectList.injects"
-          :isCodeUser="isCodeUser"
           :loading="loading"
           :refresh-table="getInjects"
         />
@@ -54,9 +53,6 @@ import Table from '~/components/inject/Table.vue'
       injectsLoaded: 'injectsLoaded',
       exerciseID: 'exerciseID',
     }),
-    ...mapState('user', {
-      isCodeUser: 'isCodeUser'
-    })
   },
   methods: {
     ...mapActions('inject', {
